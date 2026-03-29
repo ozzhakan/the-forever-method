@@ -670,61 +670,121 @@ const Curriculum = () => {
   );
 };
 
-/* ───────────────────────── BIO ───────────────────────── */
+/* ───────────────────────── BIO / SCIENTIFIC AUTHORITY ───────────────────────── */
 const Bio = () => (
   <section className="py-20 bg-white overflow-hidden">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="flex flex-col md:flex-row items-center gap-12 lg:gap-16">
-        <div className="w-full md:w-5/12">
-          <div className="relative">
-            <div className="absolute -top-10 -left-10 w-40 h-40 bg-emerald-100 rounded-full blur-3xl opacity-50" />
-            <img
-              src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=600&h=750&fit=crop&crop=face"
-              alt="Dr. Elena Mirova"
-              className="relative rounded-3xl shadow-2xl z-10 border-4 border-white w-full object-cover"
-            />
-            <div className="absolute -bottom-4 -right-4 bg-emerald-600 text-white p-4 rounded-2xl z-20 shadow-xl">
-              <div className="text-lg font-black italic leading-tight">MSc Nutritional<br/>Biochemistry</div>
+      {/* Header */}
+      <div className="text-center mb-14">
+        <span className="text-emerald-600 font-black uppercase tracking-[0.3em] text-xs block mb-3">
+          The Science Behind The Method
+        </span>
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 tracking-tighter mb-4 uppercase italic">
+          Built on Research, Not Opinions
+        </h2>
+        <p className="text-gray-500 max-w-2xl mx-auto text-lg">
+          The Forever Method is a synthesis of peer-reviewed research in metabolic health, neuroscience, and behavioral psychology.
+        </p>
+      </div>
+
+      {/* Research Pillars */}
+      <div className="grid md:grid-cols-3 gap-6 mb-14">
+        {[
+          {
+            icon: <Activity className="w-7 h-7" />,
+            field: "Metabolic Health",
+            desc: "Insulin resistance, glucose regulation, and the hormonal mechanics of fat storage and fat burning.",
+            color: "bg-blue-500",
+          },
+          {
+            icon: <Brain className="w-7 h-7" />,
+            field: "Neuroscience",
+            desc: "Dopamine-driven food addiction, reward pathway hijacking by processed foods, and how to rewire cravings.",
+            color: "bg-purple-500",
+          },
+          {
+            icon: <Heart className="w-7 h-7" />,
+            field: "Behavioral Psychology",
+            desc: "Habit formation, emotional eating triggers, and building sustainable behavior change that lasts.",
+            color: "bg-rose-500",
+          },
+        ].map((pillar, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: i * 0.1 }}
+            className="bg-gray-50 p-7 rounded-3xl border border-gray-100 text-center hover:shadow-lg transition-shadow"
+          >
+            <div className={`w-14 h-14 ${pillar.color} text-white rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-lg`}>
+              {pillar.icon}
+            </div>
+            <h3 className="text-lg font-black text-gray-900 mb-2 uppercase tracking-tight">{pillar.field}</h3>
+            <p className="text-gray-500 text-sm leading-relaxed">{pillar.desc}</p>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* How the course was built */}
+      <div className="bg-gray-50 rounded-3xl p-8 sm:p-10 border border-gray-100 mb-10">
+        <div className="flex flex-col md:flex-row items-start gap-8">
+          <div className="w-full md:w-7/12 space-y-4 text-gray-600 leading-relaxed">
+            <h3 className="text-2xl font-black text-gray-900 tracking-tight uppercase italic mb-4">
+              How This Course Was Created
+            </h3>
+            <p>
+              The Forever Method isn't the opinion of a single "guru." It's a{" "}
+              <span className="text-gray-900 font-bold">structured synthesis of clinical research</span> from the world's leading institutions in endocrinology, metabolic science, and nutritional biochemistry.
+            </p>
+            <p>
+              We decoded the "Logic of Obesity" — the complex interplay between{" "}
+              <span className="text-gray-900 font-bold">insulin resistance, dopamine-driven cravings, and metabolic adaptation</span> — and translated it into a practical, step-by-step system anyone can follow.
+            </p>
+            <p>
+              Every lesson, protocol, and recommendation in this course is grounded in published research — not trends, not fads, not marketing.
+            </p>
+          </div>
+          <div className="w-full md:w-5/12">
+            <div className="grid grid-cols-2 gap-3">
+              {[
+                { num: "120+", label: "Research Papers Referenced" },
+                { num: "3,000+", label: "Students Enrolled" },
+                { num: "63+", label: "Video Lessons" },
+                { num: "4.9/5", label: "Average Rating" },
+              ].map((s, i) => (
+                <div key={i} className="text-center p-4 bg-white rounded-2xl border border-gray-100">
+                  <div className="text-2xl font-black text-emerald-600">{s.num}</div>
+                  <div className="text-[9px] font-bold text-gray-500 uppercase tracking-widest">{s.label}</div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
-        <div className="w-full md:w-7/12">
-          <span className="text-emerald-600 font-black uppercase tracking-[0.3em] text-xs">Your Instructor</span>
-          <h2 className="text-3xl sm:text-4xl font-black text-gray-900 mt-3 mb-6 tracking-tighter leading-none uppercase italic">
-            Dr. Elena Mirova, MSc
-          </h2>
-          <div className="space-y-4 text-gray-600 leading-relaxed">
-            <p>
-              <span className="text-gray-900 font-bold">Nutritional Biochemist</span> and former university research associate specializing in metabolic health, insulin signaling, and the neuroscience of eating behavior.
-            </p>
-            <p>
-              After years of watching patients fail on traditional diets, Elena developed The Forever Method — a protocol based on{" "}
-              <span className="text-gray-900 font-bold">fixing the metabolic root cause of weight gain</span>, not treating the symptoms.
-            </p>
-            <p>
-              Her approach synthesizes research from endocrinology, neuroscience, and behavioral psychology into a practical, step-by-step system that anyone can follow.
-            </p>
-          </div>
+      </div>
 
-          <div className="grid grid-cols-3 gap-4 mt-8">
-            {[
-              { num: "3,000+", label: "Students" },
-              { num: "12+", label: "Years Research" },
-              { num: "4.9/5", label: "Avg. Rating" },
-            ].map((s, i) => (
-              <div key={i} className="text-center p-3 bg-emerald-50 rounded-xl">
-                <div className="text-xl font-black text-emerald-600">{s.num}</div>
-                <div className="text-[9px] font-bold text-gray-500 uppercase tracking-widest">{s.label}</div>
+      {/* Expert Review Badge */}
+      <div className="max-w-3xl mx-auto">
+        <div className="p-1 bg-gradient-to-r from-emerald-200 via-emerald-400 to-emerald-200 rounded-3xl">
+          <div className="bg-white rounded-[calc(1.5rem-4px)] p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-6">
+            <div className="flex-shrink-0">
+              <div className="w-16 h-16 bg-emerald-600 rounded-full flex items-center justify-center shadow-lg border-4 border-white">
+                <ShieldCheck className="w-8 h-8 text-white" />
               </div>
-            ))}
-          </div>
-
-          <div className="mt-6 p-4 bg-gray-50 rounded-2xl border border-gray-100">
-            <div className="flex items-start gap-3">
-              <BadgeCheck className="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5" />
-              <p className="text-sm text-gray-500 italic">
-                "I don't do social media or public speaking. I do research, and I teach. This course is 12 years of metabolic research distilled into something anyone can understand and apply."
+            </div>
+            <div className="flex-1 text-center sm:text-left">
+              <div className="inline-block bg-emerald-50 text-emerald-700 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest mb-2">
+                Expert Reviewed & Validated
+              </div>
+              <p className="text-gray-700 font-bold text-sm mb-1">
+                Reviewed by an MSc in Nutrition & Metabolic Health
               </p>
+              <p className="text-gray-500 text-sm leading-relaxed">
+                Specializing in sugar addiction, insulin regulation, and long-term weight management. All protocols verified for scientific accuracy and safety.
+              </p>
+            </div>
+            <div className="flex-shrink-0">
+              <BadgeCheck className="w-10 h-10 text-emerald-500" />
             </div>
           </div>
         </div>
