@@ -30,6 +30,12 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { useState, useEffect, useRef, type ReactNode } from "react";
+import {
+  upsertStudent,
+  syncProgressToCloud,
+  loadProgressFromCloud,
+  submitTask as submitTaskToCloud,
+} from "../lib/supabase";
 
 /* ═══════════════════════════════════════════════════════════════
    TYPES
@@ -395,42 +401,56 @@ const Sidebar = ({
           const prog = progress[lesson.id] ?? defaultProgress();
           const isActive = lesson.id === activeId;
           const accessible = isLessonAccessible(i, lessons, progress);
+          const locked = lesson.comingSoon || !accessible;
 
           let StatusIcon = Circle;
           let iconColor = "text-gray-300";
-          if (lesson.comingSoon) { StatusIcon = Lock; iconColor = "text-gray-200"; }
+          if (locked) { StatusIcon = Lock; iconColor = "text-gray-200"; }
           else if (prog.completed) { StatusIcon = CheckCircle2; iconColor = "text-emerald-500"; }
           else if (isActive) { iconColor = "text-emerald-600"; }
-          else if (!accessible) { StatusIcon = Lock; iconColor = "text-gray-300"; }
 
           return (
-            <button
-              key={lesson.id}
-              onClick={() => accessible && onSelect(lesson.id)}
-              disabled={!accessible}
-              className={`w-full text-left px-5 py-3 flex items-start gap-3 transition-colors ${
-                isActive ? "bg-emerald-50 border-r-2 border-emerald-600"
-                : !accessible ? "opacity-40 cursor-not-allowed"
-                : "hover:bg-gray-50 cursor-pointer"
-              }`}
-            >
-              <StatusIcon className={`w-5 h-5 flex-shrink-0 mt-0.5 ${iconColor}`} />
-              <div className="min-w-0 flex-1">
-                <div className={`text-sm font-bold truncate ${isActive ? "text-emerald-700" : "text-gray-800"}`}>
-                  {lesson.title}
-                </div>
-                <div className="flex items-center gap-2 mt-0.5">
+            <div key={lesson.id} className="relative group">
+              <button
+                onClick={() => accessible && onSelect(lesson.id)}
+                disabled={!accessible}
+                className={`w-full text-left px-5 py-3 flex items-start gap-3 transition-colors ${
+                  isActive ? "bg-emerald-50 border-r-2 border-emerald-600"
+                  : locked ? "opacity-50 cursor-not-allowed"
+                  : "hover:bg-gray-50 cursor-pointer"
+                }`}
+              >
+                <StatusIcon className={`w-5 h-5 flex-shrink-0 mt-0.5 ${iconColor}`} />
+                <div className="min-w-0 flex-1">
+                  <div className={`text-sm font-bold truncate ${isActive ? "text-emerald-700" : locked ? "text-gray-400" : "text-gray-800"}`}>
+                    {lesson.title}
+                  </div>
                   {lesson.duration && (
-                    <span className="text-[10px] text-gray-400 font-medium flex items-center gap-0.5">
+                    <span className="text-[10px] text-gray-400 font-medium flex items-center gap-0.5 mt-0.5">
                       <Clock className="w-3 h-3" /> {lesson.duration}
                     </span>
                   )}
-                  {lesson.comingSoon && (
-                    <span className="text-[9px] font-black text-amber-500 uppercase tracking-widest">Coming Soon</span>
-                  )}
                 </div>
-              </div>
-            </button>
+              </button>
+              {/* Hover tooltip for locked lessons */}
+              {locked && (
+                <div className="invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200 absolute left-full top-1/2 -translate-y-1/2 ml-2 z-50 w-56 pointer-events-none">
+                  <div className="bg-gray-900 text-white p-3 rounded-xl shadow-xl text-xs relative">
+                    <div className="absolute right-full top-1/2 -translate-y-1/2 border-8 border-transparent border-r-gray-900" />
+                    <div className="flex items-center gap-2 mb-1.5">
+                      <Lock className="w-3.5 h-3.5 text-amber-400" />
+                      <span className="font-black text-amber-400 uppercase tracking-wider text-[10px]">Locked</span>
+                    </div>
+                    <p className="text-gray-300 leading-relaxed">
+                      {lesson.comingSoon
+                        ? "This lesson is being prepared. Complete the available lessons first — we'll notify you when this unlocks!"
+                        : "Complete all steps in the previous lesson to unlock this one."
+                      }
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
           );
         })}
       </div>
@@ -497,8 +517,8 @@ const WelcomeScreen = ({ name, onStart }: { name: string; onStart: () => void })
         <div className="flex items-start gap-3">
           <AlertCircle className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" />
           <div>
-            <p className="text-sm font-bold text-amber-800 mb-1">Currently Available: Introduction + Lessons 1-2</p>
-            <p className="text-xs text-amber-600">Lessons 3-6 are coming soon — we'll notify you when they're ready!</p>
+            <p className="text-sm font-bold text-amber-800 mb-1">Start with Introduction + Lessons 1–2</p>
+            <p className="text-xs text-amber-600">New lessons unlock as you progress. Complete each lesson fully before moving on.</p>
           </div>
         </div>
       </div>
@@ -865,18 +885,41 @@ export default function Learn() {
   const [progress, setProgress] = useState<ProgressMap>(loadProgress);
   const [activeId, setActiveId] = useState(LESSONS[0].id);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [celebration, setCelebration] = useState<number | null>(null); // xp at time of celebration
+  const [celebration, setCelebration] = useState<number | null>(null);
 
-  // Save progress to localStorage whenever it changes
+  // Save progress to localStorage + sync to Supabase
   useEffect(() => {
     localStorage.setItem("fm-progress", JSON.stringify(progress));
   }, [progress]);
 
-  // Student registration
+  // Load progress from Supabase on login
+  useEffect(() => {
+    if (!student) return;
+    loadProgressFromCloud(student.email).then((cloudData) => {
+      if (!cloudData || cloudData.length === 0) return;
+      setProgress((prev) => {
+        const merged = { ...prev };
+        for (const row of cloudData) {
+          const existing = merged[row.lesson_id] ?? defaultProgress();
+          merged[row.lesson_id] = {
+            ...existing,
+            videoWatched: existing.videoWatched || row.video_watched,
+            linkVisited: existing.linkVisited || row.link_visited,
+            taskSubmitted: existing.taskSubmitted || row.task_submitted,
+            completed: existing.completed || row.completed,
+          };
+        }
+        return merged;
+      });
+    });
+  }, [student]);
+
+  // Student registration — save to localStorage + Supabase
   const handleRegister = (email: string, name: string) => {
     const s = { email, name };
     localStorage.setItem("fm-student", JSON.stringify(s));
     setStudent(s);
+    upsertStudent(email, name);
   };
 
   // Gate: require email
@@ -896,6 +939,21 @@ export default function Learn() {
       // Show celebration when lesson first completed
       if (updates.completed && !current.completed) {
         setCelebration(getXP(newMap));
+      }
+
+      // Sync to Supabase
+      syncProgressToCloud(student.email, lessonId, {
+        video_watched: updated.videoWatched,
+        link_visited: updated.linkVisited,
+        task_submitted: updated.taskSubmitted,
+        completed: updated.completed,
+      });
+
+      // If task was submitted, save the content to submissions table
+      if (updates.taskSubmitted && updates.taskContent) {
+        const lesson = LESSONS.find((l) => l.id === lessonId);
+        const taskResource = lesson?.resources.find((r) => r.type === "task");
+        submitTaskToCloud(student.email, lessonId, taskResource?.taskType ?? "text", updates.taskContent);
       }
 
       return newMap;
