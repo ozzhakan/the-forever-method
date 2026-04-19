@@ -139,173 +139,210 @@ const Navbar = () => {
   );
 };
 
-/* ───────────────────────── HERO ───────────────────────── */
-const Hero = () => {
-  const [playing, setPlaying] = useState(false);
+/* ───────────────────────── METABOLIC TIMELINE ───────────────────────── */
+const MetabolicTimeline = () => {
+  const steps = [
+    { time: "Days 1–3", text: "Insulin levels normalize, body exits 'storage mode'" },
+    { time: "Day 7", text: "Sugar & carb cravings disappear completely" },
+    { time: "Day 14", text: "Energy surges, afternoon crashes & brain fog gone" },
+    { time: "Day 30", text: "Fat burning accelerates — clothes start feeling loose" },
+    { time: "Day 90", text: "New metabolic baseline locked in — permanently" },
+  ];
 
   return (
-    <section className="pt-36 sm:pt-40 pb-16 sm:pb-24 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-emerald-50 via-white to-white overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-5xl mx-auto">
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
-            {/* Badges */}
-            <div className="flex flex-col items-center gap-3 mb-8">
-              <span className="inline-flex items-center gap-2 px-4 py-2 text-[10px] font-black tracking-[0.2em] text-emerald-700 uppercase bg-emerald-100 rounded-full border border-emerald-200">
-                <Zap className="w-3.5 h-3.5 fill-emerald-600" />
-                The #1 Metabolic Weight Loss System
-              </span>
-              <div className="flex items-center gap-2 bg-gray-900 text-white px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest">
-                <Calendar className="w-3 h-3" />
-                Pre-Launch Offer — Course Starts April 14th
-              </div>
+    <div className="max-w-2xl mx-auto mb-8 sm:mb-12">
+      <div className="bg-gray-950 rounded-2xl sm:rounded-3xl p-5 sm:p-8 border border-gray-800 shadow-2xl relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-40 h-40 bg-emerald-500/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-32 h-32 bg-emerald-600/5 rounded-full blur-3xl" />
+
+        <div className="flex items-center justify-between mb-5 sm:mb-6 relative z-10">
+          <div className="flex items-center gap-2">
+            <div className="w-6 h-6 bg-emerald-500/20 rounded-full flex items-center justify-center">
+              <Zap className="w-3.5 h-3.5 text-emerald-400" />
             </div>
+            <span className="text-[10px] sm:text-xs font-black text-emerald-400 uppercase tracking-[0.15em] sm:tracking-[0.2em]">
+              Your Transformation Timeline
+            </span>
+          </div>
+          <div className="hidden sm:flex items-center gap-1 px-2.5 py-1 bg-emerald-500/10 rounded-full">
+            <CircleDot className="w-2.5 h-2.5 text-emerald-400 animate-pulse" />
+            <span className="text-[9px] font-black text-emerald-400 uppercase tracking-widest">Science-Backed</span>
+          </div>
+        </div>
 
-            {/* Headline */}
-            <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black text-gray-900 tracking-tighter leading-[0.9] mb-6 uppercase">
-              The <span className="text-emerald-600 italic">Metabolic Switch</span> That Makes Your Body{" "}
-              <span className="relative inline-block">
-                <span className="relative z-10">Burn Fat 24/7</span>
-                <span className="absolute bottom-1 left-0 w-full h-3 bg-yellow-300/50 -z-0" />
-              </span>
-            </h1>
+        <div className="relative">
+          <div className="absolute left-[7px] top-3 bottom-3 w-px bg-gradient-to-b from-emerald-500/50 via-emerald-500/20 to-transparent" />
 
-            <p className="text-lg sm:text-xl md:text-2xl text-gray-600 mb-10 leading-snug max-w-3xl mx-auto font-medium">
-              I broke free from binge eating and sugar addiction by understanding <span className="text-gray-900 font-bold">how food, insulin, and dopamine</span> were working against me. Now I'm sharing the exact system —{" "}
-              <span className="underline decoration-emerald-300 decoration-2 underline-offset-4">no calorie counting, no cardio, no willpower needed.</span>
-            </p>
-
-            {/* VSL Placeholder */}
-            <div className="max-w-3xl mx-auto mb-12">
+          {steps.map((step, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, x: -10 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 + i * 0.12, duration: 0.4 }}
+              className="flex items-start gap-3 sm:gap-4 py-2 sm:py-3 relative"
+            >
               <div
-                onClick={() => setPlaying(true)}
-                className="relative aspect-video bg-gray-900 rounded-3xl overflow-hidden cursor-pointer group shadow-2xl shadow-gray-300 border-4 border-white"
-              >
-                <img
-                  src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1200&h=675&fit=crop"
-                  alt="Healthy food"
-                  className="w-full h-full object-cover opacity-60 group-hover:opacity-50 transition-opacity"
-                />
-                <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <motion.div
-                    animate={{ scale: [1, 1.1, 1] }}
-                    transition={{ repeat: Infinity, duration: 2 }}
-                    className="w-20 h-20 sm:w-24 sm:h-24 bg-emerald-600 rounded-full flex items-center justify-center shadow-2xl shadow-emerald-600/50 mb-4"
-                  >
-                    <PlayCircle className="w-10 h-10 sm:w-12 sm:h-12 text-white fill-white" />
-                  </motion.div>
-                  <span className="text-white font-black text-sm sm:text-lg uppercase tracking-wider">
-                    Watch: Why Diets Don't Work (3 min)
-                  </span>
-                  <span className="text-emerald-300 text-xs font-bold mt-1 uppercase tracking-widest">
-                    The science they don't teach you
-                  </span>
-                </div>
-                {/* Fake progress bar */}
-                <div className="absolute bottom-0 left-0 w-full h-1 bg-gray-800">
-                  <div className="w-0 h-full bg-emerald-500" />
-                </div>
-              </div>
-              <div className="flex items-center justify-center gap-4 mt-4 text-xs text-gray-400 font-bold">
-                <span className="flex items-center gap-1"><Eye className="w-3 h-3" /> 47,382 views</span>
-                <span>|</span>
-                <span className="flex items-center gap-1">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-3 h-3 text-yellow-400 fill-yellow-400" />
-                  ))}
-                  4.9/5
+                className={`w-[14px] h-[14px] rounded-full flex-shrink-0 mt-0.5 z-10 shadow-lg ${
+                  i === steps.length - 1
+                    ? "bg-emerald-400 shadow-emerald-400/40 ring-2 ring-emerald-400/30 ring-offset-1 ring-offset-gray-950"
+                    : "bg-emerald-500/80 shadow-emerald-500/20"
+                }`}
+              />
+              <div className="flex-1 flex flex-col sm:flex-row sm:items-center gap-0.5 sm:gap-3">
+                <span className="text-emerald-400 font-black text-[11px] sm:text-xs whitespace-nowrap min-w-[65px]">
+                  {step.time}
                 </span>
+                <span className="text-gray-300 text-xs sm:text-sm font-medium leading-snug">{step.text}</span>
               </div>
-            </div>
+            </motion.div>
+          ))}
+        </div>
 
-            {/* CTA */}
-            <div className="flex flex-col items-center gap-6 mb-14">
-              <a
-                href={PAYHIP_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full sm:w-auto px-10 py-5 sm:py-6 text-xl sm:text-2xl font-black text-white bg-emerald-600 rounded-2xl shadow-2xl shadow-emerald-300/50 hover:bg-emerald-700 hover:-translate-y-1 transition-all flex items-center justify-center gap-3 active:scale-95 uppercase"
-              >
-                RESERVE MY SPOT — ONLY $37
-                <ArrowRight className="w-6 h-6" />
-              </a>
-              <p className="text-xs text-gray-400 font-bold uppercase tracking-widest flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4" /> 30-Day Money-Back Guarantee • Secure Checkout
-              </p>
-            </div>
-
-            {/* Social Proof Strip */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 mb-12">
-              <div className="flex -space-x-3">
-                {[1, 2, 3, 4, 5].map((i) => (
-                  <img
-                    key={i}
-                    src={`https://i.pravatar.cc/100?img=${i + 10}`}
-                    className="w-10 h-10 rounded-full border-2 border-white shadow-sm"
-                    alt="Student"
-                  />
-                ))}
-                <div className="w-10 h-10 rounded-full bg-emerald-600 border-2 border-white flex items-center justify-center text-[10px] font-bold text-white">
-                  +3k
-                </div>
-              </div>
-              <div className="text-center sm:text-left">
-                <div className="flex items-center gap-1 justify-center sm:justify-start">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 text-yellow-400 fill-yellow-400" />
-                  ))}
-                  <span className="text-sm font-bold text-gray-900 ml-1">4.9</span>
-                </div>
-                <p className="text-xs text-gray-500 font-bold">3,000+ students enrolled</p>
-              </div>
-            </div>
-
-            {/* Feature Pills */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 max-w-4xl mx-auto">
-              {[
-                { label: "NO EXERCISE", sub: "Required", icon: <Activity className="w-5 h-5" />, color: "text-blue-600" },
-                { label: "EAT REAL FOOD", sub: "No Restrictions", icon: <Heart className="w-5 h-5" />, color: "text-red-500" },
-                { label: "SEE RESULTS", sub: "In 7 Days", icon: <Zap className="w-5 h-5" />, color: "text-amber-500" },
-                { label: "LIFETIME ACCESS", sub: "One Payment", icon: <Lock className="w-5 h-5" />, color: "text-purple-600" },
-              ].map((item, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.6 + i * 0.1 }}
-                  className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg transition-shadow"
-                >
-                  <div className={`${item.color} mb-2`}>{item.icon}</div>
-                  <span className="block text-xs sm:text-sm font-black tracking-tight text-gray-900 leading-none mb-0.5">
-                    {item.label}
-                  </span>
-                  <span className="block text-[9px] font-bold uppercase tracking-widest text-gray-400">{item.sub}</span>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
+        <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-gray-800/50 flex items-center justify-between relative z-10">
+          <div className="flex items-center gap-1">
+            {[...Array(5)].map((_, i) => (
+              <Star key={i} className="w-3 h-3 text-yellow-400 fill-yellow-400" />
+            ))}
+            <span className="text-xs font-bold text-gray-500 ml-1">4.9/5</span>
+          </div>
+          <span className="text-[10px] sm:text-xs text-gray-500 font-bold">Based on 3,000+ students</span>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 
+/* ───────────────────────── HERO ───────────────────────── */
+const Hero = () => (
+  <section className="pt-28 sm:pt-36 md:pt-40 pb-12 sm:pb-20 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-emerald-50 via-white to-white overflow-hidden">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="text-center max-w-5xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
+          {/* Badge */}
+          <div className="flex justify-center mb-5 sm:mb-8">
+            <span className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 text-[9px] sm:text-[10px] font-black tracking-[0.15em] sm:tracking-[0.2em] text-emerald-700 uppercase bg-emerald-100 rounded-full border border-emerald-200">
+              <BadgeCheck className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+              Backed by 3,000+ Success Stories
+            </span>
+          </div>
+
+          {/* Hormozi-style Headline */}
+          <h1 className="text-[1.7rem] leading-[1.05] sm:text-4xl md:text-5xl lg:text-7xl font-black text-gray-900 tracking-tight sm:tracking-tighter sm:leading-[0.95] mb-4 sm:mb-6 uppercase px-1">
+            How to Lose 20–40 lbs in 90 Days{" "}
+            <span className="block sm:inline mt-1 sm:mt-0">
+              by Fixing the{" "}
+              <span className="relative inline-block text-emerald-600 italic">
+                <span className="relative z-10">ONE Thing</span>
+                <span className="absolute bottom-0 sm:bottom-1 left-0 w-full h-2 sm:h-3 bg-yellow-300/50 -z-0" />
+              </span>{" "}
+              Every Diet Ignores
+            </span>
+          </h1>
+
+          {/* Sub-headline — addresses mechanism + objections */}
+          <p className="text-[15px] leading-relaxed sm:text-lg md:text-xl text-gray-600 mb-7 sm:mb-10 sm:leading-snug max-w-3xl mx-auto font-medium px-1">
+            3,000+ people used this science-backed{" "}
+            <span className="text-gray-900 font-bold">"Metabolic Switch"</span> method to lose weight permanently
+            —{" "}
+            <span className="underline decoration-emerald-300 decoration-2 underline-offset-4">
+              no calorie counting, no cardio, no willpower.
+            </span>
+          </p>
+
+          {/* Metabolic Timeline — replaces VSL */}
+          <MetabolicTimeline />
+
+          {/* CTA */}
+          <div className="flex flex-col items-center gap-4 sm:gap-6 mb-10 sm:mb-14">
+            <a
+              href={PAYHIP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full sm:w-auto px-8 sm:px-10 py-4 sm:py-5 text-lg sm:text-xl font-black text-white bg-emerald-600 rounded-2xl shadow-2xl shadow-emerald-300/50 hover:bg-emerald-700 hover:-translate-y-1 transition-all flex items-center justify-center gap-3 active:scale-95 uppercase"
+            >
+              RESERVE MY SPOT — ONLY $37
+              <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6" />
+            </a>
+            <p className="text-[10px] sm:text-xs text-gray-400 font-bold uppercase tracking-widest flex items-center gap-2">
+              <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> 30-Day Money-Back Guarantee • Secure Checkout
+            </p>
+          </div>
+
+          {/* Social Proof Strip */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-8 mb-8 sm:mb-12">
+            <div className="flex -space-x-3">
+              {[1, 2, 3, 4, 5].map((i) => (
+                <img
+                  key={i}
+                  src={`https://i.pravatar.cc/100?img=${i + 10}`}
+                  className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-white shadow-sm"
+                  alt="Student"
+                />
+              ))}
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-emerald-600 border-2 border-white flex items-center justify-center text-[9px] sm:text-[10px] font-bold text-white">
+                +3k
+              </div>
+            </div>
+            <div className="text-center sm:text-left">
+              <div className="flex items-center gap-1 justify-center sm:justify-start">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-yellow-400 fill-yellow-400" />
+                ))}
+                <span className="text-xs sm:text-sm font-bold text-gray-900 ml-1">4.9</span>
+              </div>
+              <p className="text-[10px] sm:text-xs text-gray-500 font-bold">3,000+ students enrolled</p>
+            </div>
+          </div>
+
+          {/* Feature Pills */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 md:gap-4 max-w-4xl mx-auto">
+            {[
+              { label: "NO EXERCISE", sub: "Required", icon: <Activity className="w-4 h-4 sm:w-5 sm:h-5" />, color: "text-blue-600" },
+              { label: "EAT REAL FOOD", sub: "No Restrictions", icon: <Heart className="w-4 h-4 sm:w-5 sm:h-5" />, color: "text-red-500" },
+              { label: "SEE RESULTS", sub: "In 7 Days", icon: <Zap className="w-4 h-4 sm:w-5 sm:h-5" />, color: "text-amber-500" },
+              { label: "LIFETIME ACCESS", sub: "One Payment", icon: <Lock className="w-4 h-4 sm:w-5 sm:h-5" />, color: "text-purple-600" },
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6 + i * 0.1 }}
+                className="bg-white p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg transition-shadow"
+              >
+                <div className={`${item.color} mb-1.5 sm:mb-2`}>{item.icon}</div>
+                <span className="block text-[10px] sm:text-xs font-black tracking-tight text-gray-900 leading-none mb-0.5">
+                  {item.label}
+                </span>
+                <span className="block text-[8px] sm:text-[9px] font-bold uppercase tracking-widest text-gray-400">
+                  {item.sub}
+                </span>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      </div>
+    </div>
+  </section>
+);
+
 /* ───────────────────────── PAIN / PROBLEM ───────────────────────── */
 const PainSection = () => (
-  <section className="py-20 bg-gray-950 text-white overflow-hidden relative">
+  <section className="py-12 sm:py-20 bg-gray-950 text-white overflow-hidden relative">
     <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDEwIEwgNDAgMTAgTSAxMCAwIEwgMTAgNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjAzKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCBmaWxsPSJ1cmwoI2dyaWQpIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIi8+PC9zdmc+')] opacity-50" />
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       <div className="text-center mb-14">
-        <span className="text-red-500 font-black text-xs uppercase tracking-[0.3em] block mb-4">The Uncomfortable Truth</span>
-        <h2 className="text-3xl sm:text-4xl md:text-6xl font-black tracking-tighter mb-6 uppercase">
+        <span className="text-red-500 font-black text-xs uppercase tracking-[0.3em] block mb-3 sm:mb-4">The Uncomfortable Truth</span>
+        <h2 className="text-2xl sm:text-4xl md:text-6xl font-black tracking-tighter mb-4 sm:mb-6 uppercase">
           Your Diet Is <span className="text-red-500 italic">Designed</span> To Fail
         </h2>
-        <p className="text-lg text-gray-400 max-w-2xl mx-auto">
+        <p className="text-base sm:text-lg text-gray-400 max-w-2xl mx-auto">
           It's not your fault. The $72 billion diet industry profits when you fail and come back.
         </p>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-px bg-gray-800 rounded-3xl overflow-hidden border border-gray-800 shadow-2xl">
-        <div className="bg-gray-900 p-8 sm:p-12">
+      <div className="grid md:grid-cols-2 gap-px bg-gray-800 rounded-2xl sm:rounded-3xl overflow-hidden border border-gray-800 shadow-2xl">
+        <div className="bg-gray-900 p-6 sm:p-12">
           <h3 className="text-xl font-black mb-8 text-red-500 uppercase tracking-widest flex items-center gap-3">
             <X className="w-7 h-7" />
             What You've Been Told
@@ -330,7 +367,7 @@ const PainSection = () => (
             </p>
           </div>
         </div>
-        <div className="bg-emerald-950 p-8 sm:p-12 relative">
+        <div className="bg-emerald-950 p-6 sm:p-12 relative">
           <div className="absolute top-4 right-4">
             <div className="bg-emerald-500 text-white text-[9px] font-black px-3 py-1 rounded-full animate-pulse uppercase tracking-widest">
               Science-Based
@@ -379,13 +416,13 @@ const MetabolicQuiz = () => {
 
   if (step >= questions.length) {
     return (
-      <section className="py-20 bg-emerald-600 text-white text-center">
+      <section className="py-12 sm:py-20 bg-emerald-600 text-white text-center">
         <div className="max-w-3xl mx-auto px-4">
           <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}>
-            <span className="text-emerald-200 font-black text-xs uppercase tracking-[0.3em] block mb-4">
+            <span className="text-emerald-200 font-black text-xs uppercase tracking-[0.3em] block mb-3 sm:mb-4">
               Assessment Complete
             </span>
-            <h2 className="text-3xl sm:text-4xl font-black mb-4 uppercase tracking-tighter italic">
+            <h2 className="text-2xl sm:text-4xl font-black mb-4 uppercase tracking-tighter italic">
               Your Metabolic Damage Score: {score}%
             </h2>
             <div className="w-full bg-emerald-800 h-4 rounded-full mb-6 overflow-hidden">
@@ -413,7 +450,7 @@ const MetabolicQuiz = () => {
   }
 
   return (
-    <section className="py-20 bg-emerald-50 border-y border-emerald-100">
+    <section className="py-12 sm:py-20 bg-emerald-50 border-y border-emerald-100">
       <div className="max-w-3xl mx-auto px-4 text-center">
         <span className="text-emerald-600 font-black text-xs uppercase tracking-[0.3em] mb-3 block">
           Free Metabolic Assessment
@@ -461,13 +498,13 @@ const Results = () => {
   ];
 
   return (
-    <section id="results" className="py-20 bg-white overflow-hidden">
+    <section id="results" className="py-12 sm:py-20 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-14">
           <span className="text-emerald-600 font-black uppercase tracking-[0.3em] text-xs block mb-3">
             Real People. Real Results.
           </span>
-          <h2 className="text-3xl sm:text-4xl md:text-6xl font-black text-gray-900 tracking-tighter mb-4 uppercase italic">
+          <h2 className="text-2xl sm:text-4xl md:text-6xl font-black text-gray-900 tracking-tighter mb-4 uppercase italic">
             What Happens When You Fix The Root Cause
           </h2>
           <p className="text-gray-500 max-w-2xl mx-auto text-lg">
@@ -573,11 +610,11 @@ const HowItWorks = () => {
   ];
 
   return (
-    <section id="method" className="py-20 bg-white overflow-hidden">
+    <section id="method" className="py-12 sm:py-20 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <span className="text-emerald-600 font-black uppercase tracking-[0.3em] text-xs">The 4-Step Protocol</span>
-          <h2 className="text-3xl sm:text-4xl md:text-6xl font-black text-gray-900 mt-4 mb-4 tracking-tighter uppercase italic">
+          <h2 className="text-2xl sm:text-4xl md:text-6xl font-black text-gray-900 mt-3 sm:mt-4 mb-4 tracking-tighter uppercase italic">
             How The Forever Method Works
           </h2>
           <p className="text-gray-500 max-w-2xl mx-auto text-lg">
@@ -639,7 +676,7 @@ const Curriculum = () => {
   ];
 
   return (
-    <section id="curriculum" className="py-20 bg-gray-50">
+    <section id="curriculum" className="py-12 sm:py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-14">
           <span className="text-emerald-600 font-black uppercase tracking-[0.3em] text-xs block mb-3">What's Inside</span>
@@ -682,9 +719,9 @@ const Curriculum = () => {
 
 /* ───────────────────────── BIO / KRISTINA OZ ───────────────────────── */
 const Bio = () => (
-  <section className="py-20 bg-white overflow-hidden">
+  <section className="py-12 sm:py-20 bg-white overflow-hidden">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="flex flex-col md:flex-row items-center gap-12 lg:gap-16">
+      <div className="flex flex-col md:flex-row items-center gap-8 sm:gap-12 lg:gap-16">
         {/* Photo */}
         <div className="w-full md:w-5/12">
           <div className="relative">
@@ -749,7 +786,7 @@ const Bio = () => (
 
 /* ───────────────────────── TESTIMONIALS ───────────────────────── */
 const Testimonials = () => (
-  <section id="testimonials" className="py-20 bg-gray-50">
+  <section id="testimonials" className="py-12 sm:py-20 bg-gray-50">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="text-center mb-14">
         <span className="text-emerald-600 font-black uppercase tracking-[0.3em] text-xs block mb-3">Student Stories</span>
@@ -805,9 +842,9 @@ const Testimonials = () => (
 
 /* ───────────────────────── BONUSES ───────────────────────── */
 const Bonuses = () => (
-  <section className="py-20 bg-emerald-50">
+  <section className="py-12 sm:py-20 bg-emerald-50">
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="text-center mb-12">
+      <div className="text-center mb-10 sm:mb-12">
         <span className="text-emerald-600 font-black uppercase tracking-[0.3em] text-xs block mb-3">Included Free</span>
         <h2 className="text-3xl sm:text-4xl font-black text-gray-900 tracking-tighter uppercase">
           3 Bonuses When You Reserve Today
@@ -855,10 +892,10 @@ const Bonuses = () => (
 
 /* ───────────────────────── WHAT IF YOU DO NOTHING ───────────────────────── */
 const FearSection = () => (
-  <section className="py-20 bg-gray-900 text-white">
+  <section className="py-12 sm:py-20 bg-gray-900 text-white">
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <span className="text-red-400 font-black text-xs uppercase tracking-[0.3em] block mb-4">A Moment of Honesty</span>
-      <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tighter mb-8 uppercase">
+      <span className="text-red-400 font-black text-xs uppercase tracking-[0.3em] block mb-3 sm:mb-4">A Moment of Honesty</span>
+      <h2 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tighter mb-6 sm:mb-8 uppercase">
         What Happens If You <span className="text-red-500 italic">Do Nothing?</span>
       </h2>
       <div className="grid sm:grid-cols-3 gap-6 mb-12">
@@ -894,7 +931,7 @@ const Pricing = () => {
   const [viewCount] = useState(Math.floor(Math.random() * 30) + 45);
 
   return (
-    <section id="pricing" className="py-20 bg-gray-950 text-white relative overflow-hidden">
+    <section id="pricing" className="py-12 sm:py-20 bg-gray-950 text-white relative overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-emerald-600/15 rounded-full blur-[150px]" />
         <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-emerald-800/15 rounded-full blur-[150px]" />
@@ -903,7 +940,7 @@ const Pricing = () => {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-12">
           <span className="text-emerald-400 font-black text-xs uppercase tracking-[0.3em] block mb-3">Pre-Launch Pricing</span>
-          <h2 className="text-4xl sm:text-5xl md:text-7xl font-black mb-4 tracking-tighter italic uppercase">
+          <h2 className="text-3xl sm:text-5xl md:text-7xl font-black mb-4 tracking-tighter italic uppercase">
             Reserve Your Spot
           </h2>
           <p className="text-lg text-gray-400">
@@ -915,7 +952,7 @@ const Pricing = () => {
           </div>
         </div>
 
-        <div className="bg-white rounded-3xl p-6 sm:p-10 md:p-14 text-gray-900 shadow-[0_0_80px_rgba(16,185,129,0.2)] border-4 border-emerald-500/20 relative">
+        <div className="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-10 md:p-14 text-gray-900 shadow-[0_0_80px_rgba(16,185,129,0.2)] border-2 sm:border-4 border-emerald-500/20 relative">
           {/* Value Stack */}
           <div className="mb-10">
             <div className="flex items-center gap-4 mb-6">
@@ -963,9 +1000,9 @@ const Pricing = () => {
                   Course launches April 14th — Instant access to community
                 </span>
               </div>
-              <div className="flex items-center justify-center gap-4 sm:gap-6">
-                <span className="text-3xl sm:text-4xl text-gray-300 line-through font-black">$2,085</span>
-                <span className="text-7xl sm:text-8xl font-black text-emerald-600 tracking-tighter">$37</span>
+              <div className="flex items-center justify-center gap-3 sm:gap-6">
+                <span className="text-2xl sm:text-4xl text-gray-300 line-through font-black">$2,085</span>
+                <span className="text-6xl sm:text-8xl font-black text-emerald-600 tracking-tighter">$37</span>
               </div>
               <p className="text-gray-500 mt-4 text-xs font-bold uppercase tracking-widest">
                 One-time payment • Lifetime access • 30-day guarantee
@@ -1067,10 +1104,10 @@ const FAQ = () => {
   ];
 
   return (
-    <section className="py-20 bg-white">
+    <section className="py-12 sm:py-20 bg-white">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-black text-gray-900 tracking-tighter uppercase">
+        <div className="text-center mb-8 sm:mb-12">
+          <h2 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tighter uppercase">
             Frequently Asked Questions
           </h2>
         </div>
@@ -1107,9 +1144,9 @@ const FAQ = () => {
 
 /* ───────────────────────── FINAL CTA / PS ───────────────────────── */
 const FinalCTA = () => (
-  <section className="py-20 bg-emerald-600 text-white">
+  <section className="py-12 sm:py-20 bg-emerald-600 text-white">
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tighter mb-6 uppercase italic">
+      <h2 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tighter mb-4 sm:mb-6 uppercase italic">
         Your Metabolism Won't Fix Itself
       </h2>
       <p className="text-xl text-emerald-100 mb-4 max-w-2xl mx-auto">
@@ -1135,9 +1172,9 @@ const FinalCTA = () => (
 );
 
 const PS = () => (
-  <section className="py-16 bg-white border-t border-gray-100">
+  <section className="py-10 sm:py-16 bg-white border-t border-gray-100">
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="bg-gray-50 p-8 rounded-3xl border border-gray-100">
+      <div className="bg-gray-50 p-5 sm:p-8 rounded-2xl sm:rounded-3xl border border-gray-100">
         <h3 className="text-lg font-black text-gray-900 mb-4">P.S. — If you scrolled straight to the bottom:</h3>
         <p className="text-gray-600 leading-relaxed mb-4 text-sm">
           Here's the short version: The Forever Method is a science-based mini-course that teaches you why diets fail (hint: it's your hormones, not your willpower) and how to fix it permanently. It launches April 14th.
@@ -1283,7 +1320,7 @@ const ExitIntentPopup = () => {
 /* ───────────────────────── APP ───────────────────────── */
 export default function Landing() {
   return (
-    <div className="min-h-screen bg-white font-sans selection:bg-emerald-100 selection:text-emerald-900">
+    <div className="min-h-screen bg-white font-sans selection:bg-emerald-100 selection:text-emerald-900 pb-16 sm:pb-0">
       <Navbar />
       <main>
         <Hero />
