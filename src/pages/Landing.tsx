@@ -1270,16 +1270,93 @@ const LiveNotifications = () => {
 const ExitIntentPopup = () => {
   const [show, setShow] = useState(false);
   const triggered = useRef(false);
+  const loadTime = useRef(Date.now());
+  const maxScroll = useRef(0);
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
-    const handler = (e: MouseEvent) => {
-      if (e.clientY < 10 && !triggered.current) {
-        triggered.current = true;
-        setShow(true);
+    // Already shown this session? Don't set up listeners at all.
+    if (sessionStorage.getItem("exit_popup_shown")) {
+      triggered.current = true;
+      return;
+    }
+
+    const MIN_TIME_MS = 30_000; // 30 seconds minimum on page
+    const MIN_SCROLL_PCT = 25; // Must have scrolled 25% of page
+
+    const isReady = () => {
+      const elapsed = Date.now() - loadTime.current;
+      return elapsed >= MIN_TIME_MS && maxScroll.current >= MIN_SCROLL_PCT;
+    };
+
+    const fire = () => {
+      if (triggered.current) return;
+      triggered.current = true;
+      sessionStorage.setItem("exit_popup_shown", "1");
+      setShow(true);
+    };
+
+    // Track max scroll depth
+    const scrollTracker = () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (docHeight > 0) {
+        const pct = (scrollTop / docHeight) * 100;
+        if (pct > maxScroll.current) maxScroll.current = pct;
+      }
+      lastScrollY.current = scrollTop;
+    };
+
+    // Desktop: mouse leaves viewport from top
+    const mouseHandler = (e: MouseEvent) => {
+      if (e.clientY < 10 && isReady()) fire();
+    };
+
+    // Mobile: rapid scroll-up (user pulling up to leave)
+    let mobileScrollTimer: ReturnType<typeof setTimeout> | null = null;
+    const mobileScrollHandler = () => {
+      scrollTracker();
+      // Only on touch devices
+      if (!("ontouchstart" in window)) return;
+      if (!isReady()) return;
+
+      const scrollY = window.scrollY;
+      // User scrolled up fast (>300px jump) while near the top of the page
+      if (lastScrollY.current - scrollY > 300 && scrollY < 200) {
+        if (mobileScrollTimer) clearTimeout(mobileScrollTimer);
+        mobileScrollTimer = setTimeout(() => fire(), 500);
       }
     };
-    document.addEventListener("mouseleave", handler);
-    return () => document.removeEventListener("mouseleave", handler);
+
+    // Mobile fallback: idle timer (60s on page + 25% scroll + no interaction for 15s)
+    let idleTimer: ReturnType<typeof setTimeout> | null = null;
+    const IDLE_DELAY = 15_000;
+    const IDLE_MIN_TIME = 60_000;
+
+    const resetIdle = () => {
+      if (idleTimer) clearTimeout(idleTimer);
+      if (!("ontouchstart" in window)) return;
+      const elapsed = Date.now() - loadTime.current;
+      if (elapsed >= IDLE_MIN_TIME && maxScroll.current >= MIN_SCROLL_PCT && !triggered.current) {
+        idleTimer = setTimeout(() => fire(), IDLE_DELAY);
+      }
+    };
+
+    window.addEventListener("scroll", scrollTracker, { passive: true });
+    window.addEventListener("scroll", mobileScrollHandler, { passive: true });
+    document.addEventListener("mouseleave", mouseHandler);
+    window.addEventListener("touchstart", resetIdle, { passive: true });
+    window.addEventListener("touchend", resetIdle, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", scrollTracker);
+      window.removeEventListener("scroll", mobileScrollHandler);
+      document.removeEventListener("mouseleave", mouseHandler);
+      window.removeEventListener("touchstart", resetIdle);
+      window.removeEventListener("touchend", resetIdle);
+      if (mobileScrollTimer) clearTimeout(mobileScrollTimer);
+      if (idleTimer) clearTimeout(idleTimer);
+    };
   }, []);
 
   if (!show) return null;
@@ -1290,28 +1367,28 @@ const ExitIntentPopup = () => {
       <motion.div
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        className="relative bg-white rounded-3xl p-8 sm:p-10 max-w-lg w-full shadow-2xl text-center z-10"
+        className="relative bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-10 max-w-lg w-full shadow-2xl text-center z-10"
       >
-        <button onClick={() => setShow(false)} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
-          <X className="w-6 h-6" />
+        <button onClick={() => setShow(false)} className="absolute top-3 right-3 sm:top-4 sm:right-4 text-gray-400 hover:text-gray-600">
+          <X className="w-5 h-5 sm:w-6 sm:h-6" />
         </button>
-        <div className="text-5xl mb-4">&#x1F6D1;</div>
-        <h3 className="text-2xl sm:text-3xl font-black text-gray-900 mb-3 tracking-tighter uppercase">
+        <div className="text-4xl sm:text-5xl mb-3 sm:mb-4">&#x1F6D1;</div>
+        <h3 className="text-xl sm:text-3xl font-black text-gray-900 mb-2 sm:mb-3 tracking-tighter uppercase">
           Wait — Don't Leave Yet!
         </h3>
-        <p className="text-gray-600 mb-6">
-          The pre-launch price of <span className="font-bold text-gray-900">$37</span> won't last. After April 14th, the price goes up to $97. Reserve now and lock in your discount.
+        <p className="text-sm sm:text-base text-gray-600 mb-5 sm:mb-6">
+          The pre-launch price of <span className="font-bold text-gray-900">$37</span> won't last. Lock in your discount now before it goes up to $97.
         </p>
         <a
           href={PAYHIP_URL}
           target="_blank"
           rel="noopener noreferrer"
           onClick={() => setShow(false)}
-          className="block w-full py-4 text-lg font-black text-white bg-emerald-600 rounded-2xl hover:bg-emerald-700 transition-all mb-4"
+          className="block w-full py-3.5 sm:py-4 text-base sm:text-lg font-black text-white bg-emerald-600 rounded-2xl hover:bg-emerald-700 transition-all mb-3 sm:mb-4"
         >
           RESERVE FOR $37
         </a>
-        <p className="text-xs text-gray-400">30-day money-back guarantee. Zero risk.</p>
+        <p className="text-[10px] sm:text-xs text-gray-400">30-day money-back guarantee. Zero risk.</p>
       </motion.div>
     </div>
   );
