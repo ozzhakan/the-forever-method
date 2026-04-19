@@ -229,14 +229,14 @@ const Hero = () => (
 
           {/* Hormozi-style Headline */}
           <h1 className="text-[1.7rem] leading-[1.05] sm:text-4xl md:text-5xl lg:text-7xl font-black text-gray-900 tracking-tight sm:tracking-tighter sm:leading-[0.95] mb-4 sm:mb-6 uppercase px-1">
-            How to Lose 20–40 lbs in 90 Days{" "}
+            Stop Dieting.{" "}
+            <span className="text-emerald-600 italic">Fix Your Metabolism.</span>{" "}
             <span className="block sm:inline mt-1 sm:mt-0">
-              by Fixing the{" "}
-              <span className="relative inline-block text-emerald-600 italic">
-                <span className="relative z-10">ONE Thing</span>
+              Lose Weight{" "}
+              <span className="relative inline-block">
+                <span className="relative z-10">Forever.</span>
                 <span className="absolute bottom-0 sm:bottom-1 left-0 w-full h-2 sm:h-3 bg-yellow-300/50 -z-0" />
-              </span>{" "}
-              Every Diet Ignores
+              </span>
             </span>
           </h1>
 
@@ -866,10 +866,10 @@ const Bonuses = () => (
             icon: <CheckCircle2 className="w-6 h-6" />,
           },
           {
-            title: "Private Community Access",
-            value: "$497",
-            desc: "Join our private Telegram group with 3,000+ members. Get support, accountability, and answers from the team.",
-            icon: <Send className="w-6 h-6" />,
+            title: "The Craving Killer Cheat Sheet",
+            value: "$97",
+            desc: "A printable one-page guide with 12 instant craving-killing techniques backed by neuroscience. Pin it on your fridge.",
+            icon: <Target className="w-6 h-6" />,
           },
         ].map((b, i) => (
           <div key={i} className="bg-white p-6 rounded-2xl border border-emerald-100 flex gap-5 items-start shadow-sm hover:shadow-md transition-shadow">
@@ -890,38 +890,121 @@ const Bonuses = () => (
   </section>
 );
 
-/* ───────────────────────── WHAT IF YOU DO NOTHING ───────────────────────── */
+/* ───────────────────────── TWO LIVES — EMOTIONAL PAIN ───────────────────────── */
 const FearSection = () => (
-  <section className="py-12 sm:py-20 bg-gray-900 text-white">
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <span className="text-red-400 font-black text-xs uppercase tracking-[0.3em] block mb-3 sm:mb-4">A Moment of Honesty</span>
-      <h2 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tighter mb-6 sm:mb-8 uppercase">
-        What Happens If You <span className="text-red-500 italic">Do Nothing?</span>
-      </h2>
-      <div className="grid sm:grid-cols-3 gap-6 mb-12">
-        {[
-          { icon: <TrendingDown className="w-8 h-8" />, text: "Your metabolism slows another 2–5% each year" },
-          { icon: <RefreshCcw className="w-8 h-8" />, text: "You try another diet, lose 10 lbs, gain 15 back" },
-          { icon: <Clock className="w-8 h-8" />, text: "Another year passes with the same frustration" },
-        ].map((item, i) => (
-          <div key={i} className="p-6 bg-gray-800 rounded-2xl border border-gray-700">
-            <div className="text-red-400 mb-4 flex justify-center">{item.icon}</div>
-            <p className="text-gray-300 font-medium text-sm">{item.text}</p>
-          </div>
-        ))}
+  <section className="py-12 sm:py-20 bg-gray-950 text-white overflow-hidden">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="text-center mb-10 sm:mb-14">
+        <span className="text-red-400 font-black text-xs uppercase tracking-[0.3em] block mb-3 sm:mb-4">
+          A Moment of Honesty
+        </span>
+        <h2 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tighter mb-4 uppercase">
+          Two Versions of Your <span className="text-red-500 italic">Future</span>
+        </h2>
+        <p className="text-gray-500 max-w-2xl mx-auto text-sm sm:text-base">
+          One year from now, you'll be living one of these two lives. Which one will it be?
+        </p>
       </div>
-      <p className="text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
-        Or you can spend <span className="text-white font-bold">$37</span> today, understand the actual science, and{" "}
-        <span className="text-emerald-400 font-bold">never diet again</span>.
-      </p>
-      <a
-        href={PAYHIP_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-flex items-center gap-3 px-10 py-5 bg-emerald-600 text-white font-black text-lg rounded-2xl shadow-2xl shadow-emerald-600/30 hover:bg-emerald-700 transition-all uppercase"
-      >
-        Reserve My Spot Now <ArrowRight className="w-5 h-5" />
-      </a>
+
+      <div className="grid md:grid-cols-2 gap-4 sm:gap-6 mb-10 sm:mb-14">
+        {/* PATH 1: Do Nothing */}
+        <div className="bg-gradient-to-br from-red-950/80 to-gray-900 rounded-2xl sm:rounded-3xl p-5 sm:p-8 border border-red-900/30 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-red-500/5 rounded-full blur-3xl" />
+          <div className="flex items-center gap-2.5 mb-6 sm:mb-8">
+            <div className="w-8 h-8 bg-red-500/20 rounded-full flex items-center justify-center">
+              <X className="w-4 h-4 text-red-400" />
+            </div>
+            <span className="text-xs sm:text-sm font-black text-red-400 uppercase tracking-widest">
+              If You Do Nothing
+            </span>
+          </div>
+          <div className="space-y-4 sm:space-y-5">
+            {[
+              { icon: <Eye className="w-4 h-4" />, text: "Avoiding mirrors, skipping photos, hiding from the camera" },
+              { icon: <Heart className="w-4 h-4" />, text: "Feeling uncomfortable in your own body every single day" },
+              { icon: <Lock className="w-4 h-4" />, text: "Clothes you love collecting dust because they don't fit anymore" },
+              { icon: <Brain className="w-4 h-4" />, text: "Constant brain fog, afternoon crashes, zero energy for life" },
+              { icon: <TrendingDown className="w-4 h-4" />, text: "Confidence shrinking with every failed diet attempt" },
+              { icon: <AlertTriangle className="w-4 h-4" />, text: "Doctor visits getting more serious — blood sugar, cholesterol, fatigue" },
+              { icon: <RefreshCcw className="w-4 h-4" />, text: "Starting over every Monday, stuck in the same cycle for years" },
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, x: -10 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.06 }}
+                className="flex items-start gap-3"
+              >
+                <div className="text-red-500/60 mt-0.5 flex-shrink-0">{item.icon}</div>
+                <p className="text-gray-400 text-xs sm:text-sm leading-relaxed">{item.text}</p>
+              </motion.div>
+            ))}
+          </div>
+          <div className="mt-6 sm:mt-8 p-3 sm:p-4 bg-red-500/10 rounded-xl border border-red-500/20">
+            <p className="text-red-400 text-xs sm:text-sm font-bold text-center">
+              This is the cost of waiting. Not dollars — <span className="text-red-300">years of your life.</span>
+            </p>
+          </div>
+        </div>
+
+        {/* PATH 2: After The Forever Method */}
+        <div className="bg-gradient-to-br from-emerald-950/80 to-gray-900 rounded-2xl sm:rounded-3xl p-5 sm:p-8 border border-emerald-900/30 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 rounded-full blur-3xl" />
+          <div className="flex items-center gap-2.5 mb-6 sm:mb-8">
+            <div className="w-8 h-8 bg-emerald-500/20 rounded-full flex items-center justify-center">
+              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+            </div>
+            <span className="text-xs sm:text-sm font-black text-emerald-400 uppercase tracking-widest">
+              After The Forever Method
+            </span>
+          </div>
+          <div className="space-y-4 sm:space-y-5">
+            {[
+              { icon: <Sparkles className="w-4 h-4" />, text: "Walking past a mirror and actually liking what you see" },
+              { icon: <Heart className="w-4 h-4" />, text: "Feeling confident, light, and comfortable in your own skin" },
+              { icon: <Star className="w-4 h-4" />, text: "Wearing whatever you want — and feeling amazing in it" },
+              { icon: <Zap className="w-4 h-4" />, text: "Waking up with energy that lasts all day, every day" },
+              { icon: <Award className="w-4 h-4" />, text: "Unshakeable confidence — at work, in relationships, everywhere" },
+              { icon: <Activity className="w-4 h-4" />, text: "Doctor visits that bring good news — normal blood sugar, healthy levels" },
+              { icon: <Flame className="w-4 h-4" />, text: "Freedom from diets forever — your body maintains the results naturally" },
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, x: 10 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.06 }}
+                className="flex items-start gap-3"
+              >
+                <div className="text-emerald-400/70 mt-0.5 flex-shrink-0">{item.icon}</div>
+                <p className="text-emerald-50 text-xs sm:text-sm leading-relaxed font-medium">{item.text}</p>
+              </motion.div>
+            ))}
+          </div>
+          <div className="mt-6 sm:mt-8 p-3 sm:p-4 bg-emerald-500/10 rounded-xl border border-emerald-500/20">
+            <p className="text-emerald-300 text-xs sm:text-sm font-bold text-center">
+              This is what's waiting for you — <span className="text-emerald-200">on the other side of $37.</span>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* CTA */}
+      <div className="text-center">
+        <p className="text-lg sm:text-xl text-gray-400 mb-6 sm:mb-8 max-w-2xl mx-auto">
+          The difference between these two futures isn't willpower. It isn't luck. It's{" "}
+          <span className="text-white font-bold">understanding how your body actually works</span>.
+        </p>
+        <a
+          href={PAYHIP_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-3 px-8 sm:px-10 py-4 sm:py-5 bg-emerald-600 text-white font-black text-base sm:text-lg rounded-2xl shadow-2xl shadow-emerald-600/30 hover:bg-emerald-700 transition-all uppercase"
+        >
+          Choose The Second Future — $37 <ArrowRight className="w-5 h-5" />
+        </a>
+      </div>
     </div>
   </section>
 );
@@ -965,7 +1048,7 @@ const Pricing = () => {
                 { name: "The Forever Method Core System (63+ lessons)", val: "$997" },
                 { name: "The 7-Day Metabolic Kickstart Guide", val: "$197" },
                 { name: "The 'Eating Out' Survival Guide", val: "$97" },
-                { name: "Private Community (Telegram Group)", val: "$497" },
+                { name: "The Craving Killer Cheat Sheet", val: "$97" },
                 { name: "Bonus: Future Course Updates (Free Forever)", val: "$297" },
               ].map((item, i) => (
                 <div key={i} className="flex justify-between items-center">
@@ -981,7 +1064,7 @@ const Pricing = () => {
                   <span className="text-[10px] font-black uppercase tracking-widest text-red-500 block">Total Value</span>
                   <span className="text-xl sm:text-2xl font-black text-gray-900">Combined Value</span>
                 </div>
-                <span className="text-3xl sm:text-4xl font-black text-red-500">$2,085</span>
+                <span className="text-3xl sm:text-4xl font-black text-red-500">$1,685</span>
               </div>
             </div>
           </div>
@@ -997,11 +1080,11 @@ const Pricing = () => {
                   Reserve Your Spot Today
                 </span>
                 <span className="text-xs text-gray-500 font-bold">
-                  Course launches April 14th — Instant access to community
+                  Course launches soon — Secure your spot at the lowest price
                 </span>
               </div>
               <div className="flex items-center justify-center gap-3 sm:gap-6">
-                <span className="text-2xl sm:text-4xl text-gray-300 line-through font-black">$2,085</span>
+                <span className="text-2xl sm:text-4xl text-gray-300 line-through font-black">$1,685</span>
                 <span className="text-6xl sm:text-8xl font-black text-emerald-600 tracking-tighter">$37</span>
               </div>
               <p className="text-gray-500 mt-4 text-xs font-bold uppercase tracking-widest">
@@ -1079,7 +1162,7 @@ const FAQ = () => {
   const faqs = [
     {
       q: "When does the course start?",
-      a: "The course officially launches on April 14th. When you reserve your spot today, you'll get immediate access to the private community and will be first in line when the course goes live.",
+      a: "The course launches soon. When you reserve your spot today at the pre-launch price, you'll be first in line for instant access when it goes live — plus you lock in the $37 price before it increases.",
     },
     {
       q: "Is this another diet plan?",
@@ -1180,7 +1263,7 @@ const PS = () => (
           Here's the short version: The Forever Method is a science-based mini-course that teaches you why diets fail (hint: it's your hormones, not your willpower) and how to fix it permanently. It launches April 14th.
         </p>
         <p className="text-gray-600 leading-relaxed mb-6 text-sm">
-          Right now you can reserve your spot for <span className="font-bold text-gray-900">$37</span> instead of the regular price. You also get immediate access to our private community. And if you don't love it, you get every penny back within 30 days.
+          Right now you can reserve your spot for <span className="font-bold text-gray-900">$37</span> instead of the regular price. And if you don't love it, you get every penny back within 30 days. Zero risk.
         </p>
         <a
           href={PAYHIP_URL}
@@ -1228,10 +1311,10 @@ const LiveNotifications = () => {
   useEffect(() => {
     const pool = [
       { name: "Michael C.", action: "just reserved a spot" },
-      { name: "Emma W.", action: "just joined the community" },
+      { name: "Emma W.", action: "just reserved a spot" },
       { name: "David R.", action: "reserved a spot 2 min ago" },
       { name: "Jessica K.", action: "just reserved a spot" },
-      { name: "John D.", action: "just joined the community" },
+      { name: "John D.", action: "reserved a spot just now" },
       { name: "Rachel M.", action: "reserved a spot 5 min ago" },
       { name: "Chris P.", action: "just reserved a spot" },
     ];
