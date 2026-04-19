@@ -1303,52 +1303,6 @@ const Footer = () => (
   </footer>
 );
 
-/* ───────────────────────── LIVE NOTIFICATIONS ───────────────────────── */
-const LiveNotifications = () => {
-  const [visible, setVisible] = useState(false);
-  const [current, setCurrent] = useState({ name: "Sarah J.", action: "just reserved a spot" });
-
-  useEffect(() => {
-    const pool = [
-      { name: "Michael C.", action: "just reserved a spot" },
-      { name: "Emma W.", action: "just reserved a spot" },
-      { name: "David R.", action: "reserved a spot 2 min ago" },
-      { name: "Jessica K.", action: "just reserved a spot" },
-      { name: "John D.", action: "reserved a spot just now" },
-      { name: "Rachel M.", action: "reserved a spot 5 min ago" },
-      { name: "Chris P.", action: "just reserved a spot" },
-    ];
-    const interval = setInterval(() => {
-      setCurrent(pool[Math.floor(Math.random() * pool.length)]);
-      setVisible(true);
-      setTimeout(() => setVisible(false), 4000);
-    }, 18000);
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-    <AnimatePresence>
-      {visible && (
-        <motion.div
-          initial={{ x: -300, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          exit={{ x: -300, opacity: 0 }}
-          className="fixed bottom-20 sm:bottom-8 left-4 z-40 bg-white p-3.5 rounded-2xl shadow-2xl border border-gray-100 flex items-center gap-3 max-w-[260px]"
-        >
-          <div className="w-9 h-9 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 flex-shrink-0">
-            <CheckCircle2 className="w-5 h-5" />
-          </div>
-          <div>
-            <div className="text-[9px] font-black text-emerald-600 uppercase tracking-widest">Verified</div>
-            <div className="text-sm font-bold text-gray-900">{current.name}</div>
-            <div className="text-[10px] text-gray-400">{current.action}</div>
-          </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
-  );
-};
-
 /* ───────────────────────── EXIT INTENT POPUP ───────────────────────── */
 const ExitIntentPopup = () => {
   const [show, setShow] = useState(false);
@@ -1498,7 +1452,6 @@ export default function Landing() {
         <FinalCTA />
         <PS />
       </main>
-      <LiveNotifications />
       <ExitIntentPopup />
       <Footer />
 
