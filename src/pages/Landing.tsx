@@ -142,11 +142,11 @@ const Navbar = () => {
 /* ───────────────────────── METABOLIC TIMELINE ───────────────────────── */
 const MetabolicTimeline = () => {
   const steps = [
-    { time: "Days 1–3", text: "Insulin levels normalize, body exits 'storage mode'" },
-    { time: "Day 7", text: "Sugar & carb cravings disappear completely" },
-    { time: "Day 14", text: "Energy surges, afternoon crashes & brain fog gone" },
-    { time: "Day 30", text: "Fat burning accelerates — clothes start feeling loose" },
-    { time: "Day 90", text: "New metabolic baseline locked in — permanently" },
+    { time: "Days 1–3", text: "Blood sugar stabilizes — your brain starts getting steady energy instead of chaotic spikes" },
+    { time: "Days 5–7", text: "Taste receptors begin to reset — real food starts tasting richer and more satisfying" },
+    { time: "Day 7–14", text: "Sugar cravings dissolve — dopamine stabilizes, food no longer controls your mood" },
+    { time: "Day 14–30", text: "Energy is steady all day, skin improves, bloating goes down, weight starts shifting" },
+    { time: "Day 30+", text: "New metabolic baseline locks in — freedom from diets, guilt, and the cycle. Permanently." },
   ];
 
   return (
@@ -379,11 +379,11 @@ const PainSection = () => (
           </h3>
           <ul className="space-y-5">
             {[
-              "Fix your insulin — fat burns automatically",
-              "Eat until full (your hormones regulate it)",
-              "Zero mandatory exercise",
-              "Cravings disappear in 7–14 days",
-              "Weight stays off because the ROOT CAUSE is fixed",
+              "Sugar addiction is neurobiological — not a character flaw",
+              "Fix protein + fat intake → cravings vanish in 7–14 days",
+              "No calorie counting, no cardio, no starvation",
+              "Taste receptors reset in 5–7 days — food tastes better",
+              "Freedom stays because the ROOT CAUSE is resolved",
             ].map((item, i) => (
               <li key={i} className="flex items-start gap-3 text-emerald-50">
                 <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
@@ -393,7 +393,7 @@ const PainSection = () => (
           </ul>
           <div className="mt-8 p-4 bg-emerald-500/10 rounded-2xl border border-emerald-500/20">
             <p className="text-emerald-300 text-sm font-bold">
-              Result: Address the biological cause. Lose weight and keep it off — permanently.
+              Result: Work with your neurobiology, not against it. Lose weight and keep it off — permanently.
             </p>
           </div>
         </div>
@@ -488,13 +488,41 @@ const MetabolicQuiz = () => {
   );
 };
 
-/* ───────────────────────── RESULTS / BEFORE-AFTER ───────────────────────── */
+/* ───────────────────────── RESULTS ───────────────────────── */
 const Results = () => {
-  const transformations = [
-    { name: "Sarah J.", age: 34, lost: "47 lbs", time: "90 days", quote: "I finally understand WHY I was overweight. It had nothing to do with willpower." },
-    { name: "Michael R.", age: 42, lost: "38 lbs", time: "60 days", quote: "My doctor took me off blood sugar medication. I haven't felt this good in 20 years." },
-    { name: "Claire T.", age: 29, lost: "32 lbs", time: "75 days", quote: "As a mom of 3, I needed something that doesn't require hours at the gym. This was it." },
-    { name: "David K.", age: 51, lost: "55 lbs", time: "120 days", quote: "I was skeptical. 4 months later, my wife says I look like I did when we married." },
+  const reviews = [
+    {
+      name: "Sarah J.",
+      age: 34,
+      result: "Lost 23 lbs, no more bloating",
+      time: "60 days",
+      quote: "The cravings stopped on Day 9. I literally cried. I'd been trying to quit sugar for 4 years and couldn't last a week. Now I don't even think about it.",
+      highlight: "Sugar cravings: gone",
+    },
+    {
+      name: "Elena V.",
+      age: 37,
+      result: "Hormones balanced, skin glowing",
+      time: "90 days",
+      quote: "My periods are regular for the first time in 6 years. My skin cleared up. I have energy that lasts all day. I feel like I got an entirely different body.",
+      highlight: "Energy all day, every day",
+    },
+    {
+      name: "Claire T.",
+      age: 29,
+      result: "Lost 18 lbs as a mom of 3",
+      time: "75 days",
+      quote: "I needed something that didn't require the gym or meal prepping for hours. This was it. My bloating is gone, I wear clothes I haven't touched in years.",
+      highlight: "Fits in real life",
+    },
+    {
+      name: "Michael R.",
+      age: 42,
+      result: "Reversed pre-diabetes",
+      time: "4 months",
+      quote: "My doctor took me off blood sugar medication. I haven't felt this good in 20 years. The science in this course should be taught in schools.",
+      highlight: "Doctor confirmed results",
+    },
   ];
 
   return (
@@ -508,7 +536,7 @@ const Results = () => {
             What Happens When You Fix The Root Cause
           </h2>
           <p className="text-gray-500 max-w-2xl mx-auto text-lg">
-            These students didn't just "go on a diet." They reprogrammed their metabolism.
+            These students didn't "go on a diet." They fixed the actual problem.
           </p>
         </div>
 
@@ -516,7 +544,7 @@ const Results = () => {
         <div className="grid grid-cols-3 gap-4 max-w-3xl mx-auto mb-14">
           {[
             { num: "3,000+", label: "Students Enrolled" },
-            { num: "37 lbs", label: "Avg. Weight Lost" },
+            { num: "7–14 days", label: "Cravings Gone" },
             { num: "94%", label: "Keep It Off 1yr+" },
           ].map((s, i) => (
             <div key={i} className="text-center p-4 bg-emerald-50 rounded-2xl">
@@ -526,42 +554,33 @@ const Results = () => {
           ))}
         </div>
 
-        {/* Transformation Cards */}
+        {/* Review Cards — text only, no fake images */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {transformations.map((t, i) => (
+          {reviews.map((r, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className="bg-gray-50 rounded-3xl overflow-hidden border border-gray-100 hover:shadow-xl transition-shadow"
+              className="bg-gray-50 rounded-3xl p-6 border border-gray-100 hover:shadow-xl hover:border-emerald-100 transition-all flex flex-col"
             >
-              {/* Placeholder for before/after image */}
-              <div className="aspect-[4/3] bg-gradient-to-br from-gray-200 to-gray-300 relative flex items-center justify-center">
-                <div className="absolute inset-0 flex">
-                  <div className="w-1/2 bg-gray-300 flex items-center justify-center border-r-2 border-white">
-                    <span className="text-gray-500 font-black text-xs uppercase tracking-widest">Before</span>
-                  </div>
-                  <div className="w-1/2 bg-emerald-100 flex items-center justify-center">
-                    <span className="text-emerald-600 font-black text-xs uppercase tracking-widest">After</span>
-                  </div>
-                </div>
-                <div className="absolute top-3 right-3 bg-red-600 text-white text-[10px] font-black px-2.5 py-1 rounded-full">
-                  -{t.lost}
-                </div>
+              <div className="flex gap-0.5 mb-4">
+                {[...Array(5)].map((_, j) => (
+                  <Star key={j} className="w-3.5 h-3.5 text-yellow-400 fill-yellow-400" />
+                ))}
               </div>
-              <div className="p-5">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="font-black text-gray-900">{t.name}, {t.age}</span>
-                  <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest">{t.time}</span>
+              <p className="text-sm text-gray-700 italic leading-relaxed mb-5 flex-1">"{r.quote}"</p>
+              <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 border border-emerald-200 rounded-full mb-4 w-fit">
+                <CheckCircle2 className="w-3 h-3 text-emerald-600 flex-shrink-0" />
+                <span className="text-[10px] font-black text-emerald-700 uppercase tracking-wider">{r.highlight}</span>
+              </div>
+              <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+                <div>
+                  <span className="font-black text-gray-900 text-sm">{r.name}, {r.age}</span>
+                  <div className="text-[9px] font-bold text-gray-400 uppercase tracking-wider mt-0.5">{r.result}</div>
                 </div>
-                <div className="flex gap-0.5 mb-3">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-3 h-3 text-yellow-400 fill-yellow-400" />
-                  ))}
-                </div>
-                <p className="text-sm text-gray-600 italic leading-relaxed">"{t.quote}"</p>
+                <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full uppercase tracking-widest">{r.time}</span>
               </div>
             </motion.div>
           ))}
@@ -584,27 +603,27 @@ const Results = () => {
 const HowItWorks = () => {
   const steps = [
     {
-      title: "The Metabolic Audit",
-      desc: "Understand exactly why your body is stuck in fat-storage mode. Identify your insulin resistance level, leptin sensitivity, and metabolic age.",
-      icon: <Search className="w-7 h-7" />,
-      color: "bg-blue-500",
-    },
-    {
-      title: "The Insulin Reset",
-      desc: "Implement the 'Insulin-First Protocol' — lower blood sugar spikes so your body is FORCED to burn stored fat as fuel. No starvation required.",
-      icon: <Zap className="w-7 h-7" />,
-      color: "bg-emerald-500",
-    },
-    {
-      title: "Dopamine Rewiring",
-      desc: "Break the addiction to processed food by resetting your brain's reward system. Cravings vanish within 7–14 days.",
+      title: "Understand the Real Enemy",
+      desc: "Sugar is a neurobiological addiction — not a willpower problem. Your dopamine system has been hijacked by engineered food. Once you see this, everything changes.",
       icon: <Brain className="w-7 h-7" />,
       color: "bg-purple-500",
     },
     {
-      title: "The Forever Lock-In",
-      desc: "Lock in your new metabolic baseline so your body maintains the weight loss permanently — even when you travel, eat out, or indulge.",
-      icon: <RefreshCcw className="w-7 h-7" />,
+      title: "Stabilize Blood Sugar",
+      desc: "Shift your nutritional foundation to protein + healthy fats. This eliminates insulin spikes, tells your body to burn stored fat, and ends the blood sugar rollercoaster for good.",
+      icon: <Activity className="w-7 h-7" />,
+      color: "bg-blue-500",
+    },
+    {
+      title: "Let Cravings Dissolve",
+      desc: "Your taste receptors reset in 5–7 days. Your dopamine stabilizes in 7–14 days. Cravings don't vanish through willpower — they vanish because the biological trigger is gone.",
+      icon: <Zap className="w-7 h-7" />,
+      color: "bg-emerald-500",
+    },
+    {
+      title: "Lock In Freedom Forever",
+      desc: "The 80/20 system, emotional eating awareness, and flexible real-life strategies lock in your results permanently — so you can travel, celebrate, and eat at restaurants without fear.",
+      icon: <Sparkles className="w-7 h-7" />,
       color: "bg-orange-500",
     },
   ];
@@ -653,10 +672,10 @@ const HowItWorks = () => {
           <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl" />
           <h4 className="text-xl font-black text-white mb-3 uppercase italic">The End Result?</h4>
           <p className="text-emerald-400 text-2xl sm:text-4xl md:text-5xl font-black tracking-tighter uppercase">
-            A Body That Burns Fat By Default
+            Freedom From Sugar. Forever.
           </p>
           <p className="text-gray-500 mt-4 max-w-xl mx-auto">
-            No more yo-yo dieting. No more guilt. Just a body that works the way it was designed to.
+            No more yo-yo dieting. No more Monday resets. Just a body and mind working the way they were designed to.
           </p>
         </div>
       </div>
@@ -667,12 +686,42 @@ const HowItWorks = () => {
 /* ───────────────────────── CURRICULUM ───────────────────────── */
 const Curriculum = () => {
   const modules = [
-    { title: "The Metabolic Reset", description: "Why your metabolism is broken and the exact steps to fix it.", lessons: 12, icon: <Activity className="w-5 h-5" /> },
-    { title: "The Insulin Protocol", description: "The science of insulin resistance and how to reverse it with food.", lessons: 10, icon: <Zap className="w-5 h-5" /> },
-    { title: "The Hunger Hormone Hack", description: "Master Leptin and Ghrelin so you never feel 'starving' again.", lessons: 8, icon: <Brain className="w-5 h-5" /> },
-    { title: "Emotional Eating Mastery", description: "Break the psychological link between stress and snacking.", lessons: 15, icon: <Heart className="w-5 h-5" /> },
-    { title: "The Forever Lifestyle", description: "Eat out, travel, and enjoy life — without gaining weight back.", lessons: 10, icon: <Sparkles className="w-5 h-5" /> },
-    { title: "Advanced Protocols", description: "Plateau-breaking strategies and metabolic optimization.", lessons: 8, icon: <Target className="w-5 h-5" /> },
+    {
+      title: "Why Sugar Controls You",
+      description: "Sugar isn't just a food — it's a neurobiological addiction that hijacks your dopamine the same way nicotine and alcohol do. Understand why you can't 'just stop' — and why it's not your fault.",
+      tag: "The Root Cause",
+      icon: <Brain className="w-5 h-5" />,
+    },
+    {
+      title: "What Sugar Does To Your Body",
+      description: "From insulin spikes to hormonal chaos, skin glycation, bloating, and mood crashes — this lesson shows the full systemic damage of refined sugar and exactly how your body can heal.",
+      tag: "The Hidden Damage",
+      icon: <Activity className="w-5 h-5" />,
+    },
+    {
+      title: "Breaking the Biochemical Cycle",
+      description: "No detox, no '30 days of suffering.' Learn how to shift out of sugar dependency by working with your biology — so cravings dissolve in 7–14 days without white-knuckling through them.",
+      tag: "The Exit Route",
+      icon: <RefreshCcw className="w-5 h-5" />,
+    },
+    {
+      title: "Building Your Food Foundation",
+      description: "Protein and healthy fats are the antidotes to sugar — they stabilize blood sugar, satisfy your brain's dopamine system, and eliminate cravings at the biological level. Learn the exact formula.",
+      tag: "The Nutritional Base",
+      icon: <Zap className="w-5 h-5" />,
+    },
+    {
+      title: "The 80/20 Freedom Method",
+      description: "This isn't a diet — it's a system. 80% nourishing whole foods. 20% real life. Learn how to eat at restaurants, enjoy desserts, travel, and celebrate — without guilt, setbacks, or losing progress.",
+      tag: "Permanent Flexibility",
+      icon: <Sparkles className="w-5 h-5" />,
+    },
+    {
+      title: "The New You: Mind & Resilience",
+      description: "Address emotional eating, break the shame cycle, and build the inner stability that makes results permanent. This is where knowledge becomes identity — and lasting change becomes inevitable.",
+      tag: "Lifelong Freedom",
+      icon: <Heart className="w-5 h-5" />,
+    },
   ];
 
   return (
@@ -681,10 +730,10 @@ const Curriculum = () => {
         <div className="text-center mb-14">
           <span className="text-emerald-600 font-black uppercase tracking-[0.3em] text-xs block mb-3">What's Inside</span>
           <h2 className="text-3xl sm:text-4xl font-black text-gray-900 mb-3 tracking-tighter uppercase">
-            The Complete System
+            6 Lessons That Change Everything
           </h2>
           <p className="text-gray-500 max-w-2xl mx-auto">
-            63+ video lessons. Science-backed. Step-by-step.
+            Science-backed. Practical. Designed for real life — not a laboratory.
           </p>
         </div>
 
@@ -699,16 +748,13 @@ const Curriculum = () => {
                 <div className="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center">
                   {m.icon}
                 </div>
-                <div className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">
-                  Module {i + 1}
+                <div>
+                  <div className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Lesson {i + 1}</div>
+                  <div className="text-[9px] font-black text-emerald-600 uppercase tracking-widest">{m.tag}</div>
                 </div>
               </div>
               <h3 className="text-lg font-bold text-gray-900 mb-2">{m.title}</h3>
-              <p className="text-gray-500 text-sm mb-4 leading-relaxed">{m.description}</p>
-              <div className="flex items-center gap-2 text-emerald-600 font-bold text-xs uppercase tracking-widest">
-                <PlayCircle className="w-4 h-4" />
-                {m.lessons} Lessons
-              </div>
+              <p className="text-gray-500 text-sm leading-relaxed">{m.description}</p>
             </motion.div>
           ))}
         </div>
@@ -728,11 +774,11 @@ const Bio = () => (
             <div className="absolute -top-10 -left-10 w-40 h-40 bg-emerald-100 rounded-full blur-3xl opacity-50" />
             <img
               src="https://images.unsplash.com/photo-1594824476967-48c8b964ac31?w=600&h=750&fit=crop&crop=face"
-              alt="Kristina Oz"
+              alt="Kristina Oz — Nutrition Coach"
               className="relative rounded-3xl shadow-2xl z-10 border-4 border-white w-full object-cover aspect-[4/5]"
             />
             <div className="absolute -bottom-4 -right-4 bg-emerald-600 text-white p-4 rounded-2xl z-20 shadow-xl">
-              <div className="text-sm font-black italic leading-tight">From Binge Eating<br/>To Total Freedom</div>
+              <div className="text-sm font-black italic leading-tight">From Ukraine<br/>To The World</div>
             </div>
           </div>
         </div>
@@ -745,25 +791,25 @@ const Bio = () => (
           </h2>
           <div className="space-y-4 text-gray-600 leading-relaxed">
             <p>
-              For years, I was stuck in a cycle of <span className="text-gray-900 font-bold">binge eating, sugar addiction, and endless diets</span> that left me frustrated and defeated. Like so many, I thought the problem was my willpower. But the truth was far bigger.
+              I built and taught this method for years inside my private nutrition practice in <span className="text-gray-900 font-bold">Ukraine</span> — working one-on-one with hundreds of women who had tried everything and still couldn't break free from sugar addiction, emotional eating, and chronic weight struggles.
             </p>
             <p>
-              I didn't start studying nutrition to become an expert — I did it because I <span className="text-gray-900 font-bold">desperately wanted to lose weight and stop the binges</span>. What I discovered changed everything.
+              The results were consistent, profound, and repeatable. And I realized: <span className="text-gray-900 font-bold">this knowledge shouldn't stay in one country.</span> So I made a decision — it was time to bring The Forever Method to the world.
             </p>
             <p>
-              Modern food isn't designed to nourish us — it's <span className="text-gray-900 font-bold">engineered to control us</span>. Food companies have hijacked our dopamine, turning processed foods into addictive traps. Our insulin is overwhelmed by sugar-laden products, leaving us stuck in a cycle of cravings and fat storage.
+              I didn't start studying nutrition to become an expert. I did it because <span className="text-gray-900 font-bold">I was desperate.</span> Binge eating. Sugar addiction. Failed diet after failed diet — while blaming myself for lacking willpower. What I eventually discovered changed everything: it was never about willpower. It was neurobiology.
             </p>
             <p>
-              By understanding how food, insulin, dopamine and my biology were working against me, I finally broke free. The weight came off effortlessly, my cravings stopped, and my relationship with food transformed.
+              Modern food is <span className="text-gray-900 font-bold">engineered to create addiction.</span> Food companies spend billions studying how to hijack your dopamine and keep you buying. Understanding this — and knowing how to work <em>with</em> your biology instead of against it — is how you finally break free.
             </p>
           </div>
 
           {/* Credibility pillars */}
           <div className="grid grid-cols-3 gap-3 mt-8">
             {[
-              { icon: <Brain className="w-5 h-5" />, label: "Nutrition & Metabolic Health Research" },
-              { icon: <Activity className="w-5 h-5" />, label: "Insulin & Dopamine Specialist" },
-              { icon: <Users className="w-5 h-5" />, label: "3,000+ Students Helped" },
+              { icon: <Brain className="w-5 h-5" />, label: "Nutrition & Neuroscience Research" },
+              { icon: <Activity className="w-5 h-5" />, label: "Sugar & Dopamine Specialist" },
+              { icon: <Users className="w-5 h-5" />, label: "3,000+ Students Worldwide" },
             ].map((c, i) => (
               <div key={i} className="text-center p-3 bg-emerald-50 rounded-xl">
                 <div className="text-emerald-600 flex justify-center mb-1">{c.icon}</div>
@@ -775,8 +821,9 @@ const Bio = () => (
           {/* Quote */}
           <div className="mt-6 p-5 bg-gray-50 rounded-2xl border border-gray-100">
             <p className="text-sm text-gray-600 italic leading-relaxed">
-              "I created this course because I know how hopeless it can feel when nothing works. This isn't about restriction or willpower — it's about understanding how your body works and nourishing it in a way that feels natural. <span className="text-gray-900 font-bold not-italic">Change is possible, and I'm here to guide you every step of the way.</span>"
+              "My mission was never to tell you what not to eat. It was to show you that you can live differently — in a feeling of strength, self-respect, and freedom from addiction. <span className="text-gray-900 font-bold not-italic">You're not a project to be fixed. You're a person who finally has the right information.</span>"
             </p>
+            <div className="mt-3 text-xs font-black text-emerald-600 not-italic uppercase tracking-widest">— Kristina Oz</div>
           </div>
         </div>
       </div>
@@ -798,21 +845,21 @@ const Testimonials = () => (
       <div className="grid md:grid-cols-3 gap-6">
         {[
           {
-            name: "Sarah Jenkins",
-            role: "Lost 45 lbs — Kept it off 3 years",
-            text: "I tried every diet under the sun. This was the first time I understood WHY I was eating the way I was. Once you understand the insulin connection, everything clicks. I haven't 'dieted' since.",
+            name: "Anna K.",
+            role: "Lost 21 lbs — Kept it off 2 years",
+            text: "I'd tried every diet for 10 years. This was the first time someone explained WHY I kept failing — it was neurobiology, not weakness. The cravings stopped on Day 11. I haven't 'dieted' since.",
             img: 15,
           },
           {
-            name: "Michael Chen",
-            role: "Reversed pre-diabetes in 4 months",
-            text: "My doctor was shocked. My blood sugar is normal for the first time in 8 years. I have more energy than I did in my 20s. The science in this course should be taught in schools.",
+            name: "Mark T.",
+            role: "Pre-diabetes reversed in 3 months",
+            text: "My doctor was shocked. Blood sugar normal for the first time in 7 years. I have more energy than I did in my 20s. The science Kristina teaches should be in every school.",
             img: 33,
           },
           {
-            name: "Jessica Williams",
-            role: "Mother of 3 — Lost 30 lbs",
-            text: "No meal prep. No gym. No counting anything. I just learned how food actually works in my body and made simple switches. My husband started doing it too — he's down 25 lbs.",
+            name: "Lisa M.",
+            role: "Mother of 2 — Lost 26 lbs",
+            text: "No meal prep marathon. No gym. No calorie apps. I learned how food actually works in my body — and made simple shifts. My skin is clearer, my mood is stable, and I wear a size I haven't seen in 5 years.",
             img: 23,
           },
         ].map((t, i) => (
@@ -962,12 +1009,12 @@ const FearSection = () => (
           <div className="space-y-4 sm:space-y-5">
             {[
               { icon: <Sparkles className="w-4 h-4" />, text: "Walking past a mirror and actually liking what you see" },
-              { icon: <Heart className="w-4 h-4" />, text: "Feeling confident, light, and comfortable in your own skin" },
-              { icon: <Star className="w-4 h-4" />, text: "Wearing whatever you want — and feeling amazing in it" },
-              { icon: <Zap className="w-4 h-4" />, text: "Waking up with energy that lasts all day, every day" },
-              { icon: <Award className="w-4 h-4" />, text: "Unshakeable confidence — at work, in relationships, everywhere" },
-              { icon: <Activity className="w-4 h-4" />, text: "Doctor visits that bring good news — normal blood sugar, healthy levels" },
-              { icon: <Flame className="w-4 h-4" />, text: "Freedom from diets forever — your body maintains the results naturally" },
+              { icon: <Heart className="w-4 h-4" />, text: "Sugar cravings 99% gone — you choose what you eat, not your addiction" },
+              { icon: <Star className="w-4 h-4" />, text: "Wearing whatever you want — clothes that collected dust now fit beautifully" },
+              { icon: <Zap className="w-4 h-4" />, text: "All-day energy: no more afternoon crashes, brain fog, or fatigue" },
+              { icon: <Award className="w-4 h-4" />, text: "Self-confidence, self-respect, and stable mood — every single day" },
+              { icon: <Activity className="w-4 h-4" />, text: "No bloating, clearer skin, less inflammation, regular periods" },
+              { icon: <Flame className="w-4 h-4" />, text: "No food guilt, no anxiety around eating — just freedom and nourishment" },
             ].map((item, i) => (
               <motion.div
                 key={i}
@@ -1027,7 +1074,7 @@ const Pricing = () => {
             Reserve Your Spot
           </h2>
           <p className="text-lg text-gray-400">
-            Course launches <span className="text-white font-bold">April 14th</span>. Lock in the pre-launch price today.
+            Pre-launch pricing ends soon. Lock in your spot at the <span className="text-white font-bold">lowest price this will ever be</span>.
           </p>
           <div className="flex items-center justify-center gap-2 mt-4 text-yellow-400 text-sm font-bold">
             <Eye className="w-4 h-4" />
@@ -1260,7 +1307,7 @@ const PS = () => (
       <div className="bg-gray-50 p-5 sm:p-8 rounded-2xl sm:rounded-3xl border border-gray-100">
         <h3 className="text-lg font-black text-gray-900 mb-4">P.S. — If you scrolled straight to the bottom:</h3>
         <p className="text-gray-600 leading-relaxed mb-4 text-sm">
-          Here's the short version: The Forever Method is a science-based mini-course that teaches you why diets fail (hint: it's your hormones, not your willpower) and how to fix it permanently. It launches April 14th.
+          Here's the short version: The Forever Method is a 6-lesson science-based program that teaches you why sugar controls you (it's neurobiology, not willpower) and gives you the exact system to break free — permanently.
         </p>
         <p className="text-gray-600 leading-relaxed mb-6 text-sm">
           Right now you can reserve your spot for <span className="font-bold text-gray-900">$17.97</span> instead of the regular price. And if you don't love it, you get every penny back within 30 days. Zero risk.
