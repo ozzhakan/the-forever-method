@@ -763,6 +763,74 @@ const Curriculum = () => {
   );
 };
 
+/* ───────────────────────── WHAT'S INSIDE ───────────────────────── */
+const CourseInsideSection = () => {
+  const layers = [
+    {
+      label: "The biology layer",
+      text: "Why your cravings are not a willpower problem — and what is actually driving them. What sugar does inside your body at the hormonal and neurological level, and why understanding this changes the entire game.",
+    },
+    {
+      label: "The nutrition layer",
+      text: "What to eat instead, why it satisfies differently, and how cravings dissolve within days — not weeks. No restriction, no deprivation, no calorie counting. Just food that works with your body.",
+    },
+    {
+      label: "The behavior layer",
+      text: "The flexible system that makes your new way of eating permanent — not a phase. How to eat at restaurants, travel, celebrate, and live fully — without losing your progress or your mind.",
+    },
+    {
+      label: "The mindset layer",
+      text: "How emotional eating forms in the brain — and what actually replaces it. The inner shift that makes results last for years, not weeks. This is where real freedom begins.",
+    },
+  ];
+
+  return (
+    <section className="py-12 sm:py-20 bg-gray-950 text-white">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="mb-10 sm:mb-12">
+          <span className="text-emerald-400 font-black text-xs uppercase tracking-[0.3em] block mb-4">
+            What's Inside The Course
+          </span>
+          <p className="text-lg sm:text-xl text-gray-300 leading-relaxed">
+            This is not a diet. It is not a list of foods to avoid. It is a complete, structured roadmap that works on every layer of the problem —{" "}
+            <span className="text-white font-semibold">because every layer matters.</span>
+          </p>
+        </div>
+
+        {/* Layer list */}
+        <div className="rounded-2xl sm:rounded-3xl border border-gray-800 overflow-hidden divide-y divide-gray-800">
+          {layers.map((item, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, x: -12 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1, duration: 0.4 }}
+              className="flex gap-5 sm:gap-8 p-6 sm:p-8 hover:bg-gray-800/40 transition-colors"
+            >
+              <span className="text-red-500 font-black text-sm tabular-nums pt-0.5 flex-shrink-0 w-5">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <div>
+                <h3 className="text-white font-bold text-lg sm:text-xl mb-2 leading-tight">{item.label}</h3>
+                <p className="text-gray-400 text-sm sm:text-base leading-relaxed">{item.text}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Footer line */}
+        <p className="mt-8 sm:mt-10 text-gray-400 text-base sm:text-lg leading-relaxed">
+          Every part of this course is designed to give you something you can use immediately — not someday, not{" "}
+          <span className="text-gray-300 italic">"once you've finished the whole thing."</span>{" "}
+          Real understanding, real tools, real change.
+        </p>
+      </div>
+    </section>
+  );
+};
+
 /* ───────────────────────── BIO / KRISTINA OZ ───────────────────────── */
 const Bio = () => (
   <section className="py-12 sm:py-20 bg-white overflow-hidden">
@@ -1508,6 +1576,7 @@ export default function Landing() {
         <MetabolicQuiz />
         <Results />
         <HowItWorks />
+        <CourseInsideSection />
         <Bio />
         <Testimonials />
         <Bonuses />
