@@ -773,7 +773,7 @@ const Bio = () => (
           <div className="relative">
             <div className="absolute -top-10 -left-10 w-40 h-40 bg-emerald-100 rounded-full blur-3xl opacity-50" />
             <img
-              src="https://images.unsplash.com/photo-1594824476967-48c8b964ac31?w=600&h=750&fit=crop&crop=face"
+              src="/kristina.jpg"
               alt="Kristina Oz — Nutrition Coach"
               className="relative rounded-3xl shadow-2xl z-10 border-4 border-white w-full object-cover aspect-[4/5]"
             />
