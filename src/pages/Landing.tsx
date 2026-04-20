@@ -791,13 +791,20 @@ const Bio = () => (
           </h2>
           <div className="space-y-4 text-gray-600 leading-relaxed">
             <p>
-              For years I ran a private nutrition practice in <span className="text-gray-900 font-bold">Ukraine</span>, working with women who had tried every program and still couldn't make it stick. What I kept finding was the same pattern: the problem was never them — it was the information they'd been given.
+              Hi, I'm Kristina Oz, and I'm here to share the lessons I've learned from a journey I never planned to take. For years, I was stuck in a cycle of{" "}
+              <span className="text-gray-900 font-bold">binge eating, sugar addiction, and endless diets</span> that left me frustrated and defeated. Like so many, I thought the problem was my willpower. But the truth was far bigger.
             </p>
             <p>
-              I didn't come to this as a textbook expert. I came to it because I personally lived through the same cycle — binge eating, constant cravings, starting over every Monday. When I finally understood what was actually happening in my body, everything changed. And I wanted other women to have that same moment.
+              Modern food isn't designed to nourish us — it's{" "}
+              <span className="text-gray-900 font-bold">engineered to control us.</span> Food companies have hijacked our dopamine, turning processed foods into addictive traps that manipulate our biology. Our insulin, the hormone that should keep us balanced, is overwhelmed by sugar-laden, hyper-palatable products, leaving us stuck in a cycle of cravings and fat storage. The system is rigged, and I was desperate to escape.
             </p>
             <p>
-              When the results became consistent enough — across enough different women, with enough different histories — I decided it was time to <span className="text-gray-900 font-bold">bring this beyond Ukraine.</span> The Forever Method is that work, made accessible to anyone, anywhere.
+              I didn't start studying nutrition to become an expert — I did it because I{" "}
+              <span className="text-gray-900 font-bold">desperately wanted to lose weight and stop the binges.</span> What I discovered changed everything. By understanding how food, insulin, dopamine and my biology were working against me, I finally broke free. The weight came off effortlessly, my cravings stopped, and my relationship with food transformed.
+            </p>
+            <p>
+              More importantly, I realized that when you fix your diet to support your biology,{" "}
+              <span className="text-gray-900 font-bold">everything else improves.</span> Your energy stabilizes, your emotions become easier to manage, and you stop eating to numb yourself. You tune into your true needs and regain control over your choices.
             </p>
           </div>
 
@@ -818,7 +825,8 @@ const Bio = () => (
           {/* Quote */}
           <div className="mt-6 p-5 bg-gray-50 rounded-2xl border border-gray-100">
             <p className="text-sm text-gray-600 italic leading-relaxed">
-              "I created this course because I know how hopeless it feels when nothing works. This isn't about restriction — it's about finally understanding why your body does what it does. <span className="text-gray-900 font-bold not-italic">Change is possible. And it's simpler than you've been told.</span>"
+              "I'm sharing my knowledge in this course because I know how hopeless it can feel when nothing works. This has nothing to do with restriction or willpower — but with understanding how your body works and nourishing it in a way that feels natural.{" "}
+              <span className="text-gray-900 font-bold not-italic">Change is possible, and I'm here to guide you every step of the way.</span>"
             </p>
             <div className="mt-3 text-xs font-black text-emerald-600 not-italic uppercase tracking-widest">— Kristina Oz</div>
           </div>
@@ -1336,12 +1344,26 @@ const Footer = () => (
         <div className="flex gap-8 text-sm font-medium text-gray-500">
           <a href="#" className="hover:text-emerald-600 transition-colors">Terms</a>
           <a href="#" className="hover:text-emerald-600 transition-colors">Privacy</a>
-          <a href="#" className="hover:text-emerald-600 transition-colors">Support</a>
-          <a href="#" className="hover:text-emerald-600 transition-colors">Contact</a>
+          <a href="mailto:krudstina@gmail.com" className="hover:text-emerald-600 transition-colors">Contact</a>
         </div>
         <p className="text-xs text-gray-400">
           This site is not a part of Facebook or Meta. Results vary. Consult your physician.
         </p>
+      </div>
+
+      {/* Bottom bar */}
+      <div className="mt-8 pt-6 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-400">
+        <span className="flex items-center gap-1.5">
+          Made with{" "}
+          <span className="text-red-500 text-sm">♥</span>
+          {" "}in the Netherlands
+        </span>
+        <a
+          href="mailto:krudstina@gmail.com"
+          className="hover:text-emerald-600 transition-colors font-medium"
+        >
+          krudstina@gmail.com
+        </a>
       </div>
     </div>
   </footer>
