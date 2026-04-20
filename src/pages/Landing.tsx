@@ -215,113 +215,108 @@ const MetabolicTimeline = () => {
 
 /* ───────────────────────── HERO ───────────────────────── */
 const Hero = () => (
-  <section className="pt-28 sm:pt-36 md:pt-40 pb-12 sm:pb-20 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-emerald-50 via-white to-white overflow-hidden">
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="text-center max-w-5xl mx-auto">
-        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
-          {/* Badge */}
-          <div className="flex justify-center mb-5 sm:mb-8">
-            <span className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 text-[9px] sm:text-[10px] font-black tracking-[0.15em] sm:tracking-[0.2em] text-emerald-700 uppercase bg-emerald-100 rounded-full border border-emerald-200">
-              <BadgeCheck className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-              Backed by 3,000+ Success Stories
-            </span>
+  <section className="pt-24 sm:pt-32 pb-16 sm:pb-24 bg-gray-950 overflow-hidden relative">
+    {/* Subtle emerald glow behind headline */}
+    <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_40%_at_50%_0%,rgba(16,185,129,0.09),transparent)]" />
+    {/* Bottom separator */}
+    <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gray-700/60 to-transparent" />
+
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 relative z-10 text-center">
+      <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
+
+        {/* Social proof — top of the page, first thing they see */}
+        <div className="flex justify-center items-center gap-3 sm:gap-4 mb-8 sm:mb-10">
+          <div className="flex -space-x-2.5">
+            {[11, 12, 13, 14, 16].map((i) => (
+              <img
+                key={i}
+                src={`https://i.pravatar.cc/100?img=${i}`}
+                className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-gray-900 object-cover"
+                alt="Student"
+              />
+            ))}
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-emerald-600 border-2 border-gray-900 flex items-center justify-center text-[8px] sm:text-[9px] font-black text-white">
+              +3k
+            </div>
           </div>
-
-          {/* Hormozi-style Headline */}
-          <h1 className="text-[1.7rem] leading-[1.05] sm:text-4xl md:text-5xl lg:text-7xl font-black text-gray-900 tracking-tight sm:tracking-tighter sm:leading-[0.95] mb-4 sm:mb-6 uppercase px-1">
-            Stop Dieting.{" "}
-            <span className="text-emerald-600 italic">Fix Your Metabolism.</span>{" "}
-            <span className="block sm:inline mt-1 sm:mt-0">
-              Lose Weight{" "}
-              <span className="relative inline-block">
-                <span className="relative z-10">Forever.</span>
-                <span className="absolute bottom-0 sm:bottom-1 left-0 w-full h-2 sm:h-3 bg-yellow-300/50 -z-0" />
-              </span>
-            </span>
-          </h1>
-
-          {/* Sub-headline — addresses mechanism + objections */}
-          <p className="text-[15px] leading-relaxed sm:text-lg md:text-xl text-gray-600 mb-7 sm:mb-10 sm:leading-snug max-w-3xl mx-auto font-medium px-1">
-            3,000+ people used this science-backed{" "}
-            <span className="text-gray-900 font-bold">"Metabolic Switch"</span> method to lose weight permanently
-            —{" "}
-            <span className="underline decoration-emerald-300 decoration-2 underline-offset-4">
-              no calorie counting, no cardio, no willpower.
-            </span>
-          </p>
-
-          {/* Metabolic Timeline — replaces VSL */}
-          <MetabolicTimeline />
-
-          {/* CTA */}
-          <div className="flex flex-col items-center gap-4 sm:gap-6 mb-10 sm:mb-14">
-            <a
-              href={CHECKOUT_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full sm:w-auto px-8 sm:px-10 py-4 sm:py-5 text-lg sm:text-xl font-black text-white bg-emerald-600 rounded-2xl shadow-2xl shadow-emerald-300/50 hover:bg-emerald-700 hover:-translate-y-1 transition-all flex items-center justify-center gap-3 active:scale-95 uppercase"
-            >
-              RESERVE MY SPOT — ONLY $17.97
-              <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6" />
-            </a>
-            <p className="text-[10px] sm:text-xs text-gray-400 font-bold uppercase tracking-widest flex items-center gap-2">
-              <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> 30-Day Money-Back Guarantee • Secure Checkout
+          <div className="border-l border-gray-700 pl-3 sm:pl-4 text-left">
+            <div className="flex items-center gap-0.5 mb-0.5">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-yellow-400 fill-yellow-400" />
+              ))}
+              <span className="text-xs font-bold text-white ml-1">4.9</span>
+            </div>
+            <p className="text-[9px] sm:text-[10px] text-gray-500 font-bold uppercase tracking-wider">
+              3,000+ women enrolled
             </p>
           </div>
+        </div>
 
-          {/* Social Proof Strip */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-8 mb-8 sm:mb-12">
-            <div className="flex -space-x-3">
-              {[1, 2, 3, 4, 5].map((i) => (
-                <img
-                  key={i}
-                  src={`https://i.pravatar.cc/100?img=${i + 10}`}
-                  className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-white shadow-sm"
-                  alt="Student"
-                />
-              ))}
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-emerald-600 border-2 border-white flex items-center justify-center text-[9px] sm:text-[10px] font-bold text-white">
-                +3k
-              </div>
-            </div>
-            <div className="text-center sm:text-left">
-              <div className="flex items-center gap-1 justify-center sm:justify-start">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-yellow-400 fill-yellow-400" />
-                ))}
-                <span className="text-xs sm:text-sm font-bold text-gray-900 ml-1">4.9</span>
-              </div>
-              <p className="text-[10px] sm:text-xs text-gray-500 font-bold">3,000+ students enrolled</p>
-            </div>
-          </div>
+        {/* Qualifier — makes her feel immediately seen */}
+        <p className="text-emerald-400 text-[10px] sm:text-xs font-black uppercase tracking-[0.25em] mb-5 sm:mb-6">
+          For women who've tried everything — and are done starting over
+        </p>
 
-          {/* Feature Pills */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 md:gap-4 max-w-4xl mx-auto">
-            {[
-              { label: "NO EXERCISE", sub: "Required", icon: <Activity className="w-4 h-4 sm:w-5 sm:h-5" />, color: "text-blue-600" },
-              { label: "EAT REAL FOOD", sub: "No Restrictions", icon: <Heart className="w-4 h-4 sm:w-5 sm:h-5" />, color: "text-red-500" },
-              { label: "SEE RESULTS", sub: "In 7 Days", icon: <Zap className="w-4 h-4 sm:w-5 sm:h-5" />, color: "text-amber-500" },
-              { label: "LIFETIME ACCESS", sub: "One Payment", icon: <Lock className="w-4 h-4 sm:w-5 sm:h-5" />, color: "text-purple-600" },
-            ].map((item, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6 + i * 0.1 }}
-                className="bg-white p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg transition-shadow"
-              >
-                <div className={`${item.color} mb-1.5 sm:mb-2`}>{item.icon}</div>
-                <span className="block text-[10px] sm:text-xs font-black tracking-tight text-gray-900 leading-none mb-0.5">
-                  {item.label}
-                </span>
-                <span className="block text-[8px] sm:text-[9px] font-bold uppercase tracking-widest text-gray-400">
-                  {item.sub}
-                </span>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-      </div>
+        {/* Main headline — dream outcome, zero jargon */}
+        <h1 className="text-[2.1rem] leading-[1.07] sm:text-5xl md:text-6xl lg:text-[5.5rem] lg:leading-[0.95] font-black text-white tracking-tight mb-6 sm:mb-8">
+          The Weight Doesn't{" "}
+          <span className="whitespace-nowrap">Come Back</span>
+          <br />
+          <span className="text-emerald-400 italic">When You Fix The Right Thing.</span>
+        </h1>
+
+        {/* Sub — strips the objections in plain language */}
+        <p className="text-gray-400 text-[15px] sm:text-lg md:text-xl mb-9 sm:mb-11 max-w-xl mx-auto leading-relaxed">
+          No calorie counting. No cardio. No fighting yourself.
+          <br />
+          <span className="text-white font-semibold">
+            Just 6 lessons — and the weight stays off.
+          </span>
+        </p>
+
+        {/* Dream outcome cards — what her life looks like */}
+        <div className="grid grid-cols-2 gap-2 sm:gap-3 max-w-2xl mx-auto mb-9 sm:mb-11 text-left">
+          {[
+            { day: "Day 9",   text: "Walk past a bakery. Feel nothing. Finally." },
+            { day: "Day 14",  text: "Cravings stop — without fighting yourself." },
+            { day: "Day 30",  text: "The clothes you stopped wearing — fit again." },
+            { day: "Day 60+", text: "This is just how you live now." },
+          ].map((item, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.35 + i * 0.1, duration: 0.5 }}
+              className="bg-white/[0.04] border border-white/[0.08] rounded-xl px-3.5 py-3 sm:px-4 sm:py-3.5 hover:bg-white/[0.07] transition-colors"
+            >
+              <span className="block text-emerald-400 text-[9px] sm:text-[10px] font-black uppercase tracking-widest mb-1">
+                {item.day}
+              </span>
+              <span className="block text-white text-xs sm:text-sm font-medium leading-snug">
+                {item.text}
+              </span>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* CTA */}
+        <div className="flex flex-col items-center gap-3 sm:gap-4">
+          <a
+            href={CHECKOUT_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full sm:w-auto px-10 sm:px-14 py-4 sm:py-5 text-base sm:text-xl font-black text-white bg-emerald-500 hover:bg-emerald-400 rounded-2xl shadow-2xl shadow-emerald-500/25 hover:-translate-y-1 transition-all flex items-center justify-center gap-3 active:scale-95 uppercase tracking-wide"
+          >
+            Get Instant Access — $17.97
+            <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6" />
+          </a>
+          <p className="text-[10px] sm:text-xs text-gray-600 font-bold uppercase tracking-widest flex items-center gap-2">
+            <ShieldCheck className="w-3.5 h-3.5 text-gray-500" />
+            30-Day Money-Back Guarantee · No Questions Asked
+          </p>
+        </div>
+
+      </motion.div>
     </div>
   </section>
 );
