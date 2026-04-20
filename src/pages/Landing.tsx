@@ -142,11 +142,11 @@ const Navbar = () => {
 /* ───────────────────────── METABOLIC TIMELINE ───────────────────────── */
 const MetabolicTimeline = () => {
   const steps = [
-    { time: "Days 1–3", text: "Blood sugar stabilizes — your brain starts getting steady energy instead of chaotic spikes" },
-    { time: "Days 5–7", text: "Taste receptors begin to reset — real food starts tasting richer and more satisfying" },
-    { time: "Day 7–14", text: "Sugar cravings dissolve — dopamine stabilizes, food no longer controls your mood" },
-    { time: "Day 14–30", text: "Energy is steady all day, skin improves, bloating goes down, weight starts shifting" },
-    { time: "Day 30+", text: "New metabolic baseline locks in — freedom from diets, guilt, and the cycle. Permanently." },
+    { time: "Days 1–7", text: "Something shifts. You can't quite explain it yet — but it feels different." },
+    { time: "Day 7–14", text: "The craving hits — and passes. For the first time, you feel in control." },
+    { time: "Day 14–30", text: "Your clothes fit differently. Your energy is steady. People start noticing." },
+    { time: "Day 30–60", text: "Weight moves without effort. Old patterns feel foreign now." },
+    { time: "Day 60+", text: "You realize: this is just how you live now. No dieting. No counting. Just freedom." },
   ];
 
   return (
@@ -379,11 +379,11 @@ const PainSection = () => (
           </h3>
           <ul className="space-y-5">
             {[
-              "Sugar addiction is neurobiological — not a character flaw",
-              "Fix protein + fat intake → cravings vanish in 7–14 days",
-              "No calorie counting, no cardio, no starvation",
-              "Taste receptors reset in 5–7 days — food tastes better",
-              "Freedom stays because the ROOT CAUSE is resolved",
+              "Fix your metabolism — fat burns automatically",
+              "Eat until full (your hormones regulate it)",
+              "Zero mandatory exercise",
+              "Cravings disappear in 7–14 days",
+              "Weight stays off because the ROOT CAUSE is fixed",
             ].map((item, i) => (
               <li key={i} className="flex items-start gap-3 text-emerald-50">
                 <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
@@ -393,7 +393,7 @@ const PainSection = () => (
           </ul>
           <div className="mt-8 p-4 bg-emerald-500/10 rounded-2xl border border-emerald-500/20">
             <p className="text-emerald-300 text-sm font-bold">
-              Result: Work with your neurobiology, not against it. Lose weight and keep it off — permanently.
+              Result: Address the biological cause. Lose weight and keep it off — permanently.
             </p>
           </div>
         </div>
@@ -791,24 +791,21 @@ const Bio = () => (
           </h2>
           <div className="space-y-4 text-gray-600 leading-relaxed">
             <p>
-              I built and taught this method for years inside my private nutrition practice in <span className="text-gray-900 font-bold">Ukraine</span> — working one-on-one with hundreds of women who had tried everything and still couldn't break free from sugar addiction, emotional eating, and chronic weight struggles.
+              For years I ran a private nutrition practice in <span className="text-gray-900 font-bold">Ukraine</span>, working with women who had tried every program and still couldn't make it stick. What I kept finding was the same pattern: the problem was never them — it was the information they'd been given.
             </p>
             <p>
-              The results were consistent, profound, and repeatable. And I realized: <span className="text-gray-900 font-bold">this knowledge shouldn't stay in one country.</span> So I made a decision — it was time to bring The Forever Method to the world.
+              I didn't come to this as a textbook expert. I came to it because I personally lived through the same cycle — binge eating, constant cravings, starting over every Monday. When I finally understood what was actually happening in my body, everything changed. And I wanted other women to have that same moment.
             </p>
             <p>
-              I didn't start studying nutrition to become an expert. I did it because <span className="text-gray-900 font-bold">I was desperate.</span> Binge eating. Sugar addiction. Failed diet after failed diet — while blaming myself for lacking willpower. What I eventually discovered changed everything: it was never about willpower. It was neurobiology.
-            </p>
-            <p>
-              Modern food is <span className="text-gray-900 font-bold">engineered to create addiction.</span> Food companies spend billions studying how to hijack your dopamine and keep you buying. Understanding this — and knowing how to work <em>with</em> your biology instead of against it — is how you finally break free.
+              When the results became consistent enough — across enough different women, with enough different histories — I decided it was time to <span className="text-gray-900 font-bold">bring this beyond Ukraine.</span> The Forever Method is that work, made accessible to anyone, anywhere.
             </p>
           </div>
 
           {/* Credibility pillars */}
           <div className="grid grid-cols-3 gap-3 mt-8">
             {[
-              { icon: <Brain className="w-5 h-5" />, label: "Nutrition & Neuroscience Research" },
-              { icon: <Activity className="w-5 h-5" />, label: "Sugar & Dopamine Specialist" },
+              { icon: <Brain className="w-5 h-5" />, label: "Nutrition & Metabolic Health" },
+              { icon: <Activity className="w-5 h-5" />, label: "Sugar & Craving Specialist" },
               { icon: <Users className="w-5 h-5" />, label: "3,000+ Students Worldwide" },
             ].map((c, i) => (
               <div key={i} className="text-center p-3 bg-emerald-50 rounded-xl">
@@ -821,7 +818,7 @@ const Bio = () => (
           {/* Quote */}
           <div className="mt-6 p-5 bg-gray-50 rounded-2xl border border-gray-100">
             <p className="text-sm text-gray-600 italic leading-relaxed">
-              "My mission was never to tell you what not to eat. It was to show you that you can live differently — in a feeling of strength, self-respect, and freedom from addiction. <span className="text-gray-900 font-bold not-italic">You're not a project to be fixed. You're a person who finally has the right information.</span>"
+              "I created this course because I know how hopeless it feels when nothing works. This isn't about restriction — it's about finally understanding why your body does what it does. <span className="text-gray-900 font-bold not-italic">Change is possible. And it's simpler than you've been told.</span>"
             </p>
             <div className="mt-3 text-xs font-black text-emerald-600 not-italic uppercase tracking-widest">— Kristina Oz</div>
           </div>
@@ -848,7 +845,7 @@ const Testimonials = () => (
             name: "Anna K.",
             role: "Lost 21 lbs — Kept it off 2 years",
             text: "I'd tried every diet for 10 years. This was the first time someone explained WHY I kept failing — it was neurobiology, not weakness. The cravings stopped on Day 11. I haven't 'dieted' since.",
-            img: 15,
+            img: 47,
           },
           {
             name: "Mark T.",
@@ -860,7 +857,7 @@ const Testimonials = () => (
             name: "Lisa M.",
             role: "Mother of 2 — Lost 26 lbs",
             text: "No meal prep marathon. No gym. No calorie apps. I learned how food actually works in my body — and made simple shifts. My skin is clearer, my mood is stable, and I wear a size I haven't seen in 5 years.",
-            img: 23,
+            img: 54,
           },
         ].map((t, i) => (
           <div key={i} className="bg-white p-7 rounded-3xl border border-gray-100 shadow-sm hover:shadow-lg transition-shadow">
@@ -1489,7 +1486,6 @@ export default function Landing() {
         <MetabolicQuiz />
         <Results />
         <HowItWorks />
-        <Curriculum />
         <Bio />
         <Testimonials />
         <Bonuses />
