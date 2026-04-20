@@ -32,7 +32,7 @@ import {
 } from "lucide-react";
 import { useState, useRef, useEffect, type ReactNode } from "react";
 
-const PAYHIP_URL = "https://payhip.com/order?link=wl8HK&pricing_plan=PjWlkM6gGv";
+const CHECKOUT_URL = "https://www.paypal.com/ncp/payment/DQDESNZ9DVQ7G";
 
 /* ───────────────────────── URGENCY BAR ───────────────────────── */
 const UrgencyBar = () => {
@@ -96,13 +96,13 @@ const Navbar = () => {
               <a href="#method" className="text-sm font-bold text-gray-600 hover:text-emerald-600 transition-colors">The Method</a>
               <a href="#pricing" className="text-sm font-bold text-gray-600 hover:text-emerald-600 transition-colors">Reserve Spot</a>
               <a
-                href={PAYHIP_URL}
+                href={CHECKOUT_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 px-5 py-2.5 text-sm font-bold text-white bg-emerald-600 rounded-full hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-100"
               >
                 <Calendar className="w-4 h-4" />
-                Reserve Now — $37
+                Reserve Now — $17.97
               </a>
             </div>
 
@@ -123,13 +123,13 @@ const Navbar = () => {
               <a href="#results" onClick={() => setIsOpen(false)} className="block text-lg font-black text-gray-900">Results</a>
               <a href="#method" onClick={() => setIsOpen(false)} className="block text-lg font-black text-gray-900">The Method</a>
               <a
-                href={PAYHIP_URL}
+                href={CHECKOUT_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setIsOpen(false)}
                 className="block w-full text-center py-3 text-lg font-black text-white bg-emerald-600 rounded-2xl"
               >
-                Reserve My Spot — $37
+                Reserve My Spot — $17.97
               </a>
             </motion.div>
           )}
@@ -256,12 +256,12 @@ const Hero = () => (
           {/* CTA */}
           <div className="flex flex-col items-center gap-4 sm:gap-6 mb-10 sm:mb-14">
             <a
-              href={PAYHIP_URL}
+              href={CHECKOUT_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="w-full sm:w-auto px-8 sm:px-10 py-4 sm:py-5 text-lg sm:text-xl font-black text-white bg-emerald-600 rounded-2xl shadow-2xl shadow-emerald-300/50 hover:bg-emerald-700 hover:-translate-y-1 transition-all flex items-center justify-center gap-3 active:scale-95 uppercase"
             >
-              RESERVE MY SPOT — ONLY $37
+              RESERVE MY SPOT — ONLY $17.97
               <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6" />
             </a>
             <p className="text-[10px] sm:text-xs text-gray-400 font-bold uppercase tracking-widest flex items-center gap-2">
@@ -435,7 +435,7 @@ const MetabolicQuiz = () => {
               This means your body is burning up to <span className="font-black text-white">400 fewer calories per day</span> than it should — and storing the rest as fat. But it's fixable.
             </p>
             <a
-              href={PAYHIP_URL}
+              href={CHECKOUT_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-3 px-10 py-5 bg-white text-emerald-700 font-black text-lg rounded-2xl shadow-2xl hover:scale-105 transition-all uppercase"
@@ -984,7 +984,7 @@ const FearSection = () => (
           </div>
           <div className="mt-6 sm:mt-8 p-3 sm:p-4 bg-emerald-500/10 rounded-xl border border-emerald-500/20">
             <p className="text-emerald-300 text-xs sm:text-sm font-bold text-center">
-              This is what's waiting for you — <span className="text-emerald-200">on the other side of $37.</span>
+              This is what's waiting for you — <span className="text-emerald-200">on the other side of $17.97.</span>
             </p>
           </div>
         </div>
@@ -997,12 +997,12 @@ const FearSection = () => (
           <span className="text-white font-bold">understanding how your body actually works</span>.
         </p>
         <a
-          href={PAYHIP_URL}
+          href={CHECKOUT_URL}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-3 px-8 sm:px-10 py-4 sm:py-5 bg-emerald-600 text-white font-black text-base sm:text-lg rounded-2xl shadow-2xl shadow-emerald-600/30 hover:bg-emerald-700 transition-all uppercase"
         >
-          Choose The Second Future — $37 <ArrowRight className="w-5 h-5" />
+          Choose The Second Future — $17.97 <ArrowRight className="w-5 h-5" />
         </a>
       </div>
     </div>
@@ -1085,7 +1085,7 @@ const Pricing = () => {
               </div>
               <div className="flex items-center justify-center gap-3 sm:gap-6">
                 <span className="text-2xl sm:text-4xl text-gray-300 line-through font-black">$1,685</span>
-                <span className="text-6xl sm:text-8xl font-black text-emerald-600 tracking-tighter">$37</span>
+                <span className="text-5xl sm:text-7xl font-black text-emerald-600 tracking-tighter">$17.97</span>
               </div>
               <p className="text-gray-500 mt-4 text-xs font-bold uppercase tracking-widest">
                 One-time payment • Lifetime access • 30-day guarantee
@@ -1093,12 +1093,12 @@ const Pricing = () => {
             </div>
 
             <a
-              href={PAYHIP_URL}
+              href={CHECKOUT_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="w-full py-6 sm:py-7 text-xl sm:text-2xl font-black text-white bg-emerald-600 rounded-2xl shadow-2xl shadow-emerald-200 hover:bg-emerald-700 hover:scale-[1.02] active:scale-95 transition-all mb-6 flex items-center justify-center gap-3"
             >
-              RESERVE MY SPOT — $37
+              RESERVE MY SPOT — $17.97
               <ArrowRight className="w-7 h-7" />
             </a>
 
@@ -1120,10 +1120,10 @@ const Pricing = () => {
 
             {/* Payment icons placeholder */}
             <div className="flex items-center justify-center gap-3 text-gray-300 text-xs font-bold">
+              <span className="px-3 py-1.5 border border-gray-200 rounded-md font-black">PayPal</span>
               <span className="px-3 py-1.5 border border-gray-200 rounded-md">VISA</span>
               <span className="px-3 py-1.5 border border-gray-200 rounded-md">MC</span>
               <span className="px-3 py-1.5 border border-gray-200 rounded-md">AMEX</span>
-              <span className="px-3 py-1.5 border border-gray-200 rounded-md">PayPal</span>
             </div>
           </div>
 
@@ -1162,7 +1162,7 @@ const FAQ = () => {
   const faqs = [
     {
       q: "When does the course start?",
-      a: "The course launches soon. When you reserve your spot today at the pre-launch price, you'll be first in line for instant access when it goes live — plus you lock in the $37 price before it increases.",
+      a: "The course launches soon. When you reserve your spot today at the pre-launch price, you'll be first in line for instant access when it goes live — plus you lock in the $17.97 price before it increases.",
     },
     {
       q: "Is this another diet plan?",
@@ -1236,15 +1236,15 @@ const FinalCTA = () => (
         Every day you wait, your body stores more fat and your metabolism slows further.
       </p>
       <p className="text-lg text-emerald-200 mb-10 max-w-xl mx-auto">
-        For <span className="text-white font-black">$37</span>, you get the complete system that 3,000+ people have used to lose weight permanently. Plus a 30-day guarantee.
+        For <span className="text-white font-black">$17.97</span>, you get the complete system that 3,000+ people have used to lose weight permanently. Plus a 30-day guarantee.
       </p>
       <a
-        href={PAYHIP_URL}
+        href={CHECKOUT_URL}
         target="_blank"
         rel="noopener noreferrer"
         className="inline-flex items-center gap-3 px-10 py-6 bg-white text-emerald-700 font-black text-xl rounded-2xl shadow-2xl hover:scale-105 transition-all uppercase"
       >
-        RESERVE MY SPOT — $37
+        RESERVE MY SPOT — $17.97
         <ArrowRight className="w-6 h-6" />
       </a>
       <p className="mt-6 text-emerald-200 text-sm font-bold">
@@ -1263,15 +1263,15 @@ const PS = () => (
           Here's the short version: The Forever Method is a science-based mini-course that teaches you why diets fail (hint: it's your hormones, not your willpower) and how to fix it permanently. It launches April 14th.
         </p>
         <p className="text-gray-600 leading-relaxed mb-6 text-sm">
-          Right now you can reserve your spot for <span className="font-bold text-gray-900">$37</span> instead of the regular price. And if you don't love it, you get every penny back within 30 days. Zero risk.
+          Right now you can reserve your spot for <span className="font-bold text-gray-900">$17.97</span> instead of the regular price. And if you don't love it, you get every penny back within 30 days. Zero risk.
         </p>
         <a
-          href={PAYHIP_URL}
+          href={CHECKOUT_URL}
           target="_blank"
           rel="noopener noreferrer"
           className="block w-full py-4 text-center text-lg font-black text-white bg-emerald-600 rounded-2xl hover:bg-emerald-700 transition-all"
         >
-          Reserve My Spot — $37
+          Reserve My Spot — $17.97
         </a>
       </div>
     </div>
@@ -1414,16 +1414,16 @@ const ExitIntentPopup = () => {
           Wait — Don't Leave Yet!
         </h3>
         <p className="text-sm sm:text-base text-gray-600 mb-5 sm:mb-6">
-          The pre-launch price of <span className="font-bold text-gray-900">$37</span> won't last. Lock in your discount now before it goes up to $97.
+          The pre-launch price of <span className="font-bold text-gray-900">$17.97</span> won't last. Lock in your discount now before it goes up to $97.
         </p>
         <a
-          href={PAYHIP_URL}
+          href={CHECKOUT_URL}
           target="_blank"
           rel="noopener noreferrer"
           onClick={() => setShow(false)}
           className="block w-full py-3.5 sm:py-4 text-base sm:text-lg font-black text-white bg-emerald-600 rounded-2xl hover:bg-emerald-700 transition-all mb-3 sm:mb-4"
         >
-          RESERVE FOR $37
+          RESERVE FOR $17.97
         </a>
         <p className="text-[10px] sm:text-xs text-gray-400">30-day money-back guarantee. Zero risk.</p>
       </motion.div>
@@ -1458,12 +1458,12 @@ export default function Landing() {
       {/* Sticky Mobile CTA */}
       <div className="sm:hidden fixed bottom-0 left-0 right-0 p-3 bg-white/90 backdrop-blur-md border-t border-gray-100 z-[55]">
         <a
-          href={PAYHIP_URL}
+          href={CHECKOUT_URL}
           target="_blank"
           rel="noopener noreferrer"
           className="w-full py-3.5 bg-emerald-600 text-white font-black text-base rounded-2xl flex items-center justify-center gap-2 shadow-xl shadow-emerald-100 active:scale-95 transition-transform"
         >
-          RESERVE MY SPOT — $37
+          RESERVE MY SPOT — $17.97
           <ArrowRight className="w-5 h-5" />
         </a>
       </div>
