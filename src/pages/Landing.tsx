@@ -268,111 +268,51 @@ const Hero = () => (
 /* ───────────────────────── PAIN / PROBLEM ───────────────────────── */
 const PainSection = () => {
   const chapters = [
-    {
-      title: "The Mirror",
-      hook: "There's a dress — or a top, or a swimsuit — hanging in your wardrobe that you keep telling yourself you'll fit back into when you sort it out.",
-      body: "You avoid full-length mirrors. You've stopped wearing the jeans that used to make you feel like yourself. It's been there two years. Three years. You stopped counting.",
-    },
-    {
-      title: "The Photos",
-      hook: "You smile through events and then look at the pictures afterward and feel like a stranger in your own body.",
-      body: "Someone takes a photo and you feel your stomach drop. You ask to see it before they post it. You untag yourself. You look tired. You look older than you feel inside. And sugar is part of why.",
-    },
-    {
-      title: "The Skin",
-      hook: "No serum can outrun a daily sugar habit.",
-      body: "You've noticed it. The dullness. The breakouts that shouldn't still be happening at your age. The puffiness in the morning. You spend money on skincare that barely keeps up — not knowing that what you're eating is quietly undoing everything you put on your face. Sugar inflames. Sugar ages.",
-    },
-    {
-      title: "The Self-Trust",
-      hook: "That quiet voice that says \"you'll probably fail this time too\" — you've started agreeing with it.",
-      body: "This one is the hardest. Every time you promised yourself you'd stop and didn't — a small part of you started to believe you couldn't. That you were the problem. You've started making promises to yourself you don't believe you'll keep.",
-    },
+    { title: "The Mirror",     line: "A dress you keep telling yourself you'll fit back into — someday." },
+    { title: "The Photos",     line: "You look at photos and feel like a stranger in your own body." },
+    { title: "The Skin",       line: "No serum can outrun a daily sugar habit." },
+    { title: "The Self-Trust", line: "\"You'll probably fail this time too.\" — and you've started agreeing." },
   ];
 
   return (
-    <section className="py-20 sm:py-32 bg-white relative overflow-hidden">
+    <section className="py-28 sm:py-40 bg-white relative overflow-hidden">
       {/* Subtle background accent */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-emerald-50/40 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="max-w-2xl mx-auto px-4 sm:px-6 relative z-10">
+      <div className="max-w-xl mx-auto px-4 sm:px-6 relative z-10">
 
-        {/* Section eyebrow */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="flex items-center justify-center gap-3 mb-8 sm:mb-10"
-        >
-          <div className="h-px w-8 bg-emerald-500" />
-          <span className="text-[10px] sm:text-[11px] font-black text-emerald-700 tracking-[0.25em] uppercase">
-            The Part No One Talks About
-          </span>
-          <div className="h-px w-8 bg-emerald-500" />
-        </motion.div>
-
-        {/* Pull quote */}
+        {/* Headline quote */}
         <motion.blockquote
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mb-14 sm:mb-20 text-center"
+          className="mb-24 sm:mb-32 text-center"
         >
-          <p className="text-2xl sm:text-3xl md:text-[2.25rem] font-black text-gray-900 leading-[1.2] tracking-tight">
+          <p className="text-3xl sm:text-5xl md:text-6xl font-black text-gray-900 leading-[1.05] tracking-tight">
             You're not lazy.<br />
             You're not broken.<br />
-            <span className="text-emerald-600">You're fighting a system</span><br className="hidden sm:block" />
-            <span className="sm:hidden"> </span>built to make you fail.
+            <span className="text-emerald-600">You're fighting a system.</span>
           </p>
         </motion.blockquote>
 
-        {/* Intro */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mb-16 sm:mb-24"
-        >
-          <p className="text-gray-600 text-base sm:text-lg leading-relaxed mb-5">
-            You wake up and the first thing you think about is what you shouldn't eat today. You've told yourself it starts Monday, it starts after the weekend, it starts after this last one.
-          </p>
-          <p className="text-gray-900 text-base sm:text-lg font-semibold leading-relaxed">
-            But here's what no one talks about — the part that actually hurts.
-          </p>
-        </motion.div>
-
-        {/* Pain chapters — editorial style */}
-        <div className="space-y-20 sm:space-y-28">
+        {/* Pain chapters — poem-style */}
+        <div className="space-y-24 sm:space-y-32">
           {chapters.map((chapter, i) => (
-            <motion.article
+            <motion.div
               key={i}
-              initial={{ opacity: 0, y: 24 }}
+              initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.6, delay: 0.05 }}
-              className="relative"
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.6 }}
+              className="text-center"
             >
-              {/* Number + label row */}
-              <div className="flex items-baseline gap-4 mb-6 sm:mb-8">
-                <span className="text-[11px] font-black text-emerald-600 tabular-nums tracking-[0.2em]">
-                  0{i + 1}
-                </span>
-                <div className="h-px bg-gray-200 flex-1" />
-                <span className="text-[10px] sm:text-[11px] font-black tracking-[0.25em] text-gray-500 uppercase whitespace-nowrap">
-                  {chapter.title}
-                </span>
+              <div className="text-[10px] sm:text-[11px] font-black tracking-[0.35em] text-emerald-600 uppercase mb-5 sm:mb-6">
+                0{i + 1} &nbsp;·&nbsp; {chapter.title}
               </div>
-
-              {/* Large editorial hook */}
-              <p className="text-[1.35rem] leading-[1.3] sm:text-[1.75rem] sm:leading-[1.25] md:text-[2rem] md:leading-[1.2] font-black text-gray-900 tracking-tight mb-6 sm:mb-7">
-                {chapter.hook}
+              <p className="text-xl sm:text-2xl md:text-[1.75rem] leading-[1.3] font-bold text-gray-900 tracking-tight max-w-md mx-auto">
+                {chapter.line}
               </p>
-
-              {/* Supporting body — muted, smaller */}
-              <p className="text-gray-500 text-[0.95rem] sm:text-base leading-relaxed max-w-xl">
-                {chapter.body}
-              </p>
-            </motion.article>
+            </motion.div>
           ))}
         </div>
 
@@ -381,16 +321,11 @@ const PainSection = () => {
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mt-20 sm:mt-28 text-center"
+          className="mt-28 sm:mt-40 text-center"
         >
-          <div className="inline-flex items-center gap-3 mb-5">
-            <div className="h-px w-10 bg-gray-300" />
-            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-            <div className="h-px w-10 bg-gray-300" />
-          </div>
-          <p className="text-gray-900 font-black text-xl sm:text-2xl leading-tight tracking-tight">
+          <p className="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 leading-[1.1] tracking-tight">
             That voice is wrong.<br />
-            <span className="text-emerald-600">And this is where it stops.</span>
+            <span className="text-emerald-600">This is where it stops.</span>
           </p>
         </motion.div>
       </div>
