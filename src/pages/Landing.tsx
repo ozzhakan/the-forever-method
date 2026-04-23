@@ -266,82 +266,137 @@ const Hero = () => (
 );
 
 /* ───────────────────────── PAIN / PROBLEM ───────────────────────── */
-const PainSection = () => (
-  <section className="py-16 sm:py-28 bg-white">
-    <div className="max-w-2xl mx-auto px-4 sm:px-6">
+const PainSection = () => {
+  const chapters = [
+    {
+      title: "The Mirror",
+      hook: "There's a dress — or a top, or a swimsuit — hanging in your wardrobe that you keep telling yourself you'll fit back into when you sort it out.",
+      body: "You avoid full-length mirrors. You've stopped wearing the jeans that used to make you feel like yourself. It's been there two years. Three years. You stopped counting.",
+    },
+    {
+      title: "The Photos",
+      hook: "You smile through events and then look at the pictures afterward and feel like a stranger in your own body.",
+      body: "Someone takes a photo and you feel your stomach drop. You ask to see it before they post it. You untag yourself. You look tired. You look older than you feel inside. And sugar is part of why.",
+    },
+    {
+      title: "The Skin",
+      hook: "No serum can outrun a daily sugar habit.",
+      body: "You've noticed it. The dullness. The breakouts that shouldn't still be happening at your age. The puffiness in the morning. You spend money on skincare that barely keeps up — not knowing that what you're eating is quietly undoing everything you put on your face. Sugar inflames. Sugar ages.",
+    },
+    {
+      title: "The Self-Trust",
+      hook: "That quiet voice that says \"you'll probably fail this time too\" — you've started agreeing with it.",
+      body: "This one is the hardest. Every time you promised yourself you'd stop and didn't — a small part of you started to believe you couldn't. That you were the problem. You've started making promises to yourself you don't believe you'll keep.",
+    },
+  ];
 
-      {/* Pull quote */}
-      <motion.blockquote
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="border-l-[3px] border-emerald-500 pl-6 mb-16 sm:mb-20"
-      >
-        <p className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 italic leading-snug">
-          "You're not lazy. You're not broken. You're fighting a system that was built to make you fail."
-        </p>
-      </motion.blockquote>
+  return (
+    <section className="py-20 sm:py-32 bg-white relative overflow-hidden">
+      {/* Subtle background accent */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-emerald-50/40 rounded-full blur-3xl pointer-events-none" />
 
-      {/* Intro */}
-      <div className="space-y-5 text-gray-600 text-base sm:text-lg leading-relaxed mb-14 sm:mb-16">
-        <p>
-          You wake up and the first thing you think about is what you shouldn't eat today. You've told yourself it starts Monday, it starts after the weekend, it starts after this last one.
-        </p>
-        <p className="text-gray-900 font-semibold">
-          But here's what no one talks about — the part that actually hurts:
-        </p>
-      </div>
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 relative z-10">
 
-      {/* Pain chapters */}
-      {[
-        {
-          title: "THE MIRROR",
-          body: "You avoid full-length mirrors. You've stopped wearing the jeans that used to make you feel like yourself. There's a dress — or a top, or a swimsuit — hanging in your wardrobe that you keep telling yourself you'll fit back into \"when you sort it out.\" It's been there two years. Three years. You stopped counting.",
-        },
-        {
-          title: "THE PHOTOS",
-          body: "Someone takes a photo and you feel your stomach drop. You ask to see it before they post it. You untag yourself. You smile through events and then look at the pictures afterward and feel like a stranger in your own body. You look tired. You look older than you feel inside. And sugar is part of why.",
-        },
-        {
-          title: "THE SKIN",
-          body: "You've noticed it. The dullness. The breakouts that shouldn't still be happening at your age. The puffiness in the morning. You spend money on skincare that barely keeps up — not knowing that what you're eating is quietly undoing everything you put on your face. Sugar inflames. Sugar ages. No serum can outrun a daily sugar habit.",
-        },
-        {
-          title: "THE SELF-TRUST",
-          body: "This one is the hardest. Every time you promised yourself you'd stop and didn't — a small part of you started to believe you couldn't. That you were the problem. You've started making promises to yourself you don't believe you'll keep. That quiet voice that says \"you'll probably fail this time too\" — you've started agreeing with it.",
-        },
-      ].map((chapter, i) => (
+        {/* Section eyebrow */}
         <motion.div
-          key={i}
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ delay: i * 0.08 }}
-          className="mb-10 sm:mb-12"
+          className="flex items-center justify-center gap-3 mb-8 sm:mb-10"
         >
-          <div className="flex items-center gap-4 mb-4">
-            <div className="h-px bg-gray-200 flex-1" />
-            <span className="text-[10px] font-black tracking-[0.25em] text-gray-400 uppercase whitespace-nowrap">
-              {chapter.title}
-            </span>
-            <div className="h-px bg-gray-200 flex-1" />
-          </div>
-          <p className="text-gray-600 text-base sm:text-lg leading-relaxed">{chapter.body}</p>
+          <div className="h-px w-8 bg-emerald-500" />
+          <span className="text-[10px] sm:text-[11px] font-black text-emerald-700 tracking-[0.25em] uppercase">
+            The Part No One Talks About
+          </span>
+          <div className="h-px w-8 bg-emerald-500" />
         </motion.div>
-      ))}
 
-      {/* Closer */}
-      <motion.p
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        className="text-gray-900 font-bold text-base sm:text-lg text-center mt-6 pt-6 border-t border-gray-100"
-      >
-        That voice is wrong. And this is where it stops.
-      </motion.p>
-    </div>
-  </section>
-);
+        {/* Pull quote */}
+        <motion.blockquote
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mb-14 sm:mb-20 text-center"
+        >
+          <p className="text-2xl sm:text-3xl md:text-[2.25rem] font-black text-gray-900 leading-[1.2] tracking-tight">
+            You're not lazy.<br />
+            You're not broken.<br />
+            <span className="text-emerald-600">You're fighting a system</span><br className="hidden sm:block" />
+            <span className="sm:hidden"> </span>built to make you fail.
+          </p>
+        </motion.blockquote>
+
+        {/* Intro */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mb-16 sm:mb-24"
+        >
+          <p className="text-gray-600 text-base sm:text-lg leading-relaxed mb-5">
+            You wake up and the first thing you think about is what you shouldn't eat today. You've told yourself it starts Monday, it starts after the weekend, it starts after this last one.
+          </p>
+          <p className="text-gray-900 text-base sm:text-lg font-semibold leading-relaxed">
+            But here's what no one talks about — the part that actually hurts.
+          </p>
+        </motion.div>
+
+        {/* Pain chapters — editorial style */}
+        <div className="space-y-20 sm:space-y-28">
+          {chapters.map((chapter, i) => (
+            <motion.article
+              key={i}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.6, delay: 0.05 }}
+              className="relative"
+            >
+              {/* Number + label row */}
+              <div className="flex items-baseline gap-4 mb-6 sm:mb-8">
+                <span className="text-[11px] font-black text-emerald-600 tabular-nums tracking-[0.2em]">
+                  0{i + 1}
+                </span>
+                <div className="h-px bg-gray-200 flex-1" />
+                <span className="text-[10px] sm:text-[11px] font-black tracking-[0.25em] text-gray-500 uppercase whitespace-nowrap">
+                  {chapter.title}
+                </span>
+              </div>
+
+              {/* Large editorial hook */}
+              <p className="text-[1.35rem] leading-[1.3] sm:text-[1.75rem] sm:leading-[1.25] md:text-[2rem] md:leading-[1.2] font-black text-gray-900 tracking-tight mb-6 sm:mb-7">
+                {chapter.hook}
+              </p>
+
+              {/* Supporting body — muted, smaller */}
+              <p className="text-gray-500 text-[0.95rem] sm:text-base leading-relaxed max-w-xl">
+                {chapter.body}
+              </p>
+            </motion.article>
+          ))}
+        </div>
+
+        {/* Closer */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mt-20 sm:mt-28 text-center"
+        >
+          <div className="inline-flex items-center gap-3 mb-5">
+            <div className="h-px w-10 bg-gray-300" />
+            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+            <div className="h-px w-10 bg-gray-300" />
+          </div>
+          <p className="text-gray-900 font-black text-xl sm:text-2xl leading-tight tracking-tight">
+            That voice is wrong.<br />
+            <span className="text-emerald-600">And this is where it stops.</span>
+          </p>
+        </motion.div>
+      </div>
+    </section>
+  );
+};
 
 /* ───────────────────────── REAL COST SECTION ───────────────────────── */
 const RealCostSection = () => (
