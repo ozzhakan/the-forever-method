@@ -33,6 +33,7 @@ import {
 import { useState, useRef, useEffect, type ReactNode } from "react";
 
 const CHECKOUT_URL = "https://www.paypal.com/ncp/payment/DQDESNZ9DVQ7G";
+const PRICE = "$8"; // Update PayPal payment link when price changes
 
 /* ───────────────────────── URGENCY BAR ───────────────────────── */
 const UrgencyBar = () => {
@@ -102,7 +103,7 @@ const Navbar = () => {
                 className="flex items-center gap-2 px-5 py-2.5 text-sm font-bold text-white bg-emerald-600 rounded-full hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-100"
               >
                 <Calendar className="w-4 h-4" />
-                Reserve Now — $17.97
+                Reserve Now — {PRICE}
               </a>
             </div>
 
@@ -129,7 +130,7 @@ const Navbar = () => {
                 onClick={() => setIsOpen(false)}
                 className="block w-full text-center py-3 text-lg font-black text-white bg-emerald-600 rounded-2xl"
               >
-                Reserve My Spot — $17.97
+                Reserve My Spot — {PRICE}
               </a>
             </motion.div>
           )}
@@ -307,7 +308,7 @@ const Hero = () => (
             rel="noopener noreferrer"
             className="w-full sm:w-auto px-10 sm:px-14 py-4 sm:py-5 text-base sm:text-xl font-black text-white bg-emerald-500 hover:bg-emerald-400 rounded-2xl shadow-2xl shadow-emerald-500/25 hover:-translate-y-1 transition-all flex items-center justify-center gap-3 active:scale-95 uppercase tracking-wide"
           >
-            Get Instant Access — $17.97
+            Get Instant Access — {PRICE}
             <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6" />
           </a>
           <p className="text-[10px] sm:text-xs text-gray-600 font-bold uppercase tracking-widest flex items-center gap-2">
@@ -323,76 +324,160 @@ const Hero = () => (
 
 /* ───────────────────────── PAIN / PROBLEM ───────────────────────── */
 const PainSection = () => (
-  <section className="py-12 sm:py-20 bg-gray-950 text-white overflow-hidden relative">
-    <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDEwIEwgNDAgMTAgTSAxMCAwIEwgMTAgNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjAzKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCBmaWxsPSJ1cmwoI2dyaWQpIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIi8+PC9zdmc+')] opacity-50" />
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-      <div className="text-center mb-14">
-        <span className="text-red-500 font-black text-xs uppercase tracking-[0.3em] block mb-3 sm:mb-4">The Uncomfortable Truth</span>
-        <h2 className="text-2xl sm:text-4xl md:text-6xl font-black tracking-tighter mb-4 sm:mb-6 uppercase">
-          Your Diet Is <span className="text-red-500 italic">Designed</span> To Fail
-        </h2>
-        <p className="text-base sm:text-lg text-gray-400 max-w-2xl mx-auto">
-          It's not your fault. The $72 billion diet industry profits when you fail and come back.
+  <section className="py-16 sm:py-28 bg-white">
+    <div className="max-w-2xl mx-auto px-4 sm:px-6">
+
+      {/* Pull quote */}
+      <motion.blockquote
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="border-l-[3px] border-emerald-500 pl-6 mb-16 sm:mb-20"
+      >
+        <p className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 italic leading-snug">
+          "You're not lazy. You're not broken. You're fighting a system that was built to make you fail."
+        </p>
+      </motion.blockquote>
+
+      {/* Intro */}
+      <div className="space-y-5 text-gray-600 text-base sm:text-lg leading-relaxed mb-14 sm:mb-16">
+        <p>
+          You wake up and the first thing you think about is what you shouldn't eat today. You've told yourself it starts Monday, it starts after the weekend, it starts after this last one.
+        </p>
+        <p className="text-gray-900 font-semibold">
+          But here's what no one talks about — the part that actually hurts:
         </p>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-px bg-gray-800 rounded-2xl sm:rounded-3xl overflow-hidden border border-gray-800 shadow-2xl">
-        <div className="bg-gray-900 p-6 sm:p-12">
-          <h3 className="text-xl font-black mb-8 text-red-500 uppercase tracking-widest flex items-center gap-3">
-            <X className="w-7 h-7" />
-            What You've Been Told
-          </h3>
-          <ul className="space-y-5">
-            {[
-              "\"Just eat less and move more\"",
-              "\"Count every calorie\"",
-              "\"Do 60 min cardio daily\"",
-              "\"Avoid all fats\"",
-              "\"Use willpower to resist cravings\"",
-            ].map((item, i) => (
-              <li key={i} className="flex items-start gap-3 text-gray-400">
-                <X className="w-5 h-5 text-red-500/70 flex-shrink-0 mt-0.5" />
-                <span className="text-base font-medium">{item}</span>
-              </li>
-            ))}
-          </ul>
-          <div className="mt-8 p-4 bg-red-500/10 rounded-2xl border border-red-500/20">
-            <p className="text-red-400 text-sm font-bold">
-              Result: 95% of dieters regain all weight within 2 years. Many gain back even more.
-            </p>
+      {/* Pain chapters */}
+      {[
+        {
+          title: "THE MIRROR",
+          body: "You avoid full-length mirrors. You've stopped wearing the jeans that used to make you feel like yourself. There's a dress — or a top, or a swimsuit — hanging in your wardrobe that you keep telling yourself you'll fit back into \"when you sort it out.\" It's been there two years. Three years. You stopped counting.",
+        },
+        {
+          title: "THE PHOTOS",
+          body: "Someone takes a photo and you feel your stomach drop. You ask to see it before they post it. You untag yourself. You smile through events and then look at the pictures afterward and feel like a stranger in your own body. You look tired. You look older than you feel inside. And sugar is part of why.",
+        },
+        {
+          title: "THE SKIN",
+          body: "You've noticed it. The dullness. The breakouts that shouldn't still be happening at your age. The puffiness in the morning. You spend money on skincare that barely keeps up — not knowing that what you're eating is quietly undoing everything you put on your face. Sugar inflames. Sugar ages. No serum can outrun a daily sugar habit.",
+        },
+        {
+          title: "THE SELF-TRUST",
+          body: "This one is the hardest. Every time you promised yourself you'd stop and didn't — a small part of you started to believe you couldn't. That you were the problem. You've started making promises to yourself you don't believe you'll keep. That quiet voice that says \"you'll probably fail this time too\" — you've started agreeing with it.",
+        },
+      ].map((chapter, i) => (
+        <motion.div
+          key={i}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: i * 0.08 }}
+          className="mb-10 sm:mb-12"
+        >
+          <div className="flex items-center gap-4 mb-4">
+            <div className="h-px bg-gray-200 flex-1" />
+            <span className="text-[10px] font-black tracking-[0.25em] text-gray-400 uppercase whitespace-nowrap">
+              {chapter.title}
+            </span>
+            <div className="h-px bg-gray-200 flex-1" />
           </div>
-        </div>
-        <div className="bg-emerald-950 p-6 sm:p-12 relative">
-          <div className="absolute top-4 right-4">
-            <div className="bg-emerald-500 text-white text-[9px] font-black px-3 py-1 rounded-full animate-pulse uppercase tracking-widest">
-              Science-Based
+          <p className="text-gray-600 text-base sm:text-lg leading-relaxed">{chapter.body}</p>
+        </motion.div>
+      ))}
+
+      {/* Closer */}
+      <motion.p
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        className="text-gray-900 font-bold text-base sm:text-lg text-center mt-6 pt-6 border-t border-gray-100"
+      >
+        That voice is wrong. And this is where it stops.
+      </motion.p>
+    </div>
+  </section>
+);
+
+/* ───────────────────────── REAL COST SECTION ───────────────────────── */
+const RealCostSection = () => (
+  <section className="py-16 sm:py-24 bg-gray-950 text-white">
+    <div className="max-w-2xl mx-auto px-4 sm:px-6">
+
+      <motion.p
+        initial={{ opacity: 0, y: 16 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="text-gray-400 text-xs sm:text-sm font-black uppercase tracking-[0.25em] mb-6 sm:mb-8"
+      >
+        Before we talk about price
+      </motion.p>
+
+      <motion.h2
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="text-2xl sm:text-4xl font-black text-white leading-tight mb-10 sm:mb-12"
+      >
+        Let's talk about what staying exactly where you are is actually costing you.
+      </motion.h2>
+
+      {/* Cost grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-12 sm:mb-14">
+        {[
+          { label: "YOUR WARDROBE", status: "Locked", desc: "Clothes you love, hanging unworn. Money spent on things you buy \"for when.\"" },
+          { label: "YOUR SKIN", status: "Inflamed", desc: "Skincare bills growing while the root cause stays untouched." },
+          { label: "YOUR ENERGY", status: "Hijacked", desc: "Sugar spikes and crashes running your mood, focus, and afternoons." },
+          { label: "YOUR CONFIDENCE", status: "Shrinking", desc: "Every failed attempt quietly chips away at what you believe about yourself." },
+        ].map((item, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: i * 0.08 }}
+            className="bg-gray-900 border border-gray-800 rounded-2xl p-5"
+          >
+            <div className="flex items-start justify-between gap-2 mb-2">
+              <span className="text-[9px] font-black uppercase tracking-widest text-gray-500">{item.label}</span>
+              <span className="text-[9px] font-black uppercase tracking-widest text-red-400 bg-red-500/10 px-2 py-0.5 rounded-full whitespace-nowrap">{item.status}</span>
             </div>
-          </div>
-          <h3 className="text-xl font-black mb-8 text-emerald-400 uppercase tracking-widest flex items-center gap-3">
-            <CheckCircle2 className="w-7 h-7" />
-            The Metabolic Truth
-          </h3>
-          <ul className="space-y-5">
-            {[
-              "Fix your metabolism — fat burns automatically",
-              "Eat until full (your hormones regulate it)",
-              "Zero mandatory exercise",
-              "Cravings disappear in 7–14 days",
-              "Weight stays off because the ROOT CAUSE is fixed",
-            ].map((item, i) => (
-              <li key={i} className="flex items-start gap-3 text-emerald-50">
-                <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
-                <span className="text-base font-bold">{item}</span>
-              </li>
-            ))}
-          </ul>
-          <div className="mt-8 p-4 bg-emerald-500/10 rounded-2xl border border-emerald-500/20">
-            <p className="text-emerald-300 text-sm font-bold">
-              Result: Address the biological cause. Lose weight and keep it off — permanently.
-            </p>
-          </div>
-        </div>
+            <p className="text-gray-400 text-sm leading-relaxed">{item.desc}</p>
+          </motion.div>
+        ))}
       </div>
+
+      {/* Emotional cost paragraph */}
+      <div className="space-y-5 text-gray-400 text-base sm:text-lg leading-relaxed mb-12 sm:mb-14">
+        <p>
+          And the emotional cost — the rollercoaster of bingeing, guilt, shame, promising yourself again, failing again — that's not abstract. That is hours of your life, weeks of your mental energy, years of not fully showing up as yourself because a part of you is always distracted by this.
+        </p>
+        <p className="text-white font-semibold">
+          What is it worth to you to get off that rollercoaster? Not someday. Now.
+        </p>
+        <p>
+          You've probably spent more than {PRICE} this month on skincare trying to fix from the outside what's broken on the inside. More than {PRICE} on food that's feeding the addiction. More than {PRICE} on clothes that don't fit the way you want them to.
+        </p>
+        <p>
+          This workshop costs <span className="text-white font-bold">{PRICE}.</span> One time. And it addresses the actual problem — not the symptoms.
+        </p>
+      </div>
+
+      {/* Mid-page CTA */}
+      <div className="border border-gray-800 rounded-2xl p-6 sm:p-8 text-center">
+        <p className="text-gray-400 text-sm mb-5 italic">Ready now? You don't have to keep reading.</p>
+        <a
+          href={CHECKOUT_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 px-8 py-4 bg-emerald-500 hover:bg-emerald-400 text-white font-black rounded-xl transition-all hover:-translate-y-0.5 text-sm sm:text-base"
+        >
+          Get instant access — {PRICE}
+          <ArrowRight className="w-4 h-4" />
+        </a>
+      </div>
+
     </div>
   </section>
 );
@@ -594,89 +679,73 @@ const Results = () => {
   );
 };
 
-/* ───────────────────────── HOW IT WORKS ───────────────────────── */
-const HowItWorks = () => {
-  const steps = [
-    {
-      title: "Understand the Real Enemy",
-      desc: "Sugar is a neurobiological addiction — not a willpower problem. Your dopamine system has been hijacked by engineered food. Once you see this, everything changes.",
-      icon: <Brain className="w-7 h-7" />,
-      color: "bg-purple-500",
-    },
-    {
-      title: "Stabilize Blood Sugar",
-      desc: "Shift your nutritional foundation to protein + healthy fats. This eliminates insulin spikes, tells your body to burn stored fat, and ends the blood sugar rollercoaster for good.",
-      icon: <Activity className="w-7 h-7" />,
-      color: "bg-blue-500",
-    },
-    {
-      title: "Let Cravings Dissolve",
-      desc: "Your taste receptors reset in 5–7 days. Your dopamine stabilizes in 7–14 days. Cravings don't vanish through willpower — they vanish because the biological trigger is gone.",
-      icon: <Zap className="w-7 h-7" />,
-      color: "bg-emerald-500",
-    },
-    {
-      title: "Lock In Freedom Forever",
-      desc: "The 80/20 system, emotional eating awareness, and flexible real-life strategies lock in your results permanently — so you can travel, celebrate, and eat at restaurants without fear.",
-      icon: <Sparkles className="w-7 h-7" />,
-      color: "bg-orange-500",
-    },
-  ];
+/* ───────────────────────── THE SHIFT ───────────────────────── */
+const TheShiftSection = () => (
+  <section className="py-16 sm:py-28 bg-white">
+    <div className="max-w-2xl mx-auto px-4 sm:px-6">
 
-  return (
-    <section id="method" className="py-12 sm:py-20 bg-white overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <span className="text-emerald-600 font-black uppercase tracking-[0.3em] text-xs">The 4-Step Protocol</span>
-          <h2 className="text-2xl sm:text-4xl md:text-6xl font-black text-gray-900 mt-3 sm:mt-4 mb-4 tracking-tighter uppercase italic">
-            How The Forever Method Works
-          </h2>
-          <p className="text-gray-500 max-w-2xl mx-auto text-lg">
-            This isn't a diet. It's a biological system upgrade.
-          </p>
-        </div>
+      <motion.p
+        initial={{ opacity: 0, y: 16 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="text-emerald-600 text-xs font-black uppercase tracking-[0.25em] mb-8 sm:mb-10"
+      >
+        The truth they never told you
+      </motion.p>
 
-        <div className="relative">
-          <div className="hidden lg:block absolute top-1/2 left-0 w-full h-0.5 bg-gray-100 -translate-y-1/2 z-0" />
-          <div className="grid lg:grid-cols-4 gap-8 lg:gap-6 relative z-10">
-            {steps.map((step, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.15 }}
-                className="flex flex-col items-center text-center group"
-              >
-                <div
-                  className={`w-20 h-20 ${step.color} text-white rounded-3xl flex items-center justify-center mb-6 shadow-xl group-hover:scale-110 transition-transform duration-300 relative`}
-                >
-                  {step.icon}
-                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-gray-900 rounded-full flex items-center justify-center text-xs font-black border-3 border-white">
-                    {i + 1}
-                  </div>
-                </div>
-                <h3 className="text-lg font-black text-gray-900 mb-3 uppercase tracking-tight">{step.title}</h3>
-                <p className="text-gray-500 text-sm leading-relaxed">{step.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-
-        <div className="mt-16 p-8 sm:p-10 bg-gray-900 rounded-3xl text-center relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl" />
-          <h4 className="text-xl font-black text-white mb-3 uppercase italic">The End Result?</h4>
-          <p className="text-emerald-400 text-2xl sm:text-4xl md:text-5xl font-black tracking-tighter uppercase">
-            Freedom From Sugar. Forever.
-          </p>
-          <p className="text-gray-500 mt-4 max-w-xl mx-auto">
-            No more yo-yo dieting. No more Monday resets. Just a body and mind working the way they were designed to.
-          </p>
-        </div>
+      <div className="space-y-6 text-gray-600 text-base sm:text-lg leading-relaxed mb-12 sm:mb-14">
+        <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.1 }}>
+          Sugar addiction is not a character flaw. It is a biological and psychological response — one that was deliberately engineered by a trillion-dollar food industry that profits from you staying hooked.
+        </motion.p>
+        <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.2 }}>
+          Your brain on sugar behaves like your brain on certain drugs. Dopamine floods in. Your body screams "again." The more you eat, the louder the signal gets. And when you try to stop — the withdrawal is real. The cravings are real. The mood crashes are real.
+        </motion.p>
+        <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.3 }}>
+          You were not fighting a bad habit. You were fighting a chemical dependency designed by people with billion-dollar R&D budgets. Of course you struggled.
+        </motion.p>
+        <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.4 }} className="text-gray-900 font-semibold">
+          The question was never "do you have enough willpower." The question was always "do you have the right roadmap."
+        </motion.p>
+        <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.5 }} className="text-gray-500">
+          You didn't.
+        </motion.p>
       </div>
-    </section>
-  );
-};
+
+      {/* "Until now." — isolated, lands like a door closing */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ delay: 0.6, duration: 0.5 }}
+        className="border-t border-b border-gray-900 py-8 sm:py-10 text-center"
+      >
+        <span className="text-4xl sm:text-6xl font-black text-gray-900 tracking-tight italic">Until now.</span>
+      </motion.div>
+
+    </div>
+  </section>
+);
+
+/* ───────────────────────── SIMPLE TESTIMONIAL ───────────────────────── */
+const SimpleTestimonial = () => (
+  <section className="py-14 sm:py-20 bg-gray-950">
+    <div className="max-w-2xl mx-auto px-4 sm:px-6 text-center">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+      >
+        <div className="flex justify-center gap-0.5 mb-6">
+          {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 text-yellow-400 fill-yellow-400" />)}
+        </div>
+        <blockquote className="text-lg sm:text-xl md:text-2xl text-white font-medium italic leading-relaxed mb-6">
+          "I cried on day 9. I walked past a bakery and felt absolutely nothing. After 4 years of trying, I finally understood why I kept failing — and it had nothing to do with me."
+        </blockquote>
+        <p className="text-gray-500 text-sm font-bold uppercase tracking-widest">— Sarah J., 34</p>
+      </motion.div>
+    </div>
+  </section>
+);
 
 /* ───────────────────────── CURRICULUM ───────────────────────── */
 const Curriculum = () => {
@@ -760,67 +829,83 @@ const Curriculum = () => {
 
 /* ───────────────────────── WHAT'S INSIDE ───────────────────────── */
 const CourseInsideSection = () => {
-  const layers = [
+  const videos = [
     {
-      label: "The biology layer",
-      text: "Why your cravings are not a willpower problem — and what is actually driving them. What sugar does inside your body at the hormonal and neurological level, and why understanding this changes the entire game.",
+      num: "01",
+      title: "Introduction: why this is different",
+      desc: "Why every approach you've tried before was missing something. What this roadmap covers and how to use it to get results.",
     },
     {
-      label: "The nutrition layer",
-      text: "What to eat instead, why it satisfies differently, and how cravings dissolve within days — not weeks. No restriction, no deprivation, no calorie counting. Just food that works with your body.",
+      num: "02",
+      title: "Dopamine hooked: how sugar hijacks your brain",
+      desc: "The neuroscience of cravings explained simply. Why your brain was wired to want more — and how that wiring gets exploited by the food you eat every day.",
     },
     {
-      label: "The behavior layer",
-      text: "The flexible system that makes your new way of eating permanent — not a phase. How to eat at restaurants, travel, celebrate, and live fully — without losing your progress or your mind.",
+      num: "03",
+      title: "The bliss point: what the food industry did to you",
+      desc: "The deliberate science of addictive food formulas. The exact sugar, fat, and salt ratio engineered to make stopping impossible. Once you see this, you can't unsee it.",
     },
     {
-      label: "The mindset layer",
-      text: "How emotional eating forms in the brain — and what actually replaces it. The inner shift that makes results last for years, not weeks. This is where real freedom begins.",
+      num: "04",
+      title: "The real consequences: what excess sugar costs your body",
+      desc: "Inflammation, skin aging, energy crashes, weight fluctuation, hormonal disruption. Why it shows up on your face and in your clothes.",
+    },
+    {
+      num: "05",
+      title: "The nutritional solution: what to eat instead (and why it works)",
+      desc: "Practical, non-restrictive guidance. The 80/20 approach — no perfection required. How to stop feeling deprived within days, not weeks.",
+    },
+    {
+      num: "06",
+      title: "The psychological solution: rewiring the craving loop",
+      desc: "How emotional eating forms and what replaces it. The tools that interrupt the cycle. What to do when you slip — because you will, and that's okay.",
+    },
+    {
+      num: "07",
+      title: "The behavioral solution: making change permanent",
+      desc: "Why motivation always fails and what replaces it. How to rebuild trust with yourself — one kept promise at a time.",
     },
   ];
 
   return (
-    <section className="py-12 sm:py-20 bg-gray-950 text-white">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-16 sm:py-24 bg-gray-950 text-white">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+
         {/* Header */}
         <div className="mb-10 sm:mb-12">
-          <span className="text-emerald-400 font-black text-xs uppercase tracking-[0.3em] block mb-4">
-            What's Inside The Course
+          <span className="text-emerald-400 font-black text-xs uppercase tracking-[0.3em] block mb-5">
+            What's Inside
           </span>
-          <p className="text-lg sm:text-xl text-gray-300 leading-relaxed">
-            This is not a diet. It is not a list of foods to avoid. It is a complete, structured roadmap that works on every layer of the problem —{" "}
-            <span className="text-white font-semibold">because every layer matters.</span>
+          <h2 className="text-2xl sm:text-3xl font-black text-white mb-4 leading-tight">
+            Most programs give you one thing. This workshop gives you all seven layers of the problem — in sequence, because that's the only way it actually sticks.
+          </h2>
+          <p className="text-gray-500 text-sm sm:text-base">
+            7 videos · 15–20 min each · instant access · yours forever
           </p>
         </div>
 
-        {/* Layer list */}
-        <div className="rounded-2xl sm:rounded-3xl border border-gray-800 overflow-hidden divide-y divide-gray-800">
-          {layers.map((item, i) => (
+        {/* Video list */}
+        <div className="rounded-2xl border border-gray-800 overflow-hidden divide-y divide-gray-800">
+          {videos.map((v, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, x: -12 }}
+              initial={{ opacity: 0, x: -10 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.1, duration: 0.4 }}
-              className="flex gap-5 sm:gap-8 p-6 sm:p-8 hover:bg-gray-800/40 transition-colors"
+              transition={{ delay: i * 0.07, duration: 0.4 }}
+              className="flex gap-5 sm:gap-7 p-5 sm:p-6 hover:bg-gray-800/40 transition-colors group"
             >
-              <span className="text-red-500 font-black text-sm tabular-nums pt-0.5 flex-shrink-0 w-5">
-                {String(i + 1).padStart(2, "0")}
+              <span className="text-emerald-500 font-black text-sm tabular-nums pt-0.5 flex-shrink-0 w-6 group-hover:text-emerald-400 transition-colors">
+                {v.num}
               </span>
               <div>
-                <h3 className="text-white font-bold text-lg sm:text-xl mb-2 leading-tight">{item.label}</h3>
-                <p className="text-gray-400 text-sm sm:text-base leading-relaxed">{item.text}</p>
+                <h3 className="text-white font-bold text-sm sm:text-base mb-1.5 leading-snug">{v.title}</h3>
+                <p className="text-gray-500 text-xs sm:text-sm leading-relaxed">{v.desc}</p>
               </div>
             </motion.div>
           ))}
         </div>
 
-        {/* Footer line */}
-        <p className="mt-8 sm:mt-10 text-gray-400 text-base sm:text-lg leading-relaxed">
-          Every part of this course is designed to give you something you can use immediately — not someday, not{" "}
-          <span className="text-gray-300 italic">"once you've finished the whole thing."</span>{" "}
-          Real understanding, real tools, real change.
-        </p>
       </div>
     </section>
   );
@@ -848,48 +933,31 @@ const Bio = () => (
 
         {/* Story */}
         <div className="w-full md:w-7/12">
-          <span className="text-emerald-600 font-black uppercase tracking-[0.3em] text-xs">Your Instructor</span>
-          <h2 className="text-3xl sm:text-4xl font-black text-gray-900 mt-3 mb-6 tracking-tighter leading-none uppercase italic">
-            Hi, I'm Kristina Oz
+          <span className="text-emerald-600 font-black uppercase tracking-[0.3em] text-xs">Who made this — Kristina Oz</span>
+          <h2 className="text-2xl sm:text-3xl font-black text-gray-900 mt-3 mb-6 leading-tight">
+            I didn't create this workshop as an expert. I created it as someone who was desperate.
           </h2>
-          <div className="space-y-4 text-gray-600 leading-relaxed">
+          <div className="space-y-4 text-gray-600 text-sm sm:text-base leading-relaxed">
             <p>
-              Hi, I'm Kristina Oz, and I'm here to share the lessons I've learned from a journey I never planned to take. For years, I was stuck in a cycle of{" "}
-              <span className="text-gray-900 font-bold">binge eating, sugar addiction, and endless diets</span> that left me frustrated and defeated. Like so many, I thought the problem was my willpower. But the truth was far bigger.
+              For years I was stuck in the same cycle you're in — bingeing, restricting, promising myself it would be different this time, failing, and quietly losing faith in myself. I thought I lacked discipline. I thought everyone else just had something I didn't.
             </p>
             <p>
-              Modern food isn't designed to nourish us — it's{" "}
-              <span className="text-gray-900 font-bold">engineered to control us.</span> Food companies have hijacked our dopamine, turning processed foods into addictive traps that manipulate our biology. Our insulin, the hormone that should keep us balanced, is overwhelmed by sugar-laden, hyper-palatable products, leaving us stuck in a cycle of cravings and fat storage. The system is rigged, and I was desperate to escape.
+              Then I started studying — not to become a nutritionist, but because I needed to understand why I couldn't stop. What I found changed everything. The food I was eating was literally{" "}
+              <span className="text-gray-900 font-semibold">engineered to override my biology.</span> My dopamine was being hijacked. My insulin was overwhelmed. I wasn't failing — I was fighting a system designed by billion-dollar companies to make sure I kept coming back.
             </p>
             <p>
-              I didn't start studying nutrition to become an expert — I did it because I{" "}
-              <span className="text-gray-900 font-bold">desperately wanted to lose weight and stop the binges.</span> What I discovered changed everything. By understanding how food, insulin, dopamine and my biology were working against me, I finally broke free. The weight came off effortlessly, my cravings stopped, and my relationship with food transformed.
+              Once I understood the mechanism, I stopped struggling. The weight came off. The cravings faded. My skin cleared. And the version of me that had been buried under years of guilt and self-blame started to come back.
             </p>
             <p>
-              More importantly, I realized that when you fix your diet to support your biology,{" "}
-              <span className="text-gray-900 font-bold">everything else improves.</span> Your energy stabilizes, your emotions become easier to manage, and you stop eating to numb yourself. You tune into your true needs and regain control over your choices.
+              I built this workshop because the information that freed me is scattered across books, studies, and documentaries most people will never find.{" "}
+              <span className="text-gray-900 font-semibold">I put it in one place, in the right order, at a price that makes saying no feel ridiculous.</span> Because I know what it feels like to stay stuck when you didn't have to.
             </p>
-          </div>
-
-          {/* Credibility pillars */}
-          <div className="grid grid-cols-3 gap-3 mt-8">
-            {[
-              { icon: <Brain className="w-5 h-5" />, label: "Nutrition & Metabolic Health" },
-              { icon: <Activity className="w-5 h-5" />, label: "Sugar & Craving Specialist" },
-              { icon: <Users className="w-5 h-5" />, label: "3,000+ Students Worldwide" },
-            ].map((c, i) => (
-              <div key={i} className="text-center p-3 bg-emerald-50 rounded-xl">
-                <div className="text-emerald-600 flex justify-center mb-1">{c.icon}</div>
-                <div className="text-[9px] font-bold text-gray-600 uppercase tracking-wider leading-tight">{c.label}</div>
-              </div>
-            ))}
           </div>
 
           {/* Quote */}
-          <div className="mt-6 p-5 bg-gray-50 rounded-2xl border border-gray-100">
+          <div className="mt-7 p-5 bg-gray-50 rounded-2xl border border-gray-100">
             <p className="text-sm text-gray-600 italic leading-relaxed">
-              "I'm sharing my knowledge in this course because I know how hopeless it can feel when nothing works. This has nothing to do with restriction or willpower — but with understanding how your body works and nourishing it in a way that feels natural.{" "}
-              <span className="text-gray-900 font-bold not-italic">Change is possible, and I'm here to guide you every step of the way.</span>"
+              "I priced it this way on purpose — so that price is never the reason you stayed where you are."
             </p>
             <div className="mt-3 text-xs font-black text-emerald-600 not-italic uppercase tracking-widest">— Kristina Oz</div>
           </div>
@@ -957,168 +1025,127 @@ const Testimonials = () => (
 
 /* ───────────────────────── BONUSES ───────────────────────── */
 const Bonuses = () => (
-  <section className="py-12 sm:py-20 bg-emerald-50">
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="text-center mb-10 sm:mb-12">
-        <span className="text-emerald-600 font-black uppercase tracking-[0.3em] text-xs block mb-3">Included Free</span>
-        <h2 className="text-3xl sm:text-4xl font-black text-gray-900 tracking-tighter uppercase">
-          3 Bonuses When You Reserve Today
-        </h2>
+  <section className="py-16 sm:py-24 bg-white">
+    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <div className="mb-10 sm:mb-12">
+        <span className="text-emerald-600 font-black uppercase tracking-[0.3em] text-xs block mb-5">And then there's everything else included</span>
+        <h2 className="text-2xl sm:text-3xl font-black text-gray-900 leading-tight">Bonus resources</h2>
       </div>
 
       <div className="space-y-4">
         {[
           {
-            title: "The 7-Day Metabolic Kickstart",
-            value: "$197",
-            desc: "A done-for-you first-week plan to flush out excess glucose and reset your insulin sensitivity fast.",
-            icon: <Zap className="w-6 h-6" />,
+            title: "Eating through your cycle",
+            desc: "Foods and nutrients matched to each phase of your menstrual cycle. Your needs change every week — and almost no one talks about this.",
           },
           {
-            title: "The 'Eating Out' Survival Guide",
-            value: "$97",
-            desc: "How to navigate any restaurant menu without derailing your progress. Includes 50+ chain restaurant hacks.",
-            icon: <CheckCircle2 className="w-6 h-6" />,
+            title: "Hidden names of sugar",
+            desc: "The 50+ names sugar hides behind on food labels. You'll never be fooled at the supermarket again.",
           },
           {
-            title: "The Craving Killer Cheat Sheet",
-            value: "$97",
-            desc: "A printable one-page guide with 12 instant craving-killing techniques backed by neuroscience. Pin it on your fridge.",
-            icon: <Target className="w-6 h-6" />,
+            title: "The truth about fructose",
+            desc: "Why fruit sugar and added fructose behave completely differently in your body.",
+          },
+          {
+            title: "Curated listening",
+            desc: "Andrew Huberman on dopamine, Robert Lustig on sugar, and the documentary that exposes the food industry's own internal research.",
           },
         ].map((b, i) => (
-          <div key={i} className="bg-white p-6 rounded-2xl border border-emerald-100 flex gap-5 items-start shadow-sm hover:shadow-md transition-shadow">
-            <div className="w-12 h-12 bg-emerald-600 text-white rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg shadow-emerald-200">
-              {b.icon}
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: i * 0.08 }}
+            className="flex gap-4 p-5 border border-gray-100 rounded-2xl hover:border-emerald-200 hover:bg-emerald-50/30 transition-all"
+          >
+            <div className="w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
             </div>
-            <div className="flex-1 min-w-0">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 mb-1">
-                <h3 className="text-lg font-bold text-gray-900">{b.title}</h3>
-                <span className="text-emerald-600 font-bold text-sm shrink-0">Value: {b.value}</span>
-              </div>
+            <div>
+              <h3 className="font-bold text-gray-900 mb-1 text-sm sm:text-base">{b.title}</h3>
               <p className="text-gray-500 text-sm leading-relaxed">{b.desc}</p>
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
+
     </div>
   </section>
 );
 
-/* ───────────────────────── TWO LIVES — EMOTIONAL PAIN ───────────────────────── */
+/* ───────────────────────── VALUE VS COST ───────────────────────── */
 const FearSection = () => (
-  <section className="py-12 sm:py-20 bg-gray-950 text-white overflow-hidden">
+  <section className="py-16 sm:py-24 bg-gray-950 text-white overflow-hidden">
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="text-center mb-10 sm:mb-14">
-        <span className="text-red-400 font-black text-xs uppercase tracking-[0.3em] block mb-3 sm:mb-4">
-          A Moment of Honesty
-        </span>
-        <h2 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tighter mb-4 uppercase">
-          Two Versions of Your <span className="text-red-500 italic">Future</span>
-        </h2>
-        <p className="text-gray-500 max-w-2xl mx-auto text-sm sm:text-base">
-          One year from now, you'll be living one of these two lives. Which one will it be?
-        </p>
-      </div>
+      <div className="max-w-3xl mx-auto px-4 sm:px-6">
 
-      <div className="grid md:grid-cols-2 gap-4 sm:gap-6 mb-10 sm:mb-14">
-        {/* PATH 1: Do Nothing */}
-        <div className="bg-gradient-to-br from-red-950/80 to-gray-900 rounded-2xl sm:rounded-3xl p-5 sm:p-8 border border-red-900/30 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-red-500/5 rounded-full blur-3xl" />
-          <div className="flex items-center gap-2.5 mb-6 sm:mb-8">
-            <div className="w-8 h-8 bg-red-500/20 rounded-full flex items-center justify-center">
-              <X className="w-4 h-4 text-red-400" />
-            </div>
-            <span className="text-xs sm:text-sm font-black text-red-400 uppercase tracking-widest">
-              If You Do Nothing
-            </span>
-          </div>
-          <div className="space-y-4 sm:space-y-5">
-            {[
-              { icon: <Eye className="w-4 h-4" />, text: "Avoiding mirrors, skipping photos, hiding from the camera" },
-              { icon: <Heart className="w-4 h-4" />, text: "Feeling uncomfortable in your own body every single day" },
-              { icon: <Lock className="w-4 h-4" />, text: "Clothes you love collecting dust because they don't fit anymore" },
-              { icon: <Brain className="w-4 h-4" />, text: "Constant brain fog, afternoon crashes, zero energy for life" },
-              { icon: <TrendingDown className="w-4 h-4" />, text: "Confidence shrinking with every failed diet attempt" },
-              { icon: <AlertTriangle className="w-4 h-4" />, text: "Doctor visits getting more serious — blood sugar, cholesterol, fatigue" },
-              { icon: <RefreshCcw className="w-4 h-4" />, text: "Starting over every Monday, stuck in the same cycle for years" },
-            ].map((item, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, x: -10 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.06 }}
-                className="flex items-start gap-3"
-              >
-                <div className="text-red-500/60 mt-0.5 flex-shrink-0">{item.icon}</div>
-                <p className="text-gray-400 text-xs sm:text-sm leading-relaxed">{item.text}</p>
-              </motion.div>
-            ))}
-          </div>
-          <div className="mt-6 sm:mt-8 p-3 sm:p-4 bg-red-500/10 rounded-xl border border-red-500/20">
-            <p className="text-red-400 text-xs sm:text-sm font-bold text-center">
-              This is the cost of waiting. Not dollars — <span className="text-red-300">years of your life.</span>
-            </p>
-          </div>
-        </div>
-
-        {/* PATH 2: After The Forever Method */}
-        <div className="bg-gradient-to-br from-emerald-950/80 to-gray-900 rounded-2xl sm:rounded-3xl p-5 sm:p-8 border border-emerald-900/30 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 rounded-full blur-3xl" />
-          <div className="flex items-center gap-2.5 mb-6 sm:mb-8">
-            <div className="w-8 h-8 bg-emerald-500/20 rounded-full flex items-center justify-center">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-            </div>
-            <span className="text-xs sm:text-sm font-black text-emerald-400 uppercase tracking-widest">
-              After The Forever Method
-            </span>
-          </div>
-          <div className="space-y-4 sm:space-y-5">
-            {[
-              { icon: <Sparkles className="w-4 h-4" />, text: "Walking past a mirror and actually liking what you see" },
-              { icon: <Heart className="w-4 h-4" />, text: "Sugar cravings 99% gone — you choose what you eat, not your addiction" },
-              { icon: <Star className="w-4 h-4" />, text: "Wearing whatever you want — clothes that collected dust now fit beautifully" },
-              { icon: <Zap className="w-4 h-4" />, text: "All-day energy: no more afternoon crashes, brain fog, or fatigue" },
-              { icon: <Award className="w-4 h-4" />, text: "Self-confidence, self-respect, and stable mood — every single day" },
-              { icon: <Activity className="w-4 h-4" />, text: "No bloating, clearer skin, less inflammation, regular periods" },
-              { icon: <Flame className="w-4 h-4" />, text: "No food guilt, no anxiety around eating — just freedom and nourishment" },
-            ].map((item, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, x: 10 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.06 }}
-                className="flex items-start gap-3"
-              >
-                <div className="text-emerald-400/70 mt-0.5 flex-shrink-0">{item.icon}</div>
-                <p className="text-emerald-50 text-xs sm:text-sm leading-relaxed font-medium">{item.text}</p>
-              </motion.div>
-            ))}
-          </div>
-          <div className="mt-6 sm:mt-8 p-3 sm:p-4 bg-emerald-500/10 rounded-xl border border-emerald-500/20">
-            <p className="text-emerald-300 text-xs sm:text-sm font-bold text-center">
-              This is what's waiting for you — <span className="text-emerald-200">on the other side of $17.97.</span>
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* CTA */}
-      <div className="text-center">
-        <p className="text-lg sm:text-xl text-gray-400 mb-6 sm:mb-8 max-w-2xl mx-auto">
-          The difference between these two futures isn't willpower. It isn't luck. It's{" "}
-          <span className="text-white font-bold">understanding how your body actually works</span>.
-        </p>
-        <a
-          href={CHECKOUT_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-3 px-8 sm:px-10 py-4 sm:py-5 bg-emerald-600 text-white font-black text-base sm:text-lg rounded-2xl shadow-2xl shadow-emerald-600/30 hover:bg-emerald-700 transition-all uppercase"
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-2xl sm:text-3xl font-black text-white mb-10 sm:mb-12"
         >
-          Choose The Second Future — $17.97 <ArrowRight className="w-5 h-5" />
-        </a>
+          The cost of staying the same → what changes with the roadmap
+        </motion.h2>
+
+        {/* Comparison rows */}
+        <div className="space-y-0 rounded-2xl border border-gray-800 overflow-hidden divide-y divide-gray-800 mb-10 sm:mb-12">
+          {[
+            {
+              cost: "Skincare that can't keep up with inflammation",
+              gain: "Skin that clears because the cause is gone",
+            },
+            {
+              cost: "Clothes you avoid, wardrobe you can't enjoy",
+              gain: "Reaching for the jeans that used to mock you",
+            },
+            {
+              cost: "Energy crashes and mood swings every afternoon",
+              gain: "Afternoons that don't crash",
+            },
+            {
+              cost: "Another year of promising yourself and failing",
+              gain: "Finally finishing what you started",
+            },
+            {
+              cost: "The quiet erosion of self-trust",
+              gain: "A promise to yourself you actually kept",
+            },
+          ].map((row, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.07 }}
+              className="grid sm:grid-cols-2"
+            >
+              <div className="flex items-start gap-3 p-4 sm:p-5 bg-gray-900/60">
+                <X className="w-3.5 h-3.5 text-red-400 flex-shrink-0 mt-1" />
+                <p className="text-gray-500 text-sm leading-relaxed">{row.cost}</p>
+              </div>
+              <div className="flex items-start gap-3 p-4 sm:p-5 bg-emerald-950/30">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0 mt-1" />
+                <p className="text-emerald-100 text-sm leading-relaxed font-medium">{row.gain}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* CTA */}
+        <div className="text-center">
+          <a
+            href={CHECKOUT_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-3 px-8 sm:px-10 py-4 sm:py-5 bg-emerald-500 hover:bg-emerald-400 text-white font-black text-base sm:text-lg rounded-2xl transition-all hover:-translate-y-0.5 uppercase"
+          >
+            Get instant access — {PRICE} <ArrowRight className="w-5 h-5" />
+          </a>
+          <p className="mt-4 text-gray-600 text-xs font-bold uppercase tracking-widest">30-Day Money-Back Guarantee · No Questions Asked</p>
+        </div>
       </div>
     </div>
   </section>
@@ -1200,7 +1227,7 @@ const Pricing = () => {
               </div>
               <div className="flex items-center justify-center gap-3 sm:gap-6">
                 <span className="text-2xl sm:text-4xl text-gray-300 line-through font-black">$1,685</span>
-                <span className="text-5xl sm:text-7xl font-black text-emerald-600 tracking-tighter">$17.97</span>
+                <span className="text-5xl sm:text-7xl font-black text-emerald-600 tracking-tighter">{PRICE}</span>
               </div>
               <p className="text-gray-500 mt-4 text-xs font-bold uppercase tracking-widest">
                 One-time payment • Lifetime access • 30-day guarantee
@@ -1213,7 +1240,7 @@ const Pricing = () => {
               rel="noopener noreferrer"
               className="w-full py-6 sm:py-7 text-xl sm:text-2xl font-black text-white bg-emerald-600 rounded-2xl shadow-2xl shadow-emerald-200 hover:bg-emerald-700 hover:scale-[1.02] active:scale-95 transition-all mb-6 flex items-center justify-center gap-3"
             >
-              RESERVE MY SPOT — $17.97
+              RESERVE MY SPOT — {PRICE}
               <ArrowRight className="w-7 h-7" />
             </a>
 
@@ -1276,28 +1303,24 @@ const FAQ = () => {
 
   const faqs = [
     {
-      q: "When does the course start?",
-      a: "The course launches soon. When you reserve your spot today at the pre-launch price, you'll be first in line for instant access when it goes live — plus you lock in the $17.97 price before it increases.",
+      q: "I've tried everything before.",
+      a: "You've tried diets, challenges, cutting back. You haven't had a complete system that addresses nutrition, psychology, behavior, and industry manipulation all at once. This is different in structure — and structure is what changes outcomes.",
     },
     {
-      q: "Is this another diet plan?",
-      a: "No. This is a biological education system. We don't give you a meal plan to follow blindly — we teach you how your metabolism, hormones, and brain work together so you can make informed decisions for life.",
-    },
-    {
-      q: "How is this different from other weight loss programs?",
-      a: "Most programs treat the SYMPTOM (excess weight) by restricting calories. We treat the CAUSE (insulin resistance, metabolic damage, dopamine-driven cravings). Fix the cause, and the weight takes care of itself.",
-    },
-    {
-      q: "Do I need to exercise?",
-      a: "No mandatory exercise. This program is 100% focused on metabolic optimization through nutrition science. Exercise is great for health, but it's not required for the weight loss this method produces.",
-    },
-    {
-      q: "How long do I have access?",
-      a: "Lifetime. You pay once, you get access forever — including all future updates and new modules we add.",
+      q: "I don't have time for a course.",
+      a: "The first video is under 20 minutes. You could be further along by tonight than you've been in years.",
     },
     {
       q: "What if it doesn't work for me?",
-      a: "You're protected by our 30-day money-back guarantee. If you don't see results or feel the course isn't for you, just email us and we'll refund every penny. No questions asked.",
+      a: "At this price, the risk is essentially zero. You spend more than this on food that's part of the problem. What's the cost of staying exactly where you are for another year? And if you don't feel you got your money's worth — just email us within 30 days for a full refund.",
+    },
+    {
+      q: "Maybe I just don't have the willpower.",
+      a: "That's the lie the food industry needs you to believe. Willpower is not the answer — understanding and the right system are. This workshop gives you both.",
+    },
+    {
+      q: `Is a ${PRICE} workshop actually worth anything?`,
+      a: `What's inside would cost you hundreds to assemble separately — a nutritionist session, a therapist appointment, books, documentaries. The price is low on purpose. Not because the content is thin, but because I don't want price to be the reason you stayed stuck. Go through it. If you don't feel you got your money's worth, that says more about me than about you.`,
     },
   ];
 
@@ -1340,58 +1363,67 @@ const FAQ = () => {
   );
 };
 
-/* ───────────────────────── FINAL CTA / PS ───────────────────────── */
+/* ───────────────────────── CLOSING ───────────────────────── */
 const FinalCTA = () => (
-  <section className="py-12 sm:py-20 bg-emerald-600 text-white">
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <h2 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tighter mb-4 sm:mb-6 uppercase italic">
-        Your Metabolism Won't Fix Itself
-      </h2>
-      <p className="text-xl text-emerald-100 mb-4 max-w-2xl mx-auto">
-        Every day you wait, your body stores more fat and your metabolism slows further.
+  <section className="py-20 sm:py-32 bg-gray-950 text-white">
+    <div className="max-w-2xl mx-auto px-4 sm:px-6 text-center">
+
+      {/* Pull quote */}
+      <motion.blockquote
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="text-xl sm:text-2xl md:text-3xl font-bold italic text-white leading-snug mb-12 sm:mb-14"
+      >
+        "Imagine getting dressed in the morning and reaching for the thing you actually want to wear — not the thing that fits."
+      </motion.blockquote>
+
+      {/* Closing paragraphs */}
+      <div className="space-y-5 text-gray-400 text-base sm:text-lg leading-relaxed mb-12 sm:mb-14 text-left">
+        <p>
+          Imagine looking at a photo of yourself and feeling okay. Good, even. Imagine your skin clearing, your energy steady, your sleep deeper. Imagine going a full week without a craving taking over — and realizing that the voice that used to say "you'll fail" has gone quiet.
+        </p>
+        <p>
+          That's what happens when the biology is addressed, not just the willpower. That's what this workshop is designed to start.
+        </p>
+        <p className="text-white font-semibold">
+          And it's {PRICE}. One time. Less than you've spent this week on food that's part of the problem.
+        </p>
+        <p>
+          I priced it this way on purpose — so that price is never the reason you stayed where you are.
+        </p>
+      </div>
+
+      {/* Urgency line */}
+      <p className="text-gray-500 text-xs sm:text-sm uppercase tracking-[0.2em] font-bold mb-7">
+        Every day this stays unsolved is another day of the same cycle. This is the exit.
       </p>
-      <p className="text-lg text-emerald-200 mb-10 max-w-xl mx-auto">
-        For <span className="text-white font-black">$17.97</span>, you get the complete system that 3,000+ people have used to lose weight permanently. Plus a 30-day guarantee.
-      </p>
+
+      {/* CTA */}
       <a
         href={CHECKOUT_URL}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex items-center gap-3 px-10 py-6 bg-white text-emerald-700 font-black text-xl rounded-2xl shadow-2xl hover:scale-105 transition-all uppercase"
+        className="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-10 py-5 bg-emerald-500 hover:bg-emerald-400 text-white font-black text-lg rounded-2xl shadow-2xl shadow-emerald-500/20 hover:-translate-y-1 transition-all mb-4"
       >
-        RESERVE MY SPOT — $17.97
-        <ArrowRight className="w-6 h-6" />
+        Get instant access — {PRICE}
+        <ArrowRight className="w-5 h-5" />
       </a>
-      <p className="mt-6 text-emerald-200 text-sm font-bold">
-        Secure checkout • 30-day money-back guarantee • Lifetime access
+
+      <p className="text-xs text-gray-600 font-bold uppercase tracking-widest flex items-center justify-center gap-2 mb-8">
+        <ShieldCheck className="w-3.5 h-3.5 text-gray-500" />
+        7 videos · bonus guides · one-time payment · instant access · yours forever
       </p>
+
+      <p className="text-gray-500 text-sm italic">
+        The sweets aren't going anywhere. But you don't have to keep losing to them.
+      </p>
+
     </div>
   </section>
 );
 
-const PS = () => (
-  <section className="py-10 sm:py-16 bg-white border-t border-gray-100">
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="bg-gray-50 p-5 sm:p-8 rounded-2xl sm:rounded-3xl border border-gray-100">
-        <h3 className="text-lg font-black text-gray-900 mb-4">P.S. — If you scrolled straight to the bottom:</h3>
-        <p className="text-gray-600 leading-relaxed mb-4 text-sm">
-          Here's the short version: The Forever Method is a 6-lesson science-based program that teaches you why sugar controls you (it's neurobiology, not willpower) and gives you the exact system to break free — permanently.
-        </p>
-        <p className="text-gray-600 leading-relaxed mb-6 text-sm">
-          Right now you can reserve your spot for <span className="font-bold text-gray-900">$17.97</span> instead of the regular price. And if you don't love it, you get every penny back within 30 days. Zero risk.
-        </p>
-        <a
-          href={CHECKOUT_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block w-full py-4 text-center text-lg font-black text-white bg-emerald-600 rounded-2xl hover:bg-emerald-700 transition-all"
-        >
-          Reserve My Spot — $17.97
-        </a>
-      </div>
-    </div>
-  </section>
-);
+const PS = () => null;
 
 /* ───────────────────────── FOOTER ───────────────────────── */
 const Footer = () => (
@@ -1543,7 +1575,7 @@ const ExitIntentPopup = () => {
           Wait — Don't Leave Yet!
         </h3>
         <p className="text-sm sm:text-base text-gray-600 mb-5 sm:mb-6">
-          The pre-launch price of <span className="font-bold text-gray-900">$17.97</span> won't last. Lock in your discount now before it goes up to $97.
+          The price of <span className="font-bold text-gray-900">{PRICE}</span> won't last. Lock in your spot now before it goes up.
         </p>
         <a
           href={CHECKOUT_URL}
@@ -1552,7 +1584,7 @@ const ExitIntentPopup = () => {
           onClick={() => setShow(false)}
           className="block w-full py-3.5 sm:py-4 text-base sm:text-lg font-black text-white bg-emerald-600 rounded-2xl hover:bg-emerald-700 transition-all mb-3 sm:mb-4"
         >
-          RESERVE FOR $17.97
+          RESERVE FOR {PRICE}
         </a>
         <p className="text-[10px] sm:text-xs text-gray-400">30-day money-back guarantee. Zero risk.</p>
       </motion.div>
@@ -1568,16 +1600,15 @@ export default function Landing() {
       <main>
         <Hero />
         <PainSection />
-        <MetabolicQuiz />
-        <Results />
-        <HowItWorks />
+        <RealCostSection />
+        <TheShiftSection />
+        <SimpleTestimonial />
         <CourseInsideSection />
-        <Bio />
-        <Testimonials />
         <Bonuses />
         <FearSection />
-        <Pricing />
+        <Bio />
         <FAQ />
+        <Pricing />
         <FinalCTA />
         <PS />
       </main>
@@ -1592,7 +1623,7 @@ export default function Landing() {
           rel="noopener noreferrer"
           className="w-full py-3.5 bg-emerald-600 text-white font-black text-base rounded-2xl flex items-center justify-center gap-2 shadow-xl shadow-emerald-100 active:scale-95 transition-transform"
         >
-          RESERVE MY SPOT — $17.97
+          RESERVE MY SPOT — {PRICE}
           <ArrowRight className="w-5 h-5" />
         </a>
       </div>
