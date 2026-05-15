@@ -35,17 +35,40 @@ const PRICE = "$8";
 const CONTACT_EMAIL = "krudstina@gmail.com";
 const VSL_URL = "https://youtu.be/HPsy09z0Db0";
 
-/* ───────── YOUTUBE HELPER ───────── */
+/* ───────── VIDEO HELPERS ─────────
+   - If VSL_URL is a YouTube link → embed with clean params.
+   - If VSL_URL is a local path like /vsl.mp4 (or any .mp4/.webm/.mov)
+     → render via native <video> tag for fully branded-free playback. */
+const isSelfHostedVideo = (url: string): boolean =>
+  !!url && (url.startsWith("/") || /\.(mp4|webm|mov|m4v)(\?|$)/i.test(url));
+
 const toYouTubeEmbed = (url: string): string => {
   if (!url) return "";
-  if (url.includes("/embed/")) return url;
-  const shortMatch = url.match(/youtu\.be\/([\w-]+)/);
-  if (shortMatch) return `https://www.youtube.com/embed/${shortMatch[1]}`;
-  const watchMatch = url.match(/[?&]v=([\w-]+)/);
-  if (watchMatch) return `https://www.youtube.com/embed/${watchMatch[1]}`;
-  const shortsMatch = url.match(/\/shorts\/([\w-]+)/);
-  if (shortsMatch) return `https://www.youtube.com/embed/${shortsMatch[1]}`;
-  return url;
+  // Extract video id from any common YouTube URL shape
+  let id: string | null = null;
+  if (url.includes("/embed/")) {
+    const m = url.match(/\/embed\/([\w-]+)/);
+    id = m?.[1] ?? null;
+  } else {
+    const shortMatch = url.match(/youtu\.be\/([\w-]+)/);
+    const watchMatch = url.match(/[?&]v=([\w-]+)/);
+    const shortsMatch = url.match(/\/shorts\/([\w-]+)/);
+    id = shortMatch?.[1] ?? watchMatch?.[1] ?? shortsMatch?.[1] ?? null;
+  }
+  if (!id) return url;
+
+  // Clean embed params:
+  //  modestbranding=1 — hide YouTube logo in control bar
+  //  rel=0           — only show related videos from same channel at end
+  //  iv_load_policy=3 — hide annotations / info cards
+  //  playsinline=1   — iOS plays inline instead of fullscreen
+  //  color=white     — white progress bar (less YouTube red)
+  //  cc_load_policy=0 — don't auto-load captions
+  // NOTE: YouTube removed the ability to hide the video title at top
+  // (showinfo=0 was deprecated in 2018). For a fully clean VSL, set
+  // VSL_URL to a self-hosted .mp4 path like "/vsl.mp4".
+  const params = "modestbranding=1&rel=0&iv_load_policy=3&playsinline=1&color=white&cc_load_policy=0";
+  return `https://www.youtube.com/embed/${id}?${params}`;
 };
 
 /* ───────────────────────── NAVBAR ───────────────────────── */
@@ -156,13 +179,26 @@ const Hero = () => (
 
           <div className="relative aspect-video bg-gray-900 rounded-xl sm:rounded-3xl overflow-hidden shadow-2xl shadow-amber-500/10 border border-gray-800">
             {VSL_URL ? (
-              <iframe
-                src={toYouTubeEmbed(VSL_URL)}
-                title="The Unhooked Method — Watch Why This Works"
-                className="w-full h-full"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowFullScreen
-              />
+              isSelfHostedVideo(VSL_URL) ? (
+                <video
+                  src={VSL_URL}
+                  poster="/vsl-poster.jpg"
+                  controls
+                  playsInline
+                  preload="metadata"
+                  className="w-full h-full bg-black"
+                >
+                  Your browser doesn't support video playback.
+                </video>
+              ) : (
+                <iframe
+                  src={toYouTubeEmbed(VSL_URL)}
+                  title="The Unhooked Method — Walkthrough"
+                  className="w-full h-full"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                />
+              )
             ) : (
               <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-5">
                 <div className="w-16 h-16 sm:w-24 sm:h-24 bg-gradient-to-br from-amber-500 to-amber-700 rounded-full flex items-center justify-center mb-4 sm:mb-5 shadow-2xl shadow-amber-500/30">

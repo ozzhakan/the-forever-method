@@ -53,18 +53,30 @@ interface LessonProgress {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   YOUTUBE HELPER — normalizes any YouTube URL to an embed URL
+   VIDEO HELPERS
+   • YouTube URL → embed URL with clean params (no logo, no related
+     videos, no annotations, plays inline on iOS).
+   • Self-hosted (.mp4/.webm/.mov or path starting with /) → returned
+     as-is so we can render via a native <video> element.
    ═══════════════════════════════════════════════════════════════ */
+const isSelfHostedVideo = (url: string): boolean =>
+  !!url && (url.startsWith("/") || /\.(mp4|webm|mov|m4v)(\?|$)/i.test(url));
+
 const toYouTubeEmbed = (url: string): string => {
   if (!url) return "";
-  if (url.includes("/embed/")) return url;
-  const shortMatch = url.match(/youtu\.be\/([\w-]+)/);
-  if (shortMatch) return `https://www.youtube.com/embed/${shortMatch[1]}`;
-  const watchMatch = url.match(/[?&]v=([\w-]+)/);
-  if (watchMatch) return `https://www.youtube.com/embed/${watchMatch[1]}`;
-  const shortsMatch = url.match(/\/shorts\/([\w-]+)/);
-  if (shortsMatch) return `https://www.youtube.com/embed/${shortsMatch[1]}`;
-  return url;
+  let id: string | null = null;
+  if (url.includes("/embed/")) {
+    const m = url.match(/\/embed\/([\w-]+)/);
+    id = m?.[1] ?? null;
+  } else {
+    const shortMatch = url.match(/youtu\.be\/([\w-]+)/);
+    const watchMatch = url.match(/[?&]v=([\w-]+)/);
+    const shortsMatch = url.match(/\/shorts\/([\w-]+)/);
+    id = shortMatch?.[1] ?? watchMatch?.[1] ?? shortsMatch?.[1] ?? null;
+  }
+  if (!id) return url;
+  const params = "modestbranding=1&rel=0&iv_load_policy=3&playsinline=1&color=white&cc_load_policy=0";
+  return `https://www.youtube.com/embed/${id}?${params}`;
 };
 
 /* ═══════════════════════════════════════════════════════════════
@@ -694,13 +706,25 @@ const LessonView = ({
           <div className="mb-8">
             <div className="aspect-video bg-gray-900 rounded-2xl overflow-hidden relative shadow-lg mb-3">
               {lesson.videoUrl ? (
-                <iframe
-                  src={toYouTubeEmbed(lesson.videoUrl)}
-                  title={lesson.title}
-                  className="w-full h-full"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowFullScreen
-                />
+                isSelfHostedVideo(lesson.videoUrl) ? (
+                  <video
+                    src={lesson.videoUrl}
+                    controls
+                    playsInline
+                    preload="metadata"
+                    className="w-full h-full bg-black"
+                  >
+                    Your browser doesn't support video playback.
+                  </video>
+                ) : (
+                  <iframe
+                    src={toYouTubeEmbed(lesson.videoUrl)}
+                    title={lesson.title}
+                    className="w-full h-full"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                  />
+                )
               ) : (
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
                   <div className="w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center mb-3">
