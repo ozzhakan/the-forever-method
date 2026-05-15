@@ -7,11 +7,44 @@ import {
   ChevronDown,
   CheckCircle2,
   Sparkles,
+  MessageCircle,
+  Brain,
+  Clock,
+  Activity,
+  Building2,
+  Apple,
+  Home,
+  Zap,
+  Target,
+  Flag,
+  Camera,
+  Receipt,
+  Heart,
+  Video,
+  ShieldCheck,
+  Lock,
 } from "lucide-react";
 import { useState } from "react";
 
+/* ───────── CONSTANTS ───────── */
 const CHECKOUT_URL = "https://www.paypal.com/ncp/payment/DQDESNZ9DVQ7G";
-const PRICE = "$8"; // Update PayPal payment link when price changes
+const PRICE = "$8";
+const WHATSAPP_URL = "https://wa.me/31618784896";
+const WHATSAPP_DISPLAY = "+31 6 18784896";
+const VSL_URL = ""; // TODO: paste the VSL YouTube link
+
+/* ───────── YOUTUBE HELPER ───────── */
+const toYouTubeEmbed = (url: string): string => {
+  if (!url) return "";
+  if (url.includes("/embed/")) return url;
+  const shortMatch = url.match(/youtu\.be\/([\w-]+)/);
+  if (shortMatch) return `https://www.youtube.com/embed/${shortMatch[1]}`;
+  const watchMatch = url.match(/[?&]v=([\w-]+)/);
+  if (watchMatch) return `https://www.youtube.com/embed/${watchMatch[1]}`;
+  const shortsMatch = url.match(/\/shorts\/([\w-]+)/);
+  if (shortsMatch) return `https://www.youtube.com/embed/${shortsMatch[1]}`;
+  return url;
+};
 
 /* ───────────────────────── NAVBAR ───────────────────────── */
 const Navbar = () => {
@@ -31,8 +64,8 @@ const Navbar = () => {
           </div>
 
           <div className="hidden md:flex items-center gap-6">
-            <a href="#what-you-get" className="text-sm font-semibold text-gray-600 hover:text-emerald-700 transition-colors">What you get</a>
-            <a href="#inside" className="text-sm font-semibold text-gray-600 hover:text-emerald-700 transition-colors">Inside</a>
+            <a href="#mechanism" className="text-sm font-semibold text-gray-600 hover:text-emerald-700 transition-colors">How it works</a>
+            <a href="#curriculum" className="text-sm font-semibold text-gray-600 hover:text-emerald-700 transition-colors">Curriculum</a>
             <a href="#about" className="text-sm font-semibold text-gray-600 hover:text-emerald-700 transition-colors">About Kristina</a>
             <a
               href={CHECKOUT_URL}
@@ -40,15 +73,11 @@ const Navbar = () => {
               rel="noopener noreferrer"
               className="px-5 py-2 text-sm font-bold text-white bg-emerald-600 rounded-full hover:bg-emerald-700 transition-colors shadow-md shadow-emerald-100"
             >
-              Get it — {PRICE}
+              Get instant access — {PRICE}
             </a>
           </div>
 
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden text-gray-900 p-2"
-            aria-label="Toggle menu"
-          >
+          <button onClick={() => setIsOpen(!isOpen)} className="md:hidden text-gray-900 p-2" aria-label="Toggle menu">
             {isOpen ? <X /> : <Menu />}
           </button>
         </div>
@@ -62,8 +91,8 @@ const Navbar = () => {
             exit={{ opacity: 0, height: 0 }}
             className="md:hidden bg-white border-b border-gray-100 px-4 py-5 overflow-hidden space-y-3"
           >
-            <a href="#what-you-get" onClick={() => setIsOpen(false)} className="block text-base font-semibold text-gray-900">What you get</a>
-            <a href="#inside" onClick={() => setIsOpen(false)} className="block text-base font-semibold text-gray-900">Inside</a>
+            <a href="#mechanism" onClick={() => setIsOpen(false)} className="block text-base font-semibold text-gray-900">How it works</a>
+            <a href="#curriculum" onClick={() => setIsOpen(false)} className="block text-base font-semibold text-gray-900">Curriculum</a>
             <a href="#about" onClick={() => setIsOpen(false)} className="block text-base font-semibold text-gray-900">About Kristina</a>
             <a
               href={CHECKOUT_URL}
@@ -72,7 +101,7 @@ const Navbar = () => {
               onClick={() => setIsOpen(false)}
               className="block w-full text-center py-3 text-base font-bold text-white bg-emerald-600 rounded-xl mt-2"
             >
-              Get the workshop — {PRICE}
+              Get instant access — {PRICE}
             </a>
           </motion.div>
         )}
@@ -81,127 +110,360 @@ const Navbar = () => {
   );
 };
 
-/* ───────────────────────── HERO ───────────────────────── */
+/* ───────────────────────── HERO + VSL ───────────────────────── */
 const Hero = () => (
-  <section className="pt-32 sm:pt-40 pb-24 sm:pb-32 bg-gray-950 relative overflow-hidden">
-    {/* Background decoration */}
+  <section className="pt-28 sm:pt-36 pb-20 sm:pb-24 bg-gray-950 relative overflow-hidden">
+    {/* Background accents */}
     <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_0%,rgba(16,185,129,0.12),transparent)]" />
-    <div className="absolute top-40 left-1/4 w-64 h-64 bg-emerald-500/10 rounded-full blur-[120px]" />
-    <div className="absolute top-60 right-1/4 w-80 h-80 bg-emerald-700/10 rounded-full blur-[120px]" />
+    <div className="absolute top-32 left-1/4 w-72 h-72 bg-emerald-500/10 rounded-full blur-[120px]" />
+    <div className="absolute top-52 right-1/4 w-80 h-80 bg-emerald-700/10 rounded-full blur-[120px]" />
     <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-gray-700/60 to-transparent" />
 
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 relative z-10 text-center">
-      <motion.div
-        initial={{ opacity: 0, y: 24 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7 }}
-      >
-        {/* Eyebrow with decorative rules */}
-        <div className="flex items-center justify-center gap-3 mb-8 sm:mb-10">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 relative z-10">
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="text-center">
+
+        {/* Eyebrow */}
+        <div className="flex items-center justify-center gap-3 mb-6 sm:mb-8">
           <div className="h-px w-8 bg-emerald-500/60" />
           <span className="text-[10px] sm:text-[11px] font-bold text-emerald-400 uppercase tracking-[0.3em]">
-            The Sugar Freedom Workshop
+            The Sugar Freedom Workshop · By Kristina Oz
           </span>
           <div className="h-px w-8 bg-emerald-500/60" />
         </div>
 
-        {/* Headline */}
-        <h1 className="text-[2.5rem] leading-[1.02] sm:text-6xl md:text-7xl font-black text-white tracking-tight mb-8 sm:mb-10">
-          Your complete roadmap<br className="hidden sm:block" />{" "}
-          to ending{" "}
-          <span className="italic text-emerald-400">sugar addiction.</span>
+        {/* Headline — descriptive, concrete */}
+        <h1 className="text-[2.4rem] leading-[1.05] sm:text-5xl md:text-6xl font-black text-white tracking-tight mb-6 sm:mb-7">
+          End sugar and food addiction —<br className="hidden sm:block" />{" "}
+          <span className="italic text-emerald-400">without willpower or restriction.</span>
         </h1>
 
-        {/* Subtitle */}
-        <p className="text-gray-400 text-base sm:text-lg md:text-xl leading-relaxed mb-10 sm:mb-12 max-w-2xl mx-auto">
-          Seven in-depth videos that walk you through the full picture —
-          <span className="text-white font-semibold"> nutrition, psychology, behavior, and the food industry</span> — plus
-          four bonus guides. Ten years of work with sugar and food addiction,
-          in one place, in the right order.
+        {/* Subheadline — direct info */}
+        <p className="text-gray-400 text-base sm:text-lg leading-relaxed mb-10 sm:mb-12 max-w-3xl mx-auto">
+          A <span className="text-white font-semibold">9-module video workshop</span> built from ten years of clinical work. Neuroscience,
+          endocrinology, food industry history, and a complete framework — plus{" "}
+          <span className="text-white font-semibold">two private WhatsApp intermissions</span> where Kristina reviews your kitchen photos and
+          grocery receipt personally. <span className="text-white font-semibold">{PRICE} · yours forever.</span>
         </p>
 
-        {/* Topic chips — subtle badge row */}
-        <div className="flex flex-wrap items-center justify-center gap-2 mb-10 sm:mb-12">
-          {["Neuroscience", "Nutrition", "Emotional Eating", "Behavior Change", "Food Industry"].map((t, i) => (
-            <span
-              key={i}
-              className="px-3 py-1 text-[10px] sm:text-[11px] font-bold text-gray-400 bg-gray-900/80 border border-gray-800 rounded-full tracking-wide"
-            >
-              {t}
-            </span>
-          ))}
-        </div>
-
-        {/* Price */}
-        <div className="flex items-baseline justify-center gap-3 mb-3">
-          <span className="text-5xl sm:text-6xl font-black text-white tracking-tight">
-            {PRICE}
-          </span>
-          <span className="text-gray-500 text-sm">one-time</span>
-        </div>
-
-        <p className="text-xs text-gray-500 mb-10 sm:mb-12 tracking-wide">
-          Instant access · Yours forever
-        </p>
-
-        {/* CTA */}
-        <a
-          href={CHECKOUT_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2.5 px-10 sm:px-12 py-5 text-base sm:text-lg font-bold text-white bg-emerald-500 hover:bg-emerald-400 rounded-full shadow-2xl shadow-emerald-500/25 hover:-translate-y-0.5 transition-all"
+        {/* VSL Video Player */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.97 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.7, delay: 0.2 }}
+          className="relative mb-8 sm:mb-10"
         >
-          Get the workshop
-          <ArrowRight className="w-5 h-5" />
-        </a>
+          {/* Frame glow */}
+          <div className="absolute -inset-3 sm:-inset-4 bg-gradient-to-br from-emerald-500/30 via-emerald-600/20 to-emerald-500/30 rounded-3xl blur-2xl" />
 
-        <p className="mt-6 text-[10px] sm:text-[11px] text-gray-500 font-semibold uppercase tracking-[0.2em]">
-          7 videos · 15–20 min each · 4 bonus guides · yours forever
-        </p>
+          <div className="relative aspect-video bg-gray-900 rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl shadow-emerald-500/10 border border-gray-800">
+            {VSL_URL ? (
+              <iframe
+                src={toYouTubeEmbed(VSL_URL)}
+                title="The Sugar Freedom Workshop — Watch Why This Works"
+                className="w-full h-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+              />
+            ) : (
+              <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
+                <div className="w-20 h-20 sm:w-24 sm:h-24 bg-emerald-600/90 rounded-full flex items-center justify-center mb-5 shadow-2xl shadow-emerald-500/30">
+                  <Video className="w-9 h-9 sm:w-11 sm:h-11 text-white ml-1" />
+                </div>
+                <span className="text-white text-base sm:text-lg font-bold mb-2">Watch the 4-minute walkthrough</span>
+                <span className="text-gray-400 text-xs sm:text-sm max-w-md">
+                  Kristina explains what the workshop covers, who it's for, and why it works.
+                </span>
+              </div>
+            )}
+          </div>
+        </motion.div>
+
+        {/* CTA below VSL */}
+        <div className="flex flex-col items-center">
+          <a
+            href={CHECKOUT_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2.5 px-10 sm:px-12 py-5 text-base sm:text-lg font-bold text-white bg-emerald-500 hover:bg-emerald-400 rounded-full shadow-2xl shadow-emerald-500/25 hover:-translate-y-0.5 transition-all"
+          >
+            Get instant access — {PRICE}
+            <ArrowRight className="w-5 h-5" />
+          </a>
+          <div className="mt-5 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[11px] sm:text-xs text-gray-500 font-semibold">
+            <div className="flex items-center gap-1.5">
+              <Lock className="w-3.5 h-3.5" />
+              Secure checkout (PayPal)
+            </div>
+            <span className="text-gray-700">·</span>
+            <div className="flex items-center gap-1.5">
+              <ShieldCheck className="w-3.5 h-3.5" />
+              30-day refund — just email
+            </div>
+            <span className="text-gray-700">·</span>
+            <div className="flex items-center gap-1.5">
+              <Clock className="w-3.5 h-3.5" />
+              Instant access
+            </div>
+          </div>
+        </div>
       </motion.div>
     </div>
   </section>
 );
 
-/* ───────────────────────── OPENING NOTE ───────────────────────── */
-const OpeningNote = () => (
-  <section className="py-24 sm:py-32 bg-white">
-    <div className="max-w-xl mx-auto px-4 sm:px-6">
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-80px" }}
-      >
-        <div className="flex items-center gap-3 mb-8">
-          <div className="h-px w-8 bg-gray-300" />
-          <p className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.3em]">
-            Why this exists
-          </p>
-        </div>
-        <div className="space-y-6 text-gray-700 text-[17px] sm:text-lg leading-relaxed">
-          <p>
-            Most advice on sugar is partial. <span className="text-gray-900 font-semibold">"Use willpower." "Cut it cold turkey." "Try intermittent fasting."</span> Each
-            works for some people, but most miss that sugar addiction has three
-            layers — what you eat, how you feel, and what you do — and all three
-            need to be addressed at once.
-          </p>
-          <p>
-            I've spent the last ten years on this. First as someone who couldn't
-            stop. Then as a nutritionist, working with clients on the same
-            problem from every angle.
-          </p>
-          <p className="text-gray-900 font-semibold">
-            This workshop is everything I wish someone had handed me on day
-            one. A complete roadmap — not a teaser, not a taste. The whole
-            picture, in sequence.
-          </p>
-        </div>
-      </motion.div>
-    </div>
-  </section>
-);
+/* ─────────── THE 3-LAYER MECHANISM ─────────── */
+const Mechanism = () => {
+  const layers = [
+    {
+      num: "01",
+      label: "Dopamine",
+      icon: Brain,
+      headline: "Your brain learns to want it.",
+      body: "Sugar triggers a dopamine release far larger than natural rewards. Receptors downregulate — you need more for the same effect, and everything slower feels flat.",
+    },
+    {
+      num: "02",
+      label: "Conditioning",
+      icon: Clock,
+      headline: "Context fires the craving — before any hunger.",
+      body: "Like Pavlov's dogs. 3pm. The drive home. A specific emotional state. Your brain learned to associate them with sugar — and now the bell rings on schedule.",
+    },
+    {
+      num: "03",
+      label: "Amplifiers",
+      icon: Activity,
+      headline: "Your body sends false hunger signals.",
+      body: "Vagus nerve sensors detect hidden sugar and demand more. Insulin overshoots after refined carbs, glucose drops below baseline, your brain reads it as an emergency.",
+    },
+  ];
 
-/* ───────────────────────── WHAT YOU'LL WALK AWAY WITH ───────────────────────── */
+  return (
+    <section id="mechanism" className="py-24 sm:py-32 bg-white relative overflow-hidden">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-emerald-50/40 rounded-full blur-3xl pointer-events-none" />
+
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
+        {/* Header */}
+        <div className="text-center mb-16 sm:mb-20 max-w-2xl mx-auto">
+          <div className="inline-flex items-center gap-3 mb-5">
+            <div className="h-px w-8 bg-emerald-500" />
+            <span className="text-[10px] sm:text-[11px] font-bold text-emerald-700 uppercase tracking-[0.3em]">
+              The mechanism
+            </span>
+            <div className="h-px w-8 bg-emerald-500" />
+          </div>
+          <h2 className="text-3xl sm:text-5xl font-black text-gray-900 leading-[1.1] tracking-tight mb-5">
+            Sugar addiction isn't one problem.<br />
+            <span className="text-emerald-600">It's three — firing at once.</span>
+          </h2>
+          <p className="text-gray-600 text-base sm:text-lg leading-relaxed">
+            Most programs address one layer — the food, or the mindset, or the behavior. That's why they stop working. This workshop addresses all three, in sequence.
+          </p>
+        </div>
+
+        {/* Layer cards */}
+        <div className="grid sm:grid-cols-3 gap-5 sm:gap-6 mb-12 sm:mb-16">
+          {layers.map((layer, i) => {
+            const Icon = layer.icon;
+            return (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.5, delay: i * 0.08 }}
+                className="relative bg-white border border-gray-200 rounded-3xl p-7 sm:p-8 hover:shadow-xl hover:border-emerald-200 hover:-translate-y-1 transition-all"
+              >
+                {/* Number */}
+                <div className="absolute -top-4 left-7 sm:left-8 text-7xl sm:text-8xl font-black text-emerald-100 leading-none tabular-nums select-none">
+                  {layer.num}
+                </div>
+
+                <div className="relative">
+                  {/* Icon */}
+                  <div className="w-12 h-12 bg-emerald-100 rounded-2xl flex items-center justify-center mb-5 shadow-sm">
+                    <Icon className="w-6 h-6 text-emerald-700" />
+                  </div>
+
+                  {/* Label */}
+                  <div className="text-[10px] font-black text-emerald-700 uppercase tracking-[0.25em] mb-3">
+                    {layer.label}
+                  </div>
+
+                  {/* Headline */}
+                  <h3 className="text-lg sm:text-xl font-black text-gray-900 leading-snug tracking-tight mb-3">
+                    {layer.headline}
+                  </h3>
+
+                  {/* Body */}
+                  <p className="text-gray-600 text-sm sm:text-[15px] leading-relaxed">
+                    {layer.body}
+                  </p>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
+
+        {/* Closing line */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="max-w-3xl mx-auto text-center"
+        >
+          <p className="text-base sm:text-lg text-gray-700 leading-relaxed">
+            <span className="text-gray-900 font-semibold">You weren't fighting yourself.</span> You were fighting three biological systems at once,
+            in an environment engineered to keep all three active. Now you'll see exactly how — and exactly what to do about it.
+          </p>
+        </motion.div>
+      </div>
+    </section>
+  );
+};
+
+/* ─────────── CURRICULUM PATH — 9 modules + 2 intermissions ─────────── */
+const Curriculum = () => {
+  type CurriculumEntry =
+    | { kind: "intro"; num: string; title: string; desc: string; icon: typeof Heart }
+    | { kind: "module"; num: string; title: string; desc: string; icon: typeof Heart }
+    | { kind: "intermission"; num: string; title: string; desc: string; icon: typeof Camera };
+
+  const entries: CurriculumEntry[] = [
+    { kind: "intro", num: "00", title: "Welcome + My Story", desc: "What this course is. What it isn't. And the ten-year arc that led to building it.", icon: Sparkles },
+    { kind: "module", num: "01", title: "You Are Not Broken", desc: "Food addiction is a clinically defined condition affecting roughly 1 in 5 people — and it skews higher in women. The Yale Food Addiction Scale, the bliss point, and why willpower was always the wrong tool.", icon: Heart },
+    { kind: "module", num: "02", title: "What's Happening In Your Brain", desc: "The three layers behind every craving — dopamine, conditioning, and the physiological amplifiers (vagus nerve, insulin crash). In plain language.", icon: Brain },
+    { kind: "intermission", num: "i1", title: "Intermission 1 — Your Kitchen", desc: "Take three photos and send them to Kristina on WhatsApp. She reads every one personally and writes back with two or three specific things she notices in your real environment.", icon: Camera },
+    { kind: "module", num: "03", title: "Who Built This Environment", desc: "The 1967 Sugar Research Foundation. The corruption of US dietary guidelines. The bliss point and the billion-dollar engineering that followed. Anger redirected.", icon: Building2 },
+    { kind: "module", num: "04", title: "What Ultra-Processed Food Is Doing To You", desc: "The specific cascade — visceral fat, insulin resistance, hormonal disruption, glycation, gut microbiome damage. Not theory. Your body. And what's reversible.", icon: Activity },
+    { kind: "intermission", num: "i2", title: "Intermission 2 — Your Receipt", desc: "Send Kristina a photo of your next grocery receipt. In 30 seconds she'll see what would take a week of food journaling to surface — and write back with two or three specific swaps.", icon: Receipt },
+    { kind: "module", num: "05", title: "The Food Framework", desc: "The first part of the solution. Protein as foundation, fat as fuel, whole foods, and an honest conversation about flexibility (why the 80/20 rule is dangerous for real food addiction).", icon: Apple },
+    { kind: "module", num: "06", title: "Environment & Operating System", desc: "Your home isn't neutral. The buying principle. Pre-decided if-then rules. The allergy line. The crab basket effect. How to design around your neurology instead of against it.", icon: Home },
+    { kind: "module", num: "07", title: "When The Craving Hits", desc: "Five tools for the moments that still come — the sparkling water protocol, naming the source, the notes dump, environment shifts, and the if-then protocol.", icon: Zap },
+    { kind: "module", num: "08", title: "Values & The Long Game", desc: "What makes recovery permanent. The identity-level shift. Why removing sugar leaves a dopamine gap — and what to fill it with.", icon: Target },
+    { kind: "module", num: "09", title: "What Comes Next", desc: "The one commitment you take forward. And the single sentence that, if you remember nothing else, holds the whole course.", icon: Flag },
+  ];
+
+  return (
+    <section id="curriculum" className="py-24 sm:py-32 bg-gray-950 text-white relative overflow-hidden">
+      <div className="absolute top-1/3 right-0 w-96 h-96 bg-emerald-600/10 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-700/10 rounded-full blur-[120px] pointer-events-none" />
+
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 relative z-10">
+        {/* Header */}
+        <div className="text-center mb-16 sm:mb-20">
+          <div className="inline-flex items-center gap-3 mb-5">
+            <div className="h-px w-8 bg-emerald-500/60" />
+            <span className="text-[10px] sm:text-[11px] font-bold text-emerald-400 uppercase tracking-[0.3em]">
+              The full curriculum
+            </span>
+            <div className="h-px w-8 bg-emerald-500/60" />
+          </div>
+          <h2 className="text-3xl sm:text-5xl font-black text-white leading-[1.1] tracking-tight mb-5">
+            9 modules. 2 intermissions.<br />
+            <span className="text-emerald-400">Every layer covered.</span>
+          </h2>
+          <p className="text-gray-400 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto">
+            Watch in an evening, or space it across two weeks. Yours forever — revisit any module whenever you need it.
+          </p>
+        </div>
+
+        {/* Path */}
+        <div className="relative">
+          {/* Vertical connector line */}
+          <div className="absolute left-[19px] sm:left-7 top-3 bottom-3 w-px bg-gradient-to-b from-emerald-500/40 via-emerald-500/20 to-transparent" />
+
+          <div className="space-y-3 sm:space-y-4">
+            {entries.map((entry, i) => {
+              const Icon = entry.icon;
+              const isIntermission = entry.kind === "intermission";
+
+              return (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -16 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, margin: "-40px" }}
+                  transition={{ duration: 0.4, delay: i * 0.04 }}
+                  className="relative flex gap-4 sm:gap-6"
+                >
+                  {/* Node */}
+                  <div className="relative z-10 flex-shrink-0">
+                    <div className={`w-10 h-10 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center shadow-lg ${
+                      isIntermission
+                        ? "bg-emerald-500 shadow-emerald-500/40 ring-4 ring-emerald-500/10"
+                        : "bg-gray-800 border border-gray-700 shadow-gray-900/50"
+                    }`}>
+                      <Icon className={`w-4 h-4 sm:w-6 sm:h-6 ${isIntermission ? "text-white" : "text-emerald-400"}`} />
+                    </div>
+                  </div>
+
+                  {/* Content */}
+                  <div className={`flex-1 min-w-0 rounded-2xl p-5 sm:p-6 border transition-colors ${
+                    isIntermission
+                      ? "bg-emerald-500/[0.04] border-emerald-500/30"
+                      : "bg-gray-900/40 border-gray-800 hover:border-gray-700"
+                  }`}>
+                    <div className="flex items-center gap-2.5 mb-2">
+                      <span className={`text-[10px] sm:text-[11px] font-black tabular-nums tracking-[0.2em] uppercase ${
+                        isIntermission ? "text-emerald-400" : "text-gray-500"
+                      }`}>
+                        {isIntermission ? "Intermission" : `Module ${entry.num}`}
+                      </span>
+                      {isIntermission && (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-emerald-500/20 border border-emerald-500/40 rounded-full">
+                          <MessageCircle className="w-2.5 h-2.5 text-emerald-300" />
+                          <span className="text-[9px] font-black text-emerald-300 uppercase tracking-wider">WhatsApp</span>
+                        </span>
+                      )}
+                    </div>
+                    <h3 className={`text-base sm:text-lg font-bold leading-snug mb-2 ${
+                      isIntermission ? "text-white" : "text-white"
+                    }`}>
+                      {entry.title}
+                    </h3>
+                    <p className={`text-sm leading-relaxed ${
+                      isIntermission ? "text-emerald-50/80" : "text-gray-400"
+                    }`}>
+                      {entry.desc}
+                    </p>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Bonus extras callout */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mt-12 sm:mt-14 p-6 sm:p-7 bg-gray-900/40 border border-gray-800 rounded-2xl"
+        >
+          <div className="flex items-center gap-3 mb-4">
+            <Sparkles className="w-4 h-4 text-emerald-400" />
+            <span className="text-[10px] font-black text-emerald-400 uppercase tracking-[0.25em]">Plus 4 bonus guides</span>
+          </div>
+          <div className="grid sm:grid-cols-2 gap-3 sm:gap-x-6 sm:gap-y-3">
+            {[
+              "Eating through your menstrual cycle",
+              "The 50+ hidden names of sugar",
+              "The truth about fructose",
+              "A curated listening list (Huberman, Lustig, the documentary worth your hour)",
+            ].map((b, i) => (
+              <div key={i} className="flex items-start gap-2.5">
+                <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
+                <span className="text-sm text-gray-300">{b}</span>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+};
+
+/* ─────────── BENEFITS — what you walk away with ─────────── */
 const Benefits = () => {
   const items = [
     {
@@ -227,12 +489,10 @@ const Benefits = () => {
   ];
 
   return (
-    <section id="what-you-get" className="py-24 sm:py-36 bg-gray-50 relative overflow-hidden">
-      {/* Soft accent */}
+    <section className="py-24 sm:py-32 bg-gray-50 relative overflow-hidden">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-emerald-100/40 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 relative z-10">
-        {/* Header */}
         <div className="text-center mb-16 sm:mb-20">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-emerald-200 rounded-full mb-6 shadow-sm">
             <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
@@ -242,12 +502,10 @@ const Benefits = () => {
           </div>
           <h2 className="text-3xl sm:text-5xl font-black text-gray-900 leading-[1.1] tracking-tight max-w-2xl mx-auto">
             Five things that{" "}
-            <span className="text-emerald-600">won't leave you</span> when
-            the workshop ends.
+            <span className="text-emerald-600">won't leave you</span> when the workshop ends.
           </h2>
         </div>
 
-        {/* Benefit cards */}
         <div className="space-y-5 sm:space-y-6">
           {items.map((item, i) => (
             <motion.article
@@ -279,166 +537,10 @@ const Benefits = () => {
   );
 };
 
-/* ───────────────────────── WHAT'S INSIDE ───────────────────────── */
-const WhatsInside = () => {
-  const videos = [
-    {
-      num: "01",
-      title: "Why this workshop exists",
-      desc: "What's in it, how to use it, and what to expect. The map before the territory.",
-    },
-    {
-      num: "02",
-      title: "How sugar hijacks your brain",
-      desc: "The part of this that's neurochemical — dopamine, the reward loop, and why 'just stop' has never been realistic advice.",
-    },
-    {
-      num: "03",
-      title: "The bliss point",
-      desc: "How modern food is deliberately engineered to be hard to put down — and why understanding this changes every supermarket trip you take after.",
-    },
-    {
-      num: "04",
-      title: "What excess sugar actually does",
-      desc: "To your energy, skin, sleep, hormones, and weight. The mechanism behind each — not just the outcome.",
-    },
-    {
-      num: "05",
-      title: "The nutritional piece",
-      desc: "What to eat instead, why it works, and how to build plates that make cravings quieter over weeks, not days.",
-    },
-    {
-      num: "06",
-      title: "The psychological piece",
-      desc: "Emotional eating, the craving loop, shame spirals — and the specific tools that interrupt each.",
-    },
-    {
-      num: "07",
-      title: "Making it stick",
-      desc: "Why motivation fails and what replaces it. Identity, environment, and the quiet work of rebuilding self-trust.",
-    },
-  ];
-
-  return (
-    <section id="inside" className="py-24 sm:py-32 bg-gray-950 text-white relative overflow-hidden">
-      <div className="absolute top-1/3 right-0 w-96 h-96 bg-emerald-600/10 rounded-full blur-[120px] pointer-events-none" />
-
-      <div className="max-w-2xl mx-auto px-4 sm:px-6 relative z-10">
-        <div className="mb-12 sm:mb-14">
-          <div className="flex items-center gap-3 mb-5">
-            <div className="h-px w-8 bg-emerald-500/60" />
-            <p className="text-[10px] font-bold text-emerald-400 uppercase tracking-[0.3em]">
-              Inside the workshop
-            </p>
-          </div>
-          <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-[1.1] mb-5">
-            Seven videos.<br />
-            <span className="text-emerald-400">In the right order.</span>
-          </h2>
-          <p className="text-gray-400 text-base sm:text-lg leading-relaxed max-w-lg">
-            Each video is 15–20 minutes. You can do the whole thing in an evening,
-            or space it out over a week. Yours forever — revisit any section
-            whenever you need it.
-          </p>
-        </div>
-
-        <div className="rounded-2xl border border-gray-800 overflow-hidden divide-y divide-gray-800 bg-gray-900/30 backdrop-blur">
-          {videos.map((v, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, x: -8 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.05, duration: 0.4 }}
-              className="flex gap-5 sm:gap-7 p-5 sm:p-6 hover:bg-gray-800/40 transition-colors group"
-            >
-              <span className="text-emerald-500 font-bold text-xs tabular-nums pt-1 flex-shrink-0 w-6 group-hover:text-emerald-400 transition-colors">
-                {v.num}
-              </span>
-              <div>
-                <h3 className="text-white font-semibold text-sm sm:text-base mb-1.5 leading-snug">
-                  {v.title}
-                </h3>
-                <p className="text-gray-500 text-sm leading-relaxed">{v.desc}</p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
-
-/* ───────────────────────── BONUSES ───────────────────────── */
-const Bonuses = () => {
-  const items = [
-    {
-      title: "Eating through your cycle",
-      desc: "Foods and nutrients matched to each phase of your menstrual cycle. Your body's needs change every week — almost no one talks about this.",
-    },
-    {
-      title: "The hidden names of sugar",
-      desc: "The fifty-plus names sugar goes by on food labels. A reference you'll actually use at the supermarket.",
-    },
-    {
-      title: "The truth about fructose",
-      desc: "Why fruit sugar and added fructose behave completely differently in the body — and why the distinction matters.",
-    },
-    {
-      title: "A curated listening list",
-      desc: "Huberman on dopamine, Lustig on sugar, and the one documentary worth an hour of your time. The best of what's out there, already sorted.",
-    },
-  ];
-
-  return (
-    <section className="py-24 sm:py-32 bg-white">
-      <div className="max-w-2xl mx-auto px-4 sm:px-6">
-        <div className="flex items-center gap-3 mb-5">
-          <div className="h-px w-8 bg-gray-300" />
-          <p className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.3em]">
-            Also included
-          </p>
-        </div>
-        <h2 className="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight leading-tight mb-4">
-          Four bonus guides.
-        </h2>
-        <p className="text-gray-500 text-base sm:text-lg leading-relaxed mb-10 sm:mb-12">
-          Short, practical, and made to live alongside the videos.
-        </p>
-
-        <div>
-          {items.map((b, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 8 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.05 }}
-              className="flex gap-4 py-5 border-b border-gray-100 last:border-0"
-            >
-              <div className="flex-shrink-0 pt-1">
-                <div className="w-6 h-6 bg-emerald-100 rounded-full flex items-center justify-center">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-700" />
-                </div>
-              </div>
-              <div>
-                <h3 className="font-bold text-gray-900 text-base sm:text-lg leading-snug mb-1.5">
-                  {b.title}
-                </h3>
-                <p className="text-gray-500 text-sm sm:text-[15px] leading-relaxed">{b.desc}</p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
-
-/* ───────────────────────── ABOUT KRISTINA ───────────────────────── */
+/* ─────────── ABOUT KRISTINA ─────────── */
 const About = () => (
-  <section id="about" className="py-24 sm:py-32 bg-gray-50 relative overflow-hidden">
-    <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-100/30 rounded-full blur-3xl pointer-events-none" />
+  <section id="about" className="py-24 sm:py-32 bg-white relative overflow-hidden">
+    <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-50/40 rounded-full blur-3xl pointer-events-none" />
 
     <div className="max-w-3xl mx-auto px-4 sm:px-6 relative z-10">
       <div className="flex flex-col md:flex-row gap-10 md:gap-14 items-start">
@@ -469,28 +571,23 @@ const About = () => (
           </p>
           <div className="space-y-5 text-gray-700 text-[15px] sm:text-base leading-relaxed">
             <p>
-              I didn't come to this work as an academic. I came to it as someone
-              who couldn't stop eating sugar — who had tried every approach the
-              internet offered and quietly concluded that something was wrong
-              with me.
+              I didn't come to this work as an academic. I came to it as someone who couldn't stop eating sugar — through ten
+              years of bulimia, compulsive bingeing, and regular relapses that no diet, no exercise plan, and no
+              psychologist could touch.
             </p>
             <p>
-              The turning point wasn't a single diet or a lucky week. It was
-              understanding the mechanism. What sugar does to the brain, why
-              every meal either helps or hurts, and why behavior is downstream
-              of biology.
+              The turning point wasn't a new rule or a stricter plan. It was understanding the mechanism. What sugar
+              does to the brain. Why every meal either helps or hurts. Why behavior is downstream of biology.
             </p>
             <p>
-              Ten years of reading, studying, coaching clients, and rebuilding
-              my own relationship with food later, I've got a clear picture of
-              what actually helps. This workshop is that picture, condensed
-              into seven videos.
+              Today my relationship with food is free. I don't restrict — yet 95% of the time I naturally choose
+              whole food, because the craving and dependency are simply gone. This workshop is the condensed map of
+              what got me here.
             </p>
             <div className="mt-7 pl-5 border-l-2 border-emerald-500">
               <p className="text-gray-600 italic text-[15px] sm:text-base leading-relaxed">
-                "I priced it this way on purpose. I don't want money to be the
-                reason someone stays stuck in a fight they never needed to be in
-                alone."
+                "I priced it this way on purpose. I don't want money to be the reason someone stays stuck in a fight they never
+                needed to be in alone."
               </p>
               <p className="mt-3 text-[10px] font-bold text-emerald-700 uppercase tracking-[0.2em]">
                 — Kristina
@@ -503,16 +600,36 @@ const About = () => (
   </section>
 );
 
-/* ───────────────────────── PRICE + CTA ───────────────────────── */
-const PriceBlock = () => (
-  <section className="py-24 sm:py-32 bg-gray-950 text-white relative overflow-hidden">
-    <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_50%,rgba(16,185,129,0.1),transparent)]" />
-    <div className="absolute top-1/2 left-0 w-96 h-96 bg-emerald-700/10 rounded-full blur-[120px] -translate-y-1/2" />
-    <div className="absolute top-1/2 right-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-[120px] -translate-y-1/2" />
+/* ─────────── OFFER STACK — click-funnel pricing block ─────────── */
+const OfferStack = () => (
+  <section id="pricing" className="py-24 sm:py-32 bg-gray-950 text-white relative overflow-hidden">
+    <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_50%,rgba(16,185,129,0.12),transparent)]" />
+    <div className="absolute top-1/2 left-0 w-96 h-96 bg-emerald-700/15 rounded-full blur-[120px] -translate-y-1/2" />
+    <div className="absolute top-1/2 right-0 w-96 h-96 bg-emerald-500/15 rounded-full blur-[120px] -translate-y-1/2" />
 
-    <div className="max-w-md mx-auto px-4 sm:px-6 relative z-10">
-      <div className="bg-white rounded-3xl p-8 sm:p-10 text-center shadow-2xl shadow-emerald-500/10 border border-gray-100">
-        <div className="flex items-center justify-center gap-2 mb-6">
+    <div className="max-w-2xl mx-auto px-4 sm:px-6 relative z-10">
+      {/* Header */}
+      <div className="text-center mb-10 sm:mb-12">
+        <div className="inline-flex items-center gap-3 mb-5">
+          <div className="h-px w-8 bg-emerald-500/60" />
+          <span className="text-[10px] sm:text-[11px] font-bold text-emerald-400 uppercase tracking-[0.3em]">
+            The offer
+          </span>
+          <div className="h-px w-8 bg-emerald-500/60" />
+        </div>
+        <h2 className="text-3xl sm:text-5xl font-black text-white leading-[1.1] tracking-tight">
+          Everything you need to end<br />sugar and food addiction.
+        </h2>
+      </div>
+
+      {/* Offer card */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="bg-white rounded-3xl p-7 sm:p-10 shadow-2xl shadow-emerald-500/10 border border-gray-100"
+      >
+        <div className="flex items-center justify-center gap-2 mb-7">
           <div className="h-px w-6 bg-emerald-500/60" />
           <p className="text-[10px] font-bold text-emerald-700 uppercase tracking-[0.3em]">
             The Sugar Freedom Workshop
@@ -520,51 +637,91 @@ const PriceBlock = () => (
           <div className="h-px w-6 bg-emerald-500/60" />
         </div>
 
-        {/* What's bundled */}
-        <ul className="text-left space-y-2.5 mb-8 pb-8 border-b border-gray-100">
+        {/* What's included — explicit stack */}
+        <ul className="space-y-3.5 mb-8">
           {[
-            "7 in-depth videos (15–20 min each)",
-            "4 bonus guides",
-            "Instant access · yours forever",
-            "Watch at your own pace, revisit anytime",
+            { strong: "9 in-depth video modules", rest: "(nutrition, psychology, behavior, food industry — full curriculum)" },
+            { strong: "2 private WhatsApp intermissions", rest: "with Kristina (kitchen audit + grocery receipt review)" },
+            { strong: "Welcome + My Story intro videos" },
+            { strong: "4 bonus guides", rest: "(cycle eating, hidden sugar names, fructose truth, listening list)" },
+            { strong: "Instant access", rest: "· watch at your own pace" },
+            { strong: "Yours forever", rest: "· no subscription, no recurring charges" },
           ].map((line, i) => (
-            <li key={i} className="flex items-start gap-2.5 text-gray-700 text-sm">
-              <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" />
-              <span>{line}</span>
+            <li key={i} className="flex items-start gap-3 text-gray-700 text-[15px] leading-relaxed">
+              <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5" />
+              <span>
+                <span className="font-bold text-gray-900">{line.strong}</span>
+                {line.rest && <span className="text-gray-600"> {line.rest}</span>}
+              </span>
             </li>
           ))}
         </ul>
 
-        {/* Price */}
-        <div className="flex items-baseline justify-center gap-2 mb-2">
-          <span className="text-6xl sm:text-7xl font-black text-gray-900 tracking-tight">
-            {PRICE}
-          </span>
+        {/* Divider */}
+        <div className="border-t border-gray-100 pt-7 text-center">
+          <p className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.25em] mb-2">Today's price</p>
+          <div className="flex items-baseline justify-center gap-2 mb-1">
+            <span className="text-6xl sm:text-7xl font-black text-gray-900 tracking-tight">{PRICE}</span>
+          </div>
+          <p className="text-sm text-gray-500 mb-7">One-time payment · No subscription</p>
+
+          {/* CTA */}
+          <a
+            href={CHECKOUT_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center gap-2 w-full py-5 text-base sm:text-lg font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-full transition-all shadow-xl shadow-emerald-200 hover:-translate-y-0.5 mb-5"
+          >
+            Get instant access
+            <ArrowRight className="w-5 h-5" />
+          </a>
+
+          {/* Trust line */}
+          <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[11px] sm:text-xs text-gray-500 font-semibold">
+            <div className="flex items-center gap-1.5">
+              <Lock className="w-3.5 h-3.5" />
+              Secure checkout
+            </div>
+            <span className="text-gray-300">·</span>
+            <div className="flex items-center gap-1.5">
+              <ShieldCheck className="w-3.5 h-3.5" />
+              30-day refund — just email
+            </div>
+            <span className="text-gray-300">·</span>
+            <div className="flex items-center gap-1.5">
+              <Clock className="w-3.5 h-3.5" />
+              Instant access
+            </div>
+          </div>
         </div>
-        <p className="text-sm text-gray-500 mb-8 tracking-wide">
-          One-time payment · No subscription
-        </p>
+      </motion.div>
 
-        <a
-          href={CHECKOUT_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center justify-center gap-2 w-full py-5 text-base font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-full transition-all shadow-lg shadow-emerald-200 hover:-translate-y-0.5 mb-5"
-        >
-          Get the workshop
-          <ArrowRight className="w-4 h-4" />
-        </a>
-
-        <p className="text-xs text-gray-500 leading-relaxed">
-          30-day refund if it's not useful to you. No forms, no hoops.
-          Just email.
-        </p>
-      </div>
+      {/* WhatsApp note */}
+      <motion.a
+        href={WHATSAPP_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        initial={{ opacity: 0, y: 16 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="mt-6 flex items-start gap-4 p-5 bg-gray-900/60 border border-gray-800 rounded-2xl hover:border-emerald-500/40 transition-colors group"
+      >
+        <div className="w-10 h-10 bg-emerald-600 rounded-xl flex items-center justify-center flex-shrink-0">
+          <MessageCircle className="w-5 h-5 text-white" />
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="text-sm font-bold text-white mb-1">Questions before you buy?</p>
+          <p className="text-xs sm:text-sm text-gray-400 leading-relaxed">
+            Message Kristina directly on WhatsApp — <span className="text-emerald-400 font-semibold">{WHATSAPP_DISPLAY}</span>. She reads every message herself.
+          </p>
+        </div>
+        <ArrowRight className="w-5 h-5 text-gray-500 group-hover:text-emerald-400 transition-colors flex-shrink-0 mt-1" />
+      </motion.a>
     </div>
   </section>
 );
 
-/* ───────────────────────── FAQ ───────────────────────── */
+/* ─────────── FAQ ─────────── */
 const FAQ = () => {
   const [open, setOpen] = useState<number | null>(0);
   const faqs = [
@@ -574,7 +731,11 @@ const FAQ = () => {
     },
     {
       q: "How long does it take?",
-      a: "Seven videos, 15–20 minutes each. About two hours of core content, plus the bonus guides. You can do the whole workshop in an evening or space it out over a week. Access is permanent, so you can revisit any section whenever you need it.",
+      a: "Nine modules of in-depth video plus two intermissions. About two to three hours of core content depending on pace, spread however you like — one evening, one week, or two weeks. Access is permanent, so you can revisit any module whenever you need it.",
+    },
+    {
+      q: "What are the 'WhatsApp intermissions'?",
+      a: `Twice during the course, Kristina asks you to send her photos directly — one of your kitchen, and one of your next grocery receipt. She reads every one personally on WhatsApp (${WHATSAPP_DISPLAY}) and writes back with two or three specific things she notices. No team, no chatbot. This is the part of the course that doesn't scale.`,
     },
     {
       q: "How is this different from other things I've tried?",
@@ -586,27 +747,30 @@ const FAQ = () => {
     },
     {
       q: `Why only ${PRICE}?`,
-      a: "Because I want it to be accessible. This is the condensed, focused version of what I teach — not the whole of my work, but a genuinely complete roadmap on this specific topic. If it's useful and you want to go deeper later, there's more. If it's all you ever need, that's great too.",
+      a: "Because I want it to be accessible. This is a focused, complete roadmap on this specific topic — and I don't want price to be the reason someone stays stuck. If it's useful and you want to go deeper later, there's more. If it's all you ever need, that's great too.",
     },
     {
       q: "What's not in here?",
-      a: "There's no meal plan, no tracker app, no group coaching, no live calls. It's a self-paced workshop — videos and guides you go through on your own schedule. If you need a more hands-on program, this isn't it.",
+      a: "There's no meal plan, no tracker app, no group coaching, no live calls. It's a self-paced workshop — videos and guides you go through on your own schedule, plus the two personal WhatsApp check-ins. If you need a more hands-on program, this isn't it.",
     },
   ];
 
   return (
     <section className="py-24 sm:py-32 bg-white">
       <div className="max-w-2xl mx-auto px-4 sm:px-6">
-        <div className="flex items-center gap-3 mb-5">
-          <div className="h-px w-8 bg-gray-300" />
-          <p className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.3em]">
-            FAQ
-          </p>
+        <div className="text-center mb-12 sm:mb-14">
+          <div className="inline-flex items-center gap-3 mb-5">
+            <div className="h-px w-8 bg-gray-300" />
+            <p className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.3em]">
+              FAQ
+            </p>
+            <div className="h-px w-8 bg-gray-300" />
+          </div>
+          <h2 className="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight leading-tight">
+            Honest answers<br />
+            to fair questions.
+          </h2>
         </div>
-        <h2 className="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight leading-tight mb-10 sm:mb-12">
-          Honest answers<br />
-          to fair questions.
-        </h2>
         <div className="space-y-2">
           {faqs.map((faq, i) => (
             <div
@@ -649,9 +813,38 @@ const FAQ = () => {
   );
 };
 
-/* ───────────────────────── FOOTER ───────────────────────── */
+/* ─────────── FINAL CTA ─────────── */
+const FinalCTA = () => (
+  <section className="py-24 sm:py-32 bg-gray-50 relative overflow-hidden">
+    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-emerald-100/50 rounded-full blur-3xl pointer-events-none" />
+
+    <div className="max-w-2xl mx-auto px-4 sm:px-6 text-center relative z-10">
+      <h2 className="text-3xl sm:text-5xl font-black text-gray-900 leading-[1.1] tracking-tight mb-6">
+        You can keep fighting it.<br />
+        <span className="text-emerald-600">Or you can finally understand it.</span>
+      </h2>
+      <p className="text-gray-600 text-base sm:text-lg leading-relaxed mb-10 max-w-xl mx-auto">
+        Nine modules. Two WhatsApp intermissions. A complete framework. {PRICE}. Yours forever.
+      </p>
+      <a
+        href={CHECKOUT_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center gap-3 px-10 sm:px-12 py-5 text-base sm:text-lg font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-full shadow-xl shadow-emerald-200 hover:-translate-y-0.5 transition-all"
+      >
+        Get instant access — {PRICE}
+        <ArrowRight className="w-5 h-5" />
+      </a>
+      <p className="mt-5 text-xs text-gray-500">
+        30-day refund · instant access · message Kristina on WhatsApp any time
+      </p>
+    </div>
+  </section>
+);
+
+/* ─────────── FOOTER ─────────── */
 const Footer = () => (
-  <footer className="py-10 bg-gray-50 border-t border-gray-100">
+  <footer className="py-10 bg-white border-t border-gray-100">
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
         <div className="flex items-center gap-2">
@@ -662,12 +855,23 @@ const Footer = () => (
             The Forever Method
           </span>
         </div>
-        <a
-          href="mailto:krudstina@gmail.com"
-          className="text-sm text-gray-500 hover:text-emerald-600 transition-colors"
-        >
-          krudstina@gmail.com
-        </a>
+        <div className="flex items-center gap-5 text-sm text-gray-500">
+          <a
+            href={WHATSAPP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1.5 hover:text-emerald-600 transition-colors"
+          >
+            <MessageCircle className="w-4 h-4" />
+            <span>{WHATSAPP_DISPLAY}</span>
+          </a>
+          <a
+            href="mailto:krudstina@gmail.com"
+            className="hover:text-emerald-600 transition-colors"
+          >
+            krudstina@gmail.com
+          </a>
+        </div>
       </div>
       <div className="mt-6 pt-6 border-t border-gray-100 text-xs text-gray-400 text-center">
         Made with <span className="text-red-500">♥</span> in the Netherlands
@@ -683,13 +887,13 @@ export default function Landing() {
       <Navbar />
       <main>
         <Hero />
-        <OpeningNote />
+        <Mechanism />
+        <Curriculum />
         <Benefits />
-        <WhatsInside />
-        <Bonuses />
         <About />
-        <PriceBlock />
+        <OfferStack />
         <FAQ />
+        <FinalCTA />
       </main>
       <Footer />
 
@@ -701,7 +905,7 @@ export default function Landing() {
           rel="noopener noreferrer"
           className="w-full py-3.5 bg-emerald-600 text-white font-bold text-[15px] rounded-full flex items-center justify-center gap-2 shadow-lg shadow-emerald-200 active:scale-95 transition-transform"
         >
-          Get the workshop — {PRICE}
+          Get instant access — {PRICE}
           <ArrowRight className="w-4 h-4" />
         </a>
       </div>
