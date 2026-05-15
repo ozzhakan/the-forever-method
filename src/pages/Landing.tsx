@@ -33,7 +33,7 @@ import { useState } from "react";
 const CHECKOUT_URL = "https://www.paypal.com/ncp/payment/DQDESNZ9DVQ7G";
 const PRICE = "$8";
 const CONTACT_EMAIL = "krudstina@gmail.com";
-const VSL_URL = ""; // TODO: paste the VSL YouTube link
+const VSL_URL = "https://youtu.be/HPsy09z0Db0";
 
 /* ───────── YOUTUBE HELPER ───────── */
 const toYouTubeEmbed = (url: string): string => {
