@@ -110,7 +110,7 @@ const LESSONS: LessonDef[] = [
     title: "Module 1: You Are Not Broken",
     subtitle: "Food addiction is real, measurable, and not a personal failing",
     duration: "",
-    videoUrl: "", // TODO: paste YouTube link
+    videoUrl: "https://youtu.be/pYI7_YrqDgI",
     comingSoon: false,
     requiresVideo: true,
     resources: [
@@ -124,7 +124,7 @@ const LESSONS: LessonDef[] = [
     title: "Module 2: What's Happening In Your Brain",
     subtitle: "The three layers behind every craving",
     duration: "",
-    videoUrl: "", // TODO: paste YouTube link
+    videoUrl: "https://youtu.be/1n-tj1ooQlU",
     comingSoon: false,
     requiresVideo: true,
     resources: [
@@ -150,7 +150,7 @@ const LESSONS: LessonDef[] = [
     title: "Module 3: Who Built This Environment",
     subtitle: "The difficulty you've experienced was never accidental",
     duration: "",
-    videoUrl: "", // TODO: paste YouTube link
+    videoUrl: "https://youtu.be/tCP6nPLhd8M",
     comingSoon: false,
     requiresVideo: true,
     resources: [
@@ -163,7 +163,7 @@ const LESSONS: LessonDef[] = [
     title: "Module 4: What This Stuff Is Doing To You",
     subtitle: "Not 'sugar is bad' — the specific cascade, in your body",
     duration: "",
-    videoUrl: "", // TODO: paste YouTube link
+    videoUrl: "https://youtu.be/hSxLGKJAFn0",
     comingSoon: false,
     requiresVideo: true,
     resources: [
@@ -189,7 +189,7 @@ const LESSONS: LessonDef[] = [
     title: "Module 5: The Food Framework",
     subtitle: "The first part of the solution — replacement, not restriction",
     duration: "",
-    videoUrl: "", // TODO: paste YouTube link
+    videoUrl: "https://youtu.be/CUdOG9A-LH0",
     comingSoon: false,
     requiresVideo: true,
     resources: [
@@ -203,7 +203,7 @@ const LESSONS: LessonDef[] = [
     title: "Module 6: Environment & Operating System",
     subtitle: "Knowing what to eat is only half the battle",
     duration: "",
-    videoUrl: "", // TODO: paste YouTube link
+    videoUrl: "https://youtu.be/EqnIT1KCv2U",
     comingSoon: false,
     requiresVideo: true,
     resources: [
@@ -216,7 +216,7 @@ const LESSONS: LessonDef[] = [
     title: "Module 7: When The Craving Hits",
     subtitle: "Five tools for the moments that still come",
     duration: "",
-    videoUrl: "", // TODO: paste YouTube link
+    videoUrl: "https://youtu.be/2ULSUD8KyOs",
     comingSoon: false,
     requiresVideo: true,
     resources: [
@@ -229,7 +229,7 @@ const LESSONS: LessonDef[] = [
     title: "Module 8: Values & The Long Game",
     subtitle: "What makes recovery permanent",
     duration: "",
-    videoUrl: "", // TODO: paste YouTube link
+    videoUrl: "https://youtu.be/11vHVDzPjGk",
     comingSoon: false,
     requiresVideo: true,
     resources: [
@@ -242,7 +242,7 @@ const LESSONS: LessonDef[] = [
     title: "Module 9: What Comes Next",
     subtitle: "What you built — and the one thing to carry forward",
     duration: "",
-    videoUrl: "", // TODO: paste YouTube link
+    videoUrl: "https://youtu.be/8UCmgqFY1z8",
     comingSoon: false,
     requiresVideo: true,
     resources: [
