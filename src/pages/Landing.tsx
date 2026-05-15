@@ -25,6 +25,7 @@ import {
   Lock,
   PenLine,
   Eye,
+  GraduationCap,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -69,6 +70,7 @@ const Navbar = () => {
             <a href="#journey" className="text-sm font-semibold text-gray-600 hover:text-amber-700 transition-colors">The Journey</a>
             <a href="#curriculum" className="text-sm font-semibold text-gray-600 hover:text-amber-700 transition-colors">Curriculum</a>
             <a href="#about" className="text-sm font-semibold text-gray-600 hover:text-amber-700 transition-colors">About</a>
+            <a href="#credentials" className="text-sm font-semibold text-gray-600 hover:text-amber-700 transition-colors">Credentials</a>
             <a
               href={CHECKOUT_URL}
               target="_blank"
@@ -97,6 +99,7 @@ const Navbar = () => {
             <a href="#journey" onClick={() => setIsOpen(false)} className="block text-base font-semibold text-gray-900 py-1">The Journey</a>
             <a href="#curriculum" onClick={() => setIsOpen(false)} className="block text-base font-semibold text-gray-900 py-1">Curriculum</a>
             <a href="#about" onClick={() => setIsOpen(false)} className="block text-base font-semibold text-gray-900 py-1">About</a>
+            <a href="#credentials" onClick={() => setIsOpen(false)} className="block text-base font-semibold text-gray-900 py-1">Credentials</a>
             <a
               href={CHECKOUT_URL}
               target="_blank"
@@ -686,6 +689,102 @@ const About = () => (
   </section>
 );
 
+/* ─────────── CREDENTIALS — formal training proof ─────────── */
+const Credentials = () => {
+  const certs = [
+    {
+      image: "/cert-wageningen.png",
+      year: "2023",
+      title: "Professional Certificate in Food, Nutrition and Health",
+      institution: "Wageningen University & Research",
+      via: "via WageningenX · edX",
+    },
+    {
+      image: "/cert-stanford.png",
+      year: "2023",
+      title: "Stanford Introduction to Food and Health",
+      institution: "Stanford University · School of Medicine",
+      via: "via Stanford Online · Coursera",
+    },
+  ];
+
+  return (
+    <section id="credentials" className="py-20 sm:py-32 bg-white relative overflow-hidden">
+      <div className="absolute top-0 right-0 w-96 h-96 bg-amber-50/60 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-amber-50/60 rounded-full blur-3xl pointer-events-none" />
+
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
+        {/* Header */}
+        <div className="text-center mb-12 sm:mb-16 max-w-2xl mx-auto">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-amber-50 border border-amber-200 rounded-full mb-5 sm:mb-6 shadow-sm">
+            <GraduationCap className="w-3.5 h-3.5 text-amber-700" />
+            <span className="text-[10px] sm:text-[11px] font-bold text-amber-800 uppercase tracking-[0.2em]">
+              Formal training
+            </span>
+          </div>
+          <h2 className="text-[1.7rem] sm:text-5xl font-black text-gray-900 leading-[1.1] tracking-tight mb-5 px-2 sm:px-0">
+            Backed by training from<br className="hidden sm:block" />{" "}
+            <span className="text-amber-700">leading institutions.</span>
+          </h2>
+          <p className="text-gray-600 text-[15px] sm:text-lg leading-relaxed px-2 sm:px-0">
+            Kristina's clinical understanding is grounded in formal education from Wageningen University and Stanford — not internet credentials.
+          </p>
+        </div>
+
+        {/* Certificate cards */}
+        <div className="grid sm:grid-cols-2 gap-5 sm:gap-7 max-w-4xl mx-auto">
+          {certs.map((cert, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.5, delay: i * 0.1 }}
+              className="bg-white border border-gray-200 rounded-2xl sm:rounded-3xl p-3 sm:p-4 hover:shadow-xl hover:border-amber-200 hover:-translate-y-1 transition-all"
+            >
+              {/* Certificate image */}
+              <div className="rounded-xl sm:rounded-2xl overflow-hidden bg-gray-50 border border-gray-100 mb-4 sm:mb-5">
+                <img
+                  src={cert.image}
+                  alt={`${cert.institution} — ${cert.title}`}
+                  className="w-full h-auto block"
+                  loading="lazy"
+                />
+              </div>
+
+              {/* Caption */}
+              <div className="px-2 sm:px-3 pb-2 sm:pb-3">
+                <div className="text-[10px] font-bold text-amber-700 uppercase tracking-[0.22em] mb-2">
+                  Issued {cert.year}
+                </div>
+                <h3 className="text-[15px] sm:text-lg font-bold text-gray-900 leading-snug tracking-tight mb-1.5">
+                  {cert.title}
+                </h3>
+                <p className="text-[13px] sm:text-sm text-gray-700 font-semibold leading-relaxed">
+                  {cert.institution}
+                </p>
+                <p className="text-[11px] sm:text-xs text-gray-400 mt-0.5">
+                  {cert.via}
+                </p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Closing note */}
+        <motion.p
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mt-10 sm:mt-12 text-center text-gray-500 text-[13px] sm:text-sm max-w-2xl mx-auto px-2"
+        >
+          Plus ten years of lived recovery and one-on-one work with clients on the same problem. The course is the distilled overlap of all three.
+        </motion.p>
+      </div>
+    </section>
+  );
+};
+
 /* ─────────── OFFER STACK — click-funnel pricing block ─────────── */
 const OfferStack = () => (
   <section id="pricing" className="py-20 sm:py-32 bg-gray-950 text-white relative overflow-hidden">
@@ -967,6 +1066,7 @@ export default function Landing() {
         <Curriculum />
         <Benefits />
         <About />
+        <Credentials />
         <OfferStack />
         <FAQ />
         <FinalCTA />

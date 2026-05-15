@@ -86,7 +86,7 @@ const LESSONS: LessonDef[] = [
     title: "Module 0: Welcome",
     subtitle: "What this course actually is — and what it isn't",
     duration: "",
-    videoUrl: "", // TODO: paste YouTube link
+    videoUrl: "https://youtu.be/e2n6_KN92-o",
     comingSoon: false,
     requiresVideo: true,
     resources: [
@@ -98,7 +98,7 @@ const LESSONS: LessonDef[] = [
     title: "My Story",
     subtitle: "Ten years of disordered eating — and what finally changed it",
     duration: "",
-    videoUrl: "", // TODO: paste YouTube link
+    videoUrl: "https://youtu.be/7pl8K_CxSWE",
     comingSoon: false,
     requiresVideo: true,
     resources: [
