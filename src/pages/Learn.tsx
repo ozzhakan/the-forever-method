@@ -588,16 +588,21 @@ const TaskDisplay = ({ resource, isIntermission }: { resource: LessonResource; i
       </p>
 
       {isIntermission ? (
-        <a
-          href={WHATSAPP_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-6 sm:mt-7 flex sm:inline-flex items-center justify-center gap-2 w-full sm:w-auto px-5 py-3.5 bg-gradient-to-br from-amber-600 to-amber-800 text-white font-bold text-[13.5px] sm:text-sm rounded-full hover:from-amber-700 hover:to-amber-900 transition-all shadow-md shadow-amber-300/40"
-        >
-          <MessageCircle className="w-4 h-4 flex-shrink-0" />
-          <span className="truncate">Send on WhatsApp · {WHATSAPP_DISPLAY}</span>
-          <ArrowRight className="w-4 h-4 flex-shrink-0" />
-        </a>
+        <div className="mt-6 sm:mt-7">
+          <a
+            href={WHATSAPP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex sm:inline-flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3.5 bg-gradient-to-br from-amber-600 to-amber-800 text-white font-bold text-sm rounded-full hover:from-amber-700 hover:to-amber-900 transition-all shadow-md shadow-amber-300/40"
+          >
+            <MessageCircle className="w-4 h-4 flex-shrink-0" />
+            <span>Send on WhatsApp</span>
+            <ArrowRight className="w-4 h-4 flex-shrink-0" />
+          </a>
+          <p className="mt-3 text-[11px] sm:text-xs text-amber-800/70 text-center sm:text-left">
+            Opens WhatsApp with Kristina · {WHATSAPP_DISPLAY}
+          </p>
+        </div>
       ) : (
         <p className="mt-6 pt-6 border-t border-amber-100/70 text-xs text-amber-800/80 leading-relaxed">
           Do this on your own — there's nothing to submit here. If you'd like Kristina's eyes on it, message her on WhatsApp.
@@ -757,12 +762,14 @@ const LessonView = ({
                 Next Lesson <ArrowRight className="w-5 h-5" />
               </button>
             ) : (
-              <div className="flex items-center gap-2 px-6 py-3 bg-gray-100 text-gray-400 font-bold text-sm rounded-xl">
-                <Lock className="w-4 h-4" />
-                {LESSONS[LESSONS.findIndex((l) => l.id === lesson.id) + 1]?.comingSoon
-                  ? "Next lesson coming soon"
-                  : "Mark the video as watched to continue"
-                }
+              <div className="flex items-center gap-2 px-4 sm:px-5 py-3 bg-gray-100 text-gray-500 font-bold text-[12.5px] sm:text-sm rounded-xl">
+                <Lock className="w-4 h-4 flex-shrink-0" />
+                <span className="leading-tight">
+                  {LESSONS[LESSONS.findIndex((l) => l.id === lesson.id) + 1]?.comingSoon
+                    ? "Next lesson coming soon"
+                    : "Watch the video to continue"
+                  }
+                </span>
               </div>
             )
           )}
