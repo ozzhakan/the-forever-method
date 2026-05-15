@@ -621,11 +621,7 @@ const TaskDisplay = ({ resource, isIntermission }: { resource: LessonResource; i
             Opens WhatsApp with Kristina · {WHATSAPP_DISPLAY}
           </p>
         </div>
-      ) : (
-        <p className="mt-6 pt-6 border-t border-amber-100/70 text-xs text-amber-800/80 leading-relaxed">
-          Do this on your own — there's nothing to submit here. If you'd like Kristina's eyes on it, message her on WhatsApp.
-        </p>
-      )}
+      ) : null}
     </div>
   </article>
 );
