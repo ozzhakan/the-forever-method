@@ -480,7 +480,7 @@ const WelcomeScreen = ({ onStart }: { onStart: () => void }) => (
           <div className="flex-1 min-w-0">
             <h3 className="font-black text-[15px] sm:text-lg mb-1 sm:mb-1.5 leading-snug">Message me directly any time.</h3>
             <p className="text-amber-50 text-[13px] sm:text-sm leading-relaxed mb-4">
-              No team, no chatbot. If you've got a question, a realization, or you just want to share what came up — message me on WhatsApp.
+              If you've got a question, a realization, or you just want to share what came up — message me on WhatsApp.
             </p>
             <a
               href={WHATSAPP_URL}
@@ -631,36 +631,6 @@ const TaskDisplay = ({ resource, isIntermission }: { resource: LessonResource; i
 );
 
 /* ═══════════════════════════════════════════════════════════════
-   WHATSAPP CALLOUT — footer of every lesson
-   ═══════════════════════════════════════════════════════════════ */
-const WhatsAppCallout = () => (
-  <a
-    href={WHATSAPP_URL}
-    target="_blank"
-    rel="noopener noreferrer"
-    className="block bg-gradient-to-br from-gray-50 to-amber-50/40 rounded-2xl border border-gray-100 p-5 sm:p-6 hover:border-amber-200 hover:shadow-sm transition-all group"
-  >
-    <div className="flex items-start gap-4">
-      <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-amber-700 rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm shadow-amber-200/50">
-        <MessageCircle className="w-5 h-5 text-white" />
-      </div>
-      <div className="flex-1 min-w-0">
-        <div className="text-sm font-bold text-gray-900 mb-1">
-          Got a question? Message Kristina directly.
-        </div>
-        <p className="text-xs sm:text-sm text-gray-600 leading-relaxed mb-2.5">
-          No team, no chatbot — she reads every message herself.
-        </p>
-        <div className="inline-flex items-center gap-1.5 text-amber-700 text-sm font-bold group-hover:gap-2.5 transition-all">
-          Open WhatsApp · {WHATSAPP_DISPLAY}
-          <ArrowRight className="w-4 h-4" />
-        </div>
-      </div>
-    </div>
-  </a>
-);
-
-/* ═══════════════════════════════════════════════════════════════
    LESSON VIEW
    ═══════════════════════════════════════════════════════════════ */
 const LessonView = ({
@@ -772,11 +742,6 @@ const LessonView = ({
             })}
           </div>
         )}
-
-        {/* WhatsApp callout — always at bottom */}
-        <div className="mb-8">
-          <WhatsAppCallout />
-        </div>
 
         {/* Navigation — stacks on mobile, row on desktop */}
         <div className="border-t border-gray-100 pt-6 flex flex-col-reverse sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
@@ -923,16 +888,6 @@ export default function Learn() {
           <div className="flex-1 min-w-0">
             <h2 className="text-sm font-bold text-gray-900 truncate">{activeLesson.title}</h2>
           </div>
-          <a
-            href={WHATSAPP_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-1.5 bg-amber-50 hover:bg-amber-100 px-3 py-1.5 rounded-full transition-colors"
-          >
-            <MessageCircle className="w-3.5 h-3.5 text-amber-700" />
-            <span className="text-xs font-bold text-amber-700 hidden sm:inline">Message Kristina</span>
-            <span className="text-xs font-bold text-amber-700 sm:hidden">Chat</span>
-          </a>
         </div>
 
         {/* Content */}
