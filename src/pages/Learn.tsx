@@ -8,6 +8,7 @@ import {
   Flame,
   ArrowRight,
   ArrowLeft,
+  ArrowUp,
   BookOpen,
   PenLine,
   Video,
@@ -75,7 +76,12 @@ const toYouTubeEmbed = (url: string): string => {
     id = shortMatch?.[1] ?? watchMatch?.[1] ?? shortsMatch?.[1] ?? null;
   }
   if (!id) return url;
-  const params = "modestbranding=1&rel=0&iv_load_policy=3&playsinline=1&color=white&cc_load_policy=0";
+  // modestbranding=1 — hide YT logo • rel=0 — only same-channel related at end
+  // iv_load_policy=3 — hide annotations/cards • playsinline=1 — iOS inline play
+  // color=white — white progress bar • cc_load_policy=0 — no auto captions
+  // disablekb=1 — disable keyboard shortcuts (no accidental skips)
+  // (showinfo was removed by YouTube in 2018; title still shows on hover.)
+  const params = "modestbranding=1&rel=0&iv_load_policy=3&playsinline=1&color=white&cc_load_policy=0&disablekb=1";
   return `https://www.youtube.com/embed/${id}?${params}`;
 };
 
@@ -737,14 +743,17 @@ const LessonView = ({
             </div>
             {!prog.videoWatched ? (
               <button
+                data-mark-watched
                 onClick={() => onUpdate({ videoWatched: true })}
-                className="w-full py-3 bg-gray-900 text-white font-bold text-sm rounded-xl hover:bg-gray-800 transition-colors flex items-center justify-center gap-2"
+                className="w-full py-4 sm:py-5 bg-gradient-to-br from-amber-500 to-amber-700 hover:from-amber-600 hover:to-amber-800 text-white font-black text-[14px] sm:text-base rounded-2xl transition-all shadow-lg shadow-amber-300/40 hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2.5 uppercase tracking-[0.08em]"
               >
-                <Eye className="w-4 h-4" /> I've watched this video ✓
+                <Eye className="w-5 h-5" />
+                I've watched this — mark complete
               </button>
             ) : (
-              <div className="flex items-center justify-center gap-2 text-amber-600 text-sm font-bold py-2">
-                <CheckCircle2 className="w-4 h-4" /> Video watched
+              <div className="flex items-center justify-center gap-2.5 text-amber-800 font-bold py-3.5 px-4 bg-amber-50 border border-amber-200 rounded-2xl text-[14px] sm:text-[15px]">
+                <CheckCircle2 className="w-5 h-5 text-amber-700 flex-shrink-0" />
+                Marked as watched — next module unlocked below
               </div>
             )}
           </div>
@@ -769,32 +778,50 @@ const LessonView = ({
           <WhatsAppCallout />
         </div>
 
-        {/* Navigation */}
-        <div className="border-t border-gray-100 pt-6 flex items-center gap-4">
+        {/* Navigation — stacks on mobile, row on desktop */}
+        <div className="border-t border-gray-100 pt-6 flex flex-col-reverse sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
           {hasPrev && (
-            <button onClick={onPrev} className="flex items-center gap-2 px-5 py-3 text-sm font-bold text-gray-500 hover:text-gray-700 transition-colors">
+            <button
+              onClick={onPrev}
+              className="flex items-center justify-center sm:justify-start gap-2 px-5 py-3 text-sm font-bold text-gray-500 hover:text-gray-700 transition-colors"
+            >
               <ArrowLeft className="w-4 h-4" /> Previous
             </button>
           )}
-          <div className="flex-1" />
+          <div className="hidden sm:block flex-1" />
           {hasNext && (
             nextAccessible ? (
               <button
                 onClick={onNext}
-                className="flex items-center gap-2 px-6 sm:px-7 py-4 bg-gradient-to-br from-amber-600 to-amber-800 text-white font-black text-[13px] sm:text-sm rounded-xl shadow-lg shadow-amber-300/40 hover:from-amber-700 hover:to-amber-900 transition-all uppercase tracking-wider"
+                className="flex items-center justify-center gap-2 px-6 sm:px-7 py-4 bg-gradient-to-br from-amber-600 to-amber-800 text-white font-black text-[13px] sm:text-sm rounded-xl shadow-lg shadow-amber-300/40 hover:from-amber-700 hover:to-amber-900 transition-all uppercase tracking-wider"
               >
                 Next Lesson <ArrowRight className="w-5 h-5" />
               </button>
-            ) : (
-              <div className="flex items-center gap-2 px-4 sm:px-5 py-3 bg-gray-100 text-gray-500 font-bold text-[12.5px] sm:text-sm rounded-xl">
+            ) : LESSONS[LESSONS.findIndex((l) => l.id === lesson.id) + 1]?.comingSoon ? (
+              <div className="flex items-center justify-center gap-2 px-4 sm:px-5 py-3 bg-gray-100 text-gray-500 font-bold text-[12.5px] sm:text-sm rounded-xl">
                 <Lock className="w-4 h-4 flex-shrink-0" />
-                <span className="leading-tight">
-                  {LESSONS[LESSONS.findIndex((l) => l.id === lesson.id) + 1]?.comingSoon
-                    ? "Next lesson coming soon"
-                    : "Watch the video to continue"
-                  }
-                </span>
+                <span className="leading-tight">Next lesson coming soon</span>
               </div>
+            ) : (
+              <button
+                onClick={() => {
+                  const btn = document.querySelector<HTMLElement>('[data-mark-watched]');
+                  if (btn) {
+                    btn.scrollIntoView({ behavior: "smooth", block: "center" });
+                    btn.animate(
+                      [
+                        { boxShadow: "0 0 0 0 rgba(245, 158, 11, 0.6)" },
+                        { boxShadow: "0 0 0 14px rgba(245, 158, 11, 0)" },
+                      ],
+                      { duration: 900, iterations: 2 }
+                    );
+                  }
+                }}
+                className="flex items-center justify-center gap-2 px-4 sm:px-5 py-3 bg-amber-50 hover:bg-amber-100 border-2 border-amber-300 text-amber-900 font-bold text-[13px] sm:text-sm rounded-xl transition-all group"
+              >
+                <ArrowUp className="w-4 h-4 flex-shrink-0 group-hover:-translate-y-0.5 transition-transform" />
+                Mark as watched to unlock
+              </button>
             )
           )}
         </div>
