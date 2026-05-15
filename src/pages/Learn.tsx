@@ -68,7 +68,7 @@ const toYouTubeEmbed = (url: string): string => {
 };
 
 /* ═══════════════════════════════════════════════════════════════
-   COURSE DATA — The Forever Method (9 modules + 2 intermissions)
+   COURSE DATA — The Unhooked Method (9 modules + 2 intermissions)
    To publish a video: paste its YouTube link into `videoUrl`.
    ═══════════════════════════════════════════════════════════════ */
 const LESSONS: LessonDef[] = [
@@ -313,11 +313,11 @@ const Sidebar = ({
       <div className="p-5 border-b border-gray-100">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 bg-emerald-600 rounded-lg flex items-center justify-center">
+            <div className="w-7 h-7 bg-gradient-to-br from-amber-500 to-amber-700 rounded-lg flex items-center justify-center shadow-sm shadow-amber-200/60">
               <Flame className="text-white w-4 h-4" />
             </div>
             <span className="font-black text-sm tracking-tight text-gray-900">
-              The Forever Method
+              The Unhooked Method
             </span>
           </div>
           <button onClick={onClose} className="lg:hidden p-1 text-gray-400 hover:text-gray-600">
@@ -326,11 +326,11 @@ const Sidebar = ({
         </div>
         <div className="mb-2 flex items-center justify-between text-[10px] font-bold text-gray-400 uppercase tracking-widest">
           <span>{completedCount}/{availableCount} completed</span>
-          <span className="text-emerald-600">{pct}%</span>
+          <span className="text-amber-600">{pct}%</span>
         </div>
         <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
           <motion.div
-            className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full"
+            className="h-full bg-gradient-to-r from-amber-500 to-amber-400 rounded-full"
             animate={{ width: `${pct}%` }}
             transition={{ duration: 0.5 }}
           />
@@ -348,8 +348,8 @@ const Sidebar = ({
           let StatusIcon = Circle;
           let iconColor = "text-gray-300";
           if (locked) { StatusIcon = Lock; iconColor = "text-gray-200"; }
-          else if (prog.completed) { StatusIcon = CheckCircle2; iconColor = "text-emerald-500"; }
-          else if (isActive) { iconColor = "text-emerald-600"; }
+          else if (prog.completed) { StatusIcon = CheckCircle2; iconColor = "text-amber-500"; }
+          else if (isActive) { iconColor = "text-amber-600"; }
 
           return (
             <div key={lesson.id} className="relative group">
@@ -357,14 +357,14 @@ const Sidebar = ({
                 onClick={() => accessible && onSelect(lesson.id)}
                 disabled={!accessible}
                 className={`w-full text-left px-5 py-3 flex items-start gap-3 transition-colors ${
-                  isActive ? "bg-emerald-50 border-r-2 border-emerald-600"
+                  isActive ? "bg-amber-50 border-r-2 border-amber-600"
                   : locked ? "opacity-50 cursor-not-allowed"
                   : "hover:bg-gray-50 cursor-pointer"
                 }`}
               >
                 <StatusIcon className={`w-5 h-5 flex-shrink-0 mt-0.5 ${iconColor}`} />
                 <div className="min-w-0 flex-1">
-                  <div className={`text-sm font-bold truncate ${isActive ? "text-emerald-700" : locked ? "text-gray-400" : "text-gray-800"}`}>
+                  <div className={`text-sm font-bold truncate ${isActive ? "text-amber-700" : locked ? "text-gray-400" : "text-gray-800"}`}>
                     {lesson.title}
                   </div>
                   {lesson.duration && (
@@ -402,16 +402,16 @@ const Sidebar = ({
           href={WHATSAPP_URL}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-3 p-3 bg-white border border-gray-200 rounded-xl hover:border-emerald-300 hover:bg-emerald-50/40 transition-colors group"
+          className="flex items-center gap-3 p-3 bg-white border border-gray-200 rounded-xl hover:border-amber-300 hover:bg-amber-50/40 transition-colors group"
         >
-          <div className="w-9 h-9 bg-emerald-600 rounded-lg flex items-center justify-center flex-shrink-0">
-            <MessageCircle className="w-4.5 h-4.5 text-white" />
+          <div className="w-9 h-9 bg-gradient-to-br from-amber-500 to-amber-700 rounded-lg flex items-center justify-center flex-shrink-0 shadow-sm shadow-amber-200/60">
+            <MessageCircle className="w-4 h-4 text-white" />
           </div>
           <div className="flex-1 min-w-0">
             <div className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Message Kristina</div>
             <div className="text-xs font-bold text-gray-900 truncate">{WHATSAPP_DISPLAY}</div>
           </div>
-          <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-emerald-600 transition-colors flex-shrink-0" />
+          <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-amber-600 transition-colors flex-shrink-0" />
         </a>
       </div>
     </div>
@@ -422,74 +422,76 @@ const Sidebar = ({
    WELCOME SCREEN
    ═══════════════════════════════════════════════════════════════ */
 const WelcomeScreen = ({ onStart }: { onStart: () => void }) => (
-  <div className="max-w-2xl mx-auto py-12 px-4">
+  <div className="max-w-2xl mx-auto py-10 sm:py-14 px-4 sm:px-6">
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center">
-      <div className="w-20 h-20 bg-emerald-600 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-xl shadow-emerald-200">
-        <Flame className="w-10 h-10 text-white" />
+      <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-amber-500 to-amber-700 rounded-3xl flex items-center justify-center mx-auto mb-6 sm:mb-8 shadow-xl shadow-amber-200/50">
+        <Flame className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
       </div>
-      <h1 className="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight mb-3">
-        Welcome to The Forever Method
+      <h1 className="text-[1.7rem] sm:text-4xl font-black text-gray-900 tracking-tight mb-3 sm:mb-4 leading-tight">
+        Welcome to<br className="sm:hidden" /> The Unhooked Method
       </h1>
-      <p className="text-base sm:text-lg text-gray-600 mb-10 max-w-xl mx-auto leading-relaxed">
-        I'm Kristina. This isn't a diet, a challenge, or a meal plan. It's nine modules and two intermissions that explain why your brain does what it does around sugar — and then give you a framework you can actually use.
+      <p className="text-[15px] sm:text-lg text-gray-600 mb-8 sm:mb-10 max-w-xl mx-auto leading-relaxed">
+        I'm Kristina. This isn't a diet or a meal plan — it's a guided 9-module journey out of sugar and food addiction, with tasks and personal feedback at the key moments.
       </p>
 
       {/* How this works */}
-      <div className="bg-gray-50 rounded-3xl p-7 sm:p-8 mb-6 text-left border border-gray-100">
-        <h3 className="font-black text-gray-900 mb-5 uppercase text-xs tracking-[0.2em]">How this works</h3>
-        <ul className="space-y-3.5">
+      <div className="bg-gray-50 rounded-3xl p-6 sm:p-8 mb-5 sm:mb-6 text-left border border-gray-100">
+        <h3 className="font-black text-gray-900 mb-4 sm:mb-5 uppercase text-xs tracking-[0.2em]">How this works</h3>
+        <ul className="space-y-3 sm:space-y-3.5">
           {[
-            "Watch each module video from start to finish.",
-            "Read the lesson takeaways and the homework — do the homework on your own time.",
-            "Two intermissions ask you to send Kristina photos on WhatsApp — she reads every one.",
+            "Watch each module video — about 15–25 minutes each.",
+            "After every module, complete the homework task — designed to move you toward the solution.",
+            "At two key points, send Kristina your photos on WhatsApp — she reviews every one personally.",
+            "Message Kristina any time during the course — she reads every message herself.",
             "Mark a module as watched to unlock the next one.",
           ].map((item, i) => (
             <li key={i} className="flex items-start gap-3 text-gray-700">
-              <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5" />
-              <span className="text-sm leading-relaxed">{item}</span>
+              <CheckCircle2 className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+              <span className="text-[13.5px] sm:text-sm leading-relaxed">{item}</span>
             </li>
           ))}
         </ul>
       </div>
 
       {/* WhatsApp callout — large, prominent */}
-      <div className="bg-emerald-600 text-white rounded-3xl p-6 sm:p-7 mb-6 text-left shadow-lg shadow-emerald-200">
-        <div className="flex items-start gap-4">
-          <div className="w-11 h-11 bg-white/20 rounded-2xl flex items-center justify-center flex-shrink-0">
-            <MessageCircle className="w-5.5 h-5.5 text-white" />
+      <div className="bg-gradient-to-br from-amber-600 to-amber-800 text-white rounded-3xl p-5 sm:p-7 mb-5 sm:mb-6 text-left shadow-lg shadow-amber-300/40">
+        <div className="flex items-start gap-3 sm:gap-4">
+          <div className="w-10 h-10 sm:w-11 sm:h-11 bg-white/20 rounded-2xl flex items-center justify-center flex-shrink-0">
+            <MessageCircle className="w-5 h-5 text-white" />
           </div>
-          <div className="flex-1">
-            <h3 className="font-black text-base sm:text-lg mb-1.5 leading-snug">Message me directly any time.</h3>
-            <p className="text-emerald-50 text-sm leading-relaxed mb-4">
+          <div className="flex-1 min-w-0">
+            <h3 className="font-black text-[15px] sm:text-lg mb-1 sm:mb-1.5 leading-snug">Message me directly any time.</h3>
+            <p className="text-amber-50 text-[13px] sm:text-sm leading-relaxed mb-4">
               No team, no chatbot. If you've got a question, a realization, or you just want to share what came up — message me on WhatsApp.
             </p>
             <a
               href={WHATSAPP_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-emerald-700 hover:bg-emerald-50 rounded-full text-sm font-bold transition-colors"
+              className="inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 bg-white text-amber-800 hover:bg-amber-50 rounded-full text-[13px] sm:text-sm font-bold transition-colors break-all"
             >
-              Open WhatsApp · {WHATSAPP_DISPLAY}
-              <ArrowRight className="w-4 h-4" />
+              <MessageCircle className="w-4 h-4 flex-shrink-0" />
+              <span className="truncate">{WHATSAPP_DISPLAY}</span>
+              <ArrowRight className="w-4 h-4 flex-shrink-0" />
             </a>
           </div>
         </div>
       </div>
 
       {/* Order note */}
-      <div className="bg-amber-50 rounded-2xl p-5 mb-10 border border-amber-100 text-left">
+      <div className="bg-amber-50 rounded-2xl p-4 sm:p-5 mb-8 sm:mb-10 border border-amber-100 text-left">
         <div className="flex items-start gap-3">
           <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
           <div>
-            <p className="text-sm font-bold text-amber-800 mb-1">Start with Module 0 and move in order</p>
-            <p className="text-xs text-amber-700 leading-relaxed">Each module builds on the one before it.</p>
+            <p className="text-[13.5px] sm:text-sm font-bold text-amber-900 mb-1">Start with Module 0 and move in order</p>
+            <p className="text-[12px] sm:text-xs text-amber-800 leading-relaxed">Each module builds on the one before it.</p>
           </div>
         </div>
       </div>
 
       <button
         onClick={onStart}
-        className="inline-flex items-center gap-3 px-10 py-5 bg-emerald-600 text-white font-black text-base sm:text-lg rounded-2xl shadow-xl shadow-emerald-200 hover:bg-emerald-700 hover:-translate-y-1 transition-all"
+        className="inline-flex items-center gap-2 sm:gap-3 px-8 sm:px-10 py-4 sm:py-5 bg-gradient-to-br from-amber-600 to-amber-800 text-white font-black text-[15px] sm:text-lg rounded-2xl shadow-xl shadow-amber-300/40 hover:from-amber-700 hover:to-amber-900 hover:-translate-y-1 transition-all w-full sm:w-auto justify-center"
       >
         Start Module 0 <ArrowRight className="w-5 h-5" />
       </button>
@@ -509,9 +511,9 @@ const ContentBlock = ({ resource }: { resource: LessonResource }) => {
   return (
     <article className="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm">
       <header className="px-6 sm:px-8 pt-7 pb-5 border-b border-gray-50">
-        <div className="inline-flex items-center gap-2 px-2.5 py-1 bg-emerald-50 rounded-full mb-3">
-          <Icon className="w-3 h-3 text-emerald-700" />
-          <span className="text-[10px] font-bold text-emerald-700 uppercase tracking-[0.22em]">
+        <div className="inline-flex items-center gap-2 px-2.5 py-1 bg-amber-50 rounded-full mb-3">
+          <Icon className="w-3 h-3 text-amber-700" />
+          <span className="text-[10px] font-bold text-amber-700 uppercase tracking-[0.22em]">
             {eyebrow}
           </span>
         </div>
@@ -528,7 +530,7 @@ const ContentBlock = ({ resource }: { resource: LessonResource }) => {
           if (trimmed.startsWith("•")) {
             return (
               <div key={i} className="flex gap-3.5 items-start">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-[10px] flex-shrink-0" />
+                <span className="w-1.5 h-1.5 rounded-full bg-amber-500 mt-[10px] flex-shrink-0" />
                 <p className="text-gray-700 text-[15px] sm:text-[15.5px] leading-[1.65] flex-1">
                   {trimmed.replace(/^•\s*/, "")}
                 </p>
@@ -541,7 +543,7 @@ const ContentBlock = ({ resource }: { resource: LessonResource }) => {
           if (numMatch) {
             return (
               <div key={i} className="flex gap-3.5 items-start">
-                <span className="text-emerald-700 font-black text-sm tabular-nums w-5 flex-shrink-0 mt-0.5">
+                <span className="text-amber-700 font-black text-sm tabular-nums w-5 flex-shrink-0 mt-0.5">
                   {numMatch[1]}.
                 </span>
                 <p className="text-gray-700 text-[15px] sm:text-[15.5px] leading-[1.65] flex-1">
@@ -590,11 +592,11 @@ const TaskDisplay = ({ resource, isIntermission }: { resource: LessonResource; i
           href={WHATSAPP_URL}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-7 inline-flex items-center gap-2 px-5 py-3 bg-emerald-600 text-white font-bold text-sm rounded-full hover:bg-emerald-700 transition-colors shadow-sm"
+          className="mt-6 sm:mt-7 flex sm:inline-flex items-center justify-center gap-2 w-full sm:w-auto px-5 py-3.5 bg-gradient-to-br from-amber-600 to-amber-800 text-white font-bold text-[13.5px] sm:text-sm rounded-full hover:from-amber-700 hover:to-amber-900 transition-all shadow-md shadow-amber-300/40"
         >
-          <MessageCircle className="w-4 h-4" />
-          Send on WhatsApp · {WHATSAPP_DISPLAY}
-          <ArrowRight className="w-4 h-4" />
+          <MessageCircle className="w-4 h-4 flex-shrink-0" />
+          <span className="truncate">Send on WhatsApp · {WHATSAPP_DISPLAY}</span>
+          <ArrowRight className="w-4 h-4 flex-shrink-0" />
         </a>
       ) : (
         <p className="mt-6 pt-6 border-t border-amber-100/70 text-xs text-amber-800/80 leading-relaxed">
@@ -613,10 +615,10 @@ const WhatsAppCallout = () => (
     href={WHATSAPP_URL}
     target="_blank"
     rel="noopener noreferrer"
-    className="block bg-gradient-to-br from-gray-50 to-emerald-50/40 rounded-2xl border border-gray-100 p-5 sm:p-6 hover:border-emerald-200 hover:shadow-sm transition-all group"
+    className="block bg-gradient-to-br from-gray-50 to-amber-50/40 rounded-2xl border border-gray-100 p-5 sm:p-6 hover:border-amber-200 hover:shadow-sm transition-all group"
   >
     <div className="flex items-start gap-4">
-      <div className="w-10 h-10 bg-emerald-600 rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm">
+      <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-amber-700 rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm shadow-amber-200/50">
         <MessageCircle className="w-5 h-5 text-white" />
       </div>
       <div className="flex-1 min-w-0">
@@ -626,7 +628,7 @@ const WhatsAppCallout = () => (
         <p className="text-xs sm:text-sm text-gray-600 leading-relaxed mb-2.5">
           No team, no chatbot — she reads every message herself.
         </p>
-        <div className="inline-flex items-center gap-1.5 text-emerald-700 text-sm font-bold group-hover:gap-2.5 transition-all">
+        <div className="inline-flex items-center gap-1.5 text-amber-700 text-sm font-bold group-hover:gap-2.5 transition-all">
           Open WhatsApp · {WHATSAPP_DISPLAY}
           <ArrowRight className="w-4 h-4" />
         </div>
@@ -712,7 +714,7 @@ const LessonView = ({
                 <Eye className="w-4 h-4" /> I've watched this video ✓
               </button>
             ) : (
-              <div className="flex items-center justify-center gap-2 text-emerald-600 text-sm font-bold py-2">
+              <div className="flex items-center justify-center gap-2 text-amber-600 text-sm font-bold py-2">
                 <CheckCircle2 className="w-4 h-4" /> Video watched
               </div>
             )}
@@ -750,7 +752,7 @@ const LessonView = ({
             nextAccessible ? (
               <button
                 onClick={onNext}
-                className="flex items-center gap-2 px-7 py-4 bg-emerald-600 text-white font-black text-sm rounded-xl shadow-lg shadow-emerald-200 hover:bg-emerald-700 transition-all uppercase tracking-wider"
+                className="flex items-center gap-2 px-6 sm:px-7 py-4 bg-gradient-to-br from-amber-600 to-amber-800 text-white font-black text-[13px] sm:text-sm rounded-xl shadow-lg shadow-amber-300/40 hover:from-amber-700 hover:to-amber-900 transition-all uppercase tracking-wider"
               >
                 Next Lesson <ArrowRight className="w-5 h-5" />
               </button>
@@ -778,12 +780,12 @@ const CelebrationPopup = ({ onClose }: { onClose: () => void }) => (
     <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
     <motion.div initial={{ scale: 0.8 }} animate={{ scale: 1 }} className="relative bg-white rounded-3xl p-8 max-w-sm w-full shadow-2xl text-center z-10">
       <motion.div initial={{ rotate: -10, scale: 0 }} animate={{ rotate: 0, scale: 1 }} transition={{ type: "spring", delay: 0.15 }}
-        className="w-20 h-20 bg-emerald-500 rounded-full flex items-center justify-center mx-auto mb-5 shadow-lg shadow-emerald-200">
+        className="w-20 h-20 bg-gradient-to-br from-amber-500 to-amber-700 rounded-full flex items-center justify-center mx-auto mb-5 shadow-lg shadow-amber-300/40">
         <Sparkles className="w-10 h-10 text-white" />
       </motion.div>
       <h3 className="text-2xl font-black text-gray-900 mb-2 tracking-tight">Lesson Complete</h3>
       <p className="text-gray-500 text-sm mb-6 leading-relaxed">Nice work. The next module is unlocked.</p>
-      <button onClick={onClose} className="w-full py-3 bg-emerald-600 text-white font-bold rounded-xl hover:bg-emerald-700 transition-colors">
+      <button onClick={onClose} className="w-full py-3.5 bg-gradient-to-br from-amber-600 to-amber-800 text-white font-bold rounded-xl hover:from-amber-700 hover:to-amber-900 transition-all">
         Continue
       </button>
     </motion.div>
@@ -867,11 +869,11 @@ export default function Learn() {
             href={WHATSAPP_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-1.5 bg-emerald-50 hover:bg-emerald-100 px-3 py-1.5 rounded-full transition-colors"
+            className="flex items-center gap-1.5 bg-amber-50 hover:bg-amber-100 px-3 py-1.5 rounded-full transition-colors"
           >
-            <MessageCircle className="w-3.5 h-3.5 text-emerald-700" />
-            <span className="text-xs font-bold text-emerald-700 hidden sm:inline">Message Kristina</span>
-            <span className="text-xs font-bold text-emerald-700 sm:hidden">Chat</span>
+            <MessageCircle className="w-3.5 h-3.5 text-amber-700" />
+            <span className="text-xs font-bold text-amber-700 hidden sm:inline">Message Kristina</span>
+            <span className="text-xs font-bold text-amber-700 sm:hidden">Chat</span>
           </a>
         </div>
 
