@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { ResourceLibrary, ResourceDetail, RESOURCES, RelatedResources } from "./Resources";
+import { ProductTour, isTourComplete, resetTour } from "../components/ProductTour";
 
 /* ═══════════════════════════════════════════════════════════════
    CONTACT — Kristina is reachable on WhatsApp at this number.
@@ -467,7 +468,7 @@ const Sidebar = ({
 /* ═══════════════════════════════════════════════════════════════
    WELCOME SCREEN
    ═══════════════════════════════════════════════════════════════ */
-const WelcomeScreen = ({ onStart }: { onStart: () => void }) => (
+const WelcomeScreen = ({ onStart, onReplayTour }: { onStart: () => void; onReplayTour: () => void }) => (
   <div className="max-w-2xl mx-auto py-10 sm:py-14 px-4 sm:px-6">
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center">
       <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-amber-500 to-amber-700 rounded-3xl flex items-center justify-center mx-auto mb-6 sm:mb-8 shadow-xl shadow-amber-200/50">
@@ -541,6 +542,15 @@ const WelcomeScreen = ({ onStart }: { onStart: () => void }) => (
       >
         Start Module 0 <ArrowRight className="w-5 h-5" />
       </button>
+
+      <div className="mt-5">
+        <button
+          onClick={onReplayTour}
+          className="text-xs sm:text-sm font-semibold text-gray-500 hover:text-amber-700 transition-colors underline-offset-4 hover:underline"
+        >
+          Replay the platform tour
+        </button>
+      </div>
     </motion.div>
   </div>
 );
@@ -852,11 +862,21 @@ export default function Learn() {
   const [activeId, setActiveId] = useState(LESSONS[0].id);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [celebration, setCelebration] = useState(false);
+  const [tourOpen, setTourOpen] = useState(false);
 
   // Persist progress to localStorage
   useEffect(() => {
     localStorage.setItem("fm-progress", JSON.stringify(progress));
   }, [progress]);
+
+  // Auto-open the product tour on the very first visit
+  useEffect(() => {
+    if (!isTourComplete()) {
+      // Slight delay so the page mounts before the modal pops
+      const id = setTimeout(() => setTourOpen(true), 400);
+      return () => clearTimeout(id);
+    }
+  }, []);
 
   const isResourcesIndex = activeId === "resources";
   const isResourceDetail = activeId.startsWith("resource:");
@@ -930,7 +950,10 @@ export default function Learn() {
 
         {/* Content */}
         {activeId === "welcome" ? (
-          <WelcomeScreen onStart={startCourse} />
+          <WelcomeScreen
+            onStart={startCourse}
+            onReplayTour={() => { resetTour(); setTourOpen(true); }}
+          />
         ) : isResourcesIndex ? (
           <ResourceLibrary onOpen={(slug) => goTo(`resource:${slug}`)} />
         ) : isResourceDetail ? (
@@ -956,6 +979,10 @@ export default function Learn() {
           <CelebrationPopup onClose={() => setCelebration(false)} />
         )}
       </AnimatePresence>
+
+      {/* Product Tour — auto-opens on first visit, also reachable via the
+          'Replay the platform tour' link on the Welcome screen */}
+      <ProductTour open={tourOpen} onClose={() => setTourOpen(false)} />
     </div>
   );
 }

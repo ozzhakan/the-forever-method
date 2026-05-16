@@ -23,6 +23,10 @@ import {
   AlertTriangle,
   Printer,
   Loader2,
+  Apple,
+  CheckSquare,
+  Search,
+  X,
   type LucideIcon,
 } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
@@ -66,6 +70,11 @@ export const RESOURCES: ResourceDef[] = [
   { slug: "iron-for-women",         title: "Iron for Women",                 eyebrow: "Women's Guide", category: "guide", module: "Module 4",           relatedLessons: ["module-4"], women: true,          readTime: "6 min read",  description: "Symptoms (often mistaken for sugar inflammation), real food sources, and when supplementation actually makes sense.",                                       icon: PillIcon,       status: "ready" },
   { slug: "diet-history",           title: "For Women With Diet History",    eyebrow: "Women's Guide", category: "guide", module: "Module 8",           relatedLessons: ["module-8"], women: true,          readTime: "7 min read",  description: "If you've spent 10+ years dieting, this protocol runs differently. Refeeding sensitivity, restriction triggers, putting the scale away.",                  icon: Heart,          status: "ready" },
   { slug: "female-lab-panel",       title: "The Female Lab Panel",           eyebrow: "Reference", category: "reference", module: "Module 4",           relatedLessons: ["module-4"], women: true,          readTime: "5 min read",  description: "Exactly which labs to request from your doctor — fasting insulin, SHBG, free T, estradiol, full thyroid panel, ferritin, vitamin D.",                       icon: FlaskConical,   status: "ready" },
+
+  // ─ Extras (added later) ────────────────────────────────────────
+  { slug: "habit-tracker",          title: "30-Day Habit Tracker",           eyebrow: "Template",  category: "template",  module: "Module 9",            relatedLessons: ["module-9"],                        readTime: "30 days",     description: "One primary commitment + a small handful of supporting habits, tracked daily. Built around the 'one commitment' rule from Module 9.",                       icon: CheckSquare,    status: "ready" },
+  { slug: "shopping-list-30-day",   title: "30-Day Shopping List",           eyebrow: "Reference", category: "reference", module: "Module 5",            relatedLessons: ["module-5"],                        readTime: "8 min read",  description: "A master grocery list built on the Module 5 food framework — weekly perishables, bi-weekly buys, monthly pantry restock, plus a four-week meal scaffold.",  icon: ShoppingCart,   status: "ready" },
+  { slug: "truth-about-fructose",   title: "The Truth About Fructose",       eyebrow: "Guide",     category: "guide",     module: "Module 4",            relatedLessons: ["module-4"],                        readTime: "9 min read",  description: "Fructose is processed in the liver like alcohol — and modern fruits are not the wild fruits your biology evolved with. The honest version, with practical guidance.", icon: Apple,         status: "ready" },
 ];
 
 /* ═══════════════════════════════════════════════════════════════
@@ -93,21 +102,44 @@ const ResourceShell = ({
     if (!articleRef.current || isGenerating) return;
     setIsGenerating(true);
     try {
-      // Lazy import — html2pdf is ~300KB, only loaded when user clicks
-      const mod = await import("html2pdf.js");
-      const html2pdf = mod.default || mod;
-      const filename = `unhooked-method-${resource.slug}.pdf`;
-      await html2pdf()
-        .set({
-          margin: [14, 12, 14, 12],
-          filename,
-          image: { type: "jpeg", quality: 0.96 },
-          html2canvas: { scale: 2, useCORS: true, backgroundColor: "#ffffff", logging: false },
-          jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-          pagebreak: { mode: ["css", "legacy"] },
-        })
-        .from(articleRef.current)
-        .save();
+      // Lazy-load PDF deps so they don't bloat the initial bundle.
+      // html2canvas-pro (vs vanilla html2canvas) is critical — it parses
+      // Tailwind v4's oklch colour tokens correctly.
+      const [{ default: html2canvas }, { jsPDF }] = await Promise.all([
+        import("html2canvas-pro"),
+        import("jspdf"),
+      ]);
+
+      // Capture the article DOM as a high-DPI canvas
+      const canvas = await html2canvas(articleRef.current, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: "#ffffff",
+        logging: false,
+      });
+
+      // A4 portrait, 12mm horizontal + vertical margins
+      const pdf = new jsPDF({ unit: "mm", format: "a4", orientation: "portrait" });
+      const pageW = pdf.internal.pageSize.getWidth();
+      const pageH = pdf.internal.pageSize.getHeight();
+      const margin = 12;
+      const imgW = pageW - margin * 2;
+      const imgH = (canvas.height * imgW) / canvas.width;
+
+      const imgData = canvas.toDataURL("image/jpeg", 0.95);
+      // Multi-page: shift the same image up the y-axis on each new page
+      let heightLeft = imgH;
+      let position = margin;
+      pdf.addImage(imgData, "JPEG", margin, position, imgW, imgH);
+      heightLeft -= pageH - margin * 2;
+      while (heightLeft > 0) {
+        position = margin - (imgH - heightLeft);
+        pdf.addPage();
+        pdf.addImage(imgData, "JPEG", margin, position, imgW, imgH);
+        heightLeft -= pageH - margin * 2;
+      }
+
+      pdf.save(`unhooked-method-${resource.slug}.pdf`);
     } catch (err) {
       console.error("PDF download failed:", err);
       alert("Sorry, the download couldn't be generated. Please try again or use Print instead.");
@@ -1468,6 +1500,354 @@ const FemaleLabPanel = () => (
 );
 
 /* ═══════════════════════════════════════════════════════════════
+   RESOURCE: 30-Day Habit Tracker (template)
+   ═══════════════════════════════════════════════════════════════ */
+const HabitTracker = () => (
+  <>
+    <Section eyebrow="01 · Why a tracker, not a streak app" title="Habits, not motivation. Visible, not buried.">
+      <p className="text-gray-700 text-[15px] sm:text-base leading-[1.65]">
+        Module 8 ends with a hard truth: tools hold until life gets hard — what determines whether you stay or go back is what you actually value, at the level your repeated choices reveal. The work of recovery is converting one-off decisions into automatic behavior, until the new identity holds without willpower.
+      </p>
+      <p className="text-gray-700 text-[15px] sm:text-base leading-[1.65] mt-3">
+        Module 9 narrows that to a single commitment: pick the one thing that, done consistently for 30 days, moves everything else forward. This tracker is the structured form of that commitment. Use it for 30 days, then review.
+      </p>
+      <Callout variant="amber" title="The rule of three">
+        One primary commitment. Two or three supporting habits. That's it. More than that and the brain stops engaging by week two.
+      </Callout>
+    </Section>
+
+    <Section eyebrow="02 · The grid" title="One row per habit · one box per day">
+      <p className="text-gray-700 text-[15px] sm:text-base leading-[1.65] mb-4">
+        Write your primary commitment in the first row. Write 2–3 supporting habits below it. Each day, mark the box if you did it. Leave it blank if you didn't. <strong>No backfilling, no estimates.</strong> The honest pattern is the useful data.
+      </p>
+      <Table
+        headers={["Habit", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]}
+        rows={[
+          ["Primary commitment:", "", "", "", "", "", "", "", "", "", ""],
+          ["Supporting habit 1:", "", "", "", "", "", "", "", "", "", ""],
+          ["Supporting habit 2:", "", "", "", "", "", "", "", "", "", ""],
+          ["Supporting habit 3:", "", "", "", "", "", "", "", "", "", ""],
+        ]}
+      />
+      <div className="mt-6">
+        <Table
+          headers={["Habit", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20"]}
+          rows={[
+            ["Primary commitment", "", "", "", "", "", "", "", "", "", ""],
+            ["Supporting habit 1", "", "", "", "", "", "", "", "", "", ""],
+            ["Supporting habit 2", "", "", "", "", "", "", "", "", "", ""],
+            ["Supporting habit 3", "", "", "", "", "", "", "", "", "", ""],
+          ]}
+        />
+      </div>
+      <div className="mt-6">
+        <Table
+          headers={["Habit", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30"]}
+          rows={[
+            ["Primary commitment", "", "", "", "", "", "", "", "", "", ""],
+            ["Supporting habit 1", "", "", "", "", "", "", "", "", "", ""],
+            ["Supporting habit 2", "", "", "", "", "", "", "", "", "", ""],
+            ["Supporting habit 3", "", "", "", "", "", "", "", "", "", ""],
+          ]}
+        />
+      </div>
+    </Section>
+
+    <Section eyebrow="03 · Habit ideas, by category" title="What's worth tracking">
+      <div className="grid sm:grid-cols-3 gap-4 sm:gap-5">
+        <div className="border-l-2 border-amber-300 pl-5 py-1">
+          <p className="text-[10px] font-black text-amber-700 uppercase tracking-[0.22em] mb-2">Foundation</p>
+          <p className="text-[13.5px] sm:text-sm text-gray-600 leading-relaxed mb-3">Every-day basics that compound.</p>
+          <Checklist items={[
+            "Protein + fat breakfast",
+            "30g protein per meal",
+            "2 litres of water",
+            "Sleep 7+ hours",
+            "Walk 20+ minutes",
+          ]} />
+        </div>
+        <div className="border-l-2 border-amber-300 pl-5 py-1">
+          <p className="text-[10px] font-black text-amber-700 uppercase tracking-[0.22em] mb-2">Replacement</p>
+          <p className="text-[13.5px] sm:text-sm text-gray-600 leading-relaxed mb-3">Substitutes for old patterns.</p>
+          <Checklist items={[
+            "Sparkling water at 9pm",
+            "Walk after dinner",
+            "Tea instead of dessert",
+            "Notes dump before food",
+            "Call instead of snack",
+          ]} />
+        </div>
+        <div className="border-l-2 border-amber-300 pl-5 py-1">
+          <p className="text-[10px] font-black text-amber-700 uppercase tracking-[0.22em] mb-2">Avoidance</p>
+          <p className="text-[13.5px] sm:text-sm text-gray-600 leading-relaxed mb-3">Triggers you keep out.</p>
+          <Checklist items={[
+            "No UPF in house today",
+            "No screens after 9pm",
+            "No coffee after 2pm",
+            "No grazing between meals",
+            "No scale weighing",
+          ]} />
+        </div>
+      </div>
+    </Section>
+
+    <Section eyebrow="04 · After day 30" title="The review — five honest questions">
+      <ol className="space-y-3 text-[14.5px] sm:text-base text-gray-700 leading-relaxed">
+        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">1.</span><span><strong>Which habit hit 25+ days?</strong> That one is already in your operating system — keep going.</span></li>
+        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">2.</span><span><strong>Which one fell apart by week two?</strong> Either it wasn't realistic, or the environment doesn't support it. Don't blame yourself — redesign it.</span></li>
+        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">3.</span><span><strong>What got measurably better?</strong> Energy, skin, sleep, mood, cravings — be specific.</span></li>
+        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">4.</span><span><strong>What's harder than you thought?</strong> Surface the friction — that's what the next operating system rule addresses.</span></li>
+        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">5.</span><span><strong>What's your next 30-day primary?</strong> Keep the one that's stuck. Pick a new primary to add.</span></li>
+      </ol>
+      <Callout variant="amber">
+        Three rounds of 30 days each — and most of these become automatic. That's 90 days. Nothing pharmaceutical works that fast. Behavior change at this layer is what makes the reframe permanent.
+      </Callout>
+    </Section>
+  </>
+);
+
+/* ═══════════════════════════════════════════════════════════════
+   RESOURCE: 30-Day Shopping List (reference)
+   ═══════════════════════════════════════════════════════════════ */
+const ShoppingList30Day = () => (
+  <>
+    <Section eyebrow="01 · How to use this list" title="Same staples, different meals every week">
+      <p className="text-gray-700 text-[15px] sm:text-base leading-[1.65]">
+        The Module 5 food framework is built on protein, fat, and whole-food volume. Once you stock those three categories well, you stop having to plan every meal — you assemble. The lists below are organized by purchase rhythm: what you buy every week (perishables), every two weeks (semi-perishable), and once a month (pantry staples).
+      </p>
+      <Callout variant="amber" title="80% is the same, 20% rotates">
+        Same anchor foods every week. Different proteins or vegetables on rotation for variety. This is how the framework runs in real life without becoming a meal-planning second job.
+      </Callout>
+    </Section>
+
+    <Section eyebrow="02 · Weekly buys (every shop)" title="Fresh perishables — never run out of these">
+      <div className="grid sm:grid-cols-2 gap-x-6 gap-y-6">
+        <div>
+          <p className="text-[10px] font-black text-amber-700 uppercase tracking-[0.22em] mb-2">Protein</p>
+          <Checklist items={[
+            "Eggs (1 dozen minimum)",
+            "Chicken thighs (1–1.5 kg)",
+            "Salmon or white fish (2 portions)",
+            "Greek yogurt, full-fat (1 large tub)",
+            "Aged cheese (200g block)",
+          ]} />
+        </div>
+        <div>
+          <p className="text-[10px] font-black text-amber-700 uppercase tracking-[0.22em] mb-2">Vegetables</p>
+          <Checklist items={[
+            "Leafy greens (spinach + 1 other)",
+            "Cruciferous (broccoli, cauliflower OR brussels)",
+            "Tomatoes or peppers (fresh)",
+            "Onions, garlic (always)",
+            "Cucumber or courgette",
+            "Mushrooms",
+          ]} />
+        </div>
+        <div>
+          <p className="text-[10px] font-black text-amber-700 uppercase tracking-[0.22em] mb-2">Fat & dairy</p>
+          <Checklist items={[
+            "Avocados (2–3, different ripeness)",
+            "Butter (real, salted)",
+            "Olives (jar)",
+            "Lemons, fresh herbs",
+          ]} />
+        </div>
+        <div>
+          <p className="text-[10px] font-black text-amber-700 uppercase tracking-[0.22em] mb-2">Fruit (small)</p>
+          <Checklist items={[
+            "Berries (fresh or frozen — primary fruit)",
+            "Apples or pears (1–2)",
+            "OPTIONAL: kiwi, citrus",
+          ]} />
+        </div>
+      </div>
+    </Section>
+
+    <Section eyebrow="03 · Bi-weekly buys" title="Larger packs, freezer rotation">
+      <Checklist items={[
+        "Beef mince or steak (frozen portions)",
+        "Lamb chops or pork (alternate weeks)",
+        "Liver or organ meat (once every 2 weeks — nutrient-dense)",
+        "Cured / smoked fish (sardines, mackerel tins)",
+        "Hard cheese (parmesan, manchego, aged gouda)",
+        "Fermented (sauerkraut, kimchi)",
+      ]} />
+    </Section>
+
+    <Section eyebrow="04 · Monthly pantry restock" title="Stock once, use for weeks">
+      <div className="grid sm:grid-cols-2 gap-x-6 gap-y-6">
+        <div>
+          <p className="text-[10px] font-black text-amber-700 uppercase tracking-[0.22em] mb-2">Cooking fats</p>
+          <Checklist items={[
+            "Extra virgin olive oil (large bottle)",
+            "Ghee or coconut oil",
+            "Beef tallow (if you cook a lot)",
+            "Sesame oil (small bottle, finishing)",
+          ]} />
+        </div>
+        <div>
+          <p className="text-[10px] font-black text-amber-700 uppercase tracking-[0.22em] mb-2">Nuts & seeds</p>
+          <Checklist items={[
+            "Almonds, walnuts, brazil nuts (raw, unsalted)",
+            "Pumpkin seeds, sunflower seeds",
+            "Tahini (one jar)",
+            "Nut butter (no sugar — almond or peanut)",
+          ]} />
+        </div>
+        <div>
+          <p className="text-[10px] font-black text-amber-700 uppercase tracking-[0.22em] mb-2">Tinned & jarred</p>
+          <Checklist items={[
+            "Sardines, mackerel, tuna in olive oil",
+            "Whole tomatoes (no sugar added)",
+            "Tomato passata",
+            "Olives (Kalamata, green)",
+            "Mustard (Dijon, whole-grain)",
+          ]} />
+        </div>
+        <div>
+          <p className="text-[10px] font-black text-amber-700 uppercase tracking-[0.22em] mb-2">Dry goods</p>
+          <Checklist items={[
+            "Lentils, chickpeas, white beans",
+            "Quinoa or buckwheat (if you tolerate)",
+            "Vinegars (apple cider, balsamic, red wine)",
+            "Spices (sea salt, pepper, paprika, cumin, oregano)",
+            "Dark chocolate 90%+ (if it's a safe slow-pleasure for you)",
+          ]} />
+        </div>
+      </div>
+    </Section>
+
+    <Section eyebrow="05 · 4-week meal scaffold" title="Same proteins, different meals">
+      <p className="text-gray-700 text-[14.5px] sm:text-[15px] leading-[1.65] mb-4">
+        Every week you have: eggs, chicken thighs, fish, beef on rotation. Vegetables shift slightly. Result: the same shop, four different weeks.
+      </p>
+      <Table
+        headers={["Week", "Breakfast", "Lunch", "Dinner"]}
+        rows={[
+          ["Week 1", "Eggs + avocado + spinach", "Chicken thighs + roasted broccoli", "Salmon + cauliflower mash + olive oil"],
+          ["Week 2", "Greek yogurt + berries + walnuts", "Tuna salad with cucumber, eggs, olives", "Beef stir-fry with mushrooms and peppers"],
+          ["Week 3", "Smoked salmon + cream cheese + tomato", "Lentil soup with poached egg and olive oil", "Chicken thighs with sweet potato and sauerkraut"],
+          ["Week 4", "Eggs scrambled in butter + cheese", "Cold roast chicken + leafy greens + tahini", "Lamb chops + roasted vegetables + Greek yogurt sauce"],
+        ]}
+      />
+    </Section>
+
+    <Section eyebrow="06 · Shopping rules" title="Stay protected at the supermarket">
+      <Checklist items={[
+        "Always go with this list. No browsing.",
+        "Stick to the perimeter — produce, meat, fish, dairy. Center aisles are mostly ultra-processed.",
+        "Same route through the store every time.",
+        "Skip checkout candy — exit through a different lane if needed.",
+        "Never shop hungry. Eat first or carry a snack.",
+        "Read labels on anything packaged — see the Hidden Names of Sugar reference.",
+      ]} />
+    </Section>
+  </>
+);
+
+/* ═══════════════════════════════════════════════════════════════
+   RESOURCE: The Truth About Fructose (guide)
+   ═══════════════════════════════════════════════════════════════ */
+const TruthAboutFructose = () => (
+  <>
+    <Section eyebrow="01 · The mechanism" title="Fructose has one address in your body: the liver">
+      <p className="text-gray-700 text-[15px] sm:text-base leading-[1.65]">
+        Glucose, the other half of sugar, is processed by every cell in your body. Fructose is different. It is metabolized almost exclusively by the liver — and the pathway it takes through that liver looks remarkably similar to how the liver processes ethanol. That comparison isn't a marketing claim; it's biochemistry.
+      </p>
+      <Callout variant="amber" title="The shorthand">
+        Glucose: every cell helps clear it. Fructose: the liver does it alone. Repeat this for years, and the liver shows the same kind of damage chronic alcohol use produces — non-alcoholic fatty liver disease, insulin resistance, the metabolic syndrome cascade.
+      </Callout>
+    </Section>
+
+    <Section eyebrow="02 · What happens in the liver" title="The cascade that nobody told you about">
+      <ol className="space-y-3.5 text-[14.5px] sm:text-base text-gray-700 leading-relaxed">
+        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">1.</span><span>Fructose arrives at the liver. The liver can't store much of it.</span></li>
+        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">2.</span><span>What it can't store, it converts to fat — through a process called <em>de novo lipogenesis</em>.</span></li>
+        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">3.</span><span>That fat accumulates in and around the liver. NAFLD (non-alcoholic fatty liver disease) is now the most common liver condition in adults, including children.</span></li>
+        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">4.</span><span>The fatty liver becomes insulin-resistant. Whole-body insulin resistance follows. Then the cascade we covered in Module 4.</span></li>
+        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">5.</span><span>Inflammation, oxidative stress, and uric acid go up — increasing risk for gout, kidney issues, cardiovascular disease.</span></li>
+      </ol>
+    </Section>
+
+    <Section eyebrow="03 · Where the worst fructose hides" title="The forms that hit hardest">
+      <div className="space-y-4">
+        {[
+          { name: "High-fructose corn syrup (HFCS)", note: "In nearly every American ultra-processed product. 55% fructose, 45% glucose — fast, concentrated dose." },
+          { name: "Agave nectar", note: "Marketed as 'natural and low-glycemic.' It is — because it's ~90% fructose. Liver damage is the trade." },
+          { name: "Fruit juice concentrate", note: "Pretends to be 'fruit' on the label. Functionally identical to syrup once it's concentrated." },
+          { name: "Fruit juice (even '100% pure')", note: "Strips the fiber that slows fructose absorption. The body gets the load without the brakes." },
+          { name: "Dried fruit", note: "Concentrated sugar with most of the water removed. A handful of raisins has more fructose than three fresh grapes." },
+          { name: "Smoothies", note: "Especially shop-bought. Blending breaks the fiber matrix. Half the fructose is absorbed like juice." },
+        ].map((x, i) => (
+          <div key={i} className="border-l-2 border-amber-300 pl-5 py-1 print:break-inside-avoid">
+            <p className="font-bold text-gray-900 text-[15px] sm:text-base mb-0.5">{x.name}</p>
+            <p className="text-[13.5px] sm:text-sm text-gray-600 leading-relaxed">{x.note}</p>
+          </div>
+        ))}
+      </div>
+    </Section>
+
+    <Section eyebrow="04 · The modern fruit reframe" title="The fruit you eat today is not the fruit your biology was built for">
+      <div className="space-y-4 text-gray-700 text-[15px] sm:text-base leading-[1.65]">
+        <p>
+          For most of human history, fruit was small, sour, fibrous, and seasonal. A wild apple was the size of a cherry and tart. Wild bananas were stubby and full of hard seeds. Wild blackberries were the size of peas. Fruit was a brief, regional luxury — eaten when ripe, then unavailable for the rest of the year.
+        </p>
+        <p>
+          Modern fruit is the product of <strong>centuries of selective breeding for one trait: sweetness</strong>. Today's apple has 3–4 times the sugar of its ancestor. A modern banana is bred to be roughly 16g of sugar at full ripeness. Grapes are essentially edible candy.
+        </p>
+        <Callout variant="warning" title="The 'vitamin bomb' marketing">
+          The defense of fruit is usually "but it has vitamins!" A banana does contain vitamin B6 and potassium. It also contains 16g of sugar. The vitamin-to-sugar ratio is poor. You can get the same vitamins from leafy greens, fish, eggs, and nuts — with no metabolic cost. Calling fruit a vitamin bomb is marketing, not nutrition science.
+        </Callout>
+      </div>
+    </Section>
+
+    <Section eyebrow="05 · What's still safe — berries" title="Why berries get a different recommendation">
+      <p className="text-gray-700 text-[15px] sm:text-base leading-[1.65] mb-4">
+        Not all fruit is equal. Berries (blueberries, raspberries, blackberries, strawberries) are the closest thing in the produce aisle to ancestral fruit — and they're genuinely worth eating, daily if you want.
+      </p>
+      <div className="grid sm:grid-cols-2 gap-4">
+        {[
+          { name: "Lower fructose per gram", note: "Blueberries are about 5g sugar per 100g. An apple is 11g. A banana is 12g." },
+          { name: "Higher fiber", note: "Fiber slows fructose absorption — the liver gets it gradually instead of in a flood." },
+          { name: "Highest antioxidant density", note: "Anthocyanins (the pigment) genuinely fight inflammation. Not all 'antioxidants' are equal — these ones are." },
+          { name: "Polyphenols with real evidence", note: "Cardiovascular, cognitive, and metabolic benefits documented across studies." },
+        ].map((x, i) => (
+          <div key={i} className="bg-amber-50/40 border border-amber-100 rounded-2xl p-4 sm:p-5 print:break-inside-avoid">
+            <p className="font-bold text-amber-900 text-[14.5px] sm:text-base mb-1">{x.name}</p>
+            <p className="text-[13.5px] sm:text-sm text-gray-700 leading-relaxed">{x.note}</p>
+          </div>
+        ))}
+      </div>
+    </Section>
+
+    <Section eyebrow="06 · Practical guidance" title="If you do eat fruit — how to do it well">
+      <Checklist items={[
+        "Berries first. Frozen is as good as fresh.",
+        "Whole > juiced > dried, always. Skip juice entirely.",
+        "Pair with protein or fat — slows the absorption curve (Greek yogurt + berries, apple + peanut butter).",
+        "Earlier in the day, when insulin sensitivity is higher.",
+        "After exercise, when muscles soak up glucose preferentially.",
+        "Avoid as a standalone snack between meals — it spikes insulin alone.",
+        "Skip smoothies (or accept them as dessert, not a meal).",
+      ]} />
+    </Section>
+
+    <Section eyebrow="07 · The honest 80/20" title="Where fruit fits in this framework">
+      <div className="space-y-3 text-gray-700 text-[15px] sm:text-base leading-[1.65]">
+        <p><span className="font-bold text-gray-900">✓ Berries every day:</span> fine. Genuinely beneficial. Treat them as a regular part of your meals.</p>
+        <p><span className="font-bold text-gray-900">✓ Other whole fruit, occasional:</span> a piece every few days. Paired with protein/fat. Earlier in the day.</p>
+        <p><span className="font-bold text-gray-900">✗ Fruit juice:</span> treat it like soda. It's sugar water with a halo.</p>
+        <p><span className="font-bold text-gray-900">✗ Dried fruit:</span> concentrated sugar. A small handful is the upper limit, occasionally.</p>
+        <p><span className="font-bold text-gray-900">✗ Daily smoothies:</span> usually a hidden sugar bomb. Most "healthy smoothies" contain 40–60g of sugar.</p>
+        <Callout variant="warning" title="On 'natural'">
+          'Natural' on a food label means nothing. Tobacco is natural. Arsenic is natural. The question isn't whether fructose exists in nature — it's whether your liver evolved to process the amount and form you're putting in it. For most people, the answer is no.
+        </Callout>
+      </div>
+    </Section>
+  </>
+);
+
+/* ═══════════════════════════════════════════════════════════════
    RESOURCE DETAIL — looks up the right content component
    ═══════════════════════════════════════════════════════════════ */
 export const ResourceDetail = ({
@@ -1497,6 +1877,9 @@ export const ResourceDetail = ({
     "iron-for-women": <IronForWomen />,
     "diet-history": <ForWomenWithDietHistory />,
     "female-lab-panel": <FemaleLabPanel />,
+    "habit-tracker": <HabitTracker />,
+    "shopping-list-30-day": <ShoppingList30Day />,
+    "truth-about-fructose": <TruthAboutFructose />,
   };
 
   const body = contentMap[resource.slug] ?? (
@@ -1527,10 +1910,37 @@ export const ResourceLibrary = ({
   onOpen: (slug: string) => void;
 }) => {
   const readyCount = RESOURCES.filter((r) => r.status === "ready").length;
+  const [query, setQuery] = useState("");
+  const [activeCategory, setActiveCategory] = useState<ResourceCategory | "all" | "women">("all");
+
+  const q = query.trim().toLowerCase();
+  const filtered = RESOURCES.filter((r) => {
+    // Category filter
+    if (activeCategory === "women") {
+      if (!r.women) return false;
+    } else if (activeCategory !== "all") {
+      if (r.category !== activeCategory) return false;
+    }
+    // Text search
+    if (q) {
+      const hay = `${r.title} ${r.description} ${r.eyebrow} ${r.module}`.toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  });
+
+  const categories: { key: typeof activeCategory; label: string }[] = [
+    { key: "all", label: "All" },
+    { key: "reference", label: "Reference" },
+    { key: "template", label: "Templates" },
+    { key: "guide", label: "Guides" },
+    { key: "protocol", label: "Protocols" },
+    { key: "women", label: "Women" },
+  ];
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-      <header className="mb-10 sm:mb-14">
+      <header className="mb-8 sm:mb-10">
         <div className="flex items-center gap-3 mb-5">
           <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center shadow-md shadow-amber-300/40">
             <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
@@ -1553,8 +1963,58 @@ export const ResourceLibrary = ({
         </p>
       </header>
 
+      {/* Search + category chips */}
+      <div className="mb-6 sm:mb-8 space-y-4">
+        <div className="relative">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search resources by title, topic or module…"
+            className="w-full pl-11 pr-10 py-3 bg-white border border-gray-200 rounded-2xl text-sm sm:text-[15px] text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-amber-300 focus:ring-2 focus:ring-amber-100 transition-all"
+          />
+          {query && (
+            <button
+              onClick={() => setQuery("")}
+              className="absolute right-3 top-1/2 -translate-y-1/2 w-7 h-7 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-700 transition-colors"
+              aria-label="Clear search"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          )}
+        </div>
+
+        <div className="flex flex-wrap gap-2">
+          {categories.map((c) => {
+            const isActive = activeCategory === c.key;
+            return (
+              <button
+                key={c.key}
+                onClick={() => setActiveCategory(c.key)}
+                className={`px-3.5 py-1.5 text-xs sm:text-[13px] font-bold rounded-full border transition-all ${
+                  isActive
+                    ? "bg-amber-600 text-white border-amber-600 shadow-sm shadow-amber-300/50"
+                    : "bg-white text-gray-600 border-gray-200 hover:border-amber-300 hover:text-amber-700"
+                }`}
+              >
+                {c.label}
+              </button>
+            );
+          })}
+        </div>
+
+        {(query || activeCategory !== "all") && (
+          <p className="text-[12px] sm:text-xs text-gray-500 font-semibold">
+            {filtered.length === 0
+              ? "No resources match — try a different search or category."
+              : `${filtered.length} resource${filtered.length === 1 ? "" : "s"} match.`}
+          </p>
+        )}
+      </div>
+
       <div className="grid sm:grid-cols-2 gap-4 sm:gap-5">
-        {RESOURCES.map((r, i) => {
+        {filtered.map((r, i) => {
           const Icon = r.icon;
           return (
             <motion.button
