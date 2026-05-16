@@ -21,7 +21,7 @@ import {
   MessageCircle,
 } from "lucide-react";
 import { useState, useEffect } from "react";
-import { ResourceLibrary, ResourceDetail, RESOURCES } from "./Resources";
+import { ResourceLibrary, ResourceDetail, RESOURCES, RelatedResources } from "./Resources";
 
 /* ═══════════════════════════════════════════════════════════════
    CONTACT — Kristina is reachable on WhatsApp at this number.
@@ -666,6 +666,7 @@ const LessonView = ({
   hasNext,
   hasPrev,
   nextAccessible,
+  onOpenResource,
 }: {
   lesson: LessonDef;
   prog: LessonProgress;
@@ -675,6 +676,7 @@ const LessonView = ({
   hasNext: boolean;
   hasPrev: boolean;
   nextAccessible: boolean;
+  onOpenResource: (slug: string) => void;
 }) => {
   const allDone = isLessonComplete(lesson, prog);
   const isIntermission = lesson.id.startsWith("intermission");
@@ -766,6 +768,9 @@ const LessonView = ({
             })}
           </div>
         )}
+
+        {/* Related Resources — only renders if any are bound to this lesson */}
+        <RelatedResources lessonId={lesson.id} onOpen={onOpenResource} />
 
         {/* Navigation — stacks on mobile, row on desktop */}
         <div className="border-t border-gray-100 pt-6 flex flex-col-reverse sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
@@ -940,6 +945,7 @@ export default function Learn() {
             hasNext={activeIndex < LESSONS.length - 1}
             hasPrev={activeIndex > 0}
             nextAccessible={nextAccessible}
+            onOpenResource={(slug) => goTo(`resource:${slug}`)}
           />
         ) : null}
       </div>

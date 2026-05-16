@@ -21,9 +21,11 @@ import {
   Zap,
   Flame,
   AlertTriangle,
+  Printer,
+  Loader2,
   type LucideIcon,
 } from "lucide-react";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
 /* ═══════════════════════════════════════════════════════════════
    RESOURCE METADATA — single source of truth
@@ -33,69 +35,41 @@ type ResourceCategory = "reference" | "template" | "guide" | "protocol";
 export interface ResourceDef {
   slug: string;
   title: string;
-  eyebrow: string;             // short label shown on card and detail header
+  eyebrow: string;
   category: ResourceCategory;
-  women?: boolean;             // women-specific cross-tag
-  module: string;              // e.g. "Module 4" — bound module label
-  readTime: string;            // e.g. "5 min read"
-  description: string;         // 1-2 line summary for the card
+  women?: boolean;
+  module: string;                // human-readable label, e.g. "Module 6 & 7"
+  relatedLessons: string[];      // lesson IDs this resource is bound to
+  readTime: string;
+  description: string;
   icon: LucideIcon;
-  status: "ready" | "soon";    // gates whether the detail is clickable
+  status: "ready" | "soon";
 }
 
 export const RESOURCES: ResourceDef[] = [
-  {
-    slug: "if-then-protocols",
-    title: "The If-Then Protocols Library",
-    eyebrow: "Protocol",
-    category: "protocol",
-    module: "Module 6 & 7",
-    readTime: "12 min read",
-    description: "35+ pre-decided protocols across time, emotion, place, social and cycle triggers — plus a build-your-own worksheet.",
-    icon: Zap,
-    status: "ready",
-  },
-  {
-    slug: "hidden-names-of-sugar",
-    title: "The 60+ Hidden Names of Sugar",
-    eyebrow: "Reference",
-    category: "reference",
-    module: "Module 3",
-    readTime: "5 min read",
-    description: "Every alias sugar uses on a label, grouped so you can decode any ingredient list in 10 seconds.",
-    icon: Tag,
-    status: "ready",
-  },
-  {
-    slug: "yfas-self-check",
-    title: "YFAS Self-Check Card",
-    eyebrow: "Template",
-    category: "template",
-    module: "Module 1",
-    readTime: "8 min do",
-    description: "The Yale Food Addiction Scale, formatted as a printable self-rating sheet with clinical interpretation.",
-    icon: ClipboardCheck,
-    status: "ready",
-  },
-  // — Coming soon placeholders (Phase 1 + women set, not yet written) —
-  { slug: "craving-log-24h", title: "24-Hour Craving Log", eyebrow: "Template", category: "template", module: "Module 2", readTime: "—", description: "A printable sheet for the Module 2 homework — log every craving with time, recent food, context, and emotional state.", icon: Clock, status: "soon" },
-  { slug: "kitchen-audit-checklist", title: "Kitchen Audit Checklist", eyebrow: "Template", category: "template", module: "Intermission 1", readTime: "—", description: "Room-by-room walkthrough to prepare your three kitchen photos and clear ultra-processed food.", icon: Home, status: "soon" },
-  { slug: "pantry-restock-list", title: "Pantry Restock List", eyebrow: "Reference", category: "reference", module: "Module 5 & 6", readTime: "—", description: "What to actually fill your shelves with after clearing — categorized by protein, fat, volume, and safe slow-pleasure.", icon: ShoppingCart, status: "soon" },
-  { slug: "personal-operating-system", title: "Personal Operating System Sheet", eyebrow: "Template", category: "template", module: "Module 6", readTime: "—", description: "Blank framework for writing the 4-5 if-then rules that govern your real-life situations.", icon: Cog, status: "soon" },
-  { slug: "craving-protocol-template", title: "Craving Protocol Template", eyebrow: "Template", category: "template", module: "Module 7", readTime: "—", description: "Three rows: your top trigger, the real need underneath, your specific if-then response.", icon: Shield, status: "soon" },
-  { slug: "listen-read-watch", title: "Listen · Read · Watch List", eyebrow: "Reference", category: "reference", module: "All modules", readTime: "—", description: "Kristina's curated trio — podcasts, books, and documentaries worth your time, with 1-line reasons.", icon: BookOpen, status: "soon" },
+  // ─ Phase 1 ────────────────────────────────────────────────────
+  { slug: "if-then-protocols",      title: "The If-Then Protocols Library",  eyebrow: "Protocol",  category: "protocol",  module: "Module 6 & 7",        relatedLessons: ["module-6", "module-7"],            readTime: "12 min read", description: "38 pre-decided protocols across time, emotion, place, social and cycle triggers — plus a build-your-own worksheet.",                                          icon: Zap,            status: "ready" },
+  { slug: "hidden-names-of-sugar",  title: "The 60+ Hidden Names of Sugar",  eyebrow: "Reference", category: "reference", module: "Module 3",            relatedLessons: ["module-3"],                        readTime: "5 min read",  description: "Every alias sugar uses on a label, grouped so you can decode any ingredient list in 10 seconds.",                                                           icon: Tag,            status: "ready" },
+  { slug: "yfas-self-check",        title: "YFAS Self-Check Card",           eyebrow: "Template",  category: "template",  module: "Module 1",            relatedLessons: ["module-1"],                        readTime: "8 min do",    description: "The Yale Food Addiction Scale, formatted as a printable self-rating sheet with clinical interpretation.",                                                  icon: ClipboardCheck, status: "ready" },
+  { slug: "craving-log-24h",        title: "24-Hour Craving Log",            eyebrow: "Template",  category: "template",  module: "Module 2",            relatedLessons: ["module-2"],                        readTime: "Use for 24h", description: "A structured sheet for the Module 2 homework — log every craving with time, recent food, context, and emotional state.",                                  icon: Clock,          status: "ready" },
+  { slug: "kitchen-audit-checklist",title: "Kitchen Audit Checklist",        eyebrow: "Template",  category: "template",  module: "Intermission 1",      relatedLessons: ["intermission-1"],                  readTime: "20 min do",   description: "Room-by-room walkthrough to prepare your three kitchen photos, find hidden traps, and clear ultra-processed food.",                                        icon: Home,           status: "ready" },
+  { slug: "pantry-restock-list",    title: "Pantry Restock List",            eyebrow: "Reference", category: "reference", module: "Module 5 & 6",        relatedLessons: ["module-5", "module-6"],            readTime: "6 min read",  description: "What to actually fill your shelves with after clearing — categorized by protein, fat, volume, and safe slow-pleasure.",                                    icon: ShoppingCart,   status: "ready" },
+  { slug: "personal-operating-system",title:"Personal Operating System Sheet",eyebrow: "Template", category: "template",  module: "Module 6",            relatedLessons: ["module-6"],                        readTime: "30 min do",   description: "Blank framework for writing the four to five if-then rules that will govern your real-life situations.",                                                    icon: Cog,            status: "ready" },
+  { slug: "craving-protocol-template",title:"Craving Protocol Template",     eyebrow: "Template",  category: "template",  module: "Module 7",            relatedLessons: ["module-7"],                        readTime: "20 min do",   description: "Three rows: your top trigger, the real need underneath, your specific if-then response. Pinnable to fridge or wallpaper.",                                  icon: Shield,         status: "ready" },
+  { slug: "listen-read-watch",      title: "Listen · Read · Watch List",     eyebrow: "Reference", category: "reference", module: "All modules",         relatedLessons: ["module-0", "module-9"],            readTime: "5 min read",  description: "Kristina's curated trio — podcasts, books and documentaries worth your time, with a one-line reason each.",                                                icon: BookOpen,       status: "ready" },
 
-  { slug: "cycle-tracker", title: "Cycle Tracker × Cravings Log", eyebrow: "Template", category: "template", module: "Module 4", women: true, readTime: "—", description: "Track cycle phase, cravings, mood, energy, and skin daily — see your own pattern over one full month.", icon: Calendar, status: "soon" },
-  { slug: "pms-decoded", title: "PMS Decoded", eyebrow: "Women's Guide", category: "guide", module: "Module 4", women: true, readTime: "—", description: "Mood swings, breast tenderness, jawline acne, water retention — reframed as fixable hormonal output, not 'just how I am.'", icon: Sparkles, status: "soon" },
-  { slug: "pcos-sugar-connection", title: "The PCOS–Sugar Connection", eyebrow: "Women's Guide", category: "guide", module: "Module 4", women: true, readTime: "—", description: "Insulin resistance is the upstream of PCOS. A specific protocol + the labs to ask for.", icon: Activity, status: "soon" },
-  { slug: "skin-food-timeline", title: "The Skin-Food Timeline", eyebrow: "Women's Guide", category: "guide", module: "Module 4", women: true, readTime: "—", description: "What changes in your skin at day 7, 14, 30 and 90 off ultra-processed food. Glycation, inflammation, collagen — illustrated.", icon: Droplet, status: "soon" },
-  { slug: "iron-for-women", title: "Iron for Women", eyebrow: "Women's Guide", category: "guide", module: "Module 4", women: true, readTime: "—", description: "Symptoms (often mistaken for sugar inflammation), real food sources, and when supplementation makes sense.", icon: PillIcon, status: "soon" },
-  { slug: "diet-history", title: "For Women With Diet History", eyebrow: "Women's Guide", category: "guide", module: "Module 8", women: true, readTime: "—", description: "If you've spent 10+ years dieting, this protocol runs differently. Refeeding sensitivity, restriction triggers, and putting the scale away.", icon: Heart, status: "soon" },
-  { slug: "female-lab-panel", title: "The Female Lab Panel", eyebrow: "Reference", category: "reference", module: "Module 4", women: true, readTime: "—", description: "Exactly which labs to request from your doctor — fasting insulin, SHBG, free T, estradiol, thyroid panel, ferritin, vitamin D.", icon: FlaskConical, status: "soon" },
+  // ─ Women-specific set ────────────────────────────────────────
+  { slug: "cycle-tracker",          title: "Cycle Tracker × Cravings Log",   eyebrow: "Template",  category: "template",  module: "Module 4",            relatedLessons: ["module-4"], women: true,          readTime: "28 days",     description: "Track cycle phase, cravings, mood, energy and skin daily — see your own pattern over one full month.",                                                     icon: Calendar,       status: "ready" },
+  { slug: "pms-decoded",            title: "PMS Decoded",                    eyebrow: "Women's Guide", category: "guide", module: "Module 4",           relatedLessons: ["module-4"], women: true,          readTime: "7 min read",  description: "Mood swings, breast tenderness, jawline acne, water retention — reframed as fixable hormonal output, not 'just how I am.'",                                icon: Sparkles,       status: "ready" },
+  { slug: "pcos-sugar-connection",  title: "The PCOS–Sugar Connection",      eyebrow: "Women's Guide", category: "guide", module: "Module 4",           relatedLessons: ["module-4"], women: true,          readTime: "8 min read",  description: "Insulin resistance is the upstream of PCOS. A specific protocol plus the labs to ask your doctor for.",                                                     icon: Activity,       status: "ready" },
+  { slug: "skin-food-timeline",     title: "The Skin-Food Timeline",         eyebrow: "Women's Guide", category: "guide", module: "Module 4",           relatedLessons: ["module-4"], women: true,          readTime: "6 min read",  description: "What changes in your skin at day 7, 14, 30 and 90 off ultra-processed food. Glycation, inflammation, collagen — explained.",                               icon: Droplet,        status: "ready" },
+  { slug: "iron-for-women",         title: "Iron for Women",                 eyebrow: "Women's Guide", category: "guide", module: "Module 4",           relatedLessons: ["module-4"], women: true,          readTime: "6 min read",  description: "Symptoms (often mistaken for sugar inflammation), real food sources, and when supplementation actually makes sense.",                                       icon: PillIcon,       status: "ready" },
+  { slug: "diet-history",           title: "For Women With Diet History",    eyebrow: "Women's Guide", category: "guide", module: "Module 8",           relatedLessons: ["module-8"], women: true,          readTime: "7 min read",  description: "If you've spent 10+ years dieting, this protocol runs differently. Refeeding sensitivity, restriction triggers, putting the scale away.",                  icon: Heart,          status: "ready" },
+  { slug: "female-lab-panel",       title: "The Female Lab Panel",           eyebrow: "Reference", category: "reference", module: "Module 4",           relatedLessons: ["module-4"], women: true,          readTime: "5 min read",  description: "Exactly which labs to request from your doctor — fasting insulin, SHBG, free T, estradiol, full thyroid panel, ferritin, vitamin D.",                       icon: FlaskConical,   status: "ready" },
 ];
 
 /* ═══════════════════════════════════════════════════════════════
-   RESOURCE SHELL — shared chrome for every resource detail page
+   RESOURCE SHELL — shared chrome for every detail page
    ═══════════════════════════════════════════════════════════════ */
 const ResourceShell = ({
   resource,
@@ -106,17 +80,49 @@ const ResourceShell = ({
   onBack: () => void;
   children: ReactNode;
 }) => {
+  const articleRef = useRef<HTMLElement>(null);
+  const [isGenerating, setIsGenerating] = useState(false);
+
   useEffect(() => {
-    // Update <title> while reading a resource so a Save-as-PDF gets a good filename
     const prev = document.title;
     document.title = `${resource.title} · The Unhooked Method`;
     return () => { document.title = prev; };
   }, [resource.title]);
 
+  const handleDownload = async () => {
+    if (!articleRef.current || isGenerating) return;
+    setIsGenerating(true);
+    try {
+      // Lazy import — html2pdf is ~300KB, only loaded when user clicks
+      const mod = await import("html2pdf.js");
+      const html2pdf = mod.default || mod;
+      const filename = `unhooked-method-${resource.slug}.pdf`;
+      await html2pdf()
+        .set({
+          margin: [14, 12, 14, 12],
+          filename,
+          image: { type: "jpeg", quality: 0.96 },
+          html2canvas: { scale: 2, useCORS: true, backgroundColor: "#ffffff", logging: false },
+          jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+          pagebreak: { mode: ["css", "legacy"] },
+        })
+        .from(articleRef.current)
+        .save();
+    } catch (err) {
+      console.error("PDF download failed:", err);
+      alert("Sorry, the download couldn't be generated. Please try again or use Print instead.");
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
   const Icon = resource.icon;
 
   return (
-    <article className="max-w-3xl mx-auto px-5 sm:px-8 py-6 sm:py-10 print:px-0 print:py-0 print:max-w-full">
+    <article
+      ref={articleRef}
+      className="max-w-3xl mx-auto px-5 sm:px-8 py-6 sm:py-10 print:px-0 print:py-0 print:max-w-full"
+    >
       {/* Screen-only action bar */}
       <div className="print:hidden flex items-center justify-between gap-3 mb-6 sm:mb-8">
         <button
@@ -127,13 +133,34 @@ const ResourceShell = ({
           <span className="hidden sm:inline">Back to Resource Library</span>
           <span className="sm:hidden">Back</span>
         </button>
-        <button
-          onClick={() => window.print()}
-          className="flex items-center gap-2 px-4 sm:px-5 py-2.5 text-sm font-bold text-white bg-gradient-to-br from-amber-600 to-amber-800 hover:from-amber-700 hover:to-amber-900 rounded-full shadow-md shadow-amber-300/40 transition-all"
-        >
-          <Download className="w-4 h-4" />
-          Download PDF
-        </button>
+        <div className="flex items-center gap-2 sm:gap-2.5">
+          <button
+            onClick={() => window.print()}
+            className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2.5 text-xs sm:text-sm font-bold text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 hover:border-gray-300 rounded-full transition-colors"
+            title="Open browser print dialog"
+          >
+            <Printer className="w-4 h-4" />
+            <span className="hidden sm:inline">Print</span>
+          </button>
+          <button
+            onClick={handleDownload}
+            disabled={isGenerating}
+            className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2.5 text-xs sm:text-sm font-bold text-white bg-gradient-to-br from-amber-600 to-amber-800 hover:from-amber-700 hover:to-amber-900 disabled:opacity-70 rounded-full shadow-md shadow-amber-300/40 transition-all"
+          >
+            {isGenerating ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                <span className="hidden sm:inline">Generating…</span>
+              </>
+            ) : (
+              <>
+                <Download className="w-4 h-4" />
+                <span className="hidden sm:inline">Download PDF</span>
+                <span className="sm:hidden">PDF</span>
+              </>
+            )}
+          </button>
+        </div>
       </div>
 
       {/* Print-only brand header */}
@@ -201,7 +228,7 @@ const ResourceShell = ({
 };
 
 /* ═══════════════════════════════════════════════════════════════
-   REUSABLE CONTENT PRIMITIVES — for resource bodies
+   REUSABLE CONTENT PRIMITIVES
    ═══════════════════════════════════════════════════════════════ */
 const Section = ({
   num,
@@ -219,26 +246,12 @@ const Section = ({
   <section>
     {(num || eyebrow) && (
       <div className="flex items-baseline gap-3 mb-3">
-        {num && (
-          <span className="text-amber-600 font-black text-base sm:text-lg tabular-nums">
-            {num}
-          </span>
-        )}
-        {eyebrow && (
-          <span className="text-[10px] sm:text-[11px] font-black text-amber-800 uppercase tracking-[0.22em]">
-            {eyebrow}
-          </span>
-        )}
+        {num && <span className="text-amber-600 font-black text-base sm:text-lg tabular-nums">{num}</span>}
+        {eyebrow && <span className="text-[10px] sm:text-[11px] font-black text-amber-800 uppercase tracking-[0.22em]">{eyebrow}</span>}
       </div>
     )}
-    <h2 className="text-xl sm:text-3xl font-black text-gray-900 tracking-tight leading-tight mb-4 sm:mb-5 print:text-2xl">
-      {title}
-    </h2>
-    {intro && (
-      <p className="text-gray-600 text-[15px] sm:text-base leading-relaxed mb-6">
-        {intro}
-      </p>
-    )}
+    <h2 className="text-xl sm:text-3xl font-black text-gray-900 tracking-tight leading-tight mb-4 sm:mb-5 print:text-2xl">{title}</h2>
+    {intro && <p className="text-gray-600 text-[15px] sm:text-base leading-relaxed mb-6">{intro}</p>}
     {children}
   </section>
 );
@@ -302,140 +315,158 @@ const NameGrid = ({ names }: { names: string[] }) => (
   </div>
 );
 
+const Checklist = ({ items }: { items: string[] }) => (
+  <ul className="space-y-2.5 mt-3">
+    {items.map((s, i) => (
+      <li key={i} className="flex gap-3 items-start text-[14.5px] sm:text-[15px] text-gray-800 print:break-inside-avoid">
+        <span className="w-5 h-5 mt-0.5 border-2 border-amber-300 rounded flex-shrink-0" />
+        <span className="leading-snug">{s}</span>
+      </li>
+    ))}
+  </ul>
+);
+
+const BlankLine = ({ label }: { label?: string }) => (
+  <div className="mt-3">
+    {label && <p className="text-[10px] font-bold text-amber-700 uppercase tracking-[0.2em] mb-1.5">{label}</p>}
+    <div className="border-b border-dashed border-gray-300 h-6" />
+  </div>
+);
+
+const Table = ({ headers, rows }: { headers: string[]; rows: string[][] }) => (
+  <div className="overflow-x-auto mt-4 print:overflow-visible">
+    <table className="w-full border-collapse text-[13.5px] sm:text-sm">
+      <thead>
+        <tr>
+          {headers.map((h, i) => (
+            <th key={i} className="text-left text-[10px] font-black text-amber-800 uppercase tracking-[0.2em] px-3 py-2 bg-amber-50 border-b-2 border-amber-300">
+              {h}
+            </th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map((row, ri) => (
+          <tr key={ri} className="print:break-inside-avoid">
+            {row.map((cell, ci) => (
+              <td key={ci} className="px-3 py-2.5 border-b border-gray-100 text-gray-700 align-top">
+                {cell}
+              </td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+);
+
 /* ═══════════════════════════════════════════════════════════════
-   RESOURCE: The If-Then Protocols Library
+   RESOURCE: If-Then Protocols Library
    ═══════════════════════════════════════════════════════════════ */
 const IfThenProtocols = () => (
   <>
     <Section eyebrow="01 · Why pre-decision works" title="The anatomy of an if-then">
       <div className="space-y-4 text-gray-700 text-[15px] sm:text-base leading-[1.65]">
-        <p>
-          Willpower lives in the prefrontal cortex — and the prefrontal cortex depletes across the day. By 9pm, after work, decisions, emotion management and a slightly low blood sugar, it is running on fumes. That is exactly when the craving hits hardest.
-        </p>
-        <p>
-          An if-then protocol moves the decision out of that moment. You decide once, in the morning, sitting calmly. When the trigger fires, there is no negotiation — only execution. The format is fixed:
-        </p>
+        <p>Willpower lives in the prefrontal cortex — and the prefrontal cortex depletes across the day. By 9pm, after work, decisions, emotion management and a slightly low blood sugar, it is running on fumes. That is exactly when the craving hits hardest.</p>
+        <p>An if-then protocol moves the decision out of that moment. You decide once, in the morning, sitting calmly. When the trigger fires, there is no negotiation — only execution. The format is fixed:</p>
         <Callout variant="amber">
-          <span className="font-bold text-amber-900">If</span> [a very specific trigger]
-          <span className="text-amber-700"> → </span>
+          <span className="font-bold text-amber-900">If</span> [a very specific trigger]{" "}
+          <span className="text-amber-700">→</span>{" "}
           <span className="font-bold text-amber-900">then</span> [a very specific action]
         </Callout>
-        <p className="text-gray-600">
-          Notice the two words doing the work: <em>specific</em>, twice. Vague triggers ("if I feel tired") and vague actions ("I'll be careful") collapse under pressure. The protocols below are all written so a depleted brain can run them without thinking.
-        </p>
+        <p className="text-gray-600">Notice the two words doing the work: <em>specific</em>, twice. Vague triggers ("if I feel tired") and vague actions ("I'll be careful") collapse under pressure. The protocols below are all written so a depleted brain can run them without thinking.</p>
       </div>
     </Section>
 
     <Section eyebrow="02" title="Time-based triggers" intro="Recurring clock-driven moments — the brain wired sugar to specific times of day. Reroute those exact slots.">
-      <ProtocolList
-        items={[
-          { num: 1, if_: "the clock hits 3pm and I'm at my desk", then_: "I stand up, drink 500ml of water, eat a handful of almonds, and take five minutes outside." },
-          { num: 2, if_: "it's 9pm and I find myself in the kitchen", then_: "I make a strong herbal tea and a sparkling water, sit on the couch with my notes, and write for three minutes before deciding anything." },
-          { num: 3, if_: "it's Friday afternoon and I'm leaving work", then_: "I eat my pre-prepared protein snack in the parking lot before I drive home." },
-          { num: 4, if_: "it's Sunday afternoon and boredom is rising", then_: "I leave the house for thirty minutes — walk, café, anywhere with people but no decisions." },
-          { num: 5, if_: "dinner just ended", then_: "I brush my teeth immediately and move to a different room." },
-        ]}
-      />
+      <ProtocolList items={[
+        { num: 1, if_: "the clock hits 3pm and I'm at my desk", then_: "I stand up, drink 500ml of water, eat a handful of almonds, and take five minutes outside." },
+        { num: 2, if_: "it's 9pm and I find myself in the kitchen", then_: "I make a strong herbal tea and a sparkling water, sit on the couch with my notes, and write for three minutes before deciding anything." },
+        { num: 3, if_: "it's Friday afternoon and I'm leaving work", then_: "I eat my pre-prepared protein snack in the parking lot before I drive home." },
+        { num: 4, if_: "it's Sunday afternoon and boredom is rising", then_: "I leave the house for thirty minutes — walk, café, anywhere with people but no decisions." },
+        { num: 5, if_: "dinner just ended", then_: "I brush my teeth immediately and move to a different room." },
+      ]} />
     </Section>
 
     <Section eyebrow="03" title="Emotional states" intro="The craving rarely wants food. Name what it actually wants — then meet that need directly.">
-      <ProtocolList
-        items={[
-          { num: 6, if_: "I notice I'm bored and reaching for the cabinet", then_: "I name what I actually need (entertainment, novelty, rest, contact) and respond to that need — not to food." },
-          { num: 7, if_: "I'm anxious and want to eat", then_: "I do sixty seconds of 4-7-8 breathing first. If the urge remains after that, I revisit." },
-          { num: 8, if_: "I'm frustrated after a hard call or meeting", then_: "I walk outside for ten minutes before opening anything in the kitchen." },
-          { num: 9, if_: "I'm lonely and the kitchen is calling", then_: "I text one specific friend (pre-decided name) before opening any cabinet." },
-          { num: 10, if_: "I slept less than six hours", then_: "I extra-protect breakfast (eggs + avocado), nothing sweet, and accept today is harder." },
-          { num: 11, if_: "I want to numb out", then_: "I lie on the floor for five minutes, eyes closed, before any food decision." },
-        ]}
-      />
+      <ProtocolList items={[
+        { num: 6, if_: "I notice I'm bored and reaching for the cabinet", then_: "I name what I actually need (entertainment, novelty, rest, contact) and respond to that need — not to food." },
+        { num: 7, if_: "I'm anxious and want to eat", then_: "I do sixty seconds of 4-7-8 breathing first. If the urge remains after that, I revisit." },
+        { num: 8, if_: "I'm frustrated after a hard call or meeting", then_: "I walk outside for ten minutes before opening anything in the kitchen." },
+        { num: 9, if_: "I'm lonely and the kitchen is calling", then_: "I text one specific friend (pre-decided name) before opening any cabinet." },
+        { num: 10, if_: "I slept less than six hours", then_: "I extra-protect breakfast (eggs + avocado), nothing sweet, and accept today is harder." },
+        { num: 11, if_: "I want to numb out", then_: "I lie on the floor for five minutes, eyes closed, before any food decision." },
+      ]} />
     </Section>
 
     <Section eyebrow="04" title="Environment & place" intro="The brain learned which physical places mean sugar. Change the route, change the response.">
-      <ProtocolList
-        items={[
-          { num: 12, if_: "I walk past the bakery on my street", then_: "I cross to the other side of the road. No exceptions." },
-          { num: 13, if_: "I'm in the supermarket and a craving fires", then_: "I go directly to the drinks aisle, buy a strong sparkling water, and leave by a different aisle — skipping the checkout candy." },
-          { num: 14, if_: "I'm in the office break room", then_: "I make my coffee or tea and leave within two minutes — no browsing." },
-          { num: 15, if_: "I'm at an airport waiting for a flight", then_: "I find a real-food kiosk first, buy a protein item, then sit down." },
-          { num: 16, if_: "I'm staying in a hotel", then_: "I do a small grocery run on arrival — yogurt, fruit, nuts — so I don't depend on hotel breakfast or the minibar." },
-          { num: 17, if_: "I'm at the cinema", then_: "I bring a bag of mixed nuts from home, or I eat nothing." },
-        ]}
-      />
+      <ProtocolList items={[
+        { num: 12, if_: "I walk past the bakery on my street", then_: "I cross to the other side of the road. No exceptions." },
+        { num: 13, if_: "I'm in the supermarket and a craving fires", then_: "I go directly to the drinks aisle, buy a strong sparkling water, and leave by a different aisle — skipping the checkout candy." },
+        { num: 14, if_: "I'm in the office break room", then_: "I make my coffee or tea and leave within two minutes — no browsing." },
+        { num: 15, if_: "I'm at an airport waiting for a flight", then_: "I find a real-food kiosk first, buy a protein item, then sit down." },
+        { num: 16, if_: "I'm staying in a hotel", then_: "I do a small grocery run on arrival — yogurt, fruit, nuts — so I don't depend on hotel breakfast or the minibar." },
+        { num: 17, if_: "I'm at the cinema", then_: "I bring a bag of mixed nuts from home, or I eat nothing." },
+      ]} />
     </Section>
 
     <Section eyebrow="05" title="Social situations" intro="Other people will offer, ask, joke. Decide the response in advance, warmly and without debate.">
-      <ProtocolList
-        items={[
-          { num: 18, if_: "someone offers me ultra-processed food at a work or social event", then_: "I say: \"Thank you, I have an allergy\" — and change the subject." },
-          { num: 19, if_: "there's a birthday cake at the office", then_: "I show up, congratulate, hold a glass of water, and decline with the allergy line." },
-          { num: 20, if_: "the dessert menu arrives at a restaurant", then_: "I close it and order a coffee instead." },
-          { num: 21, if_: "it's wine night with friends", then_: "I have one drink and switch to sparkling water for the rest. No sweet cocktails." },
-          { num: 22, if_: "a family member pressures me", then_: "I say once, warmly: \"I've found I feel much better when I don't eat this, so I'm keeping to that.\" Said once. Then I change the topic." },
-          { num: 23, if_: "I'm visiting my parents or in-laws", then_: "I bring my own breakfast option, eat that, and join communal dinner with whatever fits the framework." },
-          { num: 24, if_: "I'm going to a wedding or event", then_: "I eat a real meal at home first so I don't arrive vulnerable." },
-        ]}
-      />
+      <ProtocolList items={[
+        { num: 18, if_: "someone offers me ultra-processed food at a work or social event", then_: "I say: \"Thank you, I have an allergy\" — and change the subject." },
+        { num: 19, if_: "there's a birthday cake at the office", then_: "I show up, congratulate, hold a glass of water, and decline with the allergy line." },
+        { num: 20, if_: "the dessert menu arrives at a restaurant", then_: "I close it and order a coffee instead." },
+        { num: 21, if_: "it's wine night with friends", then_: "I have one drink and switch to sparkling water for the rest. No sweet cocktails." },
+        { num: 22, if_: "a family member pressures me", then_: "I say once, warmly: \"I've found I feel much better when I don't eat this, so I'm keeping to that.\" Said once. Then I change the topic." },
+        { num: 23, if_: "I'm visiting my parents or in-laws", then_: "I bring my own breakfast option, eat that, and join communal dinner with whatever fits the framework." },
+        { num: 24, if_: "I'm going to a wedding or event", then_: "I eat a real meal at home first so I don't arrive vulnerable." },
+      ]} />
     </Section>
 
     <Section eyebrow="06" title="Practical & logistical" intro="Most slips happen because the day wasn't set up to succeed. Front-load the decisions.">
-      <ProtocolList
-        items={[
-          { num: 25, if_: "I'm leaving home for more than two hours", then_: "I eat before I go, or I pack: hard-boiled eggs, nuts, cheese, a piece of fruit." },
-          { num: 26, if_: "I'm grocery shopping", then_: "I go with a list, I do not browse, and I take the same route through the store every time." },
-          { num: 27, if_: "I haven't eaten in four-plus hours", then_: "I eat real food before any decision about anything else." },
-          { num: 28, if_: "my child has leftover food on the plate", then_: "I scrape it straight into the trash. No taste-testing." },
-        ]}
-      />
+      <ProtocolList items={[
+        { num: 25, if_: "I'm leaving home for more than two hours", then_: "I eat before I go, or I pack: hard-boiled eggs, nuts, cheese, a piece of fruit." },
+        { num: 26, if_: "I'm grocery shopping", then_: "I go with a list, I do not browse, and I take the same route through the store every time." },
+        { num: 27, if_: "I haven't eaten in four-plus hours", then_: "I eat real food before any decision about anything else." },
+        { num: 28, if_: "my child has leftover food on the plate", then_: "I scrape it straight into the trash. No taste-testing." },
+      ]} />
     </Section>
 
     <Section eyebrow="07 · Women" title="Cycle & physiology" intro="The female system runs on a 28-ish day rhythm. Two specific windows need protocols of their own.">
-      <ProtocolList
-        items={[
-          { num: 29, if_: "I'm in the luteal phase (the week before my period)", then_: "I double protein at every meal, accept lower energy, and lighten my schedule." },
-          { num: 30, if_: "cycle-onset signs are showing (cravings, mood shifts)", then_: "I mark the date and front-load magnesium-rich foods — dark leafy greens, pumpkin seeds, 90%+ dark chocolate." },
-          { num: 31, if_: "I'm on my period and exhausted", then_: "I prioritize iron-rich foods (red meat, liver, spinach) and remove non-essential obligations from the day." },
-        ]}
-      />
+      <ProtocolList items={[
+        { num: 29, if_: "I'm in the luteal phase (the week before my period)", then_: "I double protein at every meal, accept lower energy, and lighten my schedule." },
+        { num: 30, if_: "cycle-onset signs are showing (cravings, mood shifts)", then_: "I mark the date and front-load magnesium-rich foods — dark leafy greens, pumpkin seeds, 90%+ dark chocolate." },
+        { num: 31, if_: "I'm on my period and exhausted", then_: "I prioritize iron-rich foods (red meat, liver, spinach) and remove non-essential obligations from the day." },
+      ]} />
     </Section>
 
     <Section eyebrow="08" title="Slips & setbacks" intro="A slip is data, not a verdict. Pre-decide the recovery so a slip doesn't snowball.">
-      <ProtocolList
-        items={[
-          { num: 32, if_: "I ate something I didn't plan to", then_: "I return to baseline at the very next meal. No 'ruined day,' no compensation, no skipping the next meal." },
-          { num: 33, if_: "I notice a three-day slip pattern forming", then_: "I do a 24-hour reset — write what triggered it, find the protocol gap, update my operating system." },
-          { num: 34, if_: "I'm in a full relapse spiral", then_: "I message Kristina on WhatsApp. Not later — now." },
-        ]}
-      />
+      <ProtocolList items={[
+        { num: 32, if_: "I ate something I didn't plan to", then_: "I return to baseline at the very next meal. No 'ruined day,' no compensation, no skipping the next meal." },
+        { num: 33, if_: "I notice a three-day slip pattern forming", then_: "I do a 24-hour reset — write what triggered it, find the protocol gap, update my operating system." },
+        { num: 34, if_: "I'm in a full relapse spiral", then_: "I message Kristina on WhatsApp. Not later — now." },
+      ]} />
     </Section>
 
     <Section eyebrow="09" title="Morning, screens, foundations" intro="The first hour of the day, and the last hour at night, decide most of what happens in between.">
-      <ProtocolList
-        items={[
-          { num: 35, if_: "it's morning", then_: "I eat protein and fat within the first hour. No coffee on an empty stomach." },
-          { num: 36, if_: "I've just finished a workout", then_: "I eat within thirty to sixty minutes, protein-forward." },
-          { num: 37, if_: "I'm scrolling and reaching for food at the same time", then_: "I close the screen first, then check whether I'm actually hungry." },
-          { num: 38, if_: "I'm binge-watching a series", then_: "I keep plain sparkling water and a small pre-portioned bowl of nuts in reach — nothing else." },
-        ]}
-      />
+      <ProtocolList items={[
+        { num: 35, if_: "it's morning", then_: "I eat protein and fat within the first hour. No coffee on an empty stomach." },
+        { num: 36, if_: "I've just finished a workout", then_: "I eat within thirty to sixty minutes, protein-forward." },
+        { num: 37, if_: "I'm scrolling and reaching for food at the same time", then_: "I close the screen first, then check whether I'm actually hungry." },
+        { num: 38, if_: "I'm binge-watching a series", then_: "I keep plain sparkling water and a small pre-portioned bowl of nuts in reach — nothing else." },
+      ]} />
     </Section>
 
     <Section eyebrow="10 · Worksheet" title="Build your own — three protocols">
-      <Callout variant="gray" title="Use the 3-line format below for your top three triggers.">
+      <Callout variant="gray" title="Use the three-line format below for your top three triggers.">
         Don't try to write twenty at once. Three personal protocols, lived for two weeks, beat thirty borrowed protocols read once.
       </Callout>
-
       <div className="mt-6 space-y-5">
         {[1, 2, 3].map((n) => (
-          <div key={n} className="border border-gray-200 rounded-2xl p-5 sm:p-6">
-            <p className="text-[10px] font-black text-amber-700 uppercase tracking-[0.22em] mb-3">
-              Protocol {n}
-            </p>
-            <div className="space-y-3 text-[14px] sm:text-[15px]">
-              <p className="text-gray-500"><span className="font-bold text-gray-900">If</span> ____________________________________________________________</p>
-              <p className="text-gray-500"><span className="font-bold text-gray-900">The real need underneath:</span> ___________________________________</p>
-              <p className="text-gray-500"><span className="font-bold text-gray-900">→ Then</span> _________________________________________________________</p>
-            </div>
+          <div key={n} className="border border-gray-200 rounded-2xl p-5 sm:p-6 print:break-inside-avoid">
+            <p className="text-[10px] font-black text-amber-700 uppercase tracking-[0.22em] mb-3">Protocol {n}</p>
+            <BlankLine label="If" />
+            <BlankLine label="The real need underneath" />
+            <BlankLine label="→ Then" />
           </div>
         ))}
       </div>
@@ -467,18 +498,14 @@ const IfThenProtocols = () => (
 );
 
 /* ═══════════════════════════════════════════════════════════════
-   RESOURCE: The 60+ Hidden Names of Sugar
+   RESOURCE: Hidden Names of Sugar
    ═══════════════════════════════════════════════════════════════ */
 const HiddenNamesOfSugar = () => (
   <>
     <Section eyebrow="01 · Why this list" title="Sugar wears sixty masks. Here are all of them.">
       <div className="space-y-4 text-gray-700 text-[15px] sm:text-base leading-[1.65]">
-        <p>
-          Food labels list ingredients by weight, highest first. If a product would have to put "sugar" in its top three ingredients, manufacturers split that sugar into several different names — so each one falls lower on the list and the product can claim "low sugar" or "no added sugar" on the front of the box.
-        </p>
-        <p>
-          The result: bread, yogurt, pasta sauce, granola bars, salad dressing and "healthy" cereals are often built on three or four sugars under different names. Once you recognize the aliases, the supermarket changes permanently.
-        </p>
+        <p>Food labels list ingredients by weight, highest first. If a product would have to put "sugar" in its top three ingredients, manufacturers split that sugar into several different names — so each one falls lower on the list and the product can claim "low sugar" or "no added sugar" on the front of the box.</p>
+        <p>The result: bread, yogurt, pasta sauce, granola bars, salad dressing and "healthy" cereals are often built on three or four sugars under different names. Once you recognize the aliases, the supermarket changes permanently.</p>
         <Callout variant="amber" title="The supermarket rule">
           Read the ingredient list, not the front of the package. If any sugar — under any name on this list — appears in the first three ingredients, sugar is a primary component of that product. Always.
         </Callout>
@@ -486,97 +513,30 @@ const HiddenNamesOfSugar = () => (
     </Section>
 
     <Section eyebrow="02 · Cane & beet sugars" title="The classics" intro="Refined from sugarcane or sugar beet. All behave identically in the body.">
-      <NameGrid names={[
-        "Sucrose",
-        "Cane sugar",
-        "Cane juice",
-        "Cane crystals",
-        "Evaporated cane juice",
-        "Cane sugar syrup",
-        "Beet sugar",
-        "Brown sugar",
-        "Demerara sugar",
-        "Muscovado sugar",
-        "Turbinado sugar",
-        "Confectioner's sugar",
-        "Caster sugar",
-        "Icing sugar",
-        "Invert sugar",
-      ]} />
+      <NameGrid names={["Sucrose","Cane sugar","Cane juice","Cane crystals","Evaporated cane juice","Cane sugar syrup","Beet sugar","Brown sugar","Demerara sugar","Muscovado sugar","Turbinado sugar","Confectioner's sugar","Caster sugar","Icing sugar","Invert sugar"]} />
     </Section>
 
     <Section eyebrow="03 · Corn-derived" title="The industrial workhorses" intro="Cheap, calorie-dense, and in nearly every ultra-processed product in the United States.">
-      <NameGrid names={[
-        "Corn syrup",
-        "High-fructose corn syrup (HFCS)",
-        "HFCS-42 · HFCS-55",
-        "Crystalline fructose",
-        "Glucose syrup",
-        "Glucose-fructose syrup",
-        "Dextrose",
-        "Dextrose monohydrate",
-        "Maltose",
-        "Maltodextrin",
-        "Corn sweetener",
-      ]} />
+      <NameGrid names={["Corn syrup","High-fructose corn syrup (HFCS)","HFCS-42 · HFCS-55","Crystalline fructose","Glucose syrup","Glucose-fructose syrup","Dextrose","Dextrose monohydrate","Maltose","Maltodextrin","Corn sweetener"]} />
     </Section>
 
     <Section eyebrow="04 · Fruit-based" title="The 'natural' aliases" intro="They sound healthier than they are. In the body, refined fruit sugars behave like any other refined sugar.">
-      <NameGrid names={[
-        "Fruit juice concentrate",
-        "Apple juice concentrate",
-        "Pear juice concentrate",
-        "Grape juice concentrate",
-        "Date syrup",
-        "Date sugar",
-        "Coconut sugar",
-        "Palm sugar",
-        "Agave nectar",
-        "Agave syrup",
-        "Fructose (added)",
-      ]} />
+      <NameGrid names={["Fruit juice concentrate","Apple juice concentrate","Pear juice concentrate","Grape juice concentrate","Date syrup","Date sugar","Coconut sugar","Palm sugar","Agave nectar","Agave syrup","Fructose (added)"]} />
       <Callout variant="warning" title="On fructose specifically">
-        Added fructose and crystalline fructose are metabolized almost entirely by the liver — see the separate <em>Truth About Fructose</em> guide. The fructose in whole fruit (with fiber, water, and structure) is not the same input.
+        Added fructose and crystalline fructose are metabolized almost entirely by the liver. The fructose in whole fruit — with fiber, water, and structure — is not the same input.
       </Callout>
     </Section>
 
     <Section eyebrow="05 · Malt & grain syrups" title="The bakery & cereal group" intro="Heavy in bread, breakfast cereals, energy bars and beer-adjacent products.">
-      <NameGrid names={[
-        "Malt syrup",
-        "Barley malt extract",
-        "Barley malt syrup",
-        "Maltol",
-        "Rice syrup",
-        "Brown rice syrup",
-        "Oat syrup",
-        "Sorghum syrup",
-      ]} />
+      <NameGrid names={["Malt syrup","Barley malt extract","Barley malt syrup","Maltol","Rice syrup","Brown rice syrup","Oat syrup","Sorghum syrup"]} />
     </Section>
 
     <Section eyebrow="06 · Honey & traditional syrups" title="Yes, these count too" intro="Honey, maple, and traditional syrups are less refined — but biologically still a concentrated sugar load.">
-      <NameGrid names={[
-        "Honey",
-        "Maple syrup",
-        "Maple sugar",
-        "Molasses",
-        "Treacle",
-        "Golden syrup",
-        "Sorghum molasses",
-      ]} />
+      <NameGrid names={["Honey","Maple syrup","Maple sugar","Molasses","Treacle","Golden syrup","Sorghum molasses"]} />
     </Section>
 
     <Section eyebrow="07 · The '-ose' suffix" title="The chemistry-class disguise" intro="Anything ending in -ose is, by definition, a sugar. Spot the suffix and you've spotted a sugar.">
-      <NameGrid names={[
-        "Sucrose",
-        "Glucose",
-        "Fructose",
-        "Lactose",
-        "Maltose",
-        "Galactose",
-        "Dextrose",
-        "Trehalose",
-        "Ribose",
-      ]} />
+      <NameGrid names={["Sucrose","Glucose","Fructose","Lactose","Maltose","Galactose","Dextrose","Trehalose","Ribose"]} />
     </Section>
 
     <Section eyebrow="08" title="How to scan a label in 10 seconds">
@@ -586,9 +546,6 @@ const HiddenNamesOfSugar = () => (
         <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">3.</span><span>Scan for any name on this list. Also scan for any word ending in <strong>-ose</strong> or <strong>-syrup</strong>.</span></li>
         <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">4.</span><span>Count the total number of sugar aliases anywhere on the list. Three or more = an engineered product. Put it back.</span></li>
       </ol>
-      <Callout variant="amber" title="Two products to spot-check this week">
-        Pick one from your fridge and one from your pantry. Read both labels using the 4 steps above. Send Kristina what you found on WhatsApp — that's a real Intermission 2 input.
-      </Callout>
     </Section>
   </>
 );
@@ -600,12 +557,8 @@ const YFASSelfCheck = () => (
   <>
     <Section eyebrow="01 · Why this tool" title="The clinical scale you can score yourself on">
       <div className="space-y-4 text-gray-700 text-[15px] sm:text-base leading-[1.65]">
-        <p>
-          The Yale Food Addiction Scale (YFAS) was developed in 2009 by Dr. Ashley Gearhardt and colleagues at Yale. They took the psychiatric diagnostic criteria for substance addiction — the same framework used for cocaine, alcohol, and nicotine — and applied them to food behavior. The result is a nine-marker scale that has been validated across hundreds of thousands of people since.
-        </p>
-        <p>
-          A meta-analysis of nearly 200,000 people found that <strong className="text-gray-900">roughly one in five</strong> meets the YFAS criteria for clinical food addiction. The number skews significantly higher in women.
-        </p>
+        <p>The Yale Food Addiction Scale (YFAS) was developed in 2009 by Dr. Ashley Gearhardt and colleagues at Yale. They took the psychiatric diagnostic criteria for substance addiction — the same framework used for cocaine, alcohol, and nicotine — and applied them to food behavior. The result is a nine-marker scale that has been validated across hundreds of thousands of people since.</p>
+        <p>A meta-analysis of nearly 200,000 people found that <strong className="text-gray-900">roughly one in five</strong> meets the YFAS criteria for clinical food addiction. The number skews significantly higher in women.</p>
         <Callout variant="amber" title="This is not for self-judgment.">
           The point of running this scale on yourself is to move what you've been carrying as "I'm broken" into clinical language: <em>a measurable response to a specific stimulus in a specific environment</em>. That reframe is where everything else in the course starts.
         </Callout>
@@ -615,79 +568,31 @@ const YFASSelfCheck = () => (
     <Section eyebrow="02 · The nine markers" title="Mark each one honestly" intro="For each marker, decide: does this describe you? Rate severity 0 (never) → 4 (almost always). Write a one-line example next to any you score 2 or higher.">
       <div className="space-y-4 sm:space-y-5">
         {[
-          {
-            n: 1,
-            title: "Eating more than intended",
-            body: "I regularly eat more than I planned, especially sweet, salty, or fatty food. I sit down for \"just a little\" and the whole thing disappears.",
-          },
-          {
-            n: 2,
-            title: "Failed attempts to cut back",
-            body: "I have tried to stop or cut back many times. The attempts collapse — same triggers, same time of day, same emotional weather.",
-          },
-          {
-            n: 3,
-            title: "Mental energy spent on food",
-            body: "A significant amount of my mental energy goes to food — not just eating, but thinking about it, planning around it, managing guilt about it.",
-          },
-          {
-            n: 4,
-            title: "Intense, physical-feeling cravings",
-            body: "I experience cravings that feel almost physical in their intensity, especially under stress, loneliness, or anxiety.",
-          },
-          {
-            n: 5,
-            title: "Eating despite known harm",
-            body: "I keep eating this way knowing it's hurting me — my skin, energy, sleep, mood, maybe relationships.",
-          },
-          {
-            n: 6,
-            title: "Activities given up",
-            body: "Things I used to enjoy — hobbies, seeing people, work I cared about — have quietly been pushed aside as food takes the space.",
-          },
-          {
-            n: 7,
-            title: "Seeing harm clearly, reaching anyway",
-            body: "I see the harm clearly. My hand reaches anyway.",
-          },
-          {
-            n: 8,
-            title: "Tolerance",
-            body: "What used to satisfy me doesn't anymore. The amount or intensity keeps moving up.",
-          },
-          {
-            n: 9,
-            title: "Withdrawal symptoms",
-            body: "When I try to remove a trigger food completely, I get real symptoms: irritability, anxiety, headaches, fatigue, a crawling restlessness.",
-          },
+          { n: 1, title: "Eating more than intended", body: "I regularly eat more than I planned, especially sweet, salty, or fatty food. I sit down for \"just a little\" and the whole thing disappears." },
+          { n: 2, title: "Failed attempts to cut back", body: "I have tried to stop or cut back many times. The attempts collapse — same triggers, same time of day, same emotional weather." },
+          { n: 3, title: "Mental energy spent on food", body: "A significant amount of my mental energy goes to food — not just eating, but thinking about it, planning around it, managing guilt about it." },
+          { n: 4, title: "Intense, physical-feeling cravings", body: "I experience cravings that feel almost physical in their intensity, especially under stress, loneliness, or anxiety." },
+          { n: 5, title: "Eating despite known harm", body: "I keep eating this way knowing it's hurting me — my skin, energy, sleep, mood, maybe relationships." },
+          { n: 6, title: "Activities given up", body: "Things I used to enjoy — hobbies, seeing people, work I cared about — have quietly been pushed aside as food takes the space." },
+          { n: 7, title: "Seeing harm clearly, reaching anyway", body: "I see the harm clearly. My hand reaches anyway." },
+          { n: 8, title: "Tolerance", body: "What used to satisfy me doesn't anymore. The amount or intensity keeps moving up." },
+          { n: 9, title: "Withdrawal symptoms", body: "When I try to remove a trigger food completely, I get real symptoms: irritability, anxiety, headaches, fatigue, a crawling restlessness." },
         ].map((m) => (
           <div key={m.n} className="border border-gray-200 rounded-2xl p-5 sm:p-6 print:break-inside-avoid">
             <div className="flex items-start gap-3 sm:gap-4 mb-3">
-              <span className="text-amber-700 font-black text-lg sm:text-xl tabular-nums leading-none pt-0.5 flex-shrink-0">
-                {String(m.n).padStart(2, "0")}
-              </span>
+              <span className="text-amber-700 font-black text-lg sm:text-xl tabular-nums leading-none pt-0.5 flex-shrink-0">{String(m.n).padStart(2, "0")}</span>
               <div className="flex-1">
-                <h3 className="text-base sm:text-lg font-bold text-gray-900 leading-snug">
-                  {m.title}
-                </h3>
+                <h3 className="text-base sm:text-lg font-bold text-gray-900 leading-snug">{m.title}</h3>
               </div>
             </div>
-            <p className="text-gray-600 text-[14px] sm:text-[15px] leading-relaxed mb-4">
-              {m.body}
-            </p>
-
-            {/* Scale row */}
-            <div className="flex items-center gap-1.5 sm:gap-2 mb-3">
+            <p className="text-gray-600 text-[14px] sm:text-[15px] leading-relaxed mb-4">{m.body}</p>
+            <div className="flex items-center gap-1.5 sm:gap-2 mb-3 flex-wrap">
               <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mr-1">Score</span>
               {[0, 1, 2, 3, 4].map((s) => (
-                <span key={s} className="w-7 h-7 sm:w-8 sm:h-8 border-2 border-gray-200 rounded-lg flex items-center justify-center text-xs font-bold text-gray-600">
-                  {s}
-                </span>
+                <span key={s} className="w-7 h-7 sm:w-8 sm:h-8 border-2 border-gray-200 rounded-lg flex items-center justify-center text-xs font-bold text-gray-600">{s}</span>
               ))}
               <span className="text-[10px] font-bold text-gray-400 ml-1">0 = never · 4 = almost always</span>
             </div>
-
-            {/* Example field */}
             <div className="border-t border-gray-100 pt-3 mt-3">
               <span className="text-[10px] font-bold text-amber-700 uppercase tracking-[0.2em]">Your example (if score ≥ 2)</span>
               <div className="mt-2 border-b border-gray-200 h-6"></div>
@@ -699,10 +604,7 @@ const YFASSelfCheck = () => (
 
     <Section eyebrow="03 · Interpretation" title="What your score actually means">
       <div className="space-y-4 text-gray-700 text-[15px] sm:text-base leading-[1.65]">
-        <p>
-          Per the clinical literature, <strong className="text-gray-900">two or three of these markers persisting over time</strong> meets the threshold for food addiction. The number isn't a verdict on your character. It is a diagnostic snapshot of a system that has been running for a while.
-        </p>
-
+        <p>Per the clinical literature, <strong className="text-gray-900">two or three of these markers persisting over time</strong> meets the threshold for food addiction. The number isn't a verdict on your character. It is a diagnostic snapshot of a system that has been running for a while.</p>
         <div className="grid sm:grid-cols-3 gap-3 sm:gap-4 mt-6">
           <div className="bg-amber-50 border border-amber-200 rounded-2xl p-5">
             <p className="text-[10px] font-black text-amber-800 uppercase tracking-[0.22em] mb-2">2 markers</p>
@@ -720,28 +622,853 @@ const YFASSelfCheck = () => (
             <p className="text-[13px] sm:text-sm text-gray-600 leading-relaxed">Work the course in full, and consider professional support alongside. See the note below.</p>
           </div>
         </div>
-
         <Callout variant="warning" title="Honest disclaimer">
           If you're in active crisis with an eating disorder — bulimia, binge eating disorder, anorexia, or any pattern that has compromised your physical or mental health — this course is not a substitute for medical or psychiatric care. Message Kristina and she'll point you toward people who can help you better. There's no shame in that.
         </Callout>
-      </div>
-    </Section>
-
-    <Section eyebrow="04 · What's next" title="Take this with you into Module 2">
-      <div className="space-y-4 text-gray-700 text-[15px] sm:text-base leading-[1.65]">
-        <p>
-          Keep the markers you scored 2+ on in mind. In Module 2 you'll see the three biological layers that produce them — dopamine, conditioning, physiological amplifiers — and the markers will stop feeling like a personality assessment and start feeling like an engineering report.
-        </p>
-        <p className="text-gray-900 font-semibold">
-          You are not broken. You were given the wrong explanation, then blamed for failing with it. That ends here.
-        </p>
       </div>
     </Section>
   </>
 );
 
 /* ═══════════════════════════════════════════════════════════════
-   RESOURCE DETAIL — looks up which content component to render
+   RESOURCE: 24-Hour Craving Log (template)
+   ═══════════════════════════════════════════════════════════════ */
+const CravingLog24h = () => (
+  <>
+    <Section eyebrow="01 · Why this log" title="What twenty-four hours of honest observation reveals">
+      <p className="text-gray-700 text-[15px] sm:text-base leading-[1.65]">
+        Module 2 walks through the three layers behind every craving — dopamine, conditioning, physiological amplifiers. Before you can interrupt them, you have to <em>see</em> them. This log is the seeing tool. One day of honest data is more useful than a month of guessing what your patterns are.
+      </p>
+      <Callout variant="amber" title="Today's only job is to observe.">
+        Don't try to change anything yet. Don't try to "be good." Just write down what happens. You can't engineer around a pattern you haven't documented.
+      </Callout>
+    </Section>
+
+    <Section eyebrow="02 · How to use it" title="Four fields, every time a craving fires">
+      <ol className="space-y-3 text-[14.5px] sm:text-base text-gray-700 leading-relaxed">
+        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">1.</span><span><strong>Time</strong> — to the nearest 15 minutes. You'll see clock patterns emerge.</span></li>
+        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">2.</span><span><strong>What you ate in the past 2–3 hours</strong> — including coffee, snacks, "nothing." Insulin crashes from earlier meals show up here.</span></li>
+        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">3.</span><span><strong>What was happening just before the craving</strong> — a Zoom ended, you opened Instagram, you walked past the kitchen, you finished a task.</span></li>
+        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">4.</span><span><strong>What emotional state you were in</strong> — bored, anxious, lonely, frustrated, tired, restless, fine.</span></li>
+      </ol>
+    </Section>
+
+    <Section eyebrow="03 · The log" title="One row per craving — fill freely">
+      <Table
+        headers={["Time", "Recent food (past 2–3h)", "What just happened", "Emotional state"]}
+        rows={Array.from({ length: 12 }).map(() => ["", "", "", ""])}
+      />
+      <Callout variant="gray" title="Extra rows? Add lines on the back of the printed page.">
+        Twelve rows is plenty for one day for most people. Some days fire more often — that itself is data.
+      </Callout>
+    </Section>
+
+    <Section eyebrow="04 · After 24 hours" title="The three questions to ask the data">
+      <ol className="space-y-3 text-[14.5px] sm:text-base text-gray-700 leading-relaxed">
+        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">1.</span><span><strong>Time pattern?</strong> Did cravings cluster around specific clock times? (3pm, post-dinner, late evening.)</span></li>
+        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">2.</span><span><strong>Food pattern?</strong> Did they follow a refined-carb meal by 2–3 hours? That's the insulin crash signature.</span></li>
+        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">3.</span><span><strong>Emotional pattern?</strong> Was it the same emotion most times? Boredom and exhaustion are the top two for almost everyone.</span></li>
+      </ol>
+      <Callout variant="amber" title="What you do with this">
+        Take the strongest pattern you found and turn it into one if-then protocol. See <em>The If-Then Protocols Library</em> for examples — and the Personal Operating System sheet for blanks.
+      </Callout>
+    </Section>
+  </>
+);
+
+/* ═══════════════════════════════════════════════════════════════
+   RESOURCE: Kitchen Audit Checklist (template)
+   ═══════════════════════════════════════════════════════════════ */
+const KitchenAuditChecklist = () => (
+  <>
+    <Section eyebrow="01" title="Before you photograph anything">
+      <p className="text-gray-700 text-[15px] sm:text-base leading-[1.65]">
+        The point of Intermission 1 isn't to perform a clean kitchen — it's the opposite. Kristina wants to see your real environment so she can write back with useful, specific observations. The worst thing you can do is "tidy it up" before the photos. Take them as it is right now.
+      </p>
+      <Callout variant="amber" title="One quiet 5-minute window">
+        Wait for a moment when nobody's around, walk through your kitchen once, take the three photos, and send them on WhatsApp. Then come back and do the audit walkthrough below.
+      </Callout>
+    </Section>
+
+    <Section eyebrow="02 · The three photos" title="What Kristina needs to see">
+      <Checklist items={[
+        "Inside the fridge — door open, every shelf visible.",
+        "Your main snack or pantry shelf — the one you reach for most.",
+        "Your secret stash — wherever the food you reach for when you're not actually hungry lives. A drawer. A jar by the bed. The glove compartment. The desk drawer.",
+      ]} />
+    </Section>
+
+    <Section eyebrow="03 · Room-by-room walkthrough" title="Where ultra-processed food likes to hide">
+      <div className="space-y-5">
+        {[
+          { area: "Fridge — top shelf", look: "Pre-made sauces, dressings, flavored yogurts, juice cartons, anything with 5+ ingredients on the label." },
+          { area: "Fridge — door", look: "Condiments and dressings live here. Most contain hidden sugars (check our Names of Sugar reference)." },
+          { area: "Freezer", look: "Ice cream, pre-made meals, breaded items, frozen pastries." },
+          { area: "Pantry — eye level", look: "Cereals, granola bars, crackers, cookies, chips, instant oatmeal packets." },
+          { area: "Pantry — top shelf", look: "The 'occasion' stash. Baking supplies you only use twice a year still count." },
+          { area: "Pantry — bottom shelf", look: "Drinks: sodas, sports drinks, sweetened iced teas." },
+          { area: "Counter / fruit bowl", look: "Cookies in a jar, candy in a dish, sweet condiments left out." },
+          { area: "Office / bedside / car", look: "The honest stash. This is the most important one — it's the easiest to grab when willpower is depleted." },
+        ].map((row, i) => (
+          <div key={i} className="border border-gray-200 rounded-2xl p-5 print:break-inside-avoid">
+            <div className="flex items-start gap-3 mb-2">
+              <div className="w-6 h-6 border-2 border-amber-300 rounded flex-shrink-0 mt-0.5" />
+              <div className="flex-1">
+                <p className="text-[10px] font-black text-amber-700 uppercase tracking-[0.2em] mb-1">{row.area}</p>
+                <p className="text-[14px] sm:text-[15px] text-gray-700 leading-relaxed">{row.look}</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </Section>
+
+    <Section eyebrow="04 · After the walkthrough" title="What to actually remove">
+      <p className="text-gray-700 text-[15px] sm:text-base leading-[1.65] mb-4">
+        Once you've finished Module 6 and you're ready to clear the kitchen, the rule from the course is simple:
+      </p>
+      <Callout variant="amber" title="If it's ultra-processed, it does not live in your home.">
+        Not hidden. Not in a high cupboard. Not "for guests." Not "for emergencies." Out of the house. Give it away, donate it, throw it away — whatever's most practical. One decision, made once, structurally protects you from a thousand 9pm decisions.
+      </Callout>
+      <p className="text-gray-700 text-[15px] sm:text-base leading-[1.65] mt-4">
+        See the <em>Pantry Restock List</em> for what to fill the space with afterwards.
+      </p>
+    </Section>
+  </>
+);
+
+/* ═══════════════════════════════════════════════════════════════
+   RESOURCE: Pantry Restock List (reference)
+   ═══════════════════════════════════════════════════════════════ */
+const PantryRestockList = () => (
+  <>
+    <Section eyebrow="01" title="What to actually buy after you clear the kitchen">
+      <p className="text-gray-700 text-[15px] sm:text-base leading-[1.65]">
+        Clearing the house creates a vacuum, and a vacuum at 9pm is dangerous. The day after you do the Module 6 kitchen clear-out, do a single grocery run with the categories below. The goal is to make the path of least resistance always lead to real food.
+      </p>
+    </Section>
+
+    <Section eyebrow="02 · Protein staples" title="The foundation of every meal" intro="Build every meal around one of these. Pick three to keep on hand at all times.">
+      <NameGrid names={[
+        "Eggs (a dozen, always)",
+        "Plain Greek yogurt (full-fat, no fruit)",
+        "Cottage cheese",
+        "Aged cheese (cheddar, gouda, parmesan)",
+        "Tinned fish (sardines, mackerel, tuna in olive oil)",
+        "Smoked salmon",
+        "Cured meats (jamón, prosciutto — quality ones)",
+        "Chicken thighs (frozen, ready to defrost)",
+        "Ground beef (frozen portions)",
+        "Steak (good cut, weekly)",
+        "Lentils, chickpeas (dried or quality canned)",
+        "Tofu / tempeh (if you eat them)",
+      ]} />
+    </Section>
+
+    <Section eyebrow="03 · Fat staples" title="What carries flavor + stabilizes energy">
+      <NameGrid names={[
+        "Extra virgin olive oil (for finishing)",
+        "Butter (real, salted)",
+        "Ghee (for high-heat cooking)",
+        "Beef tallow or coconut oil",
+        "Avocados (a few at different ripeness)",
+        "Olives (a jar of good ones)",
+        "Raw nuts: almonds, walnuts, brazil nuts, macadamia",
+        "Seeds: pumpkin, sunflower, flax",
+        "Tahini",
+        "Full-fat coconut milk",
+      ]} />
+    </Section>
+
+    <Section eyebrow="04 · Volume & variety" title="Whole-food carbs and vegetables">
+      <NameGrid names={[
+        "Leafy greens (spinach, rocket, kale)",
+        "Cruciferous (broccoli, cauliflower, brussels sprouts)",
+        "Tomatoes (fresh + tinned, no sugar added)",
+        "Cucumbers, peppers, courgette",
+        "Onions, garlic, herbs",
+        "Sweet potato",
+        "Mushrooms",
+        "Berries (frozen + fresh)",
+        "Apples, pears (whole)",
+        "Lemon, lime (cheap insurance)",
+        "Sauerkraut, kimchi (good for gut)",
+        "Whole grain — if it works for you: oats, quinoa, buckwheat",
+      ]} />
+    </Section>
+
+    <Section eyebrow="05 · Safe slow-pleasure" title="What replaces the sweet hit without restarting the cycle">
+      <NameGrid names={[
+        "90%+ dark chocolate (one square is satisfying)",
+        "Frozen berries with full-fat Greek yogurt",
+        "A handful of nuts + a piece of aged cheese",
+        "Mint or fennel tea after dinner",
+        "Sparkling water (strong carbonation, fruit aroma, no sweetener)",
+        "Bone broth",
+      ]} />
+      <Callout variant="warning" title="A note on the 'safe sweet'">
+        For someone with real food addiction, even 90% chocolate can be a trigger early in recovery. Test, observe. If a single square reliably becomes the whole bar, take it out for the first two months and revisit later.
+      </Callout>
+    </Section>
+
+    <Section eyebrow="06 · Shopping route" title="How to get in and out without sliding">
+      <ol className="space-y-3 text-[14.5px] sm:text-base text-gray-700 leading-relaxed">
+        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">1.</span><span>Never shop hungry. Eat first or carry a snack.</span></li>
+        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">2.</span><span>Always go with a list. Don't browse.</span></li>
+        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">3.</span><span>Stick to the perimeter — produce, meat, fish, dairy. The center aisles are mostly ultra-processed.</span></li>
+        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">4.</span><span>Skip the candy at checkout. Same route, same exit, every time.</span></li>
+      </ol>
+    </Section>
+  </>
+);
+
+/* ═══════════════════════════════════════════════════════════════
+   RESOURCE: Personal Operating System Sheet (template)
+   ═══════════════════════════════════════════════════════════════ */
+const PersonalOSSheet = () => (
+  <>
+    <Section eyebrow="01" title="The decisions you make tonight protect you for the next year">
+      <p className="text-gray-700 text-[15px] sm:text-base leading-[1.65]">
+        Your operating system is the set of pre-decided rules that govern how you act in your most reliable trouble spots. Once written, they're not up for debate at 9pm. The decision was already made by the version of you that was rested, clear, and fully online.
+      </p>
+      <Callout variant="amber" title="Format: if-then. Always.">
+        Each rule has the form: <strong>If</strong> [specific situation] <strong>→ then</strong> [specific action]. Keep them concrete. Keep them executable in one step.
+      </Callout>
+    </Section>
+
+    <Section eyebrow="02 · Worksheet" title="Write your four to five rules">
+      <div className="space-y-5">
+        {[1, 2, 3, 4, 5].map((n) => (
+          <div key={n} className="border border-gray-200 rounded-2xl p-5 sm:p-6 print:break-inside-avoid">
+            <p className="text-[10px] font-black text-amber-700 uppercase tracking-[0.22em] mb-4">Rule {n}</p>
+            <BlankLine label="The situation (If…)" />
+            <BlankLine label="My action (Then…)" />
+          </div>
+        ))}
+      </div>
+    </Section>
+
+    <Section eyebrow="03 · Where to keep it" title="Make it visible">
+      <p className="text-gray-700 text-[15px] sm:text-base leading-[1.65] mb-3">
+        A rule that lives in a notebook in a drawer is a rule you'll forget. Pin this list where you'll see it in the first few weeks, while the rules are still new:
+      </p>
+      <Checklist items={[
+        "The fridge door",
+        "The bathroom mirror",
+        "Your phone wallpaper",
+        "Inside your wallet",
+        "Inside your kitchen cabinet door",
+      ]} />
+      <Callout variant="gray">
+        After two to three months, most of these rules become automatic and you won't need to re-read them. Until then, see them every day.
+      </Callout>
+    </Section>
+  </>
+);
+
+/* ═══════════════════════════════════════════════════════════════
+   RESOURCE: Craving Protocol Template (template)
+   ═══════════════════════════════════════════════════════════════ */
+const CravingProtocolTemplate = () => (
+  <>
+    <Section eyebrow="01" title="Your top three triggers — and the exact response for each">
+      <p className="text-gray-700 text-[15px] sm:text-base leading-[1.65]">
+        Module 7 ends with a homework task: write your personal craving protocol. This sheet is the structured form. Three triggers is the right number — enough to cover most of your real life, few enough to actually remember.
+      </p>
+    </Section>
+
+    <Section eyebrow="02" title="For each trigger, three things">
+      <ol className="space-y-3 text-[14.5px] sm:text-base text-gray-700 leading-relaxed">
+        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">1.</span><span><strong>The trigger itself</strong> — the specific time, place, or emotional state.</span></li>
+        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">2.</span><span><strong>What's usually underneath</strong> — the real need the craving is pointing at (boredom, exhaustion, loneliness, overwhelm).</span></li>
+        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">3.</span><span><strong>Your if-then response</strong> — pre-decided, specific, one-step.</span></li>
+      </ol>
+    </Section>
+
+    <Section eyebrow="03 · Your protocols" title="Fill these in tonight, before you close the video">
+      <div className="space-y-5">
+        {["Most reliable trigger", "Second most common trigger", "Third trigger to address"].map((label, i) => (
+          <div key={i} className="border-2 border-amber-200 rounded-2xl p-5 sm:p-6 print:break-inside-avoid">
+            <p className="text-[10px] font-black text-amber-700 uppercase tracking-[0.22em] mb-1">Protocol {i + 1}</p>
+            <p className="text-sm font-semibold text-gray-900 mb-4">{label}</p>
+            <BlankLine label="Trigger (If…)" />
+            <BlankLine label="Real need underneath" />
+            <BlankLine label="Response (Then…)" />
+          </div>
+        ))}
+      </div>
+    </Section>
+
+    <Section eyebrow="04" title="Where to put it">
+      <p className="text-gray-700 text-[15px] sm:text-base leading-[1.65]">
+        Pin it somewhere physical. Not because you'll need to re-read it mid-craving — but because writing it tonight and seeing it tomorrow makes the decision real. You'll execute the protocol from memory; the page just confirms you decided.
+      </p>
+    </Section>
+  </>
+);
+
+/* ═══════════════════════════════════════════════════════════════
+   RESOURCE: Listen / Read / Watch
+   ═══════════════════════════════════════════════════════════════ */
+const ListenReadWatch = () => (
+  <>
+    <Section eyebrow="01" title="A short, curated list — no rabbit holes">
+      <p className="text-gray-700 text-[15px] sm:text-base leading-[1.65]">
+        Everything below extends something covered in the course. The list is intentionally small. The internet has thousands of hours of content on these topics; most of it isn't worth your time. These are.
+      </p>
+    </Section>
+
+    <Section eyebrow="02 · Listen" title="Podcasts worth a commute">
+      <div className="space-y-4">
+        {[
+          { source: "Andrew Huberman", what: "Episodes on dopamine, sleep, and behavior change.", why: "The neuroscience under Module 2, in plain language." },
+          { source: "Robert Lustig", what: "Any of his lectures on sugar and metabolic disease.", why: "The pediatric endocrinologist who first made the public case against sugar." },
+          { source: "Peter Attia (The Drive)", what: "Episodes on insulin resistance and longevity nutrition.", why: "For the bigger metabolic picture beyond sugar specifically." },
+          { source: "Stephan Guyenet", what: "Conversations on appetite regulation.", why: "Why the brain stops registering 'full' in the modern food environment." },
+          { source: "Layne Norton", what: "Episodes on protein, satiety, and evidence-based nutrition.", why: "The protein layer of Module 5, in detail." },
+        ].map((item, i) => (
+          <div key={i} className="border-l-2 border-amber-300 pl-5 py-1 print:break-inside-avoid">
+            <p className="font-bold text-gray-900 text-[15px] sm:text-base mb-0.5">{item.source}</p>
+            <p className="text-[13.5px] sm:text-sm text-gray-600 leading-relaxed mb-1">{item.what}</p>
+            <p className="text-[13px] sm:text-[13.5px] text-amber-800 italic leading-relaxed">{item.why}</p>
+          </div>
+        ))}
+      </div>
+    </Section>
+
+    <Section eyebrow="03 · Read" title="Books worth their time">
+      <div className="space-y-4">
+        {[
+          { source: "Fat Chance — Robert Lustig", what: "On sugar, insulin and the modern food environment.", why: "The foundational text behind Modules 3 and 4." },
+          { source: "The Hungry Brain — Stephan Guyenet", what: "Why we overeat in modern environments.", why: "The brain side of Module 2, expanded." },
+          { source: "Salt Sugar Fat — Michael Moss", what: "The food industry exposé.", why: "The receipts behind Module 3. Eye-opening." },
+          { source: "In Defense of Food — Michael Pollan", what: "'Eat food, not too much, mostly plants.'", why: "The simplest articulation of whole-food eating ever written." },
+          { source: "Brain Energy — Christopher Palmer", what: "On metabolism and mental health.", why: "Connects the food framework to mood, anxiety, and long-term brain health." },
+        ].map((item, i) => (
+          <div key={i} className="border-l-2 border-amber-300 pl-5 py-1 print:break-inside-avoid">
+            <p className="font-bold text-gray-900 text-[15px] sm:text-base mb-0.5">{item.source}</p>
+            <p className="text-[13.5px] sm:text-sm text-gray-600 leading-relaxed mb-1">{item.what}</p>
+            <p className="text-[13px] sm:text-[13.5px] text-amber-800 italic leading-relaxed">{item.why}</p>
+          </div>
+        ))}
+      </div>
+    </Section>
+
+    <Section eyebrow="04 · Watch" title="Documentaries worth an evening">
+      <div className="space-y-4">
+        {[
+          { source: "Fed Up (2014)", what: "Directed by Stephanie Soechtig, narrated by Katie Couric.", why: "The mainstream version of the food industry corruption story. Good for sharing with family." },
+          { source: "Sugar Coated (2015)", what: "Investigates how the sugar industry buried evidence.", why: "Specifically traces the 1967 Sugar Foundation paper covered in Module 3." },
+          { source: "That Sugar Film (2014)", what: "Damon Gameau eats 'healthy' high-sugar food for 60 days.", why: "What the bliss-point cascade looks like in one body, on camera." },
+          { source: "The Magic Pill (2017)", what: "On low-carb, high-fat eating in different conditions.", why: "Practical case studies of the framework working in real lives." },
+        ].map((item, i) => (
+          <div key={i} className="border-l-2 border-amber-300 pl-5 py-1 print:break-inside-avoid">
+            <p className="font-bold text-gray-900 text-[15px] sm:text-base mb-0.5">{item.source}</p>
+            <p className="text-[13.5px] sm:text-sm text-gray-600 leading-relaxed mb-1">{item.what}</p>
+            <p className="text-[13px] sm:text-[13.5px] text-amber-800 italic leading-relaxed">{item.why}</p>
+          </div>
+        ))}
+      </div>
+    </Section>
+
+    <Section eyebrow="05" title="One rule">
+      <Callout variant="amber">
+        Pick <strong>one</strong> thing from each list. Three items, total. Finish them before adding more. Information you skimmed and didn't apply is information you don't have.
+      </Callout>
+    </Section>
+  </>
+);
+
+/* ═══════════════════════════════════════════════════════════════
+   RESOURCE: Cycle Tracker × Cravings Log (women)
+   ═══════════════════════════════════════════════════════════════ */
+const CycleTracker = () => (
+  <>
+    <Section eyebrow="01 · Why this exists" title="Your cycle isn't a side note. It's the whole rhythm.">
+      <p className="text-gray-700 text-[15px] sm:text-base leading-[1.65]">
+        Most generic nutrition advice was developed on men or on women whose cycles weren't tracked. The result: the framework misses the predictable, repeating window where cravings spike, energy drops, and the same protocol that worked perfectly in week 2 collapses in week 4. One full cycle of honest data fixes that.
+      </p>
+      <Callout variant="amber">
+        Track for at least 28 consecutive days — ideally 60. The pattern only becomes visible across cycles, not days.
+      </Callout>
+    </Section>
+
+    <Section eyebrow="02 · The four phases" title="What changes when">
+      <div className="space-y-4">
+        {[
+          { phase: "Menstrual (days 1–5)", body: "Lowest hormone levels. Energy is low, iron is dropping. Need: rest, iron-rich food, less obligation." },
+          { phase: "Follicular (days 6–14)", body: "Estrogen rising. Energy and motivation peak. Best window for hard workouts and new habits." },
+          { phase: "Ovulatory (days 14–17)", body: "Estrogen and testosterone peak. Most social, most confident. Cravings usually quiet." },
+          { phase: "Luteal (days 18–28)", body: "Progesterone rises then drops. Sensitivity to insulin drops too. Cravings — especially for sugar and salt — spike. This is the danger window." },
+        ].map((p, i) => (
+          <div key={i} className="border-l-2 border-amber-300 pl-5 py-1">
+            <p className="font-bold text-gray-900 text-[15px] sm:text-base mb-1">{p.phase}</p>
+            <p className="text-[13.5px] sm:text-sm text-gray-600 leading-relaxed">{p.body}</p>
+          </div>
+        ))}
+      </div>
+    </Section>
+
+    <Section eyebrow="03 · The grid" title="One row per day — five fields, sixty seconds">
+      <Table
+        headers={["Day", "Phase", "Cravings (0–5)", "Mood (1–5)", "Energy (1–5)", "Skin"]}
+        rows={Array.from({ length: 14 }).map((_, i) => [String(i + 1), "", "", "", "", ""])}
+      />
+      <Callout variant="gray">
+        Add a second sheet for days 15–28. Some cycles are 26 days, some 32 — track all of yours.
+      </Callout>
+    </Section>
+
+    <Section eyebrow="04 · What to look for" title="After one full cycle">
+      <Checklist items={[
+        "Did cravings cluster in luteal phase (days 18–28)? Almost always yes.",
+        "Did mood drop predictably in the same window? That's hormonal, not personal.",
+        "Did energy collapse near day 25–28? Plan around it.",
+        "Did skin shift through the cycle? Acne by jawline = hormonal output, not skincare failure.",
+        "Did one specific food crash you harder than others in luteal week?",
+      ]} />
+      <Callout variant="amber" title="The pattern is the prescription.">
+        Once you see your luteal window, you can pre-decide for it: more protein, less obligation, lighter schedule, sparkling water at every social event, an early bedtime. You're not "losing willpower" in luteal — you're working against a hormone gradient. Design around it.
+      </Callout>
+    </Section>
+  </>
+);
+
+/* ═══════════════════════════════════════════════════════════════
+   RESOURCE: PMS Decoded (women)
+   ═══════════════════════════════════════════════════════════════ */
+const PMSDecoded = () => (
+  <>
+    <Section eyebrow="01 · The reframe" title="PMS isn't your personality. It's a measurable hormonal output.">
+      <p className="text-gray-700 text-[15px] sm:text-base leading-[1.65]">
+        Most women have been told some version of "PMS is just how women are." That framing is wrong, and it has cost generations of women clarity about their own bodies. What gets called "PMS" is a specific, predictable cascade of hormonal events — and most of the symptoms are downstream of one thing the course covered in Module 4: <strong>insulin dysregulation</strong>.
+      </p>
+    </Section>
+
+    <Section eyebrow="02 · The cascade" title="Insulin → SHBG → sex hormones → symptoms">
+      <ol className="space-y-3.5 text-[14.5px] sm:text-base text-gray-700 leading-relaxed">
+        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">1.</span><span>Chronic refined-carb intake keeps insulin elevated.</span></li>
+        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">2.</span><span>Elevated insulin lowers SHBG (sex hormone binding globulin) — the protein that keeps your sex hormones in balance.</span></li>
+        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">3.</span><span>SHBG drops → active estrogen rises, testosterone becomes less regulated, progesterone recedes.</span></li>
+        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">4.</span><span>The symptoms below appear — predictably, in the same window each month.</span></li>
+      </ol>
+    </Section>
+
+    <Section eyebrow="03 · The symptoms, decoded" title="What each one is actually signalling">
+      <div className="space-y-4">
+        {[
+          { symptom: "Worsened PMS, mood swings", reason: "Progesterone is the 'calm' hormone. When it recedes, mood becomes more reactive." },
+          { symptom: "Breast tenderness, water retention", reason: "Estrogen dominance. Body holds water. Tissues feel tender." },
+          { symptom: "Jawline & chin acne", reason: "Active testosterone is rising because SHBG isn't binding it. The lower face is the androgen zone." },
+          { symptom: "Belly bloat that won't resolve", reason: "Insulin-driven inflammation + gut microbiome shifts in luteal phase." },
+          { symptom: "Sugar and carb cravings spike", reason: "Progesterone affects insulin sensitivity; the body's actually less efficient at handling carbs this week." },
+          { symptom: "Sleep gets shallower", reason: "Cortisol dysregulation rides shotgun on insulin dysregulation." },
+        ].map((s, i) => (
+          <div key={i} className="border border-gray-200 rounded-2xl p-5 print:break-inside-avoid">
+            <p className="font-bold text-gray-900 text-[15px] sm:text-base mb-1">{s.symptom}</p>
+            <p className="text-[13.5px] sm:text-sm text-gray-600 leading-relaxed">{s.reason}</p>
+          </div>
+        ))}
+      </div>
+    </Section>
+
+    <Section eyebrow="04 · The luteal protocol" title="What to actually do in PMS week">
+      <Checklist items={[
+        "Double your protein at every meal. Aim for 30–40g per sitting.",
+        "Add real fat liberally (olive oil, avocado, full-fat dairy, fatty fish). Don't fear it.",
+        "Remove all refined carbs — even the ones you tolerate other weeks. This is the week they hurt most.",
+        "Front-load magnesium-rich foods: dark leafy greens, pumpkin seeds, 90%+ dark chocolate, mineral water.",
+        "Move gently — walks, yoga, mobility. Not the week for max-effort training.",
+        "Sleep an extra hour. Your body is doing more under the surface.",
+        "Pre-decide your luteal-week if-then protocols. Pin them somewhere visible.",
+      ]} />
+    </Section>
+
+    <Section eyebrow="05 · Nutrient brief" title="Three actual moves with strong evidence">
+      <div className="space-y-4">
+        {[
+          { n: "Magnesium glycinate (300–400mg evening)", w: "Reduces PMS severity in clinical trials. Helps sleep + mood + cramps." },
+          { n: "Vitamin B6 (50mg, with food)", w: "Cofactor in serotonin synthesis. Reduces mood symptoms in luteal phase." },
+          { n: "Omega-3 (2–3g EPA+DHA daily)", w: "Anti-inflammatory; reduces cramps and breast tenderness." },
+        ].map((x, i) => (
+          <div key={i} className="border-l-2 border-amber-300 pl-5 py-1">
+            <p className="font-bold text-gray-900 text-[15px] sm:text-base mb-0.5">{x.n}</p>
+            <p className="text-[13.5px] sm:text-sm text-gray-600 leading-relaxed">{x.w}</p>
+          </div>
+        ))}
+      </div>
+      <Callout variant="warning" title="Disclaimer">
+        Talk to your doctor before adding supplements, especially if you're on medication or have a medical condition. The point of this list is informed conversation, not self-prescription.
+      </Callout>
+    </Section>
+  </>
+);
+
+/* ═══════════════════════════════════════════════════════════════
+   RESOURCE: PCOS-Sugar Connection (women)
+   ═══════════════════════════════════════════════════════════════ */
+const PCOSSugarConnection = () => (
+  <>
+    <Section eyebrow="01 · The fact" title="PCOS is, at its core, an insulin problem">
+      <p className="text-gray-700 text-[15px] sm:text-base leading-[1.65]">
+        Polycystic ovary syndrome affects roughly 1 in 10 women of reproductive age. The conventional framing is hormonal — irregular periods, acne, hair growth, weight that won't move — and that's accurate, but it stops at the surface. The upstream driver in the majority of PCOS cases is <strong>insulin resistance</strong>. The hormones reorganize around the metabolism, not the other way around.
+      </p>
+      <Callout variant="amber" title="The implication">
+        If insulin resistance is the upstream cause, then the upstream intervention isn't another hormonal treatment — it's the food framework from Module 5. Most women with PCOS see measurable improvement within 6–12 weeks of removing refined carbohydrates.
+      </Callout>
+    </Section>
+
+    <Section eyebrow="02 · How it cascades" title="From insulin to ovary">
+      <ol className="space-y-3.5 text-[14.5px] sm:text-base text-gray-700 leading-relaxed">
+        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">1.</span><span>Years of refined-carb intake → chronically elevated insulin.</span></li>
+        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">2.</span><span>Elevated insulin pushes ovaries to produce more androgens (testosterone).</span></li>
+        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">3.</span><span>Elevated insulin also lowers SHBG, so the testosterone that exists is more biologically active.</span></li>
+        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">4.</span><span>High active testosterone → cystic ovaries, irregular cycles, hirsutism, acne, scalp hair loss, weight resistant to typical interventions.</span></li>
+      </ol>
+    </Section>
+
+    <Section eyebrow="03 · The protocol" title="What changes the cascade">
+      <Checklist items={[
+        "Remove refined carbs entirely (sugar, white flour, fruit juice). This is non-negotiable for PCOS recovery.",
+        "Build every meal around protein (30g+) and real fat. This stabilizes insulin moment-to-moment.",
+        "Whole-food carbs only — vegetables, legumes, berries, small amounts of whole grains if tolerated.",
+        "Avoid grazing. Eat 2–3 distinct meals with clear stops between them — gives insulin time to come down.",
+        "Resistance training 2–3x/week. Muscle is the largest insulin-sensitive tissue you have.",
+        "Inositol (myo + d-chiro, 4:40 ratio, ~2g/day) — strong evidence for improving insulin sensitivity in PCOS.",
+        "Sleep 7+ hours. Sleep debt directly worsens insulin resistance.",
+        "Be patient. Cycles re-regulate over 3–6 months, not 3–6 weeks.",
+      ]} />
+    </Section>
+
+    <Section eyebrow="04 · Labs to ask for" title="Take this list to your doctor">
+      <Checklist items={[
+        "Fasting insulin (most important — many doctors skip this)",
+        "Fasting glucose + HbA1c",
+        "HOMA-IR (calculated from fasting insulin + glucose)",
+        "SHBG",
+        "Free testosterone + total testosterone",
+        "DHEA-S",
+        "Estradiol + progesterone (day 21 if you're cycling)",
+        "Full thyroid panel (TSH, free T3, free T4, antibodies — PCOS often runs with thyroid issues)",
+        "Vitamin D, B12, ferritin",
+      ]} />
+      <Callout variant="warning" title="If your doctor refuses">
+        Some primary-care doctors will tell you fasting insulin isn't needed. It is. Ask again. You can also order it yourself through private labs in most countries.
+      </Callout>
+    </Section>
+  </>
+);
+
+/* ═══════════════════════════════════════════════════════════════
+   RESOURCE: Skin-Food Timeline (women)
+   ═══════════════════════════════════════════════════════════════ */
+const SkinFoodTimeline = () => (
+  <>
+    <Section eyebrow="01 · The mechanism" title="Your skin is downstream of your blood sugar">
+      <p className="text-gray-700 text-[15px] sm:text-base leading-[1.65]">
+        Module 4 introduced glycation — the process where excess glucose bonds to collagen and elastin, stiffening the proteins that give skin firmness and bounce. The compounds this produces (AGEs — advanced glycation end products) accumulate, drive inflammation, and visibly age the skin from inside out. Sugar also feeds <em>P. acnes</em> bacteria and amplifies the androgens behind hormonal breakouts.
+      </p>
+      <Callout variant="amber" title="The honest version">
+        No topical product can reach the depth where glycation happens. Serums work on the surface; the damage is happening below it. The only intervention that addresses the root is changing the input.
+      </Callout>
+    </Section>
+
+    <Section eyebrow="02 · Day 7" title="What changes in the first week">
+      <Checklist items={[
+        "Morning puffiness reduces — the water retention from insulin spikes settles.",
+        "Skin starts to feel slightly less oily by mid-afternoon.",
+        "Existing breakouts may flare briefly as the body clears — this is normal, lasts 5–10 days.",
+      ]} />
+      <p className="text-[13.5px] sm:text-sm text-gray-500 italic mt-3">
+        This is too early to see structural change. What you're noticing is fluid + inflammation settling.
+      </p>
+    </Section>
+
+    <Section eyebrow="03 · Day 14" title="The first visible shift">
+      <Checklist items={[
+        "Skin tone evens out — less reactive redness.",
+        "Pores look smaller because sebum production is normalizing.",
+        "Eye bags reduce noticeably for many people.",
+        "The 'tired face' lifts — a function of reduced inflammation, not topical anything.",
+      ]} />
+    </Section>
+
+    <Section eyebrow="04 · Day 30" title="Structural change begins">
+      <Checklist items={[
+        "Hormonal acne (jawline, chin) noticeably calmer as SHBG and insulin stabilize.",
+        "New breakouts are fewer in number and less inflamed when they do appear.",
+        "Texture starts to smooth — the dullness lifts.",
+        "Sleep is deeper, which itself supports skin repair overnight.",
+      ]} />
+    </Section>
+
+    <Section eyebrow="05 · Day 90 and beyond" title="The deeper repair window">
+      <Checklist items={[
+        "Collagen production resumes its normal rhythm (it was being interrupted by glycation).",
+        "Skin elasticity measurably improves — the 'snap back' returns to younger ranges.",
+        "AGEs that have accumulated start to clear, slowly. Full clearance takes months to years.",
+        "The compounding becomes visible: skin in month 6 looks meaningfully different from skin on day 1.",
+      ]} />
+      <Callout variant="amber" title="Photographs help">
+        Take a no-makeup photo in the same lighting on day 1, day 30, day 90, and month 6. Day-to-day change is invisible; month-to-month is dramatic. The photos are the evidence the mirror can't give you.
+      </Callout>
+    </Section>
+
+    <Section eyebrow="06" title="What still needs topicals">
+      <p className="text-gray-700 text-[15px] sm:text-base leading-[1.65]">
+        Diet does not replace skincare. It removes the underlying driver. You still need: sunscreen daily (the single most important topical), a gentle cleanser, retinoid 2–3x/week, and moisturizer. With the diet input fixed, all of those work better than they ever did before.
+      </p>
+    </Section>
+  </>
+);
+
+/* ═══════════════════════════════════════════════════════════════
+   RESOURCE: Iron for Women (women)
+   ═══════════════════════════════════════════════════════════════ */
+const IronForWomen = () => (
+  <>
+    <Section eyebrow="01 · Why this matters" title="Iron deficiency is the most common nutritional deficiency in women — and it mimics other things you may be blaming on sugar.">
+      <p className="text-gray-700 text-[15px] sm:text-base leading-[1.65]">
+        Women lose iron every cycle. Heavy periods, vegetarian/vegan eating, gut absorption issues, and chronic inflammation all compound the loss. By age 30, somewhere between 20–40% of menstruating women have low iron — and most of them don't know it because the symptoms look like a hundred other things.
+      </p>
+    </Section>
+
+    <Section eyebrow="02 · The symptoms" title="What low iron actually feels like">
+      <Checklist items={[
+        "Persistent fatigue, even after sleep",
+        "Brain fog — thoughts feel slow, words feel further away",
+        "Hair shedding, brittle nails",
+        "Pale inner eyelids (a quick visual check)",
+        "Cold hands and feet, even in warm rooms",
+        "Restless legs at night",
+        "Shortness of breath on mild exertion",
+        "Cravings for ice, raw starches, or non-food (pica — a strong signal)",
+        "Lowered exercise capacity",
+        "Heavier-than-usual periods (a cause and a consequence)",
+      ]} />
+      <Callout variant="warning" title="The overlap problem">
+        Many of these are also caused by chronic sugar-driven inflammation. So women fix their diet, feel better, but still have residual fatigue and brain fog — because the iron piece was never addressed. If you're 3 months into the protocol and still tired, get iron tested.
+      </Callout>
+    </Section>
+
+    <Section eyebrow="03 · Food sources" title="Heme (animal) vs non-heme (plant)" intro="Heme iron is roughly 3–4x more bioavailable than non-heme. If you eat meat, this is the most reliable source. If you don't, you need more food + better pairing.">
+      <div className="grid sm:grid-cols-2 gap-4 sm:gap-5 mt-3">
+        <div>
+          <p className="text-[10px] font-black text-amber-700 uppercase tracking-[0.22em] mb-3">Heme iron (animal)</p>
+          <NameGrid names={[
+            "Liver (the highest iron food)",
+            "Red meat (beef, lamb)",
+            "Dark poultry meat",
+            "Oysters, mussels, clams",
+            "Sardines, anchovies",
+            "Egg yolks (modest)",
+          ]} />
+        </div>
+        <div>
+          <p className="text-[10px] font-black text-amber-700 uppercase tracking-[0.22em] mb-3">Non-heme iron (plant)</p>
+          <NameGrid names={[
+            "Cooked spinach",
+            "Lentils",
+            "White beans, kidney beans",
+            "Pumpkin seeds",
+            "Tofu",
+            "Dark chocolate (90%+)",
+            "Quinoa",
+            "Dried apricots",
+          ]} />
+        </div>
+      </div>
+    </Section>
+
+    <Section eyebrow="04 · Pairing & cooking tricks" title="Boosting absorption">
+      <Checklist items={[
+        "Pair non-heme iron with vitamin C (lemon on spinach, peppers with beans). Vitamin C 3x's absorption.",
+        "Don't drink coffee or tea within an hour of iron-rich meals — tannins block absorption.",
+        "Cook acidic foods (tomato sauce, chili) in a cast iron pan — measurable iron transfers into the food.",
+        "Animal protein + plant iron in the same meal increases non-heme absorption (the 'meat factor').",
+        "Calcium competes with iron — don't take a calcium supplement with an iron-rich meal.",
+      ]} />
+    </Section>
+
+    <Section eyebrow="05 · Testing & supplementing" title="When to act">
+      <p className="text-gray-700 text-[15px] sm:text-base leading-[1.65] mb-4">
+        Ask your doctor for a <strong>full iron panel</strong>, not just hemoglobin. Hemoglobin is the last thing to drop — by the time it's low, you've been deficient for a long time. The panel should include:
+      </p>
+      <Checklist items={[
+        "Ferritin (iron storage — the most important early indicator)",
+        "Serum iron",
+        "Transferrin saturation",
+        "TIBC (total iron-binding capacity)",
+        "Hemoglobin + hematocrit",
+      ]} />
+      <Callout variant="amber" title="Ferritin reference points">
+        Lab ranges often say ferritin is "normal" above 15. That's the threshold for anemia, not for feeling well. Most clinicians who actually work with women's energy target ferritin <strong>50–100 ng/mL</strong> for optimal function. Below 30 and you'll likely feel it.
+      </Callout>
+      <p className="text-gray-700 text-[15px] sm:text-base leading-[1.65] mt-4">
+        If you need to supplement, gentler forms (iron bisglycinate, or beef liver capsules) cause fewer GI issues than ferrous sulfate. Take with vitamin C, on an empty stomach if you can tolerate it, every other day (research shows this absorbs better than daily). Always under your doctor's guidance — too much iron is harmful.
+      </p>
+    </Section>
+  </>
+);
+
+/* ═══════════════════════════════════════════════════════════════
+   RESOURCE: For Women With Diet History (women)
+   ═══════════════════════════════════════════════════════════════ */
+const ForWomenWithDietHistory = () => (
+  <>
+    <Section eyebrow="01 · The honest start" title="If you've been on diets for ten or twenty years, this protocol runs differently for you.">
+      <p className="text-gray-700 text-[15px] sm:text-base leading-[1.65]">
+        Most nutrition guidance is written for someone with a neutral, casual relationship to food — someone who can "just eat normally" without much internal noise. If that's not you, the standard advice can actually make things worse before it makes them better. You need a few adjustments. Here they are.
+      </p>
+    </Section>
+
+    <Section eyebrow="02 · The cycle you're coming out of" title="Why diet history complicates this work">
+      <p className="text-gray-700 text-[15px] sm:text-base leading-[1.65] mb-4">
+        Every restriction cycle teaches the body two things: <em>food is scarce</em> and <em>the dieter cannot be trusted with food</em>. Over years, both lessons compound. Your body becomes hypersensitive to perceived restriction; your brain becomes hypersensitive to "starting over." A single skipped meal can trigger a binge cascade that would never happen in someone without that history.
+      </p>
+      <p className="text-gray-700 text-[15px] sm:text-base leading-[1.65]">
+        This is not a character problem. It's a learned biological response. The course's framework still works — but the early weeks need to look different.
+      </p>
+    </Section>
+
+    <Section eyebrow="03 · Five adjustments" title="What changes for you specifically">
+      <div className="space-y-5">
+        {[
+          { num: "01", t: "Don't undereat — especially at first.", b: "If your default is restriction, eat MORE protein and MORE fat than feels intuitive. Three full meals. The framework only works if your body trusts there will be enough." },
+          { num: "02", t: "Don't track calories. Don't weigh yourself.", b: "Both reactivate the diet-brain. Put the scale in a closet for 90 days. Stop using calorie apps. Your body's signals come back when external metrics go away." },
+          { num: "03", t: "Add before you subtract.", b: "Other women in the course remove things first. You add first. Add protein at breakfast. Add fat at every meal. Add vegetables. The 'removal' happens naturally because you're full." },
+          { num: "04", t: "Watch for refeeding spikes.", b: "When you start eating enough after years of under-eating, hunger may spike temporarily — sometimes dramatically. This is normal and good. Eat. Don't restrict it. It settles in 2–4 weeks." },
+          { num: "05", t: "If a slip happens, don't 'compensate.'", b: "Compensation (skipping the next meal, working out 'to make up for it') restarts the cycle that broke you in the first place. Eat the next meal as planned. The protocol holds." },
+        ].map((x) => (
+          <div key={x.num} className="border-l-2 border-amber-300 pl-5 py-1 print:break-inside-avoid">
+            <p className="text-[10px] font-black text-amber-700 uppercase tracking-[0.22em] mb-1.5">{x.num}</p>
+            <p className="font-bold text-gray-900 text-[15px] sm:text-base mb-1">{x.t}</p>
+            <p className="text-[13.5px] sm:text-sm text-gray-600 leading-relaxed">{x.b}</p>
+          </div>
+        ))}
+      </div>
+    </Section>
+
+    <Section eyebrow="04 · Signs you're underfeeding" title="The body will tell you, if you listen">
+      <Checklist items={[
+        "Hair shedding more than usual",
+        "Periods get lighter, shorter, or disappear",
+        "Cold all the time, even in warm rooms",
+        "Sleep gets shallow, you wake at 3am wired",
+        "Mood drops; small things feel huge",
+        "Workouts feel impossible",
+        "Cravings spike dramatically every evening",
+      ]} />
+      <Callout variant="warning" title="If you see two or more of these">
+        You're not eating enough. Add 500 calories a day of protein and fat for two weeks and reassess. The framework isn't about eating less; it's about eating right things in enough quantity.
+      </Callout>
+    </Section>
+
+    <Section eyebrow="05" title="When to seek professional support">
+      <Callout variant="warning" title="Honest line">
+        If you have an active eating disorder — current bulimic episodes, restrictive anorexia, binge eating disorder, or any pattern that has compromised your physical or mental health — work with an eating disorder specialist, not just this course. Message Kristina and she'll point you toward people qualified to support you. The course can run alongside that support, but not in place of it.
+      </Callout>
+    </Section>
+  </>
+);
+
+/* ═══════════════════════════════════════════════════════════════
+   RESOURCE: Female Lab Panel (women)
+   ═══════════════════════════════════════════════════════════════ */
+const FemaleLabPanel = () => (
+  <>
+    <Section eyebrow="01" title="What to actually ask your doctor for">
+      <p className="text-gray-700 text-[15px] sm:text-base leading-[1.65]">
+        Annual physicals usually cover hemoglobin, cholesterol, basic thyroid, and a glucose reading. That's not enough to understand metabolic and hormonal health. The panel below adds the labs that matter — and most of them are inexpensive when included with a regular blood draw. Print this and bring it to your appointment.
+      </p>
+    </Section>
+
+    <Section eyebrow="02 · Metabolic" title="The insulin layer">
+      <Table
+        headers={["Lab", "What it shows"]}
+        rows={[
+          ["Fasting insulin", "The most important early indicator. Elevated insulin precedes high blood sugar by years."],
+          ["Fasting glucose", "Standard. Mostly normal until things are quite advanced."],
+          ["HbA1c", "Average blood sugar over the past 3 months. A better picture than a single glucose reading."],
+          ["HOMA-IR (calculated)", "Insulin resistance score from fasting insulin + glucose. Most doctors don't calculate it; you can. Target < 1.5."],
+          ["Lipid panel (full)", "Triglycerides matter more than total cholesterol. High trigs + low HDL = insulin resistance."],
+        ]}
+      />
+    </Section>
+
+    <Section eyebrow="03 · Sex hormones" title="Time matters here">
+      <Callout variant="amber" title="When to draw">
+        If you're cycling, draw on day 21 (luteal phase) for progesterone, and day 3 for FSH/LH/estradiol. If you're not cycling, draw any time but note that.
+      </Callout>
+      <Table
+        headers={["Lab", "What it shows"]}
+        rows={[
+          ["Estradiol (E2)", "Primary estrogen. High = dominance; low = perimenopause / underfueling."],
+          ["Progesterone (day 21)", "If low while cycling, you may not be ovulating or have luteal phase deficit."],
+          ["FSH + LH", "Pituitary signaling. Useful for PCOS (LH > FSH) or perimenopause (rising FSH)."],
+          ["SHBG", "Sex hormone binding globulin. Low SHBG = insulin resistance or PCOS pattern."],
+          ["Free testosterone + total T", "Elevated free T often signals PCOS or insulin-driven androgen excess."],
+          ["DHEA-S", "Adrenal androgen output. High in some PCOS subtypes."],
+        ]}
+      />
+    </Section>
+
+    <Section eyebrow="04 · Thyroid" title="Almost never run completely, almost always relevant">
+      <Callout variant="warning" title="Standard issue">
+        Most doctors order only TSH. This misses up to 40% of thyroid dysfunction. Insist on the full panel.
+      </Callout>
+      <Table
+        headers={["Lab", "What it shows"]}
+        rows={[
+          ["TSH", "Pituitary signal. Reference ranges are wide; functional medicine targets 1–2."],
+          ["Free T4", "Inactive thyroid hormone."],
+          ["Free T3", "Active thyroid hormone — what your tissues actually use."],
+          ["Reverse T3", "If high, your body is shunting T4 away from active form. Stress / undereating signal."],
+          ["TPO antibodies", "Hashimoto's marker. Often present years before TSH shifts."],
+          ["TG antibodies", "Second autoimmune thyroid marker."],
+        ]}
+      />
+    </Section>
+
+    <Section eyebrow="05 · Iron, vitamins, minerals" title="The deficiency layer">
+      <Table
+        headers={["Lab", "What it shows"]}
+        rows={[
+          ["Ferritin", "Iron stores. Target 50–100 for energy, not just > 15."],
+          ["Serum iron + TIBC + transferrin saturation", "Full iron picture."],
+          ["Vitamin D (25-OH)", "Most women are deficient. Target 40–60 ng/mL."],
+          ["Vitamin B12", "Low B12 mimics depression, brain fog. Target > 500."],
+          ["Folate", "Often paired with B12."],
+          ["Magnesium (RBC)", "Serum magnesium is unreliable — ask for RBC magnesium if available."],
+        ]}
+      />
+    </Section>
+
+    <Section eyebrow="06 · Inflammation" title="The chronic-burn marker">
+      <Table
+        headers={["Lab", "What it shows"]}
+        rows={[
+          ["hs-CRP", "High-sensitivity C-reactive protein. Cheap, easy, surprisingly informative. Target < 1.0."],
+        ]}
+      />
+    </Section>
+
+    <Section eyebrow="07 · How to use this" title="The conversation">
+      <ol className="space-y-3 text-[14.5px] sm:text-base text-gray-700 leading-relaxed">
+        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">1.</span><span>Print this page and bring it to your appointment.</span></li>
+        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">2.</span><span>Ask: "I'd like the labs on this list with my next blood draw, please." Most are inexpensive and standard.</span></li>
+        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">3.</span><span>If your doctor refuses some labs, you can usually order them privately. Costs vary by country.</span></li>
+        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">4.</span><span>Get a copy of the actual numbers — not just "normal." Track them over time. Patterns matter more than single readings.</span></li>
+      </ol>
+      <Callout variant="warning" title="Final note">
+        This is not a substitute for medical advice. Bring the numbers to a clinician you trust. The point of running them is informed conversation about your own body, not self-diagnosis.
+      </Callout>
+    </Section>
+  </>
+);
+
+/* ═══════════════════════════════════════════════════════════════
+   RESOURCE DETAIL — looks up the right content component
    ═══════════════════════════════════════════════════════════════ */
 export const ResourceDetail = ({
   slug,
@@ -753,24 +1480,36 @@ export const ResourceDetail = ({
   const resource = RESOURCES.find((r) => r.slug === slug);
   if (!resource) return null;
 
-  let body: ReactNode = null;
-  if (resource.status === "ready") {
-    if (resource.slug === "if-then-protocols") body = <IfThenProtocols />;
-    else if (resource.slug === "hidden-names-of-sugar") body = <HiddenNamesOfSugar />;
-    else if (resource.slug === "yfas-self-check") body = <YFASSelfCheck />;
-  } else {
-    body = (
-      <div className="py-16 text-center">
-        <div className="inline-flex items-center gap-2 px-4 py-2 bg-amber-50 border border-amber-200 rounded-full text-amber-800 text-sm font-bold mb-5">
-          <Sparkles className="w-4 h-4" />
-          Coming soon
-        </div>
-        <p className="text-gray-600 max-w-md mx-auto text-[15px] leading-relaxed">
-          This resource is being prepared. Check back shortly — and feel free to message Kristina on WhatsApp if you'd like to know when it's ready.
-        </p>
+  const contentMap: Record<string, ReactNode> = {
+    "if-then-protocols": <IfThenProtocols />,
+    "hidden-names-of-sugar": <HiddenNamesOfSugar />,
+    "yfas-self-check": <YFASSelfCheck />,
+    "craving-log-24h": <CravingLog24h />,
+    "kitchen-audit-checklist": <KitchenAuditChecklist />,
+    "pantry-restock-list": <PantryRestockList />,
+    "personal-operating-system": <PersonalOSSheet />,
+    "craving-protocol-template": <CravingProtocolTemplate />,
+    "listen-read-watch": <ListenReadWatch />,
+    "cycle-tracker": <CycleTracker />,
+    "pms-decoded": <PMSDecoded />,
+    "pcos-sugar-connection": <PCOSSugarConnection />,
+    "skin-food-timeline": <SkinFoodTimeline />,
+    "iron-for-women": <IronForWomen />,
+    "diet-history": <ForWomenWithDietHistory />,
+    "female-lab-panel": <FemaleLabPanel />,
+  };
+
+  const body = contentMap[resource.slug] ?? (
+    <div className="py-16 text-center">
+      <div className="inline-flex items-center gap-2 px-4 py-2 bg-amber-50 border border-amber-200 rounded-full text-amber-800 text-sm font-bold mb-5">
+        <Sparkles className="w-4 h-4" />
+        Coming soon
       </div>
-    );
-  }
+      <p className="text-gray-600 max-w-md mx-auto text-[15px] leading-relaxed">
+        This resource is being prepared.
+      </p>
+    </div>
+  );
 
   return (
     <ResourceShell resource={resource} onBack={onBack}>
@@ -791,7 +1530,6 @@ export const ResourceLibrary = ({
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-      {/* Header */}
       <header className="mb-10 sm:mb-14">
         <div className="flex items-center gap-3 mb-5">
           <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center shadow-md shadow-amber-300/40">
@@ -802,7 +1540,7 @@ export const ResourceLibrary = ({
               The Unhooked Method
             </p>
             <p className="text-xs sm:text-sm text-gray-500 font-semibold">
-              {readyCount} of {RESOURCES.length} resources ready · more on the way
+              {readyCount} resources · download as PDF or print
             </p>
           </div>
         </div>
@@ -815,11 +1553,9 @@ export const ResourceLibrary = ({
         </p>
       </header>
 
-      {/* Grid */}
       <div className="grid sm:grid-cols-2 gap-4 sm:gap-5">
         {RESOURCES.map((r, i) => {
           const Icon = r.icon;
-          const isReady = r.status === "ready";
           return (
             <motion.button
               key={r.slug}
@@ -828,19 +1564,11 @@ export const ResourceLibrary = ({
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.4, delay: i * 0.03 }}
               onClick={() => onOpen(r.slug)}
-              className={`text-left bg-white border rounded-2xl p-5 sm:p-6 transition-all group ${
-                isReady
-                  ? "border-gray-200 hover:border-amber-300 hover:shadow-xl hover:-translate-y-1"
-                  : "border-gray-100 opacity-70 hover:opacity-90"
-              }`}
+              className="text-left bg-white border border-gray-200 rounded-2xl p-5 sm:p-6 hover:border-amber-300 hover:shadow-xl hover:-translate-y-1 transition-all group"
             >
               <div className="flex items-start gap-4 mb-4">
-                <div className={`w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 ${
-                  isReady
-                    ? "bg-gradient-to-br from-amber-50 to-amber-100 border border-amber-100"
-                    : "bg-gray-50 border border-gray-100"
-                }`}>
-                  <Icon className={`w-5 h-5 ${isReady ? "text-amber-700" : "text-gray-400"}`} />
+                <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 bg-gradient-to-br from-amber-50 to-amber-100 border border-amber-100">
+                  <Icon className="w-5 h-5 text-amber-700" />
                 </div>
                 <div className="flex flex-col gap-1 flex-1 min-w-0">
                   <span className="text-[9.5px] sm:text-[10px] font-black text-amber-700 uppercase tracking-[0.22em]">
@@ -850,8 +1578,7 @@ export const ResourceLibrary = ({
                     {r.module}
                   </span>
                 </div>
-                {!isReady && <Pill>Coming soon</Pill>}
-                {r.women && isReady && (
+                {r.women && (
                   <span className="text-[9px] font-black text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full uppercase tracking-wider">
                     Women
                   </span>
@@ -866,29 +1593,88 @@ export const ResourceLibrary = ({
               </p>
 
               <div className="flex items-center justify-between text-[12px] sm:text-xs">
-                <span className={`font-semibold flex items-center gap-1.5 ${isReady ? "text-gray-500" : "text-gray-400"}`}>
+                <span className="font-semibold flex items-center gap-1.5 text-gray-500">
                   <Clock className="w-3 h-3" />
                   {r.readTime}
                 </span>
-                {isReady && (
-                  <span className="flex items-center gap-1 text-amber-700 font-bold group-hover:gap-2 transition-all">
-                    Open
-                    <ChevronRight className="w-3.5 h-3.5" />
-                  </span>
-                )}
+                <span className="flex items-center gap-1 text-amber-700 font-bold group-hover:gap-2 transition-all">
+                  Open
+                  <ChevronRight className="w-3.5 h-3.5" />
+                </span>
               </div>
             </motion.button>
           );
         })}
       </div>
 
-      {/* Bottom note */}
       <div className="mt-12 sm:mt-16 p-5 sm:p-6 bg-amber-50/50 border border-amber-100 rounded-2xl text-center">
         <p className="text-[13px] sm:text-sm text-amber-900 leading-relaxed">
-          <strong>More resources are being added.</strong> If there's something specific you want me to build next, message me on WhatsApp.
+          <strong>Want a resource that's not here?</strong> Message Kristina on WhatsApp and tell her what would help.
         </p>
       </div>
     </div>
+  );
+};
+
+/* ═══════════════════════════════════════════════════════════════
+   RELATED RESOURCES — for use inside LessonView
+   ═══════════════════════════════════════════════════════════════ */
+export const RelatedResources = ({
+  lessonId,
+  onOpen,
+}: {
+  lessonId: string;
+  onOpen: (slug: string) => void;
+}) => {
+  const related = RESOURCES.filter(
+    (r) => r.status === "ready" && r.relatedLessons.includes(lessonId)
+  );
+  if (related.length === 0) return null;
+
+  return (
+    <section className="mt-8 sm:mt-10 mb-6 sm:mb-8">
+      <div className="flex items-center gap-3 mb-4 sm:mb-5">
+        <div className="h-px flex-1 bg-amber-100" />
+        <div className="flex items-center gap-2 px-3 py-1 bg-amber-50 border border-amber-200 rounded-full">
+          <BookOpen className="w-3.5 h-3.5 text-amber-700" />
+          <span className="text-[10px] sm:text-[11px] font-black text-amber-800 uppercase tracking-[0.22em]">
+            Related Resources
+          </span>
+        </div>
+        <div className="h-px flex-1 bg-amber-100" />
+      </div>
+      <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
+        {related.map((r) => {
+          const Icon = r.icon;
+          return (
+            <button
+              key={r.slug}
+              onClick={() => onOpen(r.slug)}
+              className="flex items-start gap-3 sm:gap-4 text-left p-4 sm:p-5 bg-white border border-gray-200 rounded-2xl hover:border-amber-300 hover:shadow-md transition-all group"
+            >
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 bg-gradient-to-br from-amber-50 to-amber-100 border border-amber-100">
+                <Icon className="w-5 h-5 text-amber-700" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-[9.5px] sm:text-[10px] font-black text-amber-700 uppercase tracking-[0.22em] mb-1">
+                  {r.eyebrow}
+                </p>
+                <p className="font-bold text-gray-900 text-[14px] sm:text-[15px] leading-snug mb-1.5">
+                  {r.title}
+                </p>
+                <p className="text-[12px] sm:text-[13px] text-gray-500 leading-relaxed line-clamp-2">
+                  {r.description}
+                </p>
+                <div className="mt-2 flex items-center gap-1 text-amber-700 font-bold text-[12px] sm:text-xs group-hover:gap-2 transition-all">
+                  Open
+                  <ChevronRight className="w-3 h-3" />
+                </div>
+              </div>
+            </button>
+          );
+        })}
+      </div>
+    </section>
   );
 };
 
