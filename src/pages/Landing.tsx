@@ -45,7 +45,7 @@ import { useState } from "react";
 
 /* ───────── CONSTANTS ───────── */
 const CHECKOUT_URL = "https://www.paypal.com/ncp/payment/DQDESNZ9DVQ7G";
-const PRICE = "$8";
+const PRICE = "$29";
 const CONTACT_EMAIL = "krudstina@gmail.com";
 const VSL_URL = "https://youtu.be/HPsy09z0Db0";
 
@@ -379,8 +379,8 @@ const Journey = () => {
     {
       num: "03",
       icon: MessageCircle,
-      title: "Direct WhatsApp access — throughout",
-      body: "Have a realization mid-module? Stuck on a homework task? Just need someone to read what you wrote? You can message Kristina any time during the course. She reads every message herself.",
+      title: "WhatsApp support — throughout the course",
+      body: "Have a realization mid-module? Stuck on a homework task? Just need someone to read what you wrote? You can write the Unhooked Method team any time during the course. Real humans, not a chatbot — every message gets read.",
     },
   ];
 
@@ -803,32 +803,32 @@ const PlatformPreview = () => (
 
 /* ─────────── BONUS — the full resource library, valued + stacked ─────────── */
 const ResourceBonus = () => {
-  // Each resource carries its standalone value — totals to $39 across all 20
+  // Each resource carries its standalone value — totals to ~$99 across all 20
   const phase1 = [
-    { icon: Zap,            title: "The If-Then Protocols Library",     note: "38 pre-decided protocols across 9 trigger categories", value: 4 },
-    { icon: Tag,            title: "The 60+ Hidden Names of Sugar",     note: "Every alias sugar uses on a food label",                value: 1 },
-    { icon: ClipboardCheck, title: "YFAS Self-Check Card",              note: "Yale clinical scale, formatted as a printable",         value: 1 },
-    { icon: Clock,          title: "24-Hour Craving Log",               note: "Sheet for Module 2 homework",                            value: 1 },
-    { icon: Home,           title: "Kitchen Audit Checklist",           note: "Room-by-room walkthrough for Intermission 1",            value: 2 },
-    { icon: ShoppingCart,   title: "Pantry Restock List",               note: "What to fill your shelves with after clearing",          value: 2 },
-    { icon: Cog,            title: "Personal Operating System Sheet",   note: "Blank framework for your if-then rules",                 value: 2 },
-    { icon: Shield,         title: "Craving Protocol Template",         note: "Three triggers × three responses",                       value: 2 },
-    { icon: BookOpen,       title: "The Watch List",                    note: "7 hand-picked videos, embedded in the platform",         value: 3 },
+    { icon: Zap,            title: "The If-Then Protocols Library",     note: "38 pre-decided protocols across 9 trigger categories", value: 12 },
+    { icon: Tag,            title: "The 60+ Hidden Names of Sugar",     note: "Every alias sugar uses on a food label",                value: 4 },
+    { icon: ClipboardCheck, title: "YFAS Self-Check Card",              note: "Yale clinical scale, formatted as a printable",         value: 4 },
+    { icon: Clock,          title: "24-Hour Craving Log",               note: "Sheet for Module 2 homework",                            value: 3 },
+    { icon: Home,           title: "Kitchen Audit Checklist",           note: "Room-by-room walkthrough for Intermission 1",            value: 5 },
+    { icon: ShoppingCart,   title: "Pantry Restock List",               note: "What to fill your shelves with after clearing",          value: 5 },
+    { icon: Cog,            title: "Personal Operating System Sheet",   note: "Blank framework for your if-then rules",                 value: 5 },
+    { icon: Shield,         title: "Craving Protocol Template",         note: "Three triggers × three responses",                       value: 5 },
+    { icon: BookOpen,       title: "The Watch List",                    note: "Hand-picked videos embedded in the platform — grows over time", value: 7 },
   ];
   const women = [
-    { icon: Calendar,     title: "Cycle Tracker × Cravings Log",        note: "28-day grid for pattern recognition",                    value: 2 },
-    { icon: Sparkles,     title: "PMS Decoded",                          note: "Hormonal cascade explained",                             value: 2 },
-    { icon: Activity,     title: "The PCOS-Sugar Connection",            note: "Insulin resistance link + specific protocol",           value: 2 },
-    { icon: Droplet,      title: "The Skin-Food Timeline",               note: "Day 7, 14, 30, 90 expectations",                        value: 2 },
-    { icon: PillIcon,     title: "Iron for Women",                       note: "Symptoms, sources, when to supplement",                 value: 1 },
-    { icon: Heart,        title: "For Women With Diet History",          note: "Adjustments if you've spent years dieting",             value: 2 },
-    { icon: FlaskConical, title: "The Female Lab Panel",                 note: "Exact labs to request from your doctor",                value: 2 },
-    { icon: Sparkles,     title: "Cycle Nutrition — Phase by Phase",     note: "What to eat in each window of your cycle",              value: 2 },
+    { icon: Calendar,     title: "Cycle Tracker × Cravings Log",        note: "28-day grid for pattern recognition",                    value: 5 },
+    { icon: Sparkles,     title: "PMS Decoded",                          note: "Hormonal cascade explained",                             value: 5 },
+    { icon: Activity,     title: "The PCOS-Sugar Connection",            note: "Insulin resistance link + specific protocol",           value: 5 },
+    { icon: Droplet,      title: "The Skin-Food Timeline",               note: "Day 7, 14, 30, 90 expectations",                        value: 4 },
+    { icon: PillIcon,     title: "Iron for Women",                       note: "Symptoms, sources, when to supplement",                 value: 4 },
+    { icon: Heart,        title: "For Women With Diet History",          note: "Adjustments if you've spent years dieting",             value: 5 },
+    { icon: FlaskConical, title: "The Female Lab Panel",                 note: "Exact labs to request from your doctor",                value: 5 },
+    { icon: Sparkles,     title: "Cycle Nutrition — Phase by Phase",     note: "What to eat in each window of your cycle",              value: 5 },
   ];
   const extras = [
-    { icon: CheckSquare, title: "30-Day Habit Tracker",                  note: "Built around the Module 9 commitment",                  value: 2 },
-    { icon: ShoppingCart, title: "30-Day Shopping List",                 note: "Master grocery list + 4-week scaffold",                 value: 2 },
-    { icon: Apple,       title: "The Truth About Fructose",              note: "Why modern fruit isn't what your biology expects",      value: 2 },
+    { icon: CheckSquare, title: "30-Day Habit Tracker",                  note: "Built around the Module 9 commitment",                  value: 4 },
+    { icon: ShoppingCart, title: "30-Day Shopping List",                 note: "Master grocery list + 4-week scaffold",                 value: 4 },
+    { icon: Apple,       title: "The Truth About Fructose",              note: "Why modern fruit isn't what your biology expects",      value: 3 },
   ];
 
   const Group = ({ title, count, items }: { title: string; count: number; items: typeof phase1 }) => (
@@ -876,10 +876,10 @@ const ResourceBonus = () => {
           </div>
           <h2 className="text-[1.7rem] sm:text-5xl font-black text-white leading-[1.1] tracking-tight mb-5">
             20 carefully prepared resources.<br />
-            <span className="text-amber-400">~$39 value — yours free.</span>
+            <span className="text-amber-400">~$99 value — yours free.</span>
           </h2>
           <p className="text-gray-400 text-[15px] sm:text-lg leading-relaxed px-2 sm:px-0">
-            Cheat sheets, fillable templates, women-specific guides, and reference documents — written specifically to live alongside the course videos. Each one would sell standalone for a few dollars. All 20 are included free with the workshop.
+            Cheat sheets, fillable templates, women-specific guides, and reference documents — written specifically to live alongside the course videos. Each one would sell standalone for $3–$12. All 20 are included free with the workshop.
           </p>
         </div>
 
@@ -902,7 +902,7 @@ const ResourceBonus = () => {
           <div className="space-y-1.5 text-[14px] sm:text-[15px]">
             <div className="flex justify-between text-gray-400">
               <span>20 PDF resources — standalone value</span>
-              <span className="font-semibold line-through">$39</span>
+              <span className="font-semibold line-through">$99</span>
             </div>
             <div className="flex justify-between text-amber-300 font-bold">
               <span>Included with the workshop</span>
@@ -1185,7 +1185,7 @@ const OfferStack = () => (
           {[
             { strong: "9 in-depth video modules", rest: "+ Welcome and My Story intro videos" },
             { strong: "A guided task after every module", rest: "designed to move you toward the solution" },
-            { strong: "Direct WhatsApp access to Kristina", rest: "throughout the course" },
+            { strong: "WhatsApp support throughout the course", rest: "— real humans on the other end, not a chatbot" },
             { strong: "Instant access · yours forever", rest: "· no subscription, no recurring charges" },
           ].map((line, i) => (
             <li key={i} className="flex items-start gap-3 text-gray-700 text-[14px] sm:text-[15px] leading-relaxed">
@@ -1213,7 +1213,7 @@ const OfferStack = () => (
           <div className="flex items-center justify-between pt-3 border-t border-amber-200">
             <span className="text-[12px] sm:text-[13px] text-amber-900 font-semibold">Standalone value</span>
             <span className="text-[13px] sm:text-[14px] font-bold text-amber-900">
-              <span className="line-through text-amber-700/70 mr-2">$39</span>
+              <span className="line-through text-amber-700/70 mr-2">$99</span>
               <span className="text-amber-900">FREE</span>
             </span>
           </div>
@@ -1224,12 +1224,12 @@ const OfferStack = () => (
           <div className="space-y-2 text-[13.5px] sm:text-sm mb-5">
             <div className="flex justify-between text-gray-700">
               <span>The 9-module workshop + WhatsApp access</span>
-              <span className="font-bold text-gray-900">$8</span>
+              <span className="font-bold text-gray-900">$29</span>
             </div>
             <div className="flex justify-between text-gray-700">
               <span>Resource Library (20 PDFs)</span>
               <span className="font-bold">
-                <span className="line-through text-gray-400 mr-2">$39</span>
+                <span className="line-through text-gray-400 mr-2">$99</span>
                 <span className="text-amber-700">FREE</span>
               </span>
             </div>
@@ -1305,7 +1305,7 @@ const FAQ = () => {
     },
     {
       q: "What does the 'guided journey' actually mean?",
-      a: "Every module ends with a specific task — not optional, not busywork — designed to move you toward the solution. Two of those tasks (your kitchen audit and your grocery receipt) you'll send Kristina directly on WhatsApp, and she'll write back personally with what she notices. And throughout the course, you can message her any time with questions or realizations. So you're never doing the work alone.",
+      a: "Every module ends with a specific task — not optional, not busywork — designed to move you toward the solution. Two of those tasks (your kitchen audit and your grocery receipt) you'll send on WhatsApp, and Kristina personally writes back with what she notices. Throughout the rest of the course, the Unhooked Method team is on WhatsApp for any question or realization that comes up. So you're never doing the work alone.",
     },
     {
       q: "How long does it take?",

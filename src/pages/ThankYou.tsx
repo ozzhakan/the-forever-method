@@ -29,7 +29,7 @@ export default function ThankYou() {
   useEffect(() => {
     if (typeof window !== "undefined" && typeof window.fbq === "function") {
       try {
-        window.fbq("track", "Purchase", { value: 8, currency: "USD" });
+        window.fbq("track", "Purchase", { value: 29, currency: "USD" });
       } catch (err) {
         console.warn("Meta Pixel Purchase event failed:", err);
       }
@@ -97,7 +97,7 @@ export default function ThankYou() {
                 "9 in-depth video modules + Welcome + My Story",
                 "2 personally reviewed intermissions (kitchen + receipt)",
                 "19 cheat sheets, templates and PDF guides",
-                "Direct WhatsApp access to Kristina, throughout the course",
+                "WhatsApp support from the team throughout the course",
                 "Instant access · yours forever",
               ].map((line, i) => (
                 <li key={i} className="flex items-start gap-3 text-[13.5px] sm:text-[14.5px] text-gray-700">
@@ -116,7 +116,7 @@ export default function ThankYou() {
             className="mt-7 sm:mt-8 flex items-center justify-center gap-2.5 w-full px-5 py-3.5 bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-900 rounded-2xl text-[13.5px] sm:text-sm font-bold transition-colors group"
           >
             <MessageCircle className="w-4 h-4 flex-shrink-0" />
-            <span>Need anything? Message Kristina on WhatsApp · {WHATSAPP_DISPLAY}</span>
+            <span>Need help or have questions? Write us on WhatsApp · {WHATSAPP_DISPLAY}</span>
             <ArrowRight className="w-4 h-4 flex-shrink-0 group-hover:translate-x-0.5 transition-transform" />
           </a>
         </div>

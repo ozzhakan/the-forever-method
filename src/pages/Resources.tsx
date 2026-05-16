@@ -58,11 +58,11 @@ export const RESOURCES: ResourceDef[] = [
   { slug: "hidden-names-of-sugar",  title: "The 60+ Hidden Names of Sugar",  eyebrow: "Reference", category: "reference", module: "Module 3",            relatedLessons: ["module-3"],                        readTime: "5 min read",  description: "Every alias sugar uses on a label, grouped so you can decode any ingredient list in 10 seconds.",                                                           icon: Tag,            status: "ready" },
   { slug: "yfas-self-check",        title: "YFAS Self-Check Card",           eyebrow: "Template",  category: "template",  module: "Module 1",            relatedLessons: ["module-1"],                        readTime: "8 min do",    description: "The Yale Food Addiction Scale, formatted as a printable self-rating sheet with clinical interpretation.",                                                  icon: ClipboardCheck, status: "ready" },
   { slug: "craving-log-24h",        title: "24-Hour Craving Log",            eyebrow: "Template",  category: "template",  module: "Module 2",            relatedLessons: ["module-2"],                        readTime: "Use for 24h", description: "A structured sheet for the Module 2 homework — log every craving with time, recent food, context, and emotional state.",                                  icon: Clock,          status: "ready" },
-  { slug: "kitchen-audit-checklist",title: "Kitchen Audit Checklist",        eyebrow: "Template",  category: "template",  module: "Intermission 1",      relatedLessons: ["intermission-1"],                  readTime: "20 min do",   description: "Room-by-room walkthrough to prepare your three kitchen photos, find hidden traps, and clear ultra-processed food.",                                        icon: Home,           status: "ready" },
+  { slug: "kitchen-audit-checklist",title: "Kitchen Audit Checklist",        eyebrow: "Template",  category: "template",  module: "Intermission 1",      relatedLessons: ["intermission-1"],                  readTime: "20 min do",   description: "Room-by-room walkthrough to see where ultra-processed food hides, plus a 'before' photo checklist for Intermission 1.",                                  icon: Home,           status: "ready" },
   { slug: "pantry-restock-list",    title: "Pantry Restock List",            eyebrow: "Reference", category: "reference", module: "Module 5 & 6",        relatedLessons: ["module-5", "module-6"],            readTime: "6 min read",  description: "What to actually fill your shelves with after clearing — categorized by protein, fat, volume, and safe slow-pleasure.",                                    icon: ShoppingCart,   status: "ready" },
   { slug: "personal-operating-system",title:"Personal Operating System Sheet",eyebrow: "Template", category: "template",  module: "Module 6",            relatedLessons: ["module-6"],                        readTime: "30 min do",   description: "Blank framework for writing the four to five if-then rules that will govern your real-life situations.",                                                    icon: Cog,            status: "ready" },
   { slug: "craving-protocol-template",title:"Craving Protocol Template",     eyebrow: "Template",  category: "template",  module: "Module 7",            relatedLessons: ["module-7"],                        readTime: "20 min do",   description: "Three rows: your top trigger, the real need underneath, your specific if-then response. Pinnable to fridge or wallpaper.",                                  icon: Shield,         status: "ready" },
-  { slug: "the-watch-list",         title: "The Watch List",                 eyebrow: "Reference", category: "reference", module: "All modules",         relatedLessons: ["module-0", "module-9"],            readTime: "Watch any time", description: "Seven hand-picked videos Kristina recommends watching alongside the course — embedded right here so you can watch them in one place.",                       icon: PlayCircle,     status: "ready" },
+  { slug: "the-watch-list",         title: "The Watch List",                 eyebrow: "Reference", category: "reference", module: "All modules",         relatedLessons: ["module-0", "module-9"],            readTime: "Watch any time", description: "Hand-picked videos Kristina recommends watching alongside the course — embedded right here so they're all in one place. The list grows as new ones land.",                       icon: PlayCircle,     status: "ready" },
 
   // ─ Women-specific set ────────────────────────────────────────
   { slug: "cycle-tracker",          title: "Cycle Tracker × Cravings Log",   eyebrow: "Template",  category: "template",  module: "Module 4",            relatedLessons: ["module-4"], women: true,          readTime: "28 days",     description: "Track cycle phase, cravings, mood, energy and skin daily — see your own pattern over one full month.",                                                     icon: Calendar,       status: "ready" },
@@ -244,8 +244,19 @@ const ResourceShell = ({
         {children}
       </div>
 
+      {/* Bottom back navigation — context-aware, mirrors the top action */}
+      <div className="print:hidden mt-14 sm:mt-16 flex justify-center">
+        <button
+          onClick={onBack}
+          className="inline-flex items-center gap-2 px-5 sm:px-6 py-3 text-[13.5px] sm:text-sm font-bold text-amber-800 bg-amber-50 hover:bg-amber-100 border border-amber-200 hover:border-amber-300 rounded-full transition-colors shadow-sm"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          <span>{backLabel}</span>
+        </button>
+      </div>
+
       {/* Footer */}
-      <footer className="mt-16 sm:mt-20 pt-8 border-t border-gray-100 print:mt-10 print:pt-6">
+      <footer className="mt-12 sm:mt-16 pt-8 border-t border-gray-100 print:mt-10 print:pt-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <p className="text-[13px] sm:text-sm text-gray-600">
@@ -256,7 +267,7 @@ const ResourceShell = ({
             </p>
           </div>
           <div className="print:hidden text-[11px] sm:text-xs text-gray-400">
-            Questions? Message Kristina on WhatsApp · +31 6 18784896
+            Questions? Write us on WhatsApp · +31 6 18784896
           </div>
         </div>
       </footer>
@@ -691,10 +702,15 @@ const CravingLog24h = () => (
     </Section>
 
     <Section eyebrow="03 · The log" title="One row per craving — fill freely">
-      <Table
-        headers={["Time", "Recent food (past 2–3h)", "What just happened", "Emotional state"]}
-        rows={Array.from({ length: 12 }).map(() => ["", "", "", ""])}
-      />
+      <Callout variant="amber" title="Print or download this page to fill in by hand.">
+        Use the <strong>Print</strong> or <strong>Download PDF</strong> button at the top of this page. Pen-and-paper is the highest-signal way to do it — you'll write less, but notice more. Twelve blank rows fit on one printed page.
+      </Callout>
+      <div className="mt-6">
+        <Table
+          headers={["Time", "Recent food (past 2–3h)", "What just happened", "Emotional state"]}
+          rows={Array.from({ length: 12 }).map(() => ["", "", "", ""])}
+        />
+      </div>
       <Callout variant="gray" title="Extra rows? Add lines on the back of the printed page.">
         Twelve rows is plenty for one day for most people. Some days fire more often — that itself is data.
       </Callout>
@@ -718,24 +734,10 @@ const CravingLog24h = () => (
    ═══════════════════════════════════════════════════════════════ */
 const KitchenAuditChecklist = () => (
   <>
-    <Section eyebrow="01" title="Before you photograph anything">
-      <p className="text-gray-700 text-[15px] sm:text-base leading-[1.65]">
-        The point of Intermission 1 isn't to perform a clean kitchen — it's the opposite. Kristina wants to see your real environment so she can write back with useful, specific observations. The worst thing you can do is "tidy it up" before the photos. Take them as it is right now.
+    <Section eyebrow="01 · Room-by-room walkthrough" title="Where ultra-processed food likes to hide">
+      <p className="text-gray-700 text-[15px] sm:text-base leading-[1.65] mb-5">
+        Walk through your kitchen with this list in hand. The point isn't to remove anything yet — just to <em>see</em> what's there. Awareness comes first; the clearing happens later, after Module 6.
       </p>
-      <Callout variant="amber" title="One quiet 5-minute window">
-        Wait for a moment when nobody's around, walk through your kitchen once, take the three photos, and send them on WhatsApp. Then come back and do the audit walkthrough below.
-      </Callout>
-    </Section>
-
-    <Section eyebrow="02 · The three photos" title="What Kristina needs to see">
-      <Checklist items={[
-        "Inside the fridge — door open, every shelf visible.",
-        "Your main snack or pantry shelf — the one you reach for most.",
-        "Your secret stash — wherever the food you reach for when you're not actually hungry lives. A drawer. A jar by the bed. The glove compartment. The desk drawer.",
-      ]} />
-    </Section>
-
-    <Section eyebrow="03 · Room-by-room walkthrough" title="Where ultra-processed food likes to hide">
       <div className="space-y-5">
         {[
           { area: "Fridge — top shelf", look: "Pre-made sauces, dressings, flavored yogurts, juice cartons, anything with 5+ ingredients on the label." },
@@ -760,16 +762,18 @@ const KitchenAuditChecklist = () => (
       </div>
     </Section>
 
-    <Section eyebrow="04 · After the walkthrough" title="What to actually remove">
-      <p className="text-gray-700 text-[15px] sm:text-base leading-[1.65] mb-4">
-        Once you've finished Module 6 and you're ready to clear the kitchen, the rule from the course is simple:
+    <Section eyebrow="02 · Before any changes" title="Capture the 'before' state">
+      <p className="text-gray-700 text-[15px] sm:text-base leading-[1.65] mb-5">
+        Before you change anything, take three photos. The purpose is simple — capture where your kitchen is <em>right now</em>, so you have a clean record of the starting point. Don't tidy first. Don't curate. Just photograph it as it is.
       </p>
-      <Callout variant="amber" title="If it's ultra-processed, it does not live in your home.">
-        Not hidden. Not in a high cupboard. Not "for guests." Not "for emergencies." Out of the house. Give it away, donate it, throw it away — whatever's most practical. One decision, made once, structurally protects you from a thousand 9pm decisions.
+      <Checklist items={[
+        "Inside the fridge — door open, every shelf visible.",
+        "Your main snack or pantry shelf — the one you reach for most.",
+        "Your secret stash — wherever the food you reach for when you're not actually hungry lives. A drawer. A jar by the bed. The glove compartment. The desk drawer.",
+      ]} />
+      <Callout variant="amber" title="That's the whole task for now.">
+        Save the photos somewhere you'll find them later. You'll understand why they matter as the course unfolds — and the actual clearing-out happens after Module 6, with its own dedicated guide.
       </Callout>
-      <p className="text-gray-700 text-[15px] sm:text-base leading-[1.65] mt-4">
-        See the <em>Pantry Restock List</em> for what to fill the space with afterwards.
-      </p>
     </Section>
   </>
 );
@@ -959,10 +963,10 @@ const WATCH_LIST_VIDEOS = [
 
 const TheWatchList = () => (
   <>
-    <Section eyebrow="01" title="Seven videos Kristina recommends — embedded here so you don't lose them in a YouTube rabbit hole">
+    <Section eyebrow="01" title="A growing list of videos Kristina recommends — embedded here so you don't lose them in a YouTube rabbit hole">
       <div className="space-y-4 text-gray-700 text-[15px] sm:text-base leading-[1.65]">
         <p>
-          The point of this list is small and specific: seven videos that extend something covered in the course, ranked by how high-leverage they are for what you're working on. Watch them in order, or pick the one that feels most urgent for where you are right now.
+          The point of this list is small and specific: each video extends something covered in the course, ranked by how high-leverage it is for what you're working on. Watch in order, or pick the one that feels most urgent for where you are right now. New videos are added as Kristina comes across them — bookmark this page.
         </p>
         <Callout variant="amber" title="How to use this">
           One video at a time. Watch it once, sit with it, do nothing else for an hour. Don't binge the list — that turns information into noise. The point is shift, not consumption.
@@ -970,13 +974,14 @@ const TheWatchList = () => (
       </div>
     </Section>
 
-    <Section eyebrow="02" title="The seven videos">
-      <div className="space-y-6 sm:space-y-8">
+    <Section eyebrow="02" title="The videos">
+      {/* Tile grid — 2 per row on tablet/desktop, single column on mobile */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
         {WATCH_LIST_VIDEOS.map((v) => (
           <div key={v.id} className="print:break-inside-avoid">
-            <div className="flex items-center gap-3 mb-3">
+            <div className="flex items-center gap-3 mb-2.5">
               <span className="text-[11px] sm:text-xs font-black text-amber-700 uppercase tracking-[0.22em] tabular-nums">
-                Video {v.n} of 7
+                Video {String(v.n).padStart(2, "0")}
               </span>
               <div className="h-px flex-1 bg-amber-100" />
             </div>
@@ -2256,7 +2261,7 @@ export const ResourceLibrary = ({
 
       <div className="mt-12 sm:mt-16 p-5 sm:p-6 bg-amber-50/50 border border-amber-100 rounded-2xl text-center">
         <p className="text-[13px] sm:text-sm text-amber-900 leading-relaxed">
-          <strong>Want a resource that's not here?</strong> Message Kristina on WhatsApp and tell her what would help.
+          <strong>Want a resource that's not here?</strong> Write us on WhatsApp and tell us what would help.
         </p>
       </div>
     </div>

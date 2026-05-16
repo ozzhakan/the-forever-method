@@ -19,6 +19,7 @@ import {
   Eye,
   AlertCircle,
   MessageCircle,
+  ExternalLink,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { ResourceLibrary, ResourceDetail, RESOURCES, RelatedResources } from "./Resources";
@@ -34,9 +35,11 @@ const WHATSAPP_DISPLAY = "+31 6 18784896";
    TYPES
    ═══════════════════════════════════════════════════════════════ */
 interface LessonResource {
-  type: "info" | "summary" | "task";
+  type: "info" | "summary" | "task" | "link";
   title: string;
   content: string;
+  href?: string;        // for type: "link"
+  linkLabel?: string;   // for type: "link" — button label
 }
 
 interface LessonDef {
@@ -150,19 +153,20 @@ const LESSONS: LessonDef[] = [
     resources: [
       { type: "summary", title: "Key Takeaways", content: "• Layer 1 — Dopamine. It's not the 'pleasure chemical' — it's the chemical of wanting. Sugar triggers a dopamine release far larger than natural rewards. Receptors downregulate, so you need more sugar to feel normal and everything slower feels flat.\n• Layer 2 — Conditioning. Like Pavlov's dogs, your brain learned to fire a craving from context alone — a time of day, a place, an emotional state — before any real hunger.\n• Layer 3 — Physiological amplifiers. Vagus nerve sensors detect hidden sugar and signal 'find more.' Insulin overshoots after refined carbs, blood sugar drops below baseline, and the brain reads it as an emergency: eat sugar now.\n• All three fire at once, all day, in an environment built to keep them active.\n• The good news: the dopamine system recovers. Remove the overstimulation and sensitivity returns — slow pleasures come back within weeks to months." },
       { type: "task", title: "Homework: 24-Hour Craving Log", content: "For the next 24 hours, keep a craving log. Every time you feel a strong urge — for sugar, refined carbs, anything in the binge pattern — write down four things: the time of day, what you ate in the previous 2–3 hours, what was happening just before the craving, and what emotional state you were in. Don't try to change anything yet. Just observe." },
+      { type: "link", title: "Andrew Huberman on Dopamine", content: "If you want to go deeper on Layer 1, Kristina recommends this episode. Huberman is a Stanford neuroscientist who walks through the dopamine system with precision — how it works, what crashes it, and how to rebuild sensitivity. Optional, but high-leverage if you have the time.", href: "https://www.youtube.com/watch?v=QmOF0crdyRU", linkLabel: "Watch on YouTube" },
     ],
   },
   {
     id: "intermission-1",
     title: "Intermission 1: Your Kitchen",
-    subtitle: "Send Kristina three photos — she reads every one",
+    subtitle: "A short pause — take a 'before' photo of your kitchen",
     duration: "",
-    videoUrl: "", // TODO: paste YouTube link
+    videoUrl: "",
     comingSoon: false,
     requiresVideo: true,
     resources: [
-      { type: "summary", title: "Why This Matters", content: "• Before the next module, do something unusual: when you have 5 quiet minutes, go to your kitchen and take three photos.\n• One of the inside of your fridge. One of your main snack or pantry shelf. One of wherever you keep the food you reach for when you're not actually hungry — a drawer, a jar by your bed, the glove compartment. Wherever the secret stash lives.\n• Send all three to Kristina on WhatsApp.\n• Every 'how to eat better' resource gives advice for a hypothetical kitchen. Kristina wants to see your real environment — so she can help you accurately instead of guessing.\n• She reads every photo personally and writes back with two or three specific things she notices: patterns most people miss, hidden traps, quick wins.\n• This is the part of the course that doesn't scale. Take your time. Don't skip it." },
-      { type: "task", title: "Homework: Send Your Kitchen Photos", content: "Take three photos — fridge interior, main snack/pantry shelf, and your secret stash spot. Send all three to Kristina on WhatsApp using the button below. She'll read every one personally and write back with what she notices." },
+      { type: "summary", title: "Why This Matters", content: "• Before we proceed with the rest of the course, take a moment to capture where your kitchen is right now.\n• When you have 5 quiet minutes, take three photos: the inside of your fridge, your main snack or pantry shelf, and wherever the food you reach for when you're not actually hungry lives — a drawer, a jar by the bed, the glove compartment.\n• Send the three photos to yourself on WhatsApp (or save them somewhere you'll find them later).\n• That's the whole task today. No analysis, no judgment — just a clean 'before' snapshot.\n• Why this matters will become clear as the course unfolds. For now, trust the sequence and capture the state." },
+      { type: "task", title: "Homework: Capture Your Kitchen (Three Photos)", content: "Take three photos — fridge interior, your main snack/pantry shelf, and wherever your honest stash lives. Save them somewhere you'll find them later in the course. If you want, send them to us on WhatsApp using the button below — we'll keep them ready for the lesson that uses them." },
     ],
   },
   {
@@ -194,14 +198,14 @@ const LESSONS: LessonDef[] = [
   {
     id: "intermission-2",
     title: "Intermission 2: Your Receipt",
-    subtitle: "Send Kristina a grocery receipt — the most useful thing you can show her",
+    subtitle: "A short pause — capture a real grocery receipt",
     duration: "",
-    videoUrl: "", // TODO: paste YouTube link
+    videoUrl: "",
     comingSoon: false,
     requiresVideo: true,
     resources: [
-      { type: "summary", title: "Why This Matters", content: "• Next time you go grocery shopping, take a photo of the whole receipt and send it to Kristina on WhatsApp.\n• Why a receipt and not a food diary: a food diary is filtered. People forget, round down, write what they meant to eat. A receipt is the truth — what you actually bought, with prices, quantities, brands.\n• In 30 seconds she can see what would take a week of food journaling to surface: your protein-to-ultra-processed ratio, your hidden sugar exposure, your snack stockpile, your good intentions vs your real patterns.\n• Then she writes back with two or three specific swaps you can make on your next shop. Not a meal plan. Not 'eat clean.' Two or three changes you can do without thinking.\n• No judgment about anything you've bought. This is the second part of the course that doesn't scale." },
-      { type: "task", title: "Homework: Send Your Receipt", content: "Next time you grocery shop, take a photo of the whole receipt and send it to Kristina on WhatsApp using the button below. She'll write back with two or three specific swaps for your next shop." },
+      { type: "summary", title: "Why This Matters", content: "• Next time you go grocery shopping, take a photo of the whole receipt.\n• Why a receipt and not a food diary: a food diary is filtered — people forget, round down, write what they meant to eat. A receipt is the truth: what you actually bought, with prices, quantities, brands.\n• Save it somewhere you'll find again later in the course.\n• That's the whole task today. No analysis, no judgment, no commentary needed — just a clean snapshot of your real shopping baseline.\n• You'll use this snapshot in a later module. Trust the sequence." },
+      { type: "task", title: "Homework: Capture One Real Receipt", content: "Next time you grocery shop, take a photo of the whole receipt. Save it somewhere you'll find later in the course. If you'd like, you can send it to us on WhatsApp using the button below — we'll keep it ready for the lesson that uses it." },
     ],
   },
   {
@@ -228,6 +232,7 @@ const LESSONS: LessonDef[] = [
     requiresVideo: true,
     resources: [
       { type: "summary", title: "Key Takeaways", content: "• Your home is not neutral. If ultra-processed food is anywhere in it, it's already in your brain — your dopamine system tracks it the way a predator tracks prey, and waits for your prefrontal cortex to deplete.\n• 'Keep trigger foods in a high cupboard' assumes a casual relationship you don't have. The right model is the recovering alcoholic: remove it from the home entirely. Not restriction — environment design. One decision, made once.\n• The buying principle: don't buy ultra-processed food. Not when a craving hits, not when something catches your eye. The behavior starts at purchase, not consumption — remove the purchase and the consumption doesn't happen.\n• The city you can't control — it's a commercial environment engineered against you ('food noise'). The principle: never move through it in a vulnerable state. Don't leave home hungry or in a significantly negative emotional state. Go armored.\n• Your personal operating system: pre-decided if-then principles, so when a situation arises you don't have to decide — the decision was already made when your prefrontal cortex was fresh.\n• The allergy line: 'Thank you, I have an allergy' ends the conversation cleanly — no debate, no commentary.\n• The crab basket effect: when you change, people around you may push back — not from malice, but because your 'no' is a mirror. The pressure isn't about you. Hold your position." },
+      { type: "info", title: "What to actually remove", content: "Now that you've finished Module 6 and you're ready to clear the kitchen, the rule from the course is simple:\n\nIf it's ultra-processed, it does not live in your home.\n\nNot hidden. Not in a high cupboard. Not 'for guests.' Not 'for emergencies.' Out of the house. Give it away, donate it, throw it away — whatever's most practical. One decision, made once, structurally protects you from a thousand 9pm decisions.\n\nSee the Pantry Restock List in the Resource Library for what to fill the space with afterwards." },
       { type: "task", title: "Homework: Clear The Kitchen + Write Your OS", content: "Two parts. First: go through your kitchen today — remove every ultra-processed product, out of the house. Give it away, throw it away, whatever's practical. Today, not tomorrow. Second: write your personal operating system. Think through the four or five situations that most reliably challenge you, and for each one write the if-then principle that governs your behavior. Keep it as a short list somewhere you'll see it." },
     ],
   },
@@ -455,7 +460,7 @@ const Sidebar = ({
             <MessageCircle className="w-4 h-4 text-white" />
           </div>
           <div className="flex-1 min-w-0">
-            <div className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Message Kristina</div>
+            <div className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Need help? Message us</div>
             <div className="text-xs font-bold text-gray-900 truncate">{WHATSAPP_DISPLAY}</div>
           </div>
           <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-amber-600 transition-colors flex-shrink-0" />
@@ -487,10 +492,10 @@ const WelcomeScreen = ({ onStart, onReplayTour }: { onStart: () => void; onRepla
         <ul className="space-y-3 sm:space-y-3.5">
           {[
             "Watch each module video — about 15–25 minutes each.",
-            "After every module, complete the homework task — designed to move you toward the solution.",
-            "At two key points, send Kristina your photos on WhatsApp — she reviews every one personally.",
-            "Message Kristina any time during the course — she reads every message herself.",
             "Mark a module as watched to unlock the next one.",
+            "After every module, complete the homework task — designed to move you toward the solution.",
+            "At two key points, send your photos on WhatsApp — every one gets reviewed personally.",
+            "If you need help or have questions, you can write any time during the course.",
           ].map((item, i) => (
             <li key={i} className="flex items-start gap-3 text-gray-700">
               <CheckCircle2 className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
@@ -507,9 +512,9 @@ const WelcomeScreen = ({ onStart, onReplayTour }: { onStart: () => void; onRepla
             <MessageCircle className="w-5 h-5 text-white" />
           </div>
           <div className="flex-1 min-w-0">
-            <h3 className="font-black text-[15px] sm:text-lg mb-1 sm:mb-1.5 leading-snug">Message me directly any time.</h3>
+            <h3 className="font-black text-[15px] sm:text-lg mb-1 sm:mb-1.5 leading-snug">If you need help or have questions, you can write any time.</h3>
             <p className="text-amber-50 text-[13px] sm:text-sm leading-relaxed mb-4">
-              If you've got a question, a realization, or you just want to share what came up — message me on WhatsApp.
+              Got a question, a realization, or something you want to share — message us on WhatsApp. The team reads every chat.
             </p>
             <a
               href={WHATSAPP_URL}
@@ -656,10 +661,44 @@ const TaskDisplay = ({ resource, isIntermission }: { resource: LessonResource; i
             <ArrowRight className="w-4 h-4 flex-shrink-0" />
           </a>
           <p className="mt-3 text-[11px] sm:text-xs text-amber-800/70 text-center sm:text-left">
-            Opens WhatsApp with Kristina · {WHATSAPP_DISPLAY}
+            Opens WhatsApp · {WHATSAPP_DISPLAY}
           </p>
         </div>
       ) : null}
+    </div>
+  </article>
+);
+
+/* ═══════════════════════════════════════════════════════════════
+   LINK CARD — external "go deeper" reference
+   ═══════════════════════════════════════════════════════════════ */
+const LinkCard = ({ resource }: { resource: LessonResource }) => (
+  <article className="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm">
+    <div className="px-6 sm:px-8 py-6 sm:py-7">
+      <div className="inline-flex items-center gap-2 px-2.5 py-1 bg-amber-50 rounded-full mb-3">
+        <Sparkles className="w-3 h-3 text-amber-700" />
+        <span className="text-[10px] font-bold text-amber-700 uppercase tracking-[0.22em]">
+          Go Deeper · Optional
+        </span>
+      </div>
+      <h3 className="text-lg sm:text-xl font-bold text-gray-900 leading-snug tracking-tight mb-2.5">
+        {resource.title}
+      </h3>
+      <p className="text-gray-700 text-[14.5px] sm:text-[15.5px] leading-[1.65] mb-5 whitespace-pre-line">
+        {resource.content}
+      </p>
+      {resource.href && (
+        <a
+          href={resource.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 px-5 py-3 text-sm font-bold text-white bg-gradient-to-br from-amber-600 to-amber-800 hover:from-amber-700 hover:to-amber-900 rounded-full shadow-md shadow-amber-300/40 transition-all"
+        >
+          <ExternalLink className="w-4 h-4" />
+          {resource.linkLabel ?? "Watch on YouTube"}
+          <ArrowRight className="w-4 h-4" />
+        </a>
+      )}
     </div>
   </article>
 );
@@ -713,53 +752,49 @@ const LessonView = ({
           <p className="text-gray-500 text-base leading-relaxed">{lesson.subtitle}</p>
         </div>
 
-        {/* Video Player */}
-        {lesson.requiresVideo && (
+        {/* Video Player — hidden entirely when the lesson has no video URL (e.g. intermissions) */}
+        {lesson.requiresVideo && lesson.videoUrl && (
           <div className="mb-8">
             <div className="aspect-video bg-gray-900 rounded-2xl overflow-hidden relative shadow-lg mb-3">
-              {lesson.videoUrl ? (
-                isSelfHostedVideo(lesson.videoUrl) ? (
-                  <video
-                    src={lesson.videoUrl}
-                    controls
-                    playsInline
-                    preload="metadata"
-                    className="w-full h-full bg-black"
-                  >
-                    Your browser doesn't support video playback.
-                  </video>
-                ) : (
-                  <iframe
-                    src={toYouTubeEmbed(lesson.videoUrl)}
-                    title={lesson.title}
-                    className="w-full h-full"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowFullScreen
-                  />
-                )
+              {isSelfHostedVideo(lesson.videoUrl) ? (
+                <video
+                  src={lesson.videoUrl}
+                  controls
+                  playsInline
+                  preload="metadata"
+                  className="w-full h-full bg-black"
+                >
+                  Your browser doesn't support video playback.
+                </video>
               ) : (
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
-                  <div className="w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center mb-3">
-                    <Video className="w-7 h-7 text-gray-500" />
-                  </div>
-                  <span className="text-gray-300 text-sm font-bold">Video coming soon</span>
-                  <span className="text-gray-500 text-xs mt-1">This lesson's video is being added</span>
-                </div>
+                <iframe
+                  src={toYouTubeEmbed(lesson.videoUrl)}
+                  title={lesson.title}
+                  className="w-full h-full"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                />
               )}
             </div>
+          </div>
+        )}
+
+        {/* Mark-complete button — always available (with or without a video) */}
+        {lesson.requiresVideo && (
+          <div className={lesson.videoUrl ? "" : "mb-8"}>
             {!prog.videoWatched ? (
               <button
                 data-mark-watched
                 onClick={() => onUpdate({ videoWatched: true })}
-                className="w-full py-4 sm:py-5 bg-gradient-to-br from-amber-500 to-amber-700 hover:from-amber-600 hover:to-amber-800 text-white font-black text-[14px] sm:text-base rounded-2xl transition-all shadow-lg shadow-amber-300/40 hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2.5 uppercase tracking-[0.08em]"
+                className={`w-full py-4 sm:py-5 bg-gradient-to-br from-amber-500 to-amber-700 hover:from-amber-600 hover:to-amber-800 text-white font-black text-[14px] sm:text-base rounded-2xl transition-all shadow-lg shadow-amber-300/40 hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2.5 uppercase tracking-[0.08em] ${lesson.videoUrl ? "mb-8" : ""}`}
               >
                 <Eye className="w-5 h-5" />
-                I've watched this — mark complete
+                {isIntermission ? "I've done this — mark complete" : "I've watched this — mark complete"}
               </button>
             ) : (
-              <div className="flex items-center justify-center gap-2.5 text-amber-800 font-bold py-3.5 px-4 bg-amber-50 border border-amber-200 rounded-2xl text-[14px] sm:text-[15px]">
+              <div className={`flex items-center justify-center gap-2.5 text-amber-800 font-bold py-3.5 px-4 bg-amber-50 border border-amber-200 rounded-2xl text-[14px] sm:text-[15px] ${lesson.videoUrl ? "mb-8" : ""}`}>
                 <CheckCircle2 className="w-5 h-5 text-amber-700 flex-shrink-0" />
-                Marked as watched — next module unlocked below
+                {isIntermission ? "Marked complete — next module unlocked below" : "Marked as watched — next module unlocked below"}
               </div>
             )}
           </div>
@@ -774,6 +809,7 @@ const LessonView = ({
             {lesson.resources.map((r, i) => {
               if (r.type === "info" || r.type === "summary") return <ContentBlock key={i} resource={r} />;
               if (r.type === "task") return <TaskDisplay key={i} resource={r} isIntermission={isIntermission} />;
+              if (r.type === "link") return <LinkCard key={i} resource={r} />;
               return null;
             })}
           </div>
