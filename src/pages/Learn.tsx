@@ -22,6 +22,7 @@ import {
   ExternalLink,
 } from "lucide-react";
 import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { ResourceLibrary, ResourceDetail, RESOURCES, RelatedResources } from "./Resources";
 import { ProductTour, isTourComplete, resetTour } from "../components/ProductTour";
 
@@ -339,7 +340,7 @@ const Sidebar = ({
   const pct = Math.round((completedCount / availableCount) * 100);
 
   return (
-    <div className="h-full flex flex-col bg-white border-r border-gray-100">
+    <div className="h-full flex flex-col bg-white border-r border-gray-100 overflow-x-hidden">
       {/* Header */}
       <div className="p-5 border-b border-gray-100">
         <div className="flex items-center justify-between mb-4">
@@ -369,7 +370,7 @@ const Sidebar = ({
       </div>
 
       {/* Lessons */}
-      <div className="flex-1 overflow-y-auto py-2">
+      <div className="flex-1 overflow-y-auto overflow-x-hidden py-2 overscroll-contain">
         {lessons.map((lesson, i) => {
           const prog = progress[lesson.id] ?? defaultProgress();
           const isActive = lesson.id === activeId;
@@ -798,9 +799,20 @@ const LessonView = ({
                 {isIntermission ? "I've done this — mark complete" : "I've watched this — mark complete"}
               </button>
             ) : (
-              <div className={`flex items-center justify-center gap-2.5 text-amber-800 font-bold py-3.5 px-4 bg-amber-50 border border-amber-200 rounded-2xl text-[14px] sm:text-[15px] ${lesson.videoUrl ? "mb-8" : ""}`}>
-                <CheckCircle2 className="w-5 h-5 text-amber-700 flex-shrink-0" />
-                {isIntermission ? "Marked complete — next module unlocked below" : "Marked as watched — next module unlocked below"}
+              <div className={`space-y-3 ${lesson.videoUrl ? "mb-8" : ""}`}>
+                <div className="flex items-center justify-center gap-2.5 text-amber-800 font-bold py-3.5 px-4 bg-amber-50 border border-amber-200 rounded-2xl text-[14px] sm:text-[15px]">
+                  <CheckCircle2 className="w-5 h-5 text-amber-700 flex-shrink-0" />
+                  {isIntermission ? "Marked complete — next module unlocked" : "Marked as watched — next module unlocked"}
+                </div>
+                {hasNext && nextAccessible && (
+                  <button
+                    onClick={onNext}
+                    className="w-full flex items-center justify-center gap-2.5 py-3.5 sm:py-4 bg-gradient-to-br from-amber-600 to-amber-800 hover:from-amber-700 hover:to-amber-900 text-white font-black text-[13px] sm:text-sm rounded-2xl shadow-md shadow-amber-300/30 hover:-translate-y-0.5 transition-all uppercase tracking-[0.08em]"
+                  >
+                    Skip to Next Lesson
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                )}
               </div>
             )}
           </div>
@@ -899,15 +911,63 @@ const CelebrationPopup = ({ onClose }: { onClose: () => void }) => (
 /* ═══════════════════════════════════════════════════════════════
    MAIN LEARN PAGE
    ═══════════════════════════════════════════════════════════════ */
+/* ─────────── URL <-> activeId helpers ───────────
+   URL patterns:
+     /learn                              → welcome
+     /learn?lesson=module-3              → that lesson
+     /learn?view=resources               → resource library
+     /learn?resource=if-then-protocols   → that resource detail
+   Lets browser refresh / back-forward / link-sharing land in place. */
+const idFromParams = (sp: URLSearchParams): string => {
+  const lesson = sp.get("lesson");
+  if (lesson) return lesson;
+  if (sp.get("view") === "resources") return "resources";
+  const resource = sp.get("resource");
+  if (resource) return `resource:${resource}`;
+  return LESSONS[0].id;
+};
+
+const paramsFromId = (id: string): URLSearchParams => {
+  const p = new URLSearchParams();
+  if (id === LESSONS[0].id) return p;
+  if (id === "resources") { p.set("view", "resources"); return p; }
+  if (id.startsWith("resource:")) { p.set("resource", id.slice("resource:".length)); return p; }
+  p.set("lesson", id);
+  return p;
+};
+
 export default function Learn() {
   const [progress, setProgress] = useState<ProgressMap>(loadProgress);
-  const [activeId, setActiveId] = useState(LESSONS[0].id);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [activeId, setActiveId] = useState(() => idFromParams(searchParams));
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [celebration, setCelebration] = useState(false);
   const [tourOpen, setTourOpen] = useState(false);
   // Remembers where the user came from when they opened a resource —
   // so the Back button returns them to that lesson (not always the library)
   const [resourceReturnTo, setResourceReturnTo] = useState<string>("resources");
+
+  // URL → state (browser back/forward)
+  useEffect(() => {
+    const next = idFromParams(searchParams);
+    if (next !== activeId) setActiveId(next);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
+
+  // Lock body scroll when the mobile sidebar is open so swipes inside
+  // the drawer don't scroll the page underneath or trigger the browser
+  // forward/back swipe gesture.
+  useEffect(() => {
+    if (!sidebarOpen) return;
+    const prevOverflow = document.body.style.overflow;
+    const prevOverscroll = document.body.style.overscrollBehaviorX;
+    document.body.style.overflow = "hidden";
+    document.body.style.overscrollBehaviorX = "contain";
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      document.body.style.overscrollBehaviorX = prevOverscroll;
+    };
+  }, [sidebarOpen]);
 
   // Persist progress to localStorage
   useEffect(() => {
@@ -950,7 +1010,12 @@ export default function Learn() {
     });
   };
 
-  const goTo = (id: string) => { setActiveId(id); setSidebarOpen(false); window.scrollTo(0, 0); };
+  const goTo = (id: string) => {
+    setActiveId(id);
+    setSearchParams(paramsFromId(id));
+    setSidebarOpen(false);
+    window.scrollTo(0, 0);
+  };
   const goNext = () => { if (activeIndex < LESSONS.length - 1) goTo(LESSONS[activeIndex + 1].id); };
   const goPrev = () => { if (activeIndex > 0) goTo(LESSONS[activeIndex - 1].id); };
 
@@ -973,8 +1038,22 @@ export default function Learn() {
       <AnimatePresence>
         {sidebarOpen && (
           <>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-black/30 z-40 lg:hidden" onClick={() => setSidebarOpen(false)} />
-            <motion.div initial={{ x: -300 }} animate={{ x: 0 }} exit={{ x: -300 }} transition={{ type: "spring", damping: 25 }} className="fixed left-0 top-0 bottom-0 w-72 z-50 lg:hidden shadow-2xl">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/30 z-40 lg:hidden"
+              style={{ touchAction: "none" }}
+              onClick={() => setSidebarOpen(false)}
+            />
+            <motion.div
+              initial={{ x: -300 }}
+              animate={{ x: 0 }}
+              exit={{ x: -300 }}
+              transition={{ type: "spring", damping: 25 }}
+              className="fixed left-0 top-0 bottom-0 w-72 max-w-[85vw] z-50 lg:hidden shadow-2xl overflow-hidden"
+              style={{ touchAction: "pan-y", overscrollBehavior: "contain" }}
+            >
               <Sidebar lessons={LESSONS} progress={progress} activeId={activeId} onSelect={goTo} onClose={() => setSidebarOpen(false)} />
             </motion.div>
           </>
