@@ -55,6 +55,7 @@ const PDF_COUNT = RESOURCES.filter(
 const CHECKOUT_URL = "https://www.paypal.com/ncp/payment/DQDESNZ9DVQ7G";
 const PRICE = "$29";
 const CONTACT_EMAIL = "krudstina@gmail.com";
+const WHATSAPP_DISPLAY = "+31 6 18784896";
 const VSL_URL = "https://youtu.be/HPsy09z0Db0";
 
 /* ───────── VIDEO HELPERS ─────────
@@ -268,13 +269,61 @@ const Hero = () => (
             <span className="text-gray-700">·</span>
             <div className="flex items-center gap-1.5">
               <ShieldCheck className="w-3.5 h-3.5" />
-              30-day refund
+              14-day refund
             </div>
             <span className="text-gray-700">·</span>
             <div className="flex items-center gap-1.5">
               <Clock className="w-3.5 h-3.5" />
               Instant access
             </div>
+          </div>
+        </div>
+      </motion.div>
+    </div>
+  </section>
+);
+
+/* ─────────── PREVIEW CTA — "see inside before you buy" ─────────── */
+const PreviewCTA = () => (
+  <section className="relative py-14 sm:py-20 bg-white border-y border-amber-100/70 overflow-hidden">
+    <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_60%_at_50%_50%,rgba(245,158,11,0.08),transparent)]" />
+    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[40rem] h-40 bg-amber-100/40 blur-3xl rounded-full pointer-events-none" />
+
+    <div className="relative max-w-3xl mx-auto px-4 sm:px-6">
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-60px" }}
+        transition={{ duration: 0.55 }}
+        className="bg-white border border-gray-200 rounded-3xl p-7 sm:p-10 shadow-xl shadow-amber-200/40"
+      >
+        <div className="flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-8">
+          <div className="flex-shrink-0 w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center shadow-lg shadow-amber-300/40">
+            <Eye className="w-7 h-7 sm:w-8 sm:h-8 text-white" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="h-px w-7 bg-amber-500" />
+              <span className="text-[10px] sm:text-[11px] font-black text-amber-700 uppercase tracking-[0.3em]">
+                See inside first
+              </span>
+            </div>
+            <h3 className="text-[1.4rem] sm:text-3xl font-black text-gray-900 leading-tight tracking-tight mb-2">
+              Walk through the platform before you buy.
+            </h3>
+            <p className="text-gray-600 text-[14px] sm:text-base leading-relaxed mb-5 sm:mb-6">
+              Browse the real interface — same sidebar, same Resource Library, same Watch List. The 9 video lessons stay locked, but you'll see exactly what's waiting on the inside.
+            </p>
+            <a
+              href="/preview"
+              className="inline-flex items-center justify-center gap-2.5 px-6 sm:px-8 py-3.5 sm:py-4 bg-gradient-to-br from-amber-600 to-amber-800 hover:from-amber-700 hover:to-amber-900 text-white font-black text-[13.5px] sm:text-sm rounded-full shadow-lg shadow-amber-300/40 hover:-translate-y-0.5 transition-all uppercase tracking-[0.08em]"
+            >
+              Preview the platform
+              <ArrowRight className="w-4 h-4" />
+            </a>
+            <p className="mt-3 text-[11px] sm:text-xs text-gray-400 font-semibold">
+              No signup · No card · Just a tour
+            </p>
           </div>
         </div>
       </motion.div>
@@ -1284,7 +1333,7 @@ const OfferStack = () => (
             <span className="text-gray-300">·</span>
             <div className="flex items-center gap-1.5">
               <ShieldCheck className="w-3.5 h-3.5" />
-              30-day refund
+              14-day refund
             </div>
             <span className="text-gray-300">·</span>
             <div className="flex items-center gap-1.5">
@@ -1328,20 +1377,44 @@ const FAQ = () => {
       a: "If sugar or sweet food feels like something you can't reliably stop — whether every day or on bad weeks — yes. If you're looking for a calorie plan, meal prep templates, or a workout routine, no. This is about how sugar and food addiction actually work, and how to build a new relationship with both.",
     },
     {
+      q: "Can I see what's inside before I buy?",
+      a: `Yes — go to ${typeof window !== "undefined" ? window.location.origin : "the site"}/preview. You'll land inside the actual platform: the sidebar, the Resource Library, the Watch List. The 9 video lessons stay locked but every other piece of the structure is visible so you can see exactly what you're paying for.`,
+    },
+    {
+      q: "How long do I have access?",
+      a: "Forever. One-time payment, instant access, no subscription, no recurring charges. You can revisit any module, any resource, any time — including months or years from now.",
+    },
+    {
+      q: "How long does it take to go through?",
+      a: "Nine modules of in-depth video plus two intermissions. About two to three hours of core content depending on pace, plus the homework tasks. You can spread it however you like — one evening, one week, two weeks. There's no clock.",
+    },
+    {
+      q: "How quickly will I notice a change?",
+      a: "Most people feel a real shift in cravings within the first 1–2 weeks of applying the food framework (Module 5). Skin, energy, mood, and PMS pieces typically show up between weeks 3 and 12 as the system recalibrates. The pace depends on how consistently you change the inputs — but the direction is reliable once the inputs change.",
+    },
+    {
       q: "What does the 'guided journey' actually mean?",
       a: "Every module ends with a specific task — not optional, not busywork — designed to move you toward the solution. Two of those tasks (your kitchen audit and your grocery receipt) you'll send on WhatsApp, and Kristina personally writes back with what she notices. Throughout the rest of the course, the Unhooked Method team is on WhatsApp for any question or realization that comes up. So you're never doing the work alone.",
     },
     {
-      q: "How long does it take?",
-      a: "Nine modules of in-depth video plus two intermissions. About two to three hours of core content depending on pace, plus the homework tasks. You can spread it however you like — one evening, one week, two weeks. Access is permanent, so you can revisit any module whenever you need it.",
+      q: "What if it doesn't help?",
+      a: `Write within 14 days of buying and you'll get a full refund. No forms, no questions, no awkward exit survey. Just email ${CONTACT_EMAIL} or message us on WhatsApp at ${WHATSAPP_DISPLAY}. We'd rather you leave whole than stay annoyed.`,
+    },
+    {
+      q: "How do I get in touch — before or after buying?",
+      a: `Two simple options, both go straight to a real human (not a chatbot): email ${CONTACT_EMAIL} or WhatsApp ${WHATSAPP_DISPLAY}. Use whichever is easier for you. Questions before purchase are answered the same day in almost every case.`,
+    },
+    {
+      q: "Is it safe if I'm pregnant, breastfeeding, or have a medical condition?",
+      a: "The course is educational, not medical advice. The framework (whole foods, less ultra-processed food) is generally compatible with pregnancy, breastfeeding, and most conditions — but if you're being treated for an eating disorder, diabetes, or any condition where your nutrition is being clinically managed, please clear changes with your doctor first. The course will still be valuable as a framework; it's just not a substitute for individualized medical care.",
+    },
+    {
+      q: "What device does it work on?",
+      a: "Any modern browser on phone, tablet, laptop, or desktop. Videos stream straight in the platform, PDFs download in one click. There's no app to install — just a link. Your progress is remembered per device.",
     },
     {
       q: "How is this different from other things I've tried?",
-      a: "Most programs address one layer — the food, or the mindset, or the behavior. Sugar and food addiction sit at the intersection of all three, which is why partial approaches stop working. This workshop walks through every layer in sequence, with tasks and personal feedback at the key moments, so the pieces actually fit together.",
-    },
-    {
-      q: "What if it doesn't help?",
-      a: "Email within 30 days and I'll refund you. No forms, no questions, no awkward exit survey. I'd rather you leave whole than stay annoyed.",
+      a: "Most programs address one layer — the food, or the mindset, or the behavior. Sugar and food addiction sit at the intersection of all three, which is why partial approaches stop working. This program walks through every layer in sequence, with tasks and personal feedback at the key moments, so the pieces actually fit together.",
     },
     {
       q: `Why only ${PRICE}?`,
@@ -1349,7 +1422,7 @@ const FAQ = () => {
     },
     {
       q: "What's not in here?",
-      a: "There's no meal plan, no tracker app, no group coaching, no live calls. It's a self-paced workshop — videos and guides you go through on your own schedule, plus the personal task review and ongoing WhatsApp support from Kristina. If you need a more hands-on program, this isn't it.",
+      a: "There's no meal plan app, no calorie tracker, no group coaching, no live calls. It's a self-paced course — videos and guides you go through on your own schedule, plus the personal task review and ongoing WhatsApp support. If you need a more hands-on or 1-on-1 program, this isn't it.",
     },
   ];
 
@@ -1434,7 +1507,7 @@ const FinalCTA = () => (
         <ArrowRight className="w-5 h-5" />
       </a>
       <p className="mt-5 text-[11px] sm:text-xs text-gray-500">
-        30-day refund · instant access · WhatsApp access included
+        14-day refund · instant access · WhatsApp support included
       </p>
     </div>
   </section>
@@ -1512,6 +1585,7 @@ export default function Landing() {
       <Navbar />
       <main>
         <Hero />
+        <PreviewCTA />
         <Mechanism />
         <Journey />
         <PlatformPreview />

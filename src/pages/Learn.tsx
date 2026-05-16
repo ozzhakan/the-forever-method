@@ -731,7 +731,7 @@ const PreviewLockedLesson = ({ lesson }: { lesson: LessonDef }) => {
         <ArrowRight className="w-5 h-5" />
       </a>
       <p className="mt-3 text-center text-[12px] sm:text-xs text-gray-500">
-        Instant access · 30-day refund · One-time payment
+        Instant access · 14-day refund · One-time payment
       </p>
     </div>
   );
