@@ -166,56 +166,6 @@ const Navbar = () => {
   );
 };
 
-/* ───────────── PLATFORM PEEK STRIP — small hint of what's inside ─────────── */
-const PlatformPeekStrip = () => {
-  const tiles = [
-    { icon: Video,       label: "Module 5",        sub: "The Food Framework",      tone: "video" as const },
-    { icon: FileText,    label: "Kitchen Audit",   sub: "Template · PDF",          tone: "doc"   as const },
-    { icon: Sparkles,    label: "If-Then Library", sub: "38 protocols",            tone: "doc"   as const },
-    { icon: PlayCircle,  label: "Watch List",      sub: "Curated · growing",       tone: "video" as const },
-  ];
-  return (
-    <div className="mb-6 sm:mb-7 max-w-2xl mx-auto">
-      <div className="relative rounded-2xl border border-gray-800 bg-gray-900/60 backdrop-blur px-3.5 sm:px-5 py-3 sm:py-3.5">
-        <div className="flex items-stretch gap-2 sm:gap-3 overflow-x-auto no-scrollbar">
-          {tiles.map((t, i) => {
-            const I = t.icon;
-            return (
-              <div
-                key={i}
-                className="flex-shrink-0 flex items-center gap-2 sm:gap-2.5 px-2.5 sm:px-3 py-2 sm:py-2.5 bg-gray-950/70 border border-gray-800 rounded-xl min-w-0"
-              >
-                <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
-                  t.tone === "video"
-                    ? "bg-gradient-to-br from-amber-500 to-amber-700 shadow-sm shadow-amber-500/40"
-                    : "bg-amber-500/15 border border-amber-500/30"
-                }`}>
-                  <I className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${t.tone === "video" ? "text-white" : "text-amber-300"}`} />
-                </div>
-                <div className="flex flex-col text-left leading-tight min-w-0">
-                  <span className="text-[11px] sm:text-[12px] font-black text-white whitespace-nowrap">{t.label}</span>
-                  <span className="text-[9px] sm:text-[10px] font-semibold text-gray-400 whitespace-nowrap">{t.sub}</span>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-        <div className="mt-2.5 sm:mt-3 pt-2.5 sm:pt-3 border-t border-gray-800/70 flex flex-wrap items-center justify-center gap-x-3 sm:gap-x-4 gap-y-1 text-[10px] sm:text-[11px] font-bold text-gray-400">
-          <span className="text-amber-300">Inside the platform</span>
-          <span className="text-gray-600">·</span>
-          <span>9 video modules</span>
-          <span className="text-gray-600">·</span>
-          <span>{PDF_COUNT} PDFs</span>
-          <span className="text-gray-600">·</span>
-          <span>Ongoing Watch List</span>
-          <span className="text-gray-600">·</span>
-          <span>WhatsApp support</span>
-        </div>
-      </div>
-    </div>
-  );
-};
-
 /* ───────────────────────── HERO + VSL ───────────────────────── */
 const Hero = () => (
   <section className="pt-24 sm:pt-32 pb-16 sm:pb-24 bg-gray-950 relative overflow-hidden">
@@ -236,13 +186,21 @@ const Hero = () => (
           </span>
         </h1>
 
-        {/* Mini platform preview — small visual hint of what's inside */}
-        <PlatformPeekStrip />
+        {/* Eyebrow positioning line */}
+        <p className="text-amber-300 text-[12px] sm:text-sm font-bold uppercase tracking-[0.22em] mb-5 sm:mb-6">
+          Step-by-step transformation program · Made for women
+        </p>
 
         {/* Subheadline — the offer, concretely */}
         <p className="text-gray-400 text-[15px] sm:text-lg leading-relaxed mb-8 sm:mb-12 max-w-3xl mx-auto">
-          <span className="text-white font-semibold">9 in-depth video modules.</span>{" "}
-          <span className="text-white font-semibold">{PDF_COUNT} cheat sheets, templates and guides</span> — including a growing Watch List of hand-picked videos and women-specific resources. Built from ten years of personal recovery and research, distilled into the system I wish someone had handed me on day one. <span className="text-white font-semibold">{PRICE} · yours forever.</span>
+          Get access to{" "}
+          <a
+            href="/preview"
+            className="text-white font-semibold underline decoration-amber-500/60 decoration-2 underline-offset-4 hover:decoration-amber-400 hover:text-amber-200 transition-colors"
+          >
+            9 transformative video modules
+          </a>
+          , live support, and more than <span className="text-white font-semibold">{PDF_COUNT} downloadable PDF resources</span> — protocols, templates, women-specific guides and a curated video library. Built from ten years of personal recovery and research, distilled into the system I wish someone had handed me on day one. <span className="text-white font-semibold">{PRICE} · yours forever.</span>
         </p>
 
         {/* VSL Video Player */}
@@ -1482,6 +1440,44 @@ const FinalCTA = () => (
   </section>
 );
 
+/* ─────────── BRAND CODA — "Get unhooked. Stay unhooked." ───────────
+   Closes the landing on the brand mantra. Bold, modern, with a
+   subtle gold glow + animated underline. */
+const BrandCoda = () => (
+  <section className="relative py-24 sm:py-36 bg-gray-950 text-white overflow-hidden">
+    {/* Atmospheric glows */}
+    <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_60%_at_50%_50%,rgba(245,158,11,0.18),transparent)]" />
+    <div className="absolute top-1/2 left-0 w-[28rem] h-[28rem] bg-amber-600/15 rounded-full blur-[140px] -translate-y-1/2" />
+    <div className="absolute top-1/2 right-0 w-[28rem] h-[28rem] bg-amber-500/15 rounded-full blur-[140px] -translate-y-1/2" />
+    {/* Top + bottom gold hairlines */}
+    <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-amber-500/40 to-transparent" />
+    <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-amber-500/40 to-transparent" />
+
+    <div className="relative max-w-4xl mx-auto px-4 sm:px-6 text-center">
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-80px" }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+      >
+        <h2 className="text-[2.1rem] leading-[1.05] sm:text-6xl md:text-7xl font-black tracking-tight">
+          <span className="block text-white">Get unhooked.</span>
+          <span className="block mt-2 sm:mt-3 italic font-black bg-gradient-to-r from-amber-300 via-amber-400 to-amber-500 bg-clip-text text-transparent">
+            Stay unhooked.
+          </span>
+        </h2>
+        <motion.div
+          initial={{ scaleX: 0 }}
+          whileInView={{ scaleX: 1 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 1.1, delay: 0.4, ease: "easeOut" }}
+          className="mx-auto mt-7 sm:mt-9 h-px w-28 sm:w-36 bg-gradient-to-r from-transparent via-amber-400 to-transparent origin-center"
+        />
+      </motion.div>
+    </div>
+  </section>
+);
+
 /* ─────────── FOOTER ─────────── */
 const Footer = () => (
   <footer className="py-8 sm:py-10 bg-white border-t border-gray-100">
@@ -1503,7 +1499,7 @@ const Footer = () => (
         </a>
       </div>
       <div className="mt-6 pt-6 border-t border-gray-100 text-xs text-gray-400 text-center">
-        Made with <span className="text-red-500">♥</span> in the Netherlands
+        Made with <span className="text-red-500">♥</span> by Hakan &amp; Kristina Oz
       </div>
     </div>
   </footer>
@@ -1527,6 +1523,7 @@ export default function Landing() {
         <OfferStack />
         <FAQ />
         <FinalCTA />
+        <BrandCoda />
       </main>
       <Footer />
 

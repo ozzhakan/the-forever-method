@@ -20,6 +20,7 @@ import {
   AlertCircle,
   MessageCircle,
   ExternalLink,
+  PlayCircle,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
@@ -432,7 +433,7 @@ const Sidebar = ({
           );
         })}
 
-        {/* Resource Library entry — between lessons and footer */}
+        {/* Library section — Resource Library + Watch List */}
         <div className="px-5 pt-4 pb-2 mt-3 border-t border-gray-100">
           <div className="text-[10px] font-black text-gray-400 uppercase tracking-[0.22em] mb-2 px-1">Library</div>
         </div>
@@ -455,6 +456,28 @@ const Sidebar = ({
             </div>
             <div className="text-[10px] text-gray-400 font-medium mt-0.5">
               Cheat sheets · Templates · PDFs
+            </div>
+          </div>
+        </button>
+        <button
+          onClick={() => onSelect("watch-list")}
+          className={`w-full text-left px-5 py-3 flex items-center gap-3 transition-colors ${
+            activeId === "watch-list"
+              ? "bg-amber-50 border-r-2 border-amber-600"
+              : "hover:bg-gray-50 cursor-pointer"
+          }`}
+        >
+          <PlayCircle className={`w-5 h-5 flex-shrink-0 ${
+            activeId === "watch-list" ? "text-amber-600" : "text-gray-400"
+          }`} />
+          <div className="min-w-0 flex-1">
+            <div className={`text-sm font-bold ${
+              activeId === "watch-list" ? "text-amber-700" : "text-gray-800"
+            }`}>
+              Watch List
+            </div>
+            <div className="text-[10px] text-gray-400 font-medium mt-0.5">
+              Curated videos · growing
             </div>
           </div>
         </button>
@@ -616,6 +639,56 @@ const PreviewBanner = () => (
     </a>
   </div>
 );
+
+/* ═══════════════════════════════════════════════════════════════
+   PREVIEW LOCKED RESOURCE — gated resource detail in /preview mode
+   ═══════════════════════════════════════════════════════════════ */
+const PreviewLockedResource = ({ slug, onBack }: { slug: string; onBack: () => void }) => {
+  const resource = RESOURCES.find((r) => r.slug === slug);
+  if (!resource) return null;
+  const Icon = resource.icon;
+  return (
+    <div className="max-w-3xl mx-auto py-8 px-4 sm:px-6">
+      <button
+        onClick={onBack}
+        className="flex items-center gap-2 px-3 py-2 text-sm font-bold text-gray-600 hover:text-amber-700 hover:bg-amber-50 rounded-lg transition-colors mb-6"
+      >
+        <ArrowLeft className="w-4 h-4" />
+        <span>Back to Resource Library</span>
+      </button>
+      <div className="bg-white border border-gray-100 rounded-3xl p-6 sm:p-10 shadow-sm text-center">
+        <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center shadow-lg shadow-amber-300/40 mx-auto mb-5">
+          <Lock className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
+        </div>
+        <p className="text-[10px] sm:text-[11px] font-black text-amber-800 uppercase tracking-[0.3em] mb-2">
+          {resource.eyebrow} · Locked in preview
+        </p>
+        <h1 className="text-2xl sm:text-3xl font-black text-gray-900 leading-tight tracking-tight mb-3">
+          {resource.title}
+        </h1>
+        <p className="text-gray-600 text-[14.5px] sm:text-base leading-relaxed mb-7 max-w-md mx-auto">
+          {resource.description}
+        </p>
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-100 rounded-full mb-7">
+          <Icon className="w-3.5 h-3.5 text-gray-500" />
+          <span className="text-[11px] font-bold text-gray-500 uppercase tracking-wider">For {resource.module}</span>
+        </div>
+        <a
+          href={PAYPAL_CHECKOUT_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center justify-center gap-2.5 w-full max-w-sm mx-auto py-4 bg-gradient-to-br from-amber-600 to-amber-800 hover:from-amber-700 hover:to-amber-900 text-white font-black text-[14px] sm:text-base rounded-2xl shadow-lg shadow-amber-300/40 transition-all uppercase tracking-[0.08em]"
+        >
+          Unlock all 20 resources — $29
+          <ArrowRight className="w-5 h-5" />
+        </a>
+        <p className="mt-3 text-center text-[12px] sm:text-xs text-gray-500">
+          Plus 9 video modules · Watch List · WhatsApp support
+        </p>
+      </div>
+    </div>
+  );
+};
 
 /* ═══════════════════════════════════════════════════════════════
    PREVIEW LOCKED LESSON — shown when a non-preview lesson is opened
@@ -1018,7 +1091,9 @@ const CelebrationPopup = ({ onClose }: { onClose: () => void }) => (
 const idFromParams = (sp: URLSearchParams): string => {
   const lesson = sp.get("lesson");
   if (lesson) return lesson;
-  if (sp.get("view") === "resources") return "resources";
+  const view = sp.get("view");
+  if (view === "resources") return "resources";
+  if (view === "watch-list") return "watch-list";
   const resource = sp.get("resource");
   if (resource) return `resource:${resource}`;
   return LESSONS[0].id;
@@ -1028,16 +1103,19 @@ const paramsFromId = (id: string): URLSearchParams => {
   const p = new URLSearchParams();
   if (id === LESSONS[0].id) return p;
   if (id === "resources") { p.set("view", "resources"); return p; }
+  if (id === "watch-list") { p.set("view", "watch-list"); return p; }
   if (id.startsWith("resource:")) { p.set("resource", id.slice("resource:".length)); return p; }
   p.set("lesson", id);
   return p;
 };
 
 /* ─────────── PREVIEW MODE ─────────── */
-// Lessons that stay open in /preview mode — everything else is locked.
-// The Resource Library + Watch List stay fully browsable as a taste of
-// the platform quality.
-const PREVIEW_OPEN_LESSON_IDS = new Set(["welcome", "module-0"]);
+// In /preview mode the only thing fully accessible is the Welcome
+// screen (the platform's entry view). Every numbered lesson and every
+// resource shows its title but stays locked. The Watch List shows the
+// video count but not the actual embeds. This keeps the preview as a
+// genuine UI-quality showcase without giving the content away.
+const PREVIEW_OPEN_LESSON_IDS = new Set(["welcome"]);
 const PAYPAL_CHECKOUT_URL = "https://www.paypal.com/ncp/payment/DQDESNZ9DVQ7G";
 
 export default function Learn({ previewMode = false }: { previewMode?: boolean } = {}) {
@@ -1087,18 +1165,22 @@ export default function Learn({ previewMode = false }: { previewMode?: boolean }
     }
   }, []);
 
-  const isResourcesIndex = activeId === "resources";
+  const isResourcesIndex = activeId === "resources" || activeId === "watch-list";
   const isResourceDetail = activeId.startsWith("resource:");
+  const initialLibraryTab: "resources" | "watch-list" = activeId === "watch-list" ? "watch-list" : "resources";
   const resourceSlug = isResourceDetail ? activeId.slice("resource:".length) : "";
   const activeLesson = LESSONS.find((l) => l.id === activeId);
   const activeIndex = activeLesson ? LESSONS.findIndex((l) => l.id === activeId) : -1;
   const activeProg = progress[activeId] ?? defaultProgress();
 
-  const headerTitle = isResourcesIndex
-    ? "Resource Library"
-    : isResourceDetail
-      ? RESOURCES.find((r) => r.slug === resourceSlug)?.title ?? "Resource"
-      : activeLesson?.title ?? "";
+  const headerTitle =
+    activeId === "watch-list"
+      ? "Watch List"
+      : isResourcesIndex
+        ? "Resource Library"
+        : isResourceDetail
+          ? RESOURCES.find((r) => r.slug === resourceSlug)?.title ?? "Resource"
+          : activeLesson?.title ?? "";
 
   const updateProgress = (lessonId: string, updates: Partial<LessonProgress>) => {
     setProgress((prev) => {
@@ -1193,17 +1275,23 @@ export default function Learn({ previewMode = false }: { previewMode?: boolean }
           />
         ) : isResourcesIndex ? (
           <ResourceLibrary
+            previewMode={previewMode}
+            initialTab={initialLibraryTab}
             onOpen={(slug) => {
               setResourceReturnTo("resources");
               goTo(`resource:${slug}`);
             }}
           />
         ) : isResourceDetail ? (
-          <ResourceDetail
-            slug={resourceSlug}
-            onBack={() => goTo(resourceReturnTo)}
-            backLabel={resourceReturnTo === "resources" ? "Back to Resource Library" : "Back to Lesson"}
-          />
+          previewMode ? (
+            <PreviewLockedResource slug={resourceSlug} onBack={() => goTo("resources")} />
+          ) : (
+            <ResourceDetail
+              slug={resourceSlug}
+              onBack={() => goTo(resourceReturnTo)}
+              backLabel={resourceReturnTo === "resources" ? "Back to Resource Library" : "Back to Lesson"}
+            />
+          )
         ) : activeLessonLockedByPreview && activeLesson ? (
           <PreviewLockedLesson lesson={activeLesson} />
         ) : activeLesson ? (

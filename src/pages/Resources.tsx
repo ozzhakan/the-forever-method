@@ -31,6 +31,7 @@ import {
   PlayCircle,
   Folder,
   ChevronDown,
+  Lock,
   type LucideIcon,
 } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
@@ -2106,13 +2107,19 @@ export const ResourceDetail = ({
    ═══════════════════════════════════════════════════════════════ */
 export const ResourceLibrary = ({
   onOpen,
+  previewMode = false,
+  initialTab = "resources",
 }: {
   onOpen: (slug: string) => void;
+  previewMode?: boolean;
+  initialTab?: "resources" | "watch-list";
 }) => {
   // The Watch List has its own tab now, so don't double-list it in the grid
   const RESOURCES_IN_GRID = RESOURCES.filter((r) => r.slug !== "the-watch-list");
   const readyCount = RESOURCES_IN_GRID.filter((r) => r.status === "ready").length;
-  const [tab, setTab] = useState<"resources" | "watch-list">("resources");
+  const [tab, setTab] = useState<"resources" | "watch-list">(initialTab);
+  // Keep tab in sync when the parent navigates directly to ?view=watch-list
+  useEffect(() => { setTab(initialTab); }, [initialTab]);
   const [query, setQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<ResourceCategory | "all" | "women">("all");
 
@@ -2208,7 +2215,7 @@ export const ResourceLibrary = ({
       </div>
 
       {tab === "watch-list" ? (
-        <LibraryWatchList />
+        <LibraryWatchList previewMode={previewMode} />
       ) : (
         <>
       {/* Search + category chips */}
@@ -2272,7 +2279,11 @@ export const ResourceLibrary = ({
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.4, delay: i * 0.03 }}
               onClick={() => onOpen(r.slug)}
-              className="text-left bg-white border border-gray-200 rounded-2xl p-5 sm:p-6 hover:border-amber-300 hover:shadow-xl hover:-translate-y-1 transition-all group"
+              className={`relative text-left bg-white border rounded-2xl p-5 sm:p-6 transition-all group ${
+                previewMode
+                  ? "border-gray-200 hover:border-amber-300 hover:shadow-md cursor-pointer"
+                  : "border-gray-200 hover:border-amber-300 hover:shadow-xl hover:-translate-y-1"
+              }`}
             >
               <div className="flex items-start gap-4 mb-4">
                 <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 bg-gradient-to-br from-amber-50 to-amber-100 border border-amber-100">
@@ -2286,11 +2297,16 @@ export const ResourceLibrary = ({
                     {r.module}
                   </span>
                 </div>
-                {r.women && (
+                {previewMode ? (
+                  <span className="inline-flex items-center gap-1 text-[9px] font-black text-amber-800 bg-amber-100 border border-amber-300 px-2 py-0.5 rounded-full uppercase tracking-wider">
+                    <Lock className="w-2.5 h-2.5" />
+                    Locked
+                  </span>
+                ) : r.women ? (
                   <span className="text-[9px] font-black text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full uppercase tracking-wider">
                     Women
                   </span>
-                )}
+                ) : null}
               </div>
 
               <h3 className="text-base sm:text-lg font-black text-gray-900 leading-snug tracking-tight mb-2">
@@ -2306,7 +2322,7 @@ export const ResourceLibrary = ({
                   {r.readTime}
                 </span>
                 <span className="flex items-center gap-1 text-amber-700 font-bold group-hover:gap-2 transition-all">
-                  Open
+                  {previewMode ? "Preview" : "Open"}
                   <ChevronRight className="w-3.5 h-3.5" />
                 </span>
               </div>
@@ -2314,7 +2330,7 @@ export const ResourceLibrary = ({
           );
         })}
         {womenInLibrary.length > 0 && (
-          <WomenFolderCard resources={womenInLibrary} onOpen={onOpen} />
+          <WomenFolderCard resources={womenInLibrary} onOpen={onOpen} previewMode={previewMode} />
         )}
       </div>
 
@@ -2333,11 +2349,17 @@ export const ResourceLibrary = ({
    LIBRARY WATCH LIST — same embedded videos as TheWatchList,
    rendered directly inside the library (no detail-page hop).
    ═══════════════════════════════════════════════════════════════ */
-const LibraryWatchList = () => (
+const LibraryWatchList = ({ previewMode = false }: { previewMode?: boolean }) => (
   <div className="space-y-8 sm:space-y-10">
-    <Callout variant="amber" title="How to use this">
-      One video at a time. Watch it once, sit with it, do nothing else for an hour. Don't binge the list — that turns information into noise. The point is shift, not consumption. New videos are added as Kristina comes across them — bookmark this page.
-    </Callout>
+    {previewMode ? (
+      <Callout variant="amber" title="Watch List is locked in preview">
+        The full Watch List of hand-picked videos unlocks with the course. The titles are visible so you can see what's curated — the embedded players unlock for paying members.
+      </Callout>
+    ) : (
+      <Callout variant="amber" title="How to use this">
+        One video at a time. Watch it once, sit with it, do nothing else for an hour. Don't binge the list — that turns information into noise. The point is shift, not consumption. New videos are added as Kristina comes across them — bookmark this page.
+      </Callout>
+    )}
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
       {WATCH_LIST_VIDEOS.map((v) => (
         <div key={v.id}>
@@ -2347,22 +2369,35 @@ const LibraryWatchList = () => (
             </span>
             <div className="h-px flex-1 bg-amber-100" />
           </div>
-          <div className="aspect-video rounded-2xl overflow-hidden bg-gray-900 shadow-md">
-            <iframe
-              src={`https://www.youtube.com/embed/${v.id}?modestbranding=1&rel=0&iv_load_policy=3&playsinline=1&color=white`}
-              title={`Watch List · Video ${v.n}`}
-              className="w-full h-full"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowFullScreen
-              loading="lazy"
-            />
-          </div>
+          {previewMode ? (
+            <div className="aspect-video rounded-2xl overflow-hidden bg-gray-900 shadow-md relative flex flex-col items-center justify-center text-center px-4">
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_50%_at_50%_50%,rgba(245,158,11,0.18),transparent)]" />
+              <div className="relative w-11 h-11 rounded-xl bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center shadow-lg shadow-amber-500/30 mb-2.5">
+                <Lock className="w-5 h-5 text-white" />
+              </div>
+              <p className="relative text-[12px] sm:text-[13px] font-bold text-white">Locked in preview</p>
+              <p className="relative text-[10px] sm:text-[11px] text-gray-400 mt-1">Unlock with the course</p>
+            </div>
+          ) : (
+            <div className="aspect-video rounded-2xl overflow-hidden bg-gray-900 shadow-md">
+              <iframe
+                src={`https://www.youtube.com/embed/${v.id}?modestbranding=1&rel=0&iv_load_policy=3&playsinline=1&color=white`}
+                title={`Watch List · Video ${v.n}`}
+                className="w-full h-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                loading="lazy"
+              />
+            </div>
+          )}
         </div>
       ))}
     </div>
-    <Callout variant="gray">
-      Information without application doesn't move anything. After each video, ask one question: <em>what's the one thing from this that I could try this week?</em> If nothing — that video wasn't for you. Skip to the next one.
-    </Callout>
+    {!previewMode && (
+      <Callout variant="gray">
+        Information without application doesn't move anything. After each video, ask one question: <em>what's the one thing from this that I could try this week?</em> If nothing — that video wasn't for you. Skip to the next one.
+      </Callout>
+    )}
   </div>
 );
 
@@ -2372,15 +2407,17 @@ const LibraryWatchList = () => (
 const ResourceCardLink = ({
   resource,
   onOpen,
+  previewMode = false,
 }: {
   resource: ResourceDef;
   onOpen: (slug: string) => void;
+  previewMode?: boolean;
 }) => {
   const Icon = resource.icon;
   return (
     <button
       onClick={() => onOpen(resource.slug)}
-      className="flex items-start gap-3 sm:gap-4 text-left p-4 sm:p-5 bg-white border border-gray-200 rounded-2xl hover:border-amber-300 hover:shadow-md transition-all group"
+      className="relative flex items-start gap-3 sm:gap-4 text-left p-4 sm:p-5 bg-white border border-gray-200 rounded-2xl hover:border-amber-300 hover:shadow-md transition-all group"
     >
       <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 bg-gradient-to-br from-amber-50 to-amber-100 border border-amber-100">
         <Icon className="w-5 h-5 text-amber-700" />
@@ -2396,10 +2433,16 @@ const ResourceCardLink = ({
           {resource.description}
         </p>
         <div className="mt-2 flex items-center gap-1 text-amber-700 font-bold text-[12px] sm:text-xs group-hover:gap-2 transition-all">
-          Open
+          {previewMode ? "Preview" : "Open"}
           <ChevronRight className="w-3 h-3" />
         </div>
       </div>
+      {previewMode && (
+        <span className="absolute top-3 right-3 inline-flex items-center gap-1 text-[9px] font-black text-amber-800 bg-amber-100 border border-amber-300 px-2 py-0.5 rounded-full uppercase tracking-wider">
+          <Lock className="w-2.5 h-2.5" />
+          Locked
+        </span>
+      )}
     </button>
   );
 };
@@ -2412,9 +2455,11 @@ const ResourceCardLink = ({
 const WomenFolderCard = ({
   resources,
   onOpen,
+  previewMode = false,
 }: {
   resources: ResourceDef[];
   onOpen: (slug: string) => void;
+  previewMode?: boolean;
 }) => {
   const [open, setOpen] = useState(false);
   if (resources.length === 0) return null;
@@ -2455,7 +2500,7 @@ const WomenFolderCard = ({
         >
           <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
             {resources.map((r) => (
-              <ResourceCardLink key={r.slug} resource={r} onOpen={onOpen} />
+              <ResourceCardLink key={r.slug} resource={r} onOpen={onOpen} previewMode={previewMode} />
             ))}
           </div>
         </motion.div>
