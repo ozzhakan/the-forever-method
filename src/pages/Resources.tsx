@@ -29,6 +29,8 @@ import {
   X,
   Sprout,
   PlayCircle,
+  Folder,
+  ChevronDown,
   type LucideIcon,
 } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
@@ -798,8 +800,8 @@ const PantryRestockList = () => (
         "Tinned fish (sardines, mackerel, tuna in olive oil)",
         "Smoked salmon",
         "Cured meats (jamón, prosciutto — quality ones)",
-        "Chicken thighs (frozen, ready to defrost)",
-        "Ground beef (frozen portions)",
+        "Chicken thighs + wings (skin-on, bone-in if possible)",
+        "Ground beef (higher-fat, 15–20%)",
         "Steak (good cut, weekly)",
         "Lentils, chickpeas (dried or quality canned)",
         "Tofu / tempeh (if you eat them)",
@@ -1629,6 +1631,11 @@ const ShoppingList30Day = () => (
           <Checklist items={[
             "Eggs (1 dozen minimum)",
             "Chicken thighs (1–1.5 kg)",
+            "Chicken wings, legs, drumsticks (skin-on, bone-in)",
+            "Whole chicken (roast on Sunday, eat through the week)",
+            "Ground beef — higher-fat, 15–20% (500g–1 kg)",
+            "Fattier cuts: brisket, short ribs, lamb shoulder, pork belly",
+            "Liver, heart, kidney (organ meat — once a week, huge for iron)",
             "Salmon or white fish (2 portions)",
             "Greek yogurt, full-fat (1 large tub)",
             "Aged cheese (200g block)",
@@ -1665,11 +1672,12 @@ const ShoppingList30Day = () => (
       </div>
     </Section>
 
-    <Section eyebrow="03 · Bi-weekly buys" title="Larger packs, freezer rotation">
+    <Section eyebrow="03 · Bi-weekly buys" title="Larger packs, deeper variety">
       <Checklist items={[
-        "Beef mince or steak (frozen portions)",
-        "Lamb chops or pork (alternate weeks)",
-        "Liver or organ meat (once every 2 weeks — nutrient-dense)",
+        "Steak (good cut — ribeye, sirloin, hanger)",
+        "Lamb chops, lamb shoulder (alternate weeks)",
+        "Pork shoulder or pork belly",
+        "Bone broth (or bones to make your own)",
         "Cured / smoked fish (sardines, mackerel tins)",
         "Hard cheese (parmesan, manchego, aged gouda)",
         "Fermented (sauerkraut, kimchi)",
@@ -2121,6 +2129,18 @@ export const ResourceLibrary = ({
     return true;
   });
 
+  // When showing "all", group women resources into a single folder tile
+  // so the library isn't dominated by 8 women cards. The folder still
+  // shows up — just collapsed by default. When the user has typed a
+  // search or picked a specific category, show every match individually.
+  const useWomenFolder = activeCategory === "all" && !q;
+  const womenInLibrary = useWomenFolder
+    ? filtered.filter((r) => r.women)
+    : [];
+  const visibleResources = useWomenFolder
+    ? filtered.filter((r) => !r.women)
+    : filtered;
+
   const categories: { key: typeof activeCategory; label: string }[] = [
     { key: "all", label: "All" },
     { key: "reference", label: "Reference" },
@@ -2206,7 +2226,7 @@ export const ResourceLibrary = ({
       </div>
 
       <div className="grid sm:grid-cols-2 gap-4 sm:gap-5">
-        {filtered.map((r, i) => {
+        {visibleResources.map((r, i) => {
           const Icon = r.icon;
           return (
             <motion.button
@@ -2257,6 +2277,9 @@ export const ResourceLibrary = ({
             </motion.button>
           );
         })}
+        {womenInLibrary.length > 0 && (
+          <WomenFolderCard resources={womenInLibrary} onOpen={onOpen} />
+        )}
       </div>
 
       <div className="mt-12 sm:mt-16 p-5 sm:p-6 bg-amber-50/50 border border-amber-100 rounded-2xl text-center">
@@ -2269,7 +2292,107 @@ export const ResourceLibrary = ({
 };
 
 /* ═══════════════════════════════════════════════════════════════
+   RESOURCE CARD — shared layout for related-resources + library grids
+   ═══════════════════════════════════════════════════════════════ */
+const ResourceCardLink = ({
+  resource,
+  onOpen,
+}: {
+  resource: ResourceDef;
+  onOpen: (slug: string) => void;
+}) => {
+  const Icon = resource.icon;
+  return (
+    <button
+      onClick={() => onOpen(resource.slug)}
+      className="flex items-start gap-3 sm:gap-4 text-left p-4 sm:p-5 bg-white border border-gray-200 rounded-2xl hover:border-amber-300 hover:shadow-md transition-all group"
+    >
+      <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 bg-gradient-to-br from-amber-50 to-amber-100 border border-amber-100">
+        <Icon className="w-5 h-5 text-amber-700" />
+      </div>
+      <div className="flex-1 min-w-0">
+        <p className="text-[9.5px] sm:text-[10px] font-black text-amber-700 uppercase tracking-[0.22em] mb-1">
+          {resource.eyebrow}
+        </p>
+        <p className="font-bold text-gray-900 text-[14px] sm:text-[15px] leading-snug mb-1.5">
+          {resource.title}
+        </p>
+        <p className="text-[12px] sm:text-[13px] text-gray-500 leading-relaxed line-clamp-2">
+          {resource.description}
+        </p>
+        <div className="mt-2 flex items-center gap-1 text-amber-700 font-bold text-[12px] sm:text-xs group-hover:gap-2 transition-all">
+          Open
+          <ChevronRight className="w-3 h-3" />
+        </div>
+      </div>
+    </button>
+  );
+};
+
+/* ═══════════════════════════════════════════════════════════════
+   WOMEN FOLDER CARD — expandable, holds all women resources
+   When collapsed: looks like one folder tile. When expanded:
+   reveals its contents inline as a sub-grid. Spans the full row.
+   ═══════════════════════════════════════════════════════════════ */
+const WomenFolderCard = ({
+  resources,
+  onOpen,
+}: {
+  resources: ResourceDef[];
+  onOpen: (slug: string) => void;
+}) => {
+  const [open, setOpen] = useState(false);
+  if (resources.length === 0) return null;
+
+  return (
+    <div className="sm:col-span-2">
+      <button
+        onClick={() => setOpen((o) => !o)}
+        className="w-full flex items-start gap-3 sm:gap-4 text-left p-4 sm:p-5 bg-gradient-to-br from-amber-50/70 to-white border border-amber-200 rounded-2xl hover:border-amber-400 hover:shadow-md transition-all group"
+        aria-expanded={open}
+      >
+        <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 bg-gradient-to-br from-amber-500 to-amber-700 shadow-sm shadow-amber-300/40">
+          <Folder className="w-5 h-5 text-white" />
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="text-[9.5px] sm:text-[10px] font-black text-amber-700 uppercase tracking-[0.22em] mb-1">
+            Women · Folder
+          </p>
+          <p className="font-bold text-gray-900 text-[14px] sm:text-[15px] leading-snug mb-1.5">
+            Women — Hormonal Health &amp; Cycle
+          </p>
+          <p className="text-[12px] sm:text-[13px] text-gray-500 leading-relaxed">
+            {resources.length} guides on cycle, PMS, PCOS, skin, iron, labs &amp; nutrition by phase — grouped together so they don't clutter the list.
+          </p>
+          <div className="mt-2 flex items-center gap-1 text-amber-700 font-bold text-[12px] sm:text-xs">
+            {open ? "Hide" : `Open folder · ${resources.length} inside`}
+            <ChevronDown className={`w-3.5 h-3.5 transition-transform ${open ? "rotate-180" : ""}`} />
+          </div>
+        </div>
+      </button>
+
+      {open && (
+        <motion.div
+          initial={{ opacity: 0, y: -6 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.2 }}
+          className="mt-3 sm:mt-4 ml-2 sm:ml-6 pl-3 sm:pl-5 border-l-2 border-amber-200"
+        >
+          <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
+            {resources.map((r) => (
+              <ResourceCardLink key={r.slug} resource={r} onOpen={onOpen} />
+            ))}
+          </div>
+        </motion.div>
+      )}
+    </div>
+  );
+};
+
+/* ═══════════════════════════════════════════════════════════════
    RELATED RESOURCES — for use inside LessonView
+   Women resources are auto-grouped into a single folder card
+   so the related-resources area stays compact.
    ═══════════════════════════════════════════════════════════════ */
 export const RelatedResources = ({
   lessonId,
@@ -2282,6 +2405,9 @@ export const RelatedResources = ({
     (r) => r.status === "ready" && r.relatedLessons.includes(lessonId)
   );
   if (related.length === 0) return null;
+
+  const womenRelated = related.filter((r) => r.women);
+  const otherRelated = related.filter((r) => !r.women);
 
   return (
     <section className="mt-8 sm:mt-10 mb-6 sm:mb-8">
@@ -2296,35 +2422,12 @@ export const RelatedResources = ({
         <div className="h-px flex-1 bg-amber-100" />
       </div>
       <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
-        {related.map((r) => {
-          const Icon = r.icon;
-          return (
-            <button
-              key={r.slug}
-              onClick={() => onOpen(r.slug)}
-              className="flex items-start gap-3 sm:gap-4 text-left p-4 sm:p-5 bg-white border border-gray-200 rounded-2xl hover:border-amber-300 hover:shadow-md transition-all group"
-            >
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 bg-gradient-to-br from-amber-50 to-amber-100 border border-amber-100">
-                <Icon className="w-5 h-5 text-amber-700" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-[9.5px] sm:text-[10px] font-black text-amber-700 uppercase tracking-[0.22em] mb-1">
-                  {r.eyebrow}
-                </p>
-                <p className="font-bold text-gray-900 text-[14px] sm:text-[15px] leading-snug mb-1.5">
-                  {r.title}
-                </p>
-                <p className="text-[12px] sm:text-[13px] text-gray-500 leading-relaxed line-clamp-2">
-                  {r.description}
-                </p>
-                <div className="mt-2 flex items-center gap-1 text-amber-700 font-bold text-[12px] sm:text-xs group-hover:gap-2 transition-all">
-                  Open
-                  <ChevronRight className="w-3 h-3" />
-                </div>
-              </div>
-            </button>
-          );
-        })}
+        {otherRelated.map((r) => (
+          <ResourceCardLink key={r.slug} resource={r} onOpen={onOpen} />
+        ))}
+        {womenRelated.length > 0 && (
+          <WomenFolderCard resources={womenRelated} onOpen={onOpen} />
+        )}
       </div>
     </section>
   );
