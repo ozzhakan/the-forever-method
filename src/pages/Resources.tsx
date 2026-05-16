@@ -2109,12 +2109,15 @@ export const ResourceLibrary = ({
 }: {
   onOpen: (slug: string) => void;
 }) => {
-  const readyCount = RESOURCES.filter((r) => r.status === "ready").length;
+  // The Watch List has its own tab now, so don't double-list it in the grid
+  const RESOURCES_IN_GRID = RESOURCES.filter((r) => r.slug !== "the-watch-list");
+  const readyCount = RESOURCES_IN_GRID.filter((r) => r.status === "ready").length;
+  const [tab, setTab] = useState<"resources" | "watch-list">("resources");
   const [query, setQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<ResourceCategory | "all" | "women">("all");
 
   const q = query.trim().toLowerCase();
-  const filtered = RESOURCES.filter((r) => {
+  const filtered = RESOURCES_IN_GRID.filter((r) => {
     // Category filter
     if (activeCategory === "women") {
       if (!r.women) return false;
@@ -2168,13 +2171,46 @@ export const ResourceLibrary = ({
         </div>
 
         <h1 className="text-3xl sm:text-5xl font-black text-gray-900 tracking-tight leading-[1.1] mb-3">
-          Resource Library
+          {tab === "resources" ? "Resource Library" : "Watch List"}
         </h1>
         <p className="text-gray-600 text-[15px] sm:text-lg leading-relaxed max-w-2xl">
-          Cheat sheets, templates, protocols and women-specific guides — built to live alongside the course videos. Every resource is readable here and downloadable as a PDF.
+          {tab === "resources"
+            ? "Cheat sheets, templates, protocols and women-specific guides — built to live alongside the course videos. Every resource is readable here and downloadable as a PDF."
+            : "Hand-picked videos Kristina recommends watching alongside the course — embedded here so they're all in one place. The list grows as new ones land."}
         </p>
       </header>
 
+      {/* Top-level tabs: Resources | Watch List */}
+      <div className="mb-6 sm:mb-8 flex items-center gap-2 border-b border-gray-200">
+        {([
+          { key: "resources" as const, label: "Resources", icon: BookOpen },
+          { key: "watch-list" as const, label: "Watch List", icon: PlayCircle },
+        ]).map(({ key, label, icon: TabIcon }) => {
+          const isActive = tab === key;
+          return (
+            <button
+              key={key}
+              onClick={() => setTab(key)}
+              className={`relative flex items-center gap-2 px-4 sm:px-5 py-3 text-[13px] sm:text-sm font-bold transition-colors ${
+                isActive
+                  ? "text-amber-700"
+                  : "text-gray-500 hover:text-gray-800"
+              }`}
+            >
+              <TabIcon className="w-4 h-4" />
+              {label}
+              {isActive && (
+                <span className="absolute left-0 right-0 -bottom-px h-0.5 bg-amber-600" />
+              )}
+            </button>
+          );
+        })}
+      </div>
+
+      {tab === "watch-list" ? (
+        <LibraryWatchList />
+      ) : (
+        <>
       {/* Search + category chips */}
       <div className="mb-6 sm:mb-8 space-y-4">
         <div className="relative">
@@ -2287,9 +2323,48 @@ export const ResourceLibrary = ({
           <strong>Want a resource that's not here?</strong> Write us on WhatsApp and tell us what would help.
         </p>
       </div>
+        </>
+      )}
     </div>
   );
 };
+
+/* ═══════════════════════════════════════════════════════════════
+   LIBRARY WATCH LIST — same embedded videos as TheWatchList,
+   rendered directly inside the library (no detail-page hop).
+   ═══════════════════════════════════════════════════════════════ */
+const LibraryWatchList = () => (
+  <div className="space-y-8 sm:space-y-10">
+    <Callout variant="amber" title="How to use this">
+      One video at a time. Watch it once, sit with it, do nothing else for an hour. Don't binge the list — that turns information into noise. The point is shift, not consumption. New videos are added as Kristina comes across them — bookmark this page.
+    </Callout>
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
+      {WATCH_LIST_VIDEOS.map((v) => (
+        <div key={v.id}>
+          <div className="flex items-center gap-3 mb-2.5">
+            <span className="text-[11px] sm:text-xs font-black text-amber-700 uppercase tracking-[0.22em] tabular-nums">
+              Video {String(v.n).padStart(2, "0")}
+            </span>
+            <div className="h-px flex-1 bg-amber-100" />
+          </div>
+          <div className="aspect-video rounded-2xl overflow-hidden bg-gray-900 shadow-md">
+            <iframe
+              src={`https://www.youtube.com/embed/${v.id}?modestbranding=1&rel=0&iv_load_policy=3&playsinline=1&color=white`}
+              title={`Watch List · Video ${v.n}`}
+              className="w-full h-full"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+              loading="lazy"
+            />
+          </div>
+        </div>
+      ))}
+    </div>
+    <Callout variant="gray">
+      Information without application doesn't move anything. After each video, ask one question: <em>what's the one thing from this that I could try this week?</em> If nothing — that video wasn't for you. Skip to the next one.
+    </Callout>
+  </div>
+);
 
 /* ═══════════════════════════════════════════════════════════════
    RESOURCE CARD — shared layout for related-resources + library grids

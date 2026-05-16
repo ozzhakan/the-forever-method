@@ -328,12 +328,14 @@ const Sidebar = ({
   activeId,
   onSelect,
   onClose,
+  previewMode = false,
 }: {
   lessons: LessonDef[];
   progress: ProgressMap;
   activeId: string;
   onSelect: (id: string) => void;
   onClose: () => void;
+  previewMode?: boolean;
 }) => {
   const completedCount = lessons.filter((l) => (progress[l.id] ?? defaultProgress()).completed).length;
   const availableCount = lessons.filter((l) => !l.comingSoon).length;
@@ -374,7 +376,10 @@ const Sidebar = ({
         {lessons.map((lesson, i) => {
           const prog = progress[lesson.id] ?? defaultProgress();
           const isActive = lesson.id === activeId;
-          const accessible = isLessonAccessible(i, lessons, progress);
+          const accessibleNormal = isLessonAccessible(i, lessons, progress);
+          const accessible = previewMode
+            ? PREVIEW_OPEN_LESSON_IDS.has(lesson.id)
+            : accessibleNormal;
           const locked = lesson.comingSoon || !accessible;
 
           let StatusIcon = Circle;
@@ -480,17 +485,27 @@ const Sidebar = ({
 /* ═══════════════════════════════════════════════════════════════
    WELCOME SCREEN
    ═══════════════════════════════════════════════════════════════ */
-const WelcomeScreen = ({ onStart, onReplayTour }: { onStart: () => void; onReplayTour: () => void }) => (
+const WelcomeScreen = ({
+  onStart,
+  onReplayTour,
+  previewMode = false,
+}: {
+  onStart: () => void;
+  onReplayTour: () => void;
+  previewMode?: boolean;
+}) => (
   <div className="max-w-2xl mx-auto py-10 sm:py-14 px-4 sm:px-6">
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center">
       <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-amber-500 to-amber-700 rounded-3xl flex items-center justify-center mx-auto mb-6 sm:mb-8 shadow-xl shadow-amber-200/50">
         <Flame className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
       </div>
       <h1 className="text-[1.7rem] sm:text-4xl font-black text-gray-900 tracking-tight mb-3 sm:mb-4 leading-tight">
-        Welcome to<br className="sm:hidden" /> The Unhooked Method
+        {previewMode ? <>You're previewing<br className="sm:hidden" /> The Unhooked Method</> : <>Welcome to<br className="sm:hidden" /> The Unhooked Method</>}
       </h1>
       <p className="text-[15px] sm:text-lg text-gray-600 mb-8 sm:mb-10 max-w-xl mx-auto leading-relaxed">
-        I'm Kristina. This isn't a diet or a meal plan — it's a guided 9-module journey out of sugar and food addiction, with tasks and personal feedback at the key moments.
+        {previewMode
+          ? "This is the actual platform — same layout, same library, same Watch List. The 9 video lessons are locked until you join. You can open Module 0 below as a sample and browse the full Resource Library at the bottom of the sidebar."
+          : "I'm Kristina. This isn't a diet or a meal plan — it's a guided 9-module journey out of sugar and food addiction, with tasks and personal feedback at the key moments."}
       </p>
 
       {/* How this works */}
@@ -552,20 +567,102 @@ const WelcomeScreen = ({ onStart, onReplayTour }: { onStart: () => void; onRepla
         onClick={onStart}
         className="inline-flex items-center gap-2 sm:gap-3 px-8 sm:px-10 py-4 sm:py-5 bg-gradient-to-br from-amber-600 to-amber-800 text-white font-black text-[15px] sm:text-lg rounded-2xl shadow-xl shadow-amber-300/40 hover:from-amber-700 hover:to-amber-900 hover:-translate-y-1 transition-all w-full sm:w-auto justify-center"
       >
-        Start Module 0 <ArrowRight className="w-5 h-5" />
+        {previewMode ? <>Open Module 0 (sample)</> : <>Start Module 0</>} <ArrowRight className="w-5 h-5" />
       </button>
 
-      <div className="mt-5">
-        <button
-          onClick={onReplayTour}
-          className="text-xs sm:text-sm font-semibold text-gray-500 hover:text-amber-700 transition-colors underline-offset-4 hover:underline"
-        >
-          Replay the platform tour
-        </button>
-      </div>
+      {previewMode ? (
+        <div className="mt-6">
+          <a
+            href={PAYPAL_CHECKOUT_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs sm:text-sm font-bold text-amber-700 hover:text-amber-900 transition-colors underline-offset-4 underline"
+          >
+            Unlock all 9 modules — $29
+          </a>
+        </div>
+      ) : (
+        <div className="mt-5">
+          <button
+            onClick={onReplayTour}
+            className="text-xs sm:text-sm font-semibold text-gray-500 hover:text-amber-700 transition-colors underline-offset-4 hover:underline"
+          >
+            Replay the platform tour
+          </button>
+        </div>
+      )}
     </motion.div>
   </div>
 );
+
+/* ═══════════════════════════════════════════════════════════════
+   PREVIEW BANNER — pinned strip at the very top in /preview mode
+   ═══════════════════════════════════════════════════════════════ */
+const PreviewBanner = () => (
+  <div className="fixed top-0 inset-x-0 z-[60] h-10 bg-gradient-to-r from-amber-600 to-amber-700 text-white text-[11.5px] sm:text-xs font-bold flex items-center justify-center gap-2 sm:gap-3 px-4 shadow-md shadow-amber-700/30">
+    <span className="hidden sm:inline uppercase tracking-[0.22em] text-amber-100">Preview Mode</span>
+    <span className="sm:hidden uppercase tracking-[0.18em] text-amber-100">Preview</span>
+    <span className="opacity-50 hidden sm:inline">·</span>
+    <span className="hidden sm:inline">Browse the platform. Module 0 is open as a sample. Unlock all 9 modules for $29.</span>
+    <span className="sm:hidden">Sample · Unlock for $29</span>
+    <a
+      href={PAYPAL_CHECKOUT_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="ml-1 sm:ml-2 inline-flex items-center gap-1 px-2.5 sm:px-3 py-1 bg-white text-amber-800 hover:bg-amber-50 rounded-full text-[11px] font-black uppercase tracking-wider shadow-sm transition-colors"
+    >
+      Unlock
+      <ArrowRight className="w-3 h-3" />
+    </a>
+  </div>
+);
+
+/* ═══════════════════════════════════════════════════════════════
+   PREVIEW LOCKED LESSON — shown when a non-preview lesson is opened
+   in /preview mode. Same header layout as a real lesson so the
+   user can tell the platform structure, but content is gated.
+   ═══════════════════════════════════════════════════════════════ */
+const PreviewLockedLesson = ({ lesson }: { lesson: LessonDef }) => {
+  const isIntermission = lesson.id.startsWith("intermission");
+  return (
+    <div className="max-w-3xl mx-auto py-8 px-4 sm:px-6">
+      <div className="mb-6">
+        <div className="flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">
+          <Lock className="w-3.5 h-3.5" />
+          <span>{isIntermission ? "Intermission · Locked in preview" : "Video Lesson · Locked in preview"}</span>
+        </div>
+        <h1 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight mb-1.5 leading-tight">
+          {lesson.title}
+        </h1>
+        <p className="text-gray-500 text-base leading-relaxed">{lesson.subtitle}</p>
+      </div>
+      <div className="aspect-video bg-gray-900 rounded-2xl overflow-hidden relative shadow-lg mb-6 flex items-center justify-center">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_50%_at_50%_50%,rgba(245,158,11,0.18),transparent)]" />
+        <div className="relative flex flex-col items-center text-center px-6">
+          <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-amber-500 to-amber-700 rounded-2xl flex items-center justify-center mb-4 shadow-lg shadow-amber-500/30">
+            <Lock className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
+          </div>
+          <p className="text-white text-sm sm:text-base font-bold mb-1.5">This lesson is locked in preview</p>
+          <p className="text-gray-400 text-[12.5px] sm:text-sm max-w-sm leading-relaxed">
+            Unlock the full 9-module course (plus all PDFs, the Watch List, and WhatsApp support) for a one-time $29.
+          </p>
+        </div>
+      </div>
+      <a
+        href={PAYPAL_CHECKOUT_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center justify-center gap-2.5 w-full py-4 sm:py-5 bg-gradient-to-br from-amber-600 to-amber-800 hover:from-amber-700 hover:to-amber-900 text-white font-black text-[14px] sm:text-base rounded-2xl shadow-lg shadow-amber-300/40 transition-all uppercase tracking-[0.08em]"
+      >
+        Unlock the full course — $29
+        <ArrowRight className="w-5 h-5" />
+      </a>
+      <p className="mt-3 text-center text-[12px] sm:text-xs text-gray-500">
+        Instant access · 30-day refund · One-time payment
+      </p>
+    </div>
+  );
+};
 
 /* ═══════════════════════════════════════════════════════════════
    CONTENT BLOCK — elegant, always-visible key points card
@@ -936,7 +1033,14 @@ const paramsFromId = (id: string): URLSearchParams => {
   return p;
 };
 
-export default function Learn() {
+/* ─────────── PREVIEW MODE ─────────── */
+// Lessons that stay open in /preview mode — everything else is locked.
+// The Resource Library + Watch List stay fully browsable as a taste of
+// the platform quality.
+const PREVIEW_OPEN_LESSON_IDS = new Set(["welcome", "module-0"]);
+const PAYPAL_CHECKOUT_URL = "https://www.paypal.com/ncp/payment/DQDESNZ9DVQ7G";
+
+export default function Learn({ previewMode = false }: { previewMode?: boolean } = {}) {
   const [progress, setProgress] = useState<ProgressMap>(loadProgress);
   const [searchParams, setSearchParams] = useSearchParams();
   const [activeId, setActiveId] = useState(() => idFromParams(searchParams));
@@ -1027,11 +1131,19 @@ export default function Learn() {
   const nextIndex = activeIndex + 1;
   const nextAccessible = nextIndex < LESSONS.length && isLessonAccessible(nextIndex, LESSONS, progress);
 
+  const activeLessonLockedByPreview =
+    previewMode &&
+    activeLesson !== undefined &&
+    !PREVIEW_OPEN_LESSON_IDS.has(activeId);
+
   return (
     <div className="min-h-screen bg-gray-50 flex font-sans">
+      {/* Preview banner — pinned across the top, full width */}
+      {previewMode && <PreviewBanner />}
+
       {/* Desktop Sidebar */}
-      <div className="hidden lg:block w-72 flex-shrink-0 h-screen sticky top-0 shadow-sm">
-        <Sidebar lessons={LESSONS} progress={progress} activeId={activeId} onSelect={goTo} onClose={() => {}} />
+      <div className={`hidden lg:block w-72 flex-shrink-0 h-screen sticky shadow-sm ${previewMode ? "top-10" : "top-0"}`}>
+        <Sidebar lessons={LESSONS} progress={progress} activeId={activeId} onSelect={goTo} onClose={() => {}} previewMode={previewMode} />
       </div>
 
       {/* Mobile Sidebar */}
@@ -1054,7 +1166,7 @@ export default function Learn() {
               className="fixed left-0 top-0 bottom-0 w-72 max-w-[85vw] z-50 lg:hidden shadow-2xl overflow-hidden"
               style={{ touchAction: "pan-y", overscrollBehavior: "contain" }}
             >
-              <Sidebar lessons={LESSONS} progress={progress} activeId={activeId} onSelect={goTo} onClose={() => setSidebarOpen(false)} />
+              <Sidebar lessons={LESSONS} progress={progress} activeId={activeId} onSelect={goTo} onClose={() => setSidebarOpen(false)} previewMode={previewMode} />
             </motion.div>
           </>
         )}
@@ -1063,7 +1175,7 @@ export default function Learn() {
       {/* Main */}
       <div className="flex-1 min-w-0">
         {/* Top Bar */}
-        <div className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-gray-100 px-4 py-3 flex items-center gap-4">
+        <div className={`sticky z-30 bg-white/95 backdrop-blur-md border-b border-gray-100 px-4 py-3 flex items-center gap-4 ${previewMode ? "top-10" : "top-0"}`}>
           <button onClick={() => setSidebarOpen(true)} className="lg:hidden p-2 text-gray-600 hover:text-gray-900">
             <Menu className="w-5 h-5" />
           </button>
@@ -1077,6 +1189,7 @@ export default function Learn() {
           <WelcomeScreen
             onStart={startCourse}
             onReplayTour={() => { resetTour(); setTourOpen(true); }}
+            previewMode={previewMode}
           />
         ) : isResourcesIndex ? (
           <ResourceLibrary
@@ -1091,6 +1204,8 @@ export default function Learn() {
             onBack={() => goTo(resourceReturnTo)}
             backLabel={resourceReturnTo === "resources" ? "Back to Resource Library" : "Back to Lesson"}
           />
+        ) : activeLessonLockedByPreview && activeLesson ? (
+          <PreviewLockedLesson lesson={activeLesson} />
         ) : activeLesson ? (
           <LessonView
             lesson={activeLesson}

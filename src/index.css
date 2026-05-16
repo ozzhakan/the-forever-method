@@ -1,1 +1,11 @@
 @import "tailwindcss";
+
+/* Utility — hide native scrollbars on small horizontal overflow strips
+   while keeping the scroll behaviour intact. */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}

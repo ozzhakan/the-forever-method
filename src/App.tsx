@@ -9,6 +9,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/learn" element={<Learn />} />
+        <Route path="/preview" element={<Learn previewMode />} />
         <Route path="/thank-you" element={<ThankYou />} />
       </Routes>
     </BrowserRouter>

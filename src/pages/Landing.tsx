@@ -40,8 +40,16 @@ import {
   Download,
   Search,
   FileText,
+  PlayCircle,
 } from "lucide-react";
 import { useState } from "react";
+import { RESOURCES } from "./Resources";
+
+// Live count of "ready" library resources, minus the Watch List
+// (it now lives in its own platform tab, not the PDF grid)
+const PDF_COUNT = RESOURCES.filter(
+  (r) => r.status === "ready" && r.slug !== "the-watch-list"
+).length;
 
 /* ───────── CONSTANTS ───────── */
 const CHECKOUT_URL = "https://www.paypal.com/ncp/payment/DQDESNZ9DVQ7G";
@@ -102,12 +110,17 @@ const Navbar = () => {
             </span>
           </div>
 
-          <div className="hidden md:flex items-center gap-6">
+          <div className="hidden md:flex items-center gap-5">
             <a href="#mechanism" className="text-sm font-semibold text-gray-600 hover:text-amber-700 transition-colors">How it works</a>
             <a href="#journey" className="text-sm font-semibold text-gray-600 hover:text-amber-700 transition-colors">The Journey</a>
             <a href="#curriculum" className="text-sm font-semibold text-gray-600 hover:text-amber-700 transition-colors">Curriculum</a>
             <a href="#about" className="text-sm font-semibold text-gray-600 hover:text-amber-700 transition-colors">About</a>
-            <a href="#credentials" className="text-sm font-semibold text-gray-600 hover:text-amber-700 transition-colors">Credentials</a>
+            <a
+              href="/preview"
+              className="text-sm font-bold text-amber-700 hover:text-amber-900 transition-colors underline-offset-4 hover:underline"
+            >
+              Preview platform ↗
+            </a>
             <a
               href={CHECKOUT_URL}
               target="_blank"
@@ -136,7 +149,7 @@ const Navbar = () => {
             <a href="#journey" onClick={() => setIsOpen(false)} className="block text-base font-semibold text-gray-900 py-1">The Journey</a>
             <a href="#curriculum" onClick={() => setIsOpen(false)} className="block text-base font-semibold text-gray-900 py-1">Curriculum</a>
             <a href="#about" onClick={() => setIsOpen(false)} className="block text-base font-semibold text-gray-900 py-1">About</a>
-            <a href="#credentials" onClick={() => setIsOpen(false)} className="block text-base font-semibold text-gray-900 py-1">Credentials</a>
+            <a href="/preview" onClick={() => setIsOpen(false)} className="block text-base font-bold text-amber-700 py-1">Preview the platform ↗</a>
             <a
               href={CHECKOUT_URL}
               target="_blank"
@@ -150,6 +163,56 @@ const Navbar = () => {
         )}
       </AnimatePresence>
     </nav>
+  );
+};
+
+/* ───────────── PLATFORM PEEK STRIP — small hint of what's inside ─────────── */
+const PlatformPeekStrip = () => {
+  const tiles = [
+    { icon: Video,       label: "Module 5",        sub: "The Food Framework",      tone: "video" as const },
+    { icon: FileText,    label: "Kitchen Audit",   sub: "Template · PDF",          tone: "doc"   as const },
+    { icon: Sparkles,    label: "If-Then Library", sub: "38 protocols",            tone: "doc"   as const },
+    { icon: PlayCircle,  label: "Watch List",      sub: "Curated · growing",       tone: "video" as const },
+  ];
+  return (
+    <div className="mb-6 sm:mb-7 max-w-2xl mx-auto">
+      <div className="relative rounded-2xl border border-gray-800 bg-gray-900/60 backdrop-blur px-3.5 sm:px-5 py-3 sm:py-3.5">
+        <div className="flex items-stretch gap-2 sm:gap-3 overflow-x-auto no-scrollbar">
+          {tiles.map((t, i) => {
+            const I = t.icon;
+            return (
+              <div
+                key={i}
+                className="flex-shrink-0 flex items-center gap-2 sm:gap-2.5 px-2.5 sm:px-3 py-2 sm:py-2.5 bg-gray-950/70 border border-gray-800 rounded-xl min-w-0"
+              >
+                <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                  t.tone === "video"
+                    ? "bg-gradient-to-br from-amber-500 to-amber-700 shadow-sm shadow-amber-500/40"
+                    : "bg-amber-500/15 border border-amber-500/30"
+                }`}>
+                  <I className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${t.tone === "video" ? "text-white" : "text-amber-300"}`} />
+                </div>
+                <div className="flex flex-col text-left leading-tight min-w-0">
+                  <span className="text-[11px] sm:text-[12px] font-black text-white whitespace-nowrap">{t.label}</span>
+                  <span className="text-[9px] sm:text-[10px] font-semibold text-gray-400 whitespace-nowrap">{t.sub}</span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        <div className="mt-2.5 sm:mt-3 pt-2.5 sm:pt-3 border-t border-gray-800/70 flex flex-wrap items-center justify-center gap-x-3 sm:gap-x-4 gap-y-1 text-[10px] sm:text-[11px] font-bold text-gray-400">
+          <span className="text-amber-300">Inside the platform</span>
+          <span className="text-gray-600">·</span>
+          <span>9 video modules</span>
+          <span className="text-gray-600">·</span>
+          <span>{PDF_COUNT} PDFs</span>
+          <span className="text-gray-600">·</span>
+          <span>Ongoing Watch List</span>
+          <span className="text-gray-600">·</span>
+          <span>WhatsApp support</span>
+        </div>
+      </div>
+    </div>
   );
 };
 
@@ -173,10 +236,13 @@ const Hero = () => (
           </span>
         </h1>
 
+        {/* Mini platform preview — small visual hint of what's inside */}
+        <PlatformPeekStrip />
+
         {/* Subheadline — the offer, concretely */}
         <p className="text-gray-400 text-[15px] sm:text-lg leading-relaxed mb-8 sm:mb-12 max-w-3xl mx-auto">
           <span className="text-white font-semibold">9 in-depth video modules.</span>{" "}
-          <span className="text-white font-semibold">20 downloadable PDF resources</span> — protocols, templates, women-specific guides. Built from ten years of personal recovery and research, distilled into the system I wish someone had handed me on day one. <span className="text-white font-semibold">{PRICE} · yours forever.</span>
+          <span className="text-white font-semibold">{PDF_COUNT} cheat sheets, templates and guides</span> — including a growing Watch List of hand-picked videos and women-specific resources. Built from ten years of personal recovery and research, distilled into the system I wish someone had handed me on day one. <span className="text-white font-semibold">{PRICE} · yours forever.</span>
         </p>
 
         {/* VSL Video Player */}
