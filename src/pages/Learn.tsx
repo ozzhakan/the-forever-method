@@ -21,6 +21,7 @@ import {
   MessageCircle,
 } from "lucide-react";
 import { useState, useEffect } from "react";
+import { ResourceLibrary, ResourceDetail, RESOURCES } from "./Resources";
 
 /* ═══════════════════════════════════════════════════════════════
    CONTACT — Kristina is reachable on WhatsApp at this number.
@@ -412,6 +413,33 @@ const Sidebar = ({
             </div>
           );
         })}
+
+        {/* Resource Library entry — between lessons and footer */}
+        <div className="px-5 pt-4 pb-2 mt-3 border-t border-gray-100">
+          <div className="text-[10px] font-black text-gray-400 uppercase tracking-[0.22em] mb-2 px-1">Library</div>
+        </div>
+        <button
+          onClick={() => onSelect("resources")}
+          className={`w-full text-left px-5 py-3 flex items-center gap-3 transition-colors ${
+            activeId === "resources" || activeId.startsWith("resource:")
+              ? "bg-amber-50 border-r-2 border-amber-600"
+              : "hover:bg-gray-50 cursor-pointer"
+          }`}
+        >
+          <BookOpen className={`w-5 h-5 flex-shrink-0 ${
+            activeId === "resources" || activeId.startsWith("resource:") ? "text-amber-600" : "text-gray-400"
+          }`} />
+          <div className="min-w-0 flex-1">
+            <div className={`text-sm font-bold ${
+              activeId === "resources" || activeId.startsWith("resource:") ? "text-amber-700" : "text-gray-800"
+            }`}>
+              Resource Library
+            </div>
+            <div className="text-[10px] text-gray-400 font-medium mt-0.5">
+              Cheat sheets · Templates · PDFs
+            </div>
+          </div>
+        </button>
       </div>
 
       {/* Footer: WhatsApp contact */}
@@ -825,9 +853,18 @@ export default function Learn() {
     localStorage.setItem("fm-progress", JSON.stringify(progress));
   }, [progress]);
 
-  const activeLesson = LESSONS.find((l) => l.id === activeId)!;
-  const activeIndex = LESSONS.findIndex((l) => l.id === activeId);
+  const isResourcesIndex = activeId === "resources";
+  const isResourceDetail = activeId.startsWith("resource:");
+  const resourceSlug = isResourceDetail ? activeId.slice("resource:".length) : "";
+  const activeLesson = LESSONS.find((l) => l.id === activeId);
+  const activeIndex = activeLesson ? LESSONS.findIndex((l) => l.id === activeId) : -1;
   const activeProg = progress[activeId] ?? defaultProgress();
+
+  const headerTitle = isResourcesIndex
+    ? "Resource Library"
+    : isResourceDetail
+      ? RESOURCES.find((r) => r.slug === resourceSlug)?.title ?? "Resource"
+      : activeLesson?.title ?? "";
 
   const updateProgress = (lessonId: string, updates: Partial<LessonProgress>) => {
     setProgress((prev) => {
@@ -882,14 +919,18 @@ export default function Learn() {
             <Menu className="w-5 h-5" />
           </button>
           <div className="flex-1 min-w-0">
-            <h2 className="text-sm font-bold text-gray-900 truncate">{activeLesson.title}</h2>
+            <h2 className="text-sm font-bold text-gray-900 truncate">{headerTitle}</h2>
           </div>
         </div>
 
         {/* Content */}
         {activeId === "welcome" ? (
           <WelcomeScreen onStart={startCourse} />
-        ) : (
+        ) : isResourcesIndex ? (
+          <ResourceLibrary onOpen={(slug) => goTo(`resource:${slug}`)} />
+        ) : isResourceDetail ? (
+          <ResourceDetail slug={resourceSlug} onBack={() => goTo("resources")} />
+        ) : activeLesson ? (
           <LessonView
             lesson={activeLesson}
             prog={activeProg}
@@ -900,7 +941,7 @@ export default function Learn() {
             hasPrev={activeIndex > 0}
             nextAccessible={nextAccessible}
           />
-        )}
+        ) : null}
       </div>
 
       {/* Celebration */}
