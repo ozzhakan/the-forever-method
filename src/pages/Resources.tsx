@@ -27,6 +27,8 @@ import {
   CheckSquare,
   Search,
   X,
+  Sprout,
+  PlayCircle,
   type LucideIcon,
 } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
@@ -60,7 +62,7 @@ export const RESOURCES: ResourceDef[] = [
   { slug: "pantry-restock-list",    title: "Pantry Restock List",            eyebrow: "Reference", category: "reference", module: "Module 5 & 6",        relatedLessons: ["module-5", "module-6"],            readTime: "6 min read",  description: "What to actually fill your shelves with after clearing — categorized by protein, fat, volume, and safe slow-pleasure.",                                    icon: ShoppingCart,   status: "ready" },
   { slug: "personal-operating-system",title:"Personal Operating System Sheet",eyebrow: "Template", category: "template",  module: "Module 6",            relatedLessons: ["module-6"],                        readTime: "30 min do",   description: "Blank framework for writing the four to five if-then rules that will govern your real-life situations.",                                                    icon: Cog,            status: "ready" },
   { slug: "craving-protocol-template",title:"Craving Protocol Template",     eyebrow: "Template",  category: "template",  module: "Module 7",            relatedLessons: ["module-7"],                        readTime: "20 min do",   description: "Three rows: your top trigger, the real need underneath, your specific if-then response. Pinnable to fridge or wallpaper.",                                  icon: Shield,         status: "ready" },
-  { slug: "listen-read-watch",      title: "Listen · Read · Watch List",     eyebrow: "Reference", category: "reference", module: "All modules",         relatedLessons: ["module-0", "module-9"],            readTime: "5 min read",  description: "Kristina's curated trio — podcasts, books and documentaries worth your time, with a one-line reason each.",                                                icon: BookOpen,       status: "ready" },
+  { slug: "the-watch-list",         title: "The Watch List",                 eyebrow: "Reference", category: "reference", module: "All modules",         relatedLessons: ["module-0", "module-9"],            readTime: "Watch any time", description: "Seven hand-picked videos Kristina recommends watching alongside the course — embedded right here so you can watch them in one place.",                       icon: PlayCircle,     status: "ready" },
 
   // ─ Women-specific set ────────────────────────────────────────
   { slug: "cycle-tracker",          title: "Cycle Tracker × Cravings Log",   eyebrow: "Template",  category: "template",  module: "Module 4",            relatedLessons: ["module-4"], women: true,          readTime: "28 days",     description: "Track cycle phase, cravings, mood, energy and skin daily — see your own pattern over one full month.",                                                     icon: Calendar,       status: "ready" },
@@ -75,6 +77,7 @@ export const RESOURCES: ResourceDef[] = [
   { slug: "habit-tracker",          title: "30-Day Habit Tracker",           eyebrow: "Template",  category: "template",  module: "Module 9",            relatedLessons: ["module-9"],                        readTime: "30 days",     description: "One primary commitment + a small handful of supporting habits, tracked daily. Built around the 'one commitment' rule from Module 9.",                       icon: CheckSquare,    status: "ready" },
   { slug: "shopping-list-30-day",   title: "30-Day Shopping List",           eyebrow: "Reference", category: "reference", module: "Module 5",            relatedLessons: ["module-5"],                        readTime: "8 min read",  description: "A master grocery list built on the Module 5 food framework — weekly perishables, bi-weekly buys, monthly pantry restock, plus a four-week meal scaffold.",  icon: ShoppingCart,   status: "ready" },
   { slug: "truth-about-fructose",   title: "The Truth About Fructose",       eyebrow: "Guide",     category: "guide",     module: "Module 4",            relatedLessons: ["module-4"],                        readTime: "9 min read",  description: "Fructose is processed in the liver like alcohol — and modern fruits are not the wild fruits your biology evolved with. The honest version, with practical guidance.", icon: Apple,         status: "ready" },
+  { slug: "cycle-nutrition",        title: "Cycle Nutrition — Phase by Phase", eyebrow: "Women's Guide", category: "guide", module: "Module 4",           relatedLessons: ["module-4"], women: true,          readTime: "8 min read",  description: "What to eat in each phase of your menstrual cycle — menstrual, follicular, ovulation, luteal. Specific nutrients, foods, and exercise guidance for each.",            icon: Sprout,         status: "ready" },
 ];
 
 /* ═══════════════════════════════════════════════════════════════
@@ -942,72 +945,64 @@ const CravingProtocolTemplate = () => (
 );
 
 /* ═══════════════════════════════════════════════════════════════
-   RESOURCE: Listen / Read / Watch
+   RESOURCE: The Watch List — 7 hand-picked YouTube videos embedded
    ═══════════════════════════════════════════════════════════════ */
-const ListenReadWatch = () => (
+const WATCH_LIST_VIDEOS = [
+  { id: "XeN6eGO6FVQ", n: 1 },
+  { id: "KVXnVe8eOkM", n: 2 },
+  { id: "B7tnfSPySb0", n: 3 },
+  { id: "xjEFo3a1AnI", n: 4 },
+  { id: "n28W4AmvMDE", n: 5 },
+  { id: "ZE_H7rijrVk", n: 6 },
+  { id: "DI92VHEmSb0", n: 7 },
+];
+
+const TheWatchList = () => (
   <>
-    <Section eyebrow="01" title="A short, curated list — no rabbit holes">
-      <p className="text-gray-700 text-[15px] sm:text-base leading-[1.65]">
-        Everything below extends something covered in the course. The list is intentionally small. The internet has thousands of hours of content on these topics; most of it isn't worth your time. These are.
-      </p>
+    <Section eyebrow="01" title="Seven videos Kristina recommends — embedded here so you don't lose them in a YouTube rabbit hole">
+      <div className="space-y-4 text-gray-700 text-[15px] sm:text-base leading-[1.65]">
+        <p>
+          The point of this list is small and specific: seven videos that extend something covered in the course, ranked by how high-leverage they are for what you're working on. Watch them in order, or pick the one that feels most urgent for where you are right now.
+        </p>
+        <Callout variant="amber" title="How to use this">
+          One video at a time. Watch it once, sit with it, do nothing else for an hour. Don't binge the list — that turns information into noise. The point is shift, not consumption.
+        </Callout>
+      </div>
     </Section>
 
-    <Section eyebrow="02 · Listen" title="Podcasts worth a commute">
-      <div className="space-y-4">
-        {[
-          { source: "Andrew Huberman", what: "Episodes on dopamine, sleep, and behavior change.", why: "The neuroscience under Module 2, in plain language." },
-          { source: "Robert Lustig", what: "Any of his lectures on sugar and metabolic disease.", why: "The pediatric endocrinologist who first made the public case against sugar." },
-          { source: "Peter Attia (The Drive)", what: "Episodes on insulin resistance and longevity nutrition.", why: "For the bigger metabolic picture beyond sugar specifically." },
-          { source: "Stephan Guyenet", what: "Conversations on appetite regulation.", why: "Why the brain stops registering 'full' in the modern food environment." },
-          { source: "Layne Norton", what: "Episodes on protein, satiety, and evidence-based nutrition.", why: "The protein layer of Module 5, in detail." },
-        ].map((item, i) => (
-          <div key={i} className="border-l-2 border-amber-300 pl-5 py-1 print:break-inside-avoid">
-            <p className="font-bold text-gray-900 text-[15px] sm:text-base mb-0.5">{item.source}</p>
-            <p className="text-[13.5px] sm:text-sm text-gray-600 leading-relaxed mb-1">{item.what}</p>
-            <p className="text-[13px] sm:text-[13.5px] text-amber-800 italic leading-relaxed">{item.why}</p>
+    <Section eyebrow="02" title="The seven videos">
+      <div className="space-y-6 sm:space-y-8">
+        {WATCH_LIST_VIDEOS.map((v) => (
+          <div key={v.id} className="print:break-inside-avoid">
+            <div className="flex items-center gap-3 mb-3">
+              <span className="text-[11px] sm:text-xs font-black text-amber-700 uppercase tracking-[0.22em] tabular-nums">
+                Video {v.n} of 7
+              </span>
+              <div className="h-px flex-1 bg-amber-100" />
+            </div>
+            <div className="aspect-video rounded-2xl overflow-hidden bg-gray-900 shadow-md print:hidden">
+              <iframe
+                src={`https://www.youtube.com/embed/${v.id}?modestbranding=1&rel=0&iv_load_policy=3&playsinline=1&color=white`}
+                title={`Watch List · Video ${v.n}`}
+                className="w-full h-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                loading="lazy"
+              />
+            </div>
+            {/* Print-only fallback: show direct link */}
+            <p className="hidden print:block text-[13px] text-gray-700 leading-relaxed">
+              Watch on YouTube:{" "}
+              <span className="font-mono text-amber-800">youtu.be/{v.id}</span>
+            </p>
           </div>
         ))}
       </div>
     </Section>
 
-    <Section eyebrow="03 · Read" title="Books worth their time">
-      <div className="space-y-4">
-        {[
-          { source: "Fat Chance — Robert Lustig", what: "On sugar, insulin and the modern food environment.", why: "The foundational text behind Modules 3 and 4." },
-          { source: "The Hungry Brain — Stephan Guyenet", what: "Why we overeat in modern environments.", why: "The brain side of Module 2, expanded." },
-          { source: "Salt Sugar Fat — Michael Moss", what: "The food industry exposé.", why: "The receipts behind Module 3. Eye-opening." },
-          { source: "In Defense of Food — Michael Pollan", what: "'Eat food, not too much, mostly plants.'", why: "The simplest articulation of whole-food eating ever written." },
-          { source: "Brain Energy — Christopher Palmer", what: "On metabolism and mental health.", why: "Connects the food framework to mood, anxiety, and long-term brain health." },
-        ].map((item, i) => (
-          <div key={i} className="border-l-2 border-amber-300 pl-5 py-1 print:break-inside-avoid">
-            <p className="font-bold text-gray-900 text-[15px] sm:text-base mb-0.5">{item.source}</p>
-            <p className="text-[13.5px] sm:text-sm text-gray-600 leading-relaxed mb-1">{item.what}</p>
-            <p className="text-[13px] sm:text-[13.5px] text-amber-800 italic leading-relaxed">{item.why}</p>
-          </div>
-        ))}
-      </div>
-    </Section>
-
-    <Section eyebrow="04 · Watch" title="Documentaries worth an evening">
-      <div className="space-y-4">
-        {[
-          { source: "Fed Up (2014)", what: "Directed by Stephanie Soechtig, narrated by Katie Couric.", why: "The mainstream version of the food industry corruption story. Good for sharing with family." },
-          { source: "Sugar Coated (2015)", what: "Investigates how the sugar industry buried evidence.", why: "Specifically traces the 1967 Sugar Foundation paper covered in Module 3." },
-          { source: "That Sugar Film (2014)", what: "Damon Gameau eats 'healthy' high-sugar food for 60 days.", why: "What the bliss-point cascade looks like in one body, on camera." },
-          { source: "The Magic Pill (2017)", what: "On low-carb, high-fat eating in different conditions.", why: "Practical case studies of the framework working in real lives." },
-        ].map((item, i) => (
-          <div key={i} className="border-l-2 border-amber-300 pl-5 py-1 print:break-inside-avoid">
-            <p className="font-bold text-gray-900 text-[15px] sm:text-base mb-0.5">{item.source}</p>
-            <p className="text-[13.5px] sm:text-sm text-gray-600 leading-relaxed mb-1">{item.what}</p>
-            <p className="text-[13px] sm:text-[13.5px] text-amber-800 italic leading-relaxed">{item.why}</p>
-          </div>
-        ))}
-      </div>
-    </Section>
-
-    <Section eyebrow="05" title="One rule">
-      <Callout variant="amber">
-        Pick <strong>one</strong> thing from each list. Three items, total. Finish them before adding more. Information you skimmed and didn't apply is information you don't have.
+    <Section eyebrow="03" title="A note from Kristina">
+      <Callout variant="gray">
+        Information without application doesn't move anything. After each video, ask one question: <em>what's the one thing from this that I could try this week?</em> If nothing — that video wasn't for you. Skip to the next one.
       </Callout>
     </Section>
   </>
@@ -1850,6 +1845,193 @@ const TruthAboutFructose = () => (
 );
 
 /* ═══════════════════════════════════════════════════════════════
+   RESOURCE: Cycle Nutrition — Phase by Phase (women)
+   ═══════════════════════════════════════════════════════════════ */
+const CycleNutrition = () => {
+  const Phase = ({
+    emoji,
+    title,
+    days,
+    physiology,
+    nutrients,
+    foods,
+    activity,
+  }: {
+    emoji: string;
+    title: string;
+    days: string;
+    physiology: string;
+    nutrients: { name: string; why: string }[];
+    foods: string[];
+    activity: string;
+  }) => (
+    <div className="rounded-3xl border border-amber-100 bg-amber-50/30 p-6 sm:p-8 print:break-inside-avoid">
+      <div className="flex items-baseline gap-3 mb-2">
+        <span className="text-2xl sm:text-3xl">{emoji}</span>
+        <h3 className="text-lg sm:text-2xl font-black text-gray-900 tracking-tight">{title}</h3>
+        <span className="ml-auto text-[10px] sm:text-[11px] font-black text-amber-700 uppercase tracking-[0.2em]">{days}</span>
+      </div>
+      <p className="text-[13.5px] sm:text-sm text-gray-600 italic leading-relaxed mb-5">
+        {physiology}
+      </p>
+
+      <p className="text-[10px] font-black text-amber-700 uppercase tracking-[0.22em] mb-2">Key nutrients</p>
+      <ul className="space-y-1.5 mb-5">
+        {nutrients.map((n, i) => (
+          <li key={i} className="flex gap-2 text-[14px] sm:text-[15px] text-gray-800">
+            <span className="text-amber-600 font-black flex-shrink-0">·</span>
+            <span><span className="font-bold text-gray-900">{n.name}</span> — {n.why}</span>
+          </li>
+        ))}
+      </ul>
+
+      <p className="text-[10px] font-black text-amber-700 uppercase tracking-[0.22em] mb-2">Foods</p>
+      <NameGrid names={foods} />
+
+      <p className="text-[10px] font-black text-amber-700 uppercase tracking-[0.22em] mt-5 mb-2">Movement</p>
+      <p className="text-[14px] sm:text-[15px] text-gray-700 leading-relaxed">{activity}</p>
+    </div>
+  );
+
+  return (
+    <>
+      <Section eyebrow="01 · The reframe" title="Eat with your cycle, not against it">
+        <div className="space-y-4 text-gray-700 text-[15px] sm:text-base leading-[1.65]">
+          <p>
+            The female body runs on a roughly 28-day rhythm, not a 24-hour one. Hormone levels shift across four distinct phases — and so do your energy, sleep, mood, cravings, and what your body actually needs from food. Generic "eat clean every day" advice misses this completely.
+          </p>
+          <p>
+            This guide is a phase-by-phase nutritional map: what to prioritize in each window, why, the foods that deliver it, and the kind of movement that fits the hormonal landscape. Use it alongside the Cycle Tracker resource to find your personal pattern.
+          </p>
+          <Callout variant="amber" title="A note before you start">
+            Cycle lengths vary. The day ranges below are a 28-day template — yours may run shorter or longer. Track your actual cycle for one or two months and adjust the day windows accordingly.
+          </Callout>
+        </div>
+      </Section>
+
+      <Section eyebrow="02" title="The four phases, in order">
+        <div className="space-y-5 sm:space-y-6">
+          <Phase
+            emoji="🩸"
+            title="Menstrual Phase"
+            days="Days 1–5"
+            physiology="Estrogen and progesterone drop. Energy is low, iron is being lost, cramps and irritability are common. Your body is resetting — match it, don't override it."
+            nutrients={[
+              { name: "Iron", why: "compensates for blood loss" },
+              { name: "Magnesium", why: "eases cramps and irritability" },
+              { name: "Omega-3", why: "anti-inflammatory" },
+              { name: "Vitamin C", why: "boosts iron absorption when paired with iron-rich meals" },
+            ]}
+            foods={[
+              "Beef liver, red meat, oysters",
+              "Pumpkin seeds, lentils, chickpeas",
+              "Bell peppers, kiwi, black currants, broccoli, citrus",
+              "Cocoa powder, almonds, cashews, spinach, avocado",
+              "Salmon, sardines, mackerel",
+              "Ground flax, chia seeds, flaxseed oil",
+              "Dark chocolate (90%+)",
+            ]}
+            activity="Light to moderate. Walks, stretching, yoga, gentle mobility. This isn't the week for max-effort training — recovery is the priority, and your body knows what it's asking for."
+          />
+
+          <Phase
+            emoji="🌱"
+            title="Follicular Phase"
+            days="Days 6–13"
+            physiology="Estrogen rises steadily. Energy returns, focus sharpens, the body adapts to training stress best. This is your high-output window."
+            nutrients={[
+              { name: "B vitamins", why: "energy production and nervous system support" },
+              { name: "Zinc", why: "skin health and ovulation prep" },
+              { name: "Antioxidants (A, C, E)", why: "cell renewal" },
+              { name: "Protein", why: "tissue repair and growth" },
+            ]}
+            foods={[
+              "Eggs, chicken breast, salmon",
+              "Spinach, almonds, chickpeas, lentils",
+              "Avocado, carrots, pumpkin, sunflower seeds",
+              "Blueberries, broccoli",
+              "Beef, cashews, quinoa",
+              "Cottage cheese, potatoes (B6), bananas (B6 + antioxidants)",
+            ]}
+            activity="Best window for strength training, cardio, and learning new movement skills. The body adapts most efficiently here — push during this week, plan around it."
+          />
+
+          <Phase
+            emoji="💥"
+            title="Ovulation"
+            days="Days 14–15"
+            physiology="Estrogen peaks, LH surges. Highest energy, libido, social ease, and verbal fluency of the cycle. Brief but powerful — use it."
+            nutrients={[
+              { name: "Zinc and magnesium", why: "support ovulation and hormonal balance" },
+              { name: "Antioxidants", why: "cell protection and inflammation control during the LH surge" },
+              { name: "Electrolytes + water", why: "hydration becomes especially important" },
+            ]}
+            foods={[
+              "Pumpkin seeds, spinach, kale",
+              "Bananas, blueberries, raspberries",
+              "Turmeric with black pepper",
+              "Green tea, matcha",
+              "Cucumbers, watermelon, celery",
+              "Coconut water, mineral water",
+              "Bone broth, slow-cooked soups",
+            ]}
+            activity="Peak intensity window. HIIT, heavy lifting, running, dancing, competition — pour the energy in. This is the day you schedule the hard workout, the difficult conversation, the demanding deadline."
+          />
+
+          <Phase
+            emoji="🌕"
+            title="Luteal Phase"
+            days="Days 16–28"
+            physiology="Progesterone rises, then drops sharply. Energy fades, appetite climbs, PMS symptoms start. This is the window where the cravings the rest of the course teaches you to manage come on hardest."
+            nutrients={[
+              { name: "Magnesium + Vitamin B6", why: "reduces PMS severity, mood swings, breast tenderness" },
+              { name: "Calcium", why: "lowers irritability" },
+              { name: "Slow carbs (low GI)", why: "stabilize blood sugar — fight insulin sensitivity drop" },
+              { name: "Tryptophan", why: "precursor to serotonin, supports mood" },
+            ]}
+            foods={[
+              "Turkey, chicken, salmon",
+              "Buckwheat, oatmeal, quinoa, sweet potatoes",
+              "Lentils, beans",
+              "Bananas, dark chocolate (90%+), spinach",
+              "Potatoes with skin",
+              "Kefir, cottage cheese, live yogurt",
+              "Sardines with bones, sesame, tahini, poppy seeds",
+              "Leafy cabbage, sauerkraut, kimchi",
+            ]}
+            activity="Moderate, listening-led. Pilates, stretching, walking, light strength. If you're exhausted, rest is the protocol — not the failure. Schedule lighter weeks here, on purpose."
+          />
+        </div>
+      </Section>
+
+      <Section eyebrow="03 · Putting it together" title="One full cycle of phase-aware eating">
+        <div className="space-y-4 text-gray-700 text-[15px] sm:text-base leading-[1.65]">
+          <p>
+            Don't try to overhaul everything at once. Start with the easy ones:
+          </p>
+          <ul className="space-y-2.5 ml-1">
+            {[
+              "Add iron-rich foods in the menstrual phase (just lentils + red meat + leafy greens, once a day).",
+              "Add an extra protein-forward meal during follicular when energy is high.",
+              "Add hydration + electrolytes around ovulation.",
+              "Add magnesium + slow carbs every evening in luteal — fight the craving curve.",
+            ].map((s, i) => (
+              <li key={i} className="flex gap-3 text-[14.5px] sm:text-[15px]">
+                <span className="text-amber-600 font-black flex-shrink-0">·</span>
+                <span>{s}</span>
+              </li>
+            ))}
+          </ul>
+          <Callout variant="amber" title="Combine with the Cycle Tracker">
+            Track one full cycle while running this guide. By month two, the patterns become unmistakable — and you'll know exactly which days need extra protection and which days can take a big training load.
+          </Callout>
+        </div>
+      </Section>
+    </>
+  );
+};
+
+/* ═══════════════════════════════════════════════════════════════
    RESOURCE DETAIL — looks up the right content component
    ═══════════════════════════════════════════════════════════════ */
 export const ResourceDetail = ({
@@ -1873,7 +2055,7 @@ export const ResourceDetail = ({
     "pantry-restock-list": <PantryRestockList />,
     "personal-operating-system": <PersonalOSSheet />,
     "craving-protocol-template": <CravingProtocolTemplate />,
-    "listen-read-watch": <ListenReadWatch />,
+    "the-watch-list": <TheWatchList />,
     "cycle-tracker": <CycleTracker />,
     "pms-decoded": <PMSDecoded />,
     "pcos-sugar-connection": <PCOSSugarConnection />,
@@ -1884,6 +2066,7 @@ export const ResourceDetail = ({
     "habit-tracker": <HabitTracker />,
     "shopping-list-30-day": <ShoppingList30Day />,
     "truth-about-fructose": <TruthAboutFructose />,
+    "cycle-nutrition": <CycleNutrition />,
   };
 
   const body = contentMap[resource.slug] ?? (

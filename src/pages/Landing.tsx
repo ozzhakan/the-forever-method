@@ -173,12 +173,10 @@ const Hero = () => (
           </span>
         </h1>
 
-        {/* Subheadline — guided journey + personal review + WhatsApp */}
+        {/* Subheadline — the offer, concretely */}
         <p className="text-gray-400 text-[15px] sm:text-lg leading-relaxed mb-8 sm:mb-12 max-w-3xl mx-auto">
-          A <span className="text-white font-semibold">guided 9-module journey</span> out of sugar and food addiction, built on neuroscience and ten years of clinical work.
-          Every module ends with a task designed to move you toward the solution —{" "}
-          <span className="text-white font-semibold">two of them are personally reviewed by Kristina</span>.
-          Direct WhatsApp access throughout the course. <span className="text-white font-semibold">{PRICE} · yours forever.</span>
+          <span className="text-white font-semibold">9 in-depth video modules.</span>{" "}
+          <span className="text-white font-semibold">20 downloadable PDF resources</span> — protocols, templates, women-specific guides. Built from ten years of personal recovery and research, distilled into the system I wish someone had handed me on day one. <span className="text-white font-semibold">{PRICE} · yours forever.</span>
         </p>
 
         {/* VSL Video Player */}
@@ -579,23 +577,15 @@ const Curriculum = () => {
           viewport={{ once: true }}
           className="mt-10 sm:mt-14 p-5 sm:p-7 bg-gray-900/40 border border-gray-800 rounded-2xl"
         >
-          <div className="flex items-center gap-3 mb-4">
+          <div className="flex items-center gap-3 mb-3">
             <Sparkles className="w-4 h-4 text-amber-400" />
-            <span className="text-[10px] font-black text-amber-400 uppercase tracking-[0.25em]">Plus 4 bonus guides</span>
+            <span className="text-[10px] font-black text-amber-400 uppercase tracking-[0.25em]">
+              Plus the full Resource Library
+            </span>
           </div>
-          <div className="grid sm:grid-cols-2 gap-3 sm:gap-x-6 sm:gap-y-3">
-            {[
-              "Eating through your menstrual cycle",
-              "The 50+ hidden names of sugar",
-              "The truth about fructose",
-              "A curated listening list (Huberman, Lustig, the documentary worth your hour)",
-            ].map((b, i) => (
-              <div key={i} className="flex items-start gap-2.5">
-                <CheckCircle2 className="w-4 h-4 text-amber-500 flex-shrink-0 mt-0.5" />
-                <span className="text-[13.5px] sm:text-sm text-gray-300 leading-relaxed">{b}</span>
-              </div>
-            ))}
-          </div>
+          <p className="text-[13.5px] sm:text-sm text-gray-300 leading-relaxed">
+            <span className="text-white font-bold">20 carefully prepared resources</span> — protocols, templates, cheat sheets, women-specific guides — included as a bonus with the workshop. Detailed in the next section.
+          </p>
         </motion.div>
       </div>
     </section>
@@ -693,20 +683,43 @@ const PlatformPreview = () => (
             <div className="flex-1 p-3 sm:p-4 overflow-hidden">
               <div className="text-[8px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">Video Lesson</div>
               <div className="font-black text-gray-900 text-[10px] sm:text-[11px] mb-2.5 leading-tight">Module 2: What's Happening In Your Brain</div>
-              {/* Video frame */}
-              <div className="aspect-video bg-gray-900 rounded-md flex items-center justify-center mb-2 relative overflow-hidden">
-                <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center shadow-lg">
-                  <div className="border-l-[7px] border-l-white border-y-[5px] border-y-transparent ml-0.5" />
+              {/* Video frame — Kristina thumbnail */}
+              <div
+                className="aspect-video rounded-md mb-2 relative overflow-hidden bg-cover bg-center"
+                style={{ backgroundImage: "url(/kristina.jpg)" }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/30" />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 bg-white/95 rounded-full flex items-center justify-center shadow-xl">
+                    <div className="border-l-[8px] border-l-amber-700 border-y-[6px] border-y-transparent ml-0.5" />
+                  </div>
+                </div>
+                <div className="absolute top-1 left-1.5 right-1.5 flex justify-between items-center text-[6.5px] text-white/85 font-semibold">
+                  <span>Kristina Oz</span>
+                  <span className="bg-black/40 px-1 rounded">18:42</span>
                 </div>
               </div>
               {/* Mark watched CTA */}
-              <div className="w-full py-2 bg-gradient-to-br from-amber-500 to-amber-700 text-white rounded-md text-[9px] font-black uppercase text-center tracking-wider shadow-md shadow-amber-300/40">
+              <div className="w-full py-1.5 bg-gradient-to-br from-amber-500 to-amber-700 text-white rounded-md text-[8px] sm:text-[9px] font-black uppercase text-center tracking-wider shadow-md shadow-amber-300/40 mb-2">
                 I've Watched This — Mark Complete
               </div>
-              {/* Materials hint */}
-              <div className="mt-2 flex items-center gap-1.5 text-[8px] font-bold text-amber-700 uppercase tracking-widest">
-                <FileText className="w-2 h-2" />
-                <span>Lesson Materials</span>
+              {/* Key Takeaways card mockup */}
+              <div className="bg-white border border-gray-100 rounded-md p-1.5 sm:p-2 shadow-sm">
+                <div className="flex items-center gap-1 mb-1 px-1 py-0.5 bg-amber-50 rounded-full w-fit">
+                  <FileText className="w-1.5 h-1.5 text-amber-700" />
+                  <span className="text-[6px] font-black text-amber-700 uppercase tracking-widest">Key Takeaways</span>
+                </div>
+                <div className="font-black text-gray-900 text-[7.5px] sm:text-[8.5px] mb-1">Three layers behind every craving</div>
+                {[
+                  "Dopamine — wanting, not pleasure",
+                  "Conditioning — the bell rings on schedule",
+                  "Amplifiers — insulin + vagus nerve",
+                ].map((t, i) => (
+                  <div key={i} className="flex items-start gap-1 text-[6.5px] sm:text-[7.5px] text-gray-600 leading-tight mb-0.5">
+                    <span className="text-amber-600 font-black flex-shrink-0">·</span>
+                    <span>{t}</span>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -788,53 +801,58 @@ const PlatformPreview = () => (
   </section>
 );
 
-/* ─────────── BONUS — the full resource library as a stack ─────────── */
+/* ─────────── BONUS — the full resource library, valued + stacked ─────────── */
 const ResourceBonus = () => {
+  // Each resource carries its standalone value — totals to $39 across all 20
   const phase1 = [
-    { icon: Zap, title: "The If-Then Protocols Library", note: "38 pre-decided protocols across 9 trigger categories" },
-    { icon: Tag, title: "The 60+ Hidden Names of Sugar", note: "Every alias sugar uses on a food label" },
-    { icon: ClipboardCheck, title: "YFAS Self-Check Card", note: "Yale clinical scale, formatted as a printable" },
-    { icon: Clock, title: "24-Hour Craving Log", note: "Sheet for Module 2 homework" },
-    { icon: Home, title: "Kitchen Audit Checklist", note: "Room-by-room walkthrough for Intermission 1" },
-    { icon: ShoppingCart, title: "Pantry Restock List", note: "What to fill your shelves with after clearing" },
-    { icon: Cog, title: "Personal Operating System Sheet", note: "Blank framework for your if-then rules" },
-    { icon: Shield, title: "Craving Protocol Template", note: "Three triggers × three responses" },
-    { icon: BookOpen, title: "Listen · Read · Watch List", note: "Curated podcasts, books, docs" },
+    { icon: Zap,            title: "The If-Then Protocols Library",     note: "38 pre-decided protocols across 9 trigger categories", value: 4 },
+    { icon: Tag,            title: "The 60+ Hidden Names of Sugar",     note: "Every alias sugar uses on a food label",                value: 1 },
+    { icon: ClipboardCheck, title: "YFAS Self-Check Card",              note: "Yale clinical scale, formatted as a printable",         value: 1 },
+    { icon: Clock,          title: "24-Hour Craving Log",               note: "Sheet for Module 2 homework",                            value: 1 },
+    { icon: Home,           title: "Kitchen Audit Checklist",           note: "Room-by-room walkthrough for Intermission 1",            value: 2 },
+    { icon: ShoppingCart,   title: "Pantry Restock List",               note: "What to fill your shelves with after clearing",          value: 2 },
+    { icon: Cog,            title: "Personal Operating System Sheet",   note: "Blank framework for your if-then rules",                 value: 2 },
+    { icon: Shield,         title: "Craving Protocol Template",         note: "Three triggers × three responses",                       value: 2 },
+    { icon: BookOpen,       title: "The Watch List",                    note: "7 hand-picked videos, embedded in the platform",         value: 3 },
   ];
   const women = [
-    { icon: Calendar, title: "Cycle Tracker × Cravings Log", note: "28-day grid for pattern recognition" },
-    { icon: Sparkles, title: "PMS Decoded", note: "Hormonal cascade explained" },
-    { icon: Activity, title: "The PCOS-Sugar Connection", note: "Insulin resistance link + specific protocol" },
-    { icon: Droplet, title: "The Skin-Food Timeline", note: "Day 7, 14, 30, 90 expectations" },
-    { icon: PillIcon, title: "Iron for Women", note: "Symptoms, sources, when to supplement" },
-    { icon: Heart, title: "For Women With Diet History", note: "Adjustments if you've spent years dieting" },
-    { icon: FlaskConical, title: "The Female Lab Panel", note: "Exact labs to request from your doctor" },
+    { icon: Calendar,     title: "Cycle Tracker × Cravings Log",        note: "28-day grid for pattern recognition",                    value: 2 },
+    { icon: Sparkles,     title: "PMS Decoded",                          note: "Hormonal cascade explained",                             value: 2 },
+    { icon: Activity,     title: "The PCOS-Sugar Connection",            note: "Insulin resistance link + specific protocol",           value: 2 },
+    { icon: Droplet,      title: "The Skin-Food Timeline",               note: "Day 7, 14, 30, 90 expectations",                        value: 2 },
+    { icon: PillIcon,     title: "Iron for Women",                       note: "Symptoms, sources, when to supplement",                 value: 1 },
+    { icon: Heart,        title: "For Women With Diet History",          note: "Adjustments if you've spent years dieting",             value: 2 },
+    { icon: FlaskConical, title: "The Female Lab Panel",                 note: "Exact labs to request from your doctor",                value: 2 },
+    { icon: Sparkles,     title: "Cycle Nutrition — Phase by Phase",     note: "What to eat in each window of your cycle",              value: 2 },
   ];
   const extras = [
-    { icon: CheckSquare, title: "30-Day Habit Tracker", note: "Built around the Module 9 commitment" },
-    { icon: ShoppingCart, title: "30-Day Shopping List", note: "Master grocery list + 4-week scaffold" },
-    { icon: Apple, title: "The Truth About Fructose", note: "Why modern fruit isn't what your biology expects" },
+    { icon: CheckSquare, title: "30-Day Habit Tracker",                  note: "Built around the Module 9 commitment",                  value: 2 },
+    { icon: ShoppingCart, title: "30-Day Shopping List",                 note: "Master grocery list + 4-week scaffold",                 value: 2 },
+    { icon: Apple,       title: "The Truth About Fructose",              note: "Why modern fruit isn't what your biology expects",      value: 2 },
   ];
 
-  const Group = ({ title, count, items, accent }: { title: string; count: number; items: typeof phase1; accent: string }) => (
+  const Group = ({ title, count, items }: { title: string; count: number; items: typeof phase1 }) => (
     <div>
       <div className="flex items-baseline justify-between mb-4">
-        <h3 className="text-[15px] sm:text-base font-black text-gray-900 tracking-tight">{title}</h3>
-        <span className={`text-[10px] sm:text-[11px] font-black uppercase tracking-[0.22em] ${accent}`}>{count} included</span>
+        <h3 className="text-[15px] sm:text-base font-black text-white tracking-tight">{title}</h3>
+        <span className="text-[10px] sm:text-[11px] font-black uppercase tracking-[0.22em] text-amber-400">{count} included</span>
       </div>
       <div className="space-y-2">
         {items.map((item, i) => {
           const I = item.icon;
           return (
-            <div key={i} className="flex items-start gap-3 p-3 sm:p-3.5 bg-white border border-gray-100 rounded-xl hover:border-amber-200 hover:shadow-sm transition-all">
-              <div className="w-8 h-8 bg-gradient-to-br from-amber-50 to-amber-100 border border-amber-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                <I className="w-4 h-4 text-amber-700" />
+            <div key={i} className="flex items-start gap-3 p-3 sm:p-3.5 bg-gray-900/70 border border-gray-800 rounded-xl hover:border-amber-500/40 transition-all">
+              <div className="w-8 h-8 bg-gradient-to-br from-amber-500/15 to-amber-700/15 border border-amber-500/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                <I className="w-4 h-4 text-amber-300" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="font-bold text-gray-900 text-[13px] sm:text-sm leading-snug">{item.title}</p>
-                <p className="text-[11.5px] sm:text-xs text-gray-500 leading-relaxed mt-0.5">{item.note}</p>
+                <p className="font-bold text-white text-[13px] sm:text-sm leading-snug">{item.title}</p>
+                <p className="text-[11.5px] sm:text-xs text-gray-400 leading-relaxed mt-0.5">{item.note}</p>
               </div>
-              <Download className="w-3.5 h-3.5 text-gray-300 flex-shrink-0 mt-0.5" />
+              <div className="flex flex-col items-end flex-shrink-0">
+                <span className="text-[8.5px] font-black text-amber-300 bg-amber-500/15 border border-amber-500/40 rounded-full px-1.5 py-[1px] uppercase tracking-widest">Bonus</span>
+                <span className="mt-1 text-[10px] text-gray-500 line-through font-semibold">${item.value}</span>
+              </div>
             </div>
           );
         })}
@@ -853,35 +871,46 @@ const ResourceBonus = () => {
           <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-amber-500/20 border border-amber-500/40 rounded-full mb-5 sm:mb-6">
             <Sparkles className="w-3.5 h-3.5 text-amber-300" />
             <span className="text-[10px] sm:text-[11px] font-black text-amber-300 uppercase tracking-[0.25em]">
-              Plus the full library
+              The full library — included as bonus
             </span>
           </div>
           <h2 className="text-[1.7rem] sm:text-5xl font-black text-white leading-[1.1] tracking-tight mb-5">
-            19 downloadable PDFs.<br />
-            <span className="text-amber-400">All included.</span>
+            20 carefully prepared resources.<br />
+            <span className="text-amber-400">~$39 value — yours free.</span>
           </h2>
           <p className="text-gray-400 text-[15px] sm:text-lg leading-relaxed px-2 sm:px-0">
-            Cheat sheets, fillable templates, women-specific guides, and reference documents — written specifically to live alongside the course videos. Every one downloadable as a PDF, printable, yours forever.
+            Cheat sheets, fillable templates, women-specific guides, and reference documents — written specifically to live alongside the course videos. Each one would sell standalone for a few dollars. All 20 are included free with the workshop.
           </p>
         </div>
 
-        {/* Three groups in cards */}
+        {/* Three groups */}
         <div className="grid lg:grid-cols-3 gap-6 sm:gap-7">
-          <div className="bg-gray-900/60 border border-gray-800 rounded-2xl p-5 sm:p-6 backdrop-blur">
-            <Group title="Phase 1 essentials" count={9} items={phase1} accent="text-amber-400" />
+          <div className="bg-gray-900/40 border border-gray-800 rounded-2xl p-5 sm:p-6 backdrop-blur">
+            <Group title="Phase 1 essentials" count={9} items={phase1} />
           </div>
-          <div className="bg-gray-900/60 border border-gray-800 rounded-2xl p-5 sm:p-6 backdrop-blur">
-            <Group title="Women-specific guides" count={7} items={women} accent="text-amber-400" />
+          <div className="bg-gray-900/40 border border-gray-800 rounded-2xl p-5 sm:p-6 backdrop-blur">
+            <Group title="Women-specific guides" count={8} items={women} />
           </div>
-          <div className="bg-gray-900/60 border border-gray-800 rounded-2xl p-5 sm:p-6 backdrop-blur">
-            <Group title="Extras" count={3} items={extras} accent="text-amber-400" />
+          <div className="bg-gray-900/40 border border-gray-800 rounded-2xl p-5 sm:p-6 backdrop-blur">
+            <Group title="Extras" count={3} items={extras} />
           </div>
         </div>
 
-        {/* Closing line */}
-        <div className="mt-10 sm:mt-14 text-center">
-          <p className="text-base sm:text-lg text-white leading-relaxed">
-            <span className="font-bold">All 19 included.</span> All downloadable as PDFs. All yours, forever, with a one-time {PRICE}.
+        {/* Value stack */}
+        <div className="mt-10 sm:mt-14 max-w-md mx-auto p-5 sm:p-6 bg-gray-900/60 border border-amber-500/30 rounded-2xl text-center">
+          <p className="text-[10px] font-black text-amber-300 uppercase tracking-[0.25em] mb-3">The maths</p>
+          <div className="space-y-1.5 text-[14px] sm:text-[15px]">
+            <div className="flex justify-between text-gray-400">
+              <span>20 PDF resources — standalone value</span>
+              <span className="font-semibold line-through">$39</span>
+            </div>
+            <div className="flex justify-between text-amber-300 font-bold">
+              <span>Included with the workshop</span>
+              <span>FREE</span>
+            </div>
+          </div>
+          <p className="mt-4 pt-4 border-t border-gray-800 text-gray-300 text-[13px] sm:text-sm">
+            You pay <span className="text-white font-bold">{PRICE}</span> for the workshop. The Resource Library comes with it — every one of them.
           </p>
         </div>
       </div>
@@ -993,22 +1022,14 @@ const About = () => (
             Kristina Oz
           </h2>
           <p className="text-amber-800 font-semibold text-[13.5px] sm:text-base mb-5 sm:mb-6">
-            Nutritionist · 10 years with sugar and food addiction
+            Founder · The Unhooked Method
           </p>
           <div className="space-y-4 sm:space-y-5 text-gray-700 text-[14.5px] sm:text-base leading-relaxed">
             <p>
-              I didn't come to this work as an academic. I came to it as someone who couldn't stop eating sugar — through ten
-              years of bulimia, compulsive bingeing, and regular relapses that no diet, no exercise plan, and no
-              psychologist could touch.
+              For years I struggled with binge eating, emotional overeating, sugar cravings, and the cycle of "starting over." What finally changed things wasn't more willpower — it was understanding the actual mechanism: the neurology, the conditioning, and the environment behind it.
             </p>
             <p>
-              The turning point wasn't a new rule or a stricter plan. It was understanding the mechanism. What sugar
-              does to the brain. Why every meal either helps or hurts. Why behavior is downstream of biology.
-            </p>
-            <p>
-              Today my relationship with food is free. I don't restrict — yet 95% of the time I naturally choose
-              whole food, because the craving and dependency are simply gone. This workshop is the condensed map of
-              what got me here.
+              After more than ten years of reading, experimenting, failing, and slowly rebuilding my own relationship with food, I designed this platform — exactly the resource I wish someone had handed me on day one. Not a textbook. Not a 30-day diet. A guided journey, with the few things that genuinely worked, in the order they actually worked.
             </p>
             <div className="mt-6 sm:mt-7 pl-4 sm:pl-5 border-l-2 border-amber-600">
               <p className="text-gray-600 italic text-[14.5px] sm:text-base leading-relaxed">
@@ -1162,12 +1183,9 @@ const OfferStack = () => (
         {/* What's included — explicit stack */}
         <ul className="space-y-3.5 mb-7 sm:mb-8">
           {[
-            { strong: "9 in-depth video modules", rest: "(nutrition, psychology, behavior, food industry — full curriculum)" },
+            { strong: "9 in-depth video modules", rest: "+ Welcome and My Story intro videos" },
             { strong: "A guided task after every module", rest: "designed to move you toward the solution" },
-            { strong: "2 tasks personally reviewed by Kristina", rest: "(your kitchen audit + grocery receipt)" },
-            { strong: "Direct WhatsApp access throughout the course" },
-            { strong: "Welcome + My Story intro videos" },
-            { strong: "The full Resource Library — 19 PDFs", rest: "(protocols, templates, women-specific guides — see them above)" },
+            { strong: "Direct WhatsApp access to Kristina", rest: "throughout the course" },
             { strong: "Instant access · yours forever", rest: "· no subscription, no recurring charges" },
           ].map((line, i) => (
             <li key={i} className="flex items-start gap-3 text-gray-700 text-[14px] sm:text-[15px] leading-relaxed">
@@ -1180,13 +1198,47 @@ const OfferStack = () => (
           ))}
         </ul>
 
-        {/* Divider */}
-        <div className="border-t border-gray-100 pt-6 sm:pt-7 text-center">
-          <p className="text-[10px] sm:text-[11px] font-bold text-gray-400 uppercase tracking-[0.25em] mb-2">Today's price</p>
-          <div className="flex items-baseline justify-center gap-2 mb-1">
-            <span className="text-5xl sm:text-7xl font-black text-gray-900 tracking-tight">{PRICE}</span>
+        {/* Bonus stack — visually distinct */}
+        <div className="rounded-2xl border-2 border-dashed border-amber-300 bg-amber-50/60 p-5 sm:p-6 mb-7 sm:mb-8">
+          <div className="flex items-center gap-2 mb-3">
+            <Sparkles className="w-4 h-4 text-amber-700" />
+            <span className="text-[10px] sm:text-[11px] font-black text-amber-800 uppercase tracking-[0.22em]">Included as bonus</span>
           </div>
-          <p className="text-xs sm:text-sm text-gray-500 mb-6 sm:mb-7">One-time payment · No subscription</p>
+          <p className="font-black text-gray-900 text-base sm:text-lg leading-snug mb-1.5">
+            The full Resource Library
+          </p>
+          <p className="text-[13.5px] sm:text-sm text-gray-700 leading-relaxed mb-3">
+            <span className="font-bold">20 carefully prepared PDFs</span> — protocols, templates, women-specific guides. Detailed in the previous section.
+          </p>
+          <div className="flex items-center justify-between pt-3 border-t border-amber-200">
+            <span className="text-[12px] sm:text-[13px] text-amber-900 font-semibold">Standalone value</span>
+            <span className="text-[13px] sm:text-[14px] font-bold text-amber-900">
+              <span className="line-through text-amber-700/70 mr-2">$39</span>
+              <span className="text-amber-900">FREE</span>
+            </span>
+          </div>
+        </div>
+
+        {/* Pricing maths */}
+        <div className="border-t border-gray-100 pt-6 sm:pt-7">
+          <div className="space-y-2 text-[13.5px] sm:text-sm mb-5">
+            <div className="flex justify-between text-gray-700">
+              <span>The 9-module workshop + WhatsApp access</span>
+              <span className="font-bold text-gray-900">$8</span>
+            </div>
+            <div className="flex justify-between text-gray-700">
+              <span>Resource Library (20 PDFs)</span>
+              <span className="font-bold">
+                <span className="line-through text-gray-400 mr-2">$39</span>
+                <span className="text-amber-700">FREE</span>
+              </span>
+            </div>
+            <div className="flex justify-between pt-3 mt-2 border-t border-gray-100 text-gray-900 font-black text-base sm:text-lg">
+              <span>You pay today</span>
+              <span>{PRICE}</span>
+            </div>
+          </div>
+          <p className="text-center text-xs sm:text-sm text-gray-500 mb-6 sm:mb-7">One-time payment · No subscription</p>
 
           {/* CTA */}
           <a
