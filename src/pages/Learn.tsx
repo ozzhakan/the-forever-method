@@ -863,6 +863,9 @@ export default function Learn() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [celebration, setCelebration] = useState(false);
   const [tourOpen, setTourOpen] = useState(false);
+  // Remembers where the user came from when they opened a resource —
+  // so the Back button returns them to that lesson (not always the library)
+  const [resourceReturnTo, setResourceReturnTo] = useState<string>("resources");
 
   // Persist progress to localStorage
   useEffect(() => {
@@ -955,9 +958,18 @@ export default function Learn() {
             onReplayTour={() => { resetTour(); setTourOpen(true); }}
           />
         ) : isResourcesIndex ? (
-          <ResourceLibrary onOpen={(slug) => goTo(`resource:${slug}`)} />
+          <ResourceLibrary
+            onOpen={(slug) => {
+              setResourceReturnTo("resources");
+              goTo(`resource:${slug}`);
+            }}
+          />
         ) : isResourceDetail ? (
-          <ResourceDetail slug={resourceSlug} onBack={() => goTo("resources")} />
+          <ResourceDetail
+            slug={resourceSlug}
+            onBack={() => goTo(resourceReturnTo)}
+            backLabel={resourceReturnTo === "resources" ? "Back to Resource Library" : "Back to Lesson"}
+          />
         ) : activeLesson ? (
           <LessonView
             lesson={activeLesson}
@@ -968,7 +980,10 @@ export default function Learn() {
             hasNext={activeIndex < LESSONS.length - 1}
             hasPrev={activeIndex > 0}
             nextAccessible={nextAccessible}
-            onOpenResource={(slug) => goTo(`resource:${slug}`)}
+            onOpenResource={(slug) => {
+              setResourceReturnTo(activeId);
+              goTo(`resource:${slug}`);
+            }}
           />
         ) : null}
       </div>

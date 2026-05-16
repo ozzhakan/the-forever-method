@@ -83,10 +83,12 @@ export const RESOURCES: ResourceDef[] = [
 const ResourceShell = ({
   resource,
   onBack,
+  backLabel = "Back to Resource Library",
   children,
 }: {
   resource: ResourceDef;
   onBack: () => void;
+  backLabel?: string;
   children: ReactNode;
 }) => {
   const articleRef = useRef<HTMLElement>(null);
@@ -162,7 +164,7 @@ const ResourceShell = ({
           className="flex items-center gap-2 px-3 sm:px-4 py-2 text-sm font-bold text-gray-600 hover:text-amber-700 hover:bg-amber-50 rounded-lg transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span className="hidden sm:inline">Back to Resource Library</span>
+          <span className="hidden sm:inline">{backLabel}</span>
           <span className="sm:hidden">Back</span>
         </button>
         <div className="flex items-center gap-2 sm:gap-2.5">
@@ -1853,9 +1855,11 @@ const TruthAboutFructose = () => (
 export const ResourceDetail = ({
   slug,
   onBack,
+  backLabel = "Back to Resource Library",
 }: {
   slug: string;
   onBack: () => void;
+  backLabel?: string;
 }) => {
   const resource = RESOURCES.find((r) => r.slug === slug);
   if (!resource) return null;
@@ -1895,7 +1899,7 @@ export const ResourceDetail = ({
   );
 
   return (
-    <ResourceShell resource={resource} onBack={onBack}>
+    <ResourceShell resource={resource} onBack={onBack} backLabel={backLabel}>
       {body}
     </ResourceShell>
   );

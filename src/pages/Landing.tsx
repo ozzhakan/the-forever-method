@@ -26,6 +26,20 @@ import {
   PenLine,
   Eye,
   GraduationCap,
+  Tag,
+  ClipboardCheck,
+  ShoppingCart,
+  Cog,
+  Shield,
+  BookOpen,
+  Calendar,
+  Droplet,
+  FlaskConical,
+  CheckSquare,
+  Pill as PillIcon,
+  Download,
+  Search,
+  FileText,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -588,6 +602,293 @@ const Curriculum = () => {
   );
 };
 
+/* ─────────── PLATFORM PREVIEW — visual mockups of the Learn app ─────────── */
+const PlatformPreview = () => (
+  <section className="py-20 sm:py-32 bg-stone-50 relative overflow-hidden">
+    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[700px] bg-amber-100/30 rounded-full blur-3xl pointer-events-none" />
+
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
+      <div className="text-center mb-12 sm:mb-16 max-w-2xl mx-auto">
+        <div className="inline-flex items-center gap-3 mb-5">
+          <div className="h-px w-8 bg-amber-600" />
+          <span className="text-[10px] sm:text-[11px] font-bold text-amber-800 uppercase tracking-[0.3em]">
+            Inside the platform
+          </span>
+          <div className="h-px w-8 bg-amber-600" />
+        </div>
+        <h2 className="text-[1.7rem] sm:text-5xl font-black text-gray-900 leading-[1.1] tracking-tight mb-5">
+          Here's what you'll actually <br className="hidden sm:block" />
+          <span className="text-amber-700">be using.</span>
+        </h2>
+        <p className="text-gray-600 text-[15px] sm:text-lg leading-relaxed px-2 sm:px-0">
+          Quiet, focused, no notifications, no engagement loops. Just the lessons, the resources, and a WhatsApp line to Kristina — designed for the work, not for retention metrics.
+        </p>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-5 sm:gap-7">
+        {/* — Mockup 1: a lesson page — */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.5 }}
+          className="bg-white rounded-2xl shadow-2xl shadow-amber-500/10 border border-gray-200 overflow-hidden"
+        >
+          {/* Browser chrome */}
+          <div className="flex items-center gap-2 bg-gray-100 px-3 py-2 border-b border-gray-200">
+            <div className="flex gap-1.5">
+              <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
+              <div className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
+              <div className="w-2.5 h-2.5 rounded-full bg-green-400" />
+            </div>
+            <div className="flex-1 bg-white rounded-md px-3 py-1 text-[10px] text-gray-400 text-center font-medium">
+              unhookedmethod.com/learn
+            </div>
+          </div>
+          {/* App content */}
+          <div className="flex aspect-[16/10] text-left">
+            {/* Sidebar */}
+            <div className="w-[34%] bg-gray-50 border-r border-gray-100 py-2.5">
+              <div className="px-2.5 pb-2.5 border-b border-gray-100">
+                <div className="flex items-center gap-1.5 mb-1.5">
+                  <div className="w-3.5 h-3.5 bg-gradient-to-br from-amber-500 to-amber-700 rounded flex items-center justify-center">
+                    <Flame className="w-2 h-2 text-white" />
+                  </div>
+                  <span className="font-black text-[9px] text-gray-900">The Unhooked Method</span>
+                </div>
+                <div className="h-1 bg-gray-200 rounded-full overflow-hidden">
+                  <div className="h-full bg-gradient-to-r from-amber-500 to-amber-400 rounded-full w-3/5" />
+                </div>
+              </div>
+              <div className="px-2 py-1.5 space-y-0.5">
+                {[
+                  { label: "Welcome", done: true },
+                  { label: "Module 0: Welcome", done: true },
+                  { label: "My Story", done: true },
+                  { label: "Module 1: Not Broken", done: true },
+                  { label: "Module 2: Your Brain", active: true },
+                  { label: "Intermission 1: Kitchen", locked: true },
+                  { label: "Module 3: Environment", locked: true },
+                  { label: "Module 4: What It's Doing", locked: true },
+                ].map((it, i) => (
+                  <div key={i} className={`flex items-center gap-1.5 px-1.5 py-1 rounded text-[9px] ${
+                    it.active ? "bg-amber-50 text-amber-800 font-bold border-r border-amber-600" :
+                    it.locked ? "text-gray-300" : "text-gray-500"
+                  }`}>
+                    <div className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${
+                      it.active ? "bg-amber-600" : it.done ? "bg-amber-500" : "border border-gray-300"
+                    }`} />
+                    <span className="truncate">{it.label}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="mx-2 mt-2 pt-2 border-t border-gray-100">
+                <div className="flex items-center gap-1.5 px-1.5 py-1 rounded text-[9px] text-gray-700">
+                  <BookOpen className="w-2.5 h-2.5 text-gray-400" />
+                  <span className="truncate font-semibold">Resource Library</span>
+                </div>
+              </div>
+            </div>
+            {/* Main area */}
+            <div className="flex-1 p-3 sm:p-4 overflow-hidden">
+              <div className="text-[8px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">Video Lesson</div>
+              <div className="font-black text-gray-900 text-[10px] sm:text-[11px] mb-2.5 leading-tight">Module 2: What's Happening In Your Brain</div>
+              {/* Video frame */}
+              <div className="aspect-video bg-gray-900 rounded-md flex items-center justify-center mb-2 relative overflow-hidden">
+                <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center shadow-lg">
+                  <div className="border-l-[7px] border-l-white border-y-[5px] border-y-transparent ml-0.5" />
+                </div>
+              </div>
+              {/* Mark watched CTA */}
+              <div className="w-full py-2 bg-gradient-to-br from-amber-500 to-amber-700 text-white rounded-md text-[9px] font-black uppercase text-center tracking-wider shadow-md shadow-amber-300/40">
+                I've Watched This — Mark Complete
+              </div>
+              {/* Materials hint */}
+              <div className="mt-2 flex items-center gap-1.5 text-[8px] font-bold text-amber-700 uppercase tracking-widest">
+                <FileText className="w-2 h-2" />
+                <span>Lesson Materials</span>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* — Mockup 2: resource library — */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="bg-white rounded-2xl shadow-2xl shadow-amber-500/10 border border-gray-200 overflow-hidden"
+        >
+          {/* Browser chrome */}
+          <div className="flex items-center gap-2 bg-gray-100 px-3 py-2 border-b border-gray-200">
+            <div className="flex gap-1.5">
+              <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
+              <div className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
+              <div className="w-2.5 h-2.5 rounded-full bg-green-400" />
+            </div>
+            <div className="flex-1 bg-white rounded-md px-3 py-1 text-[10px] text-gray-400 text-center font-medium">
+              unhookedmethod.com/learn/resources
+            </div>
+          </div>
+          {/* App content */}
+          <div className="p-3 sm:p-4 aspect-[16/10] overflow-hidden text-left">
+            <div className="flex items-center gap-1.5 mb-1">
+              <div className="w-5 h-5 bg-gradient-to-br from-amber-500 to-amber-700 rounded flex items-center justify-center">
+                <BookOpen className="w-3 h-3 text-white" />
+              </div>
+              <div className="text-[8px] font-black text-amber-800 uppercase tracking-widest">The Unhooked Method</div>
+            </div>
+            <div className="text-[11px] sm:text-sm font-black text-gray-900 mb-2 tracking-tight">Resource Library</div>
+            {/* Search */}
+            <div className="bg-gray-50 border border-gray-200 rounded-md px-2 py-1 flex items-center gap-1.5 mb-2">
+              <Search className="w-2.5 h-2.5 text-gray-400" />
+              <span className="text-[8px] text-gray-400">Search resources…</span>
+            </div>
+            {/* Category chips */}
+            <div className="flex gap-1 mb-2.5 flex-wrap">
+              {["All", "Reference", "Templates", "Guides", "Women"].map((c, i) => (
+                <span key={i} className={`px-1.5 py-0.5 rounded-full text-[7px] font-bold border ${
+                  i === 0 ? "bg-amber-600 text-white border-amber-600" : "bg-white text-gray-500 border-gray-200"
+                }`}>{c}</span>
+              ))}
+            </div>
+            {/* Resource grid */}
+            <div className="grid grid-cols-2 gap-1.5">
+              {[
+                { icon: Zap, eyebrow: "Protocol", title: "If-Then Protocols Library" },
+                { icon: Tag, eyebrow: "Reference", title: "60+ Hidden Names of Sugar" },
+                { icon: ClipboardCheck, eyebrow: "Template", title: "YFAS Self-Check Card" },
+                { icon: Apple, eyebrow: "Guide", title: "Truth About Fructose" },
+                { icon: Calendar, eyebrow: "Template", title: "Cycle Tracker × Cravings" },
+                { icon: FlaskConical, eyebrow: "Reference", title: "Female Lab Panel" },
+              ].map((r, i) => {
+                const I = r.icon;
+                return (
+                  <div key={i} className="bg-white border border-gray-200 rounded p-1.5 sm:p-2">
+                    <div className="flex items-start gap-1 mb-1">
+                      <div className="w-3 h-3 bg-amber-100 rounded flex items-center justify-center flex-shrink-0">
+                        <I className="w-2 h-2 text-amber-700" />
+                      </div>
+                      <span className="text-[6px] sm:text-[7px] font-black text-amber-700 uppercase tracking-widest mt-0.5">{r.eyebrow}</span>
+                    </div>
+                    <div className="font-bold text-gray-800 text-[7.5px] sm:text-[8.5px] leading-tight line-clamp-2">{r.title}</div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <p className="mt-8 sm:mt-10 text-center text-[13px] sm:text-sm text-gray-600 max-w-xl mx-auto px-2">
+        Works on desktop, tablet, mobile. No app to install — just open it in a browser. Yours forever after a one-time payment.
+      </p>
+    </div>
+  </section>
+);
+
+/* ─────────── BONUS — the full resource library as a stack ─────────── */
+const ResourceBonus = () => {
+  const phase1 = [
+    { icon: Zap, title: "The If-Then Protocols Library", note: "38 pre-decided protocols across 9 trigger categories" },
+    { icon: Tag, title: "The 60+ Hidden Names of Sugar", note: "Every alias sugar uses on a food label" },
+    { icon: ClipboardCheck, title: "YFAS Self-Check Card", note: "Yale clinical scale, formatted as a printable" },
+    { icon: Clock, title: "24-Hour Craving Log", note: "Sheet for Module 2 homework" },
+    { icon: Home, title: "Kitchen Audit Checklist", note: "Room-by-room walkthrough for Intermission 1" },
+    { icon: ShoppingCart, title: "Pantry Restock List", note: "What to fill your shelves with after clearing" },
+    { icon: Cog, title: "Personal Operating System Sheet", note: "Blank framework for your if-then rules" },
+    { icon: Shield, title: "Craving Protocol Template", note: "Three triggers × three responses" },
+    { icon: BookOpen, title: "Listen · Read · Watch List", note: "Curated podcasts, books, docs" },
+  ];
+  const women = [
+    { icon: Calendar, title: "Cycle Tracker × Cravings Log", note: "28-day grid for pattern recognition" },
+    { icon: Sparkles, title: "PMS Decoded", note: "Hormonal cascade explained" },
+    { icon: Activity, title: "The PCOS-Sugar Connection", note: "Insulin resistance link + specific protocol" },
+    { icon: Droplet, title: "The Skin-Food Timeline", note: "Day 7, 14, 30, 90 expectations" },
+    { icon: PillIcon, title: "Iron for Women", note: "Symptoms, sources, when to supplement" },
+    { icon: Heart, title: "For Women With Diet History", note: "Adjustments if you've spent years dieting" },
+    { icon: FlaskConical, title: "The Female Lab Panel", note: "Exact labs to request from your doctor" },
+  ];
+  const extras = [
+    { icon: CheckSquare, title: "30-Day Habit Tracker", note: "Built around the Module 9 commitment" },
+    { icon: ShoppingCart, title: "30-Day Shopping List", note: "Master grocery list + 4-week scaffold" },
+    { icon: Apple, title: "The Truth About Fructose", note: "Why modern fruit isn't what your biology expects" },
+  ];
+
+  const Group = ({ title, count, items, accent }: { title: string; count: number; items: typeof phase1; accent: string }) => (
+    <div>
+      <div className="flex items-baseline justify-between mb-4">
+        <h3 className="text-[15px] sm:text-base font-black text-gray-900 tracking-tight">{title}</h3>
+        <span className={`text-[10px] sm:text-[11px] font-black uppercase tracking-[0.22em] ${accent}`}>{count} included</span>
+      </div>
+      <div className="space-y-2">
+        {items.map((item, i) => {
+          const I = item.icon;
+          return (
+            <div key={i} className="flex items-start gap-3 p-3 sm:p-3.5 bg-white border border-gray-100 rounded-xl hover:border-amber-200 hover:shadow-sm transition-all">
+              <div className="w-8 h-8 bg-gradient-to-br from-amber-50 to-amber-100 border border-amber-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                <I className="w-4 h-4 text-amber-700" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="font-bold text-gray-900 text-[13px] sm:text-sm leading-snug">{item.title}</p>
+                <p className="text-[11.5px] sm:text-xs text-gray-500 leading-relaxed mt-0.5">{item.note}</p>
+              </div>
+              <Download className="w-3.5 h-3.5 text-gray-300 flex-shrink-0 mt-0.5" />
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+
+  return (
+    <section className="py-20 sm:py-32 bg-gray-950 text-white relative overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_0%,rgba(245,158,11,0.10),transparent)]" />
+      <div className="absolute top-1/3 right-0 w-96 h-96 bg-amber-600/15 rounded-full blur-[120px] pointer-events-none" />
+
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
+        {/* Header */}
+        <div className="text-center mb-12 sm:mb-16 max-w-2xl mx-auto">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-amber-500/20 border border-amber-500/40 rounded-full mb-5 sm:mb-6">
+            <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+            <span className="text-[10px] sm:text-[11px] font-black text-amber-300 uppercase tracking-[0.25em]">
+              Plus the full library
+            </span>
+          </div>
+          <h2 className="text-[1.7rem] sm:text-5xl font-black text-white leading-[1.1] tracking-tight mb-5">
+            19 downloadable PDFs.<br />
+            <span className="text-amber-400">All included.</span>
+          </h2>
+          <p className="text-gray-400 text-[15px] sm:text-lg leading-relaxed px-2 sm:px-0">
+            Cheat sheets, fillable templates, women-specific guides, and reference documents — written specifically to live alongside the course videos. Every one downloadable as a PDF, printable, yours forever.
+          </p>
+        </div>
+
+        {/* Three groups in cards */}
+        <div className="grid lg:grid-cols-3 gap-6 sm:gap-7">
+          <div className="bg-gray-900/60 border border-gray-800 rounded-2xl p-5 sm:p-6 backdrop-blur">
+            <Group title="Phase 1 essentials" count={9} items={phase1} accent="text-amber-400" />
+          </div>
+          <div className="bg-gray-900/60 border border-gray-800 rounded-2xl p-5 sm:p-6 backdrop-blur">
+            <Group title="Women-specific guides" count={7} items={women} accent="text-amber-400" />
+          </div>
+          <div className="bg-gray-900/60 border border-gray-800 rounded-2xl p-5 sm:p-6 backdrop-blur">
+            <Group title="Extras" count={3} items={extras} accent="text-amber-400" />
+          </div>
+        </div>
+
+        {/* Closing line */}
+        <div className="mt-10 sm:mt-14 text-center">
+          <p className="text-base sm:text-lg text-white leading-relaxed">
+            <span className="font-bold">All 19 included.</span> All downloadable as PDFs. All yours, forever, with a one-time {PRICE}.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 /* ─────────── BENEFITS — what you walk away with ─────────── */
 const Benefits = () => {
   const items = [
@@ -866,7 +1167,7 @@ const OfferStack = () => (
             { strong: "2 tasks personally reviewed by Kristina", rest: "(your kitchen audit + grocery receipt)" },
             { strong: "Direct WhatsApp access throughout the course" },
             { strong: "Welcome + My Story intro videos" },
-            { strong: "4 bonus guides", rest: "(cycle eating, hidden sugar names, fructose truth, listening list)" },
+            { strong: "The full Resource Library — 19 PDFs", rest: "(protocols, templates, women-specific guides — see them above)" },
             { strong: "Instant access · yours forever", rest: "· no subscription, no recurring charges" },
           ].map((line, i) => (
             <li key={i} className="flex items-start gap-3 text-gray-700 text-[14px] sm:text-[15px] leading-relaxed">
@@ -1099,7 +1400,9 @@ export default function Landing() {
         <Hero />
         <Mechanism />
         <Journey />
+        <PlatformPreview />
         <Curriculum />
+        <ResourceBonus />
         <Benefits />
         <About />
         <Credentials />
