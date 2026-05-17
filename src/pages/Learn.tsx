@@ -21,6 +21,8 @@ import {
   MessageCircle,
   ExternalLink,
   PlayCircle,
+  Youtube,
+  Instagram,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
@@ -525,11 +527,49 @@ const WelcomeScreen = ({
       <h1 className="text-[1.7rem] sm:text-4xl font-black text-gray-900 tracking-tight mb-3 sm:mb-4 leading-tight">
         {previewMode ? <>You're previewing<br className="sm:hidden" /> The Unhooked Method<sup className="text-[14px] font-bold text-amber-700 ml-0.5 align-super">™</sup></> : <>Welcome to<br className="sm:hidden" /> The Unhooked Method<sup className="text-[14px] font-bold text-amber-700 ml-0.5 align-super">™</sup></>}
       </h1>
-      <p className="text-[15px] sm:text-lg text-gray-600 mb-8 sm:mb-10 max-w-xl mx-auto leading-relaxed">
-        {previewMode
-          ? "This is the actual platform — same layout, same library, same Watch List. The 9 video lessons are locked until you join. You can open Module 0 below as a sample and browse the full Resource Library at the bottom of the sidebar."
-          : "I'm Kristina. This isn't a diet or a meal plan — it's a guided 9-module journey out of sugar and food addiction, with tasks and personal feedback at the key moments."}
-      </p>
+      {previewMode ? (
+        <p className="text-[15px] sm:text-lg text-gray-600 mb-8 sm:mb-10 max-w-xl mx-auto leading-relaxed">
+          This is the actual platform — same layout, same library, same Watch List. The 9 video lessons are locked until you join. You can open Module 0 below as a sample and browse the full Resource Library at the bottom of the sidebar.
+        </p>
+      ) : (
+        <div className="text-[15px] sm:text-lg text-gray-600 mb-8 sm:mb-10 max-w-xl mx-auto leading-relaxed space-y-4">
+          <p>
+            I'm <span className="font-bold text-gray-900">Kristina Oz</span>. I created The Unhooked Method — a <span className="font-semibold text-gray-900">neurobehavioural framework for getting out of food and sugar dependency</span>, which (when you look closely at it) is a dopamine-driven behaviour, not a willpower problem.
+          </p>
+          <p className="text-[13.5px] sm:text-[15px] text-gray-500">
+            Everything you'll find in here is built around that one shift in how to see the problem — and then how to walk out of it, step by step.
+          </p>
+        </div>
+      )}
+
+      {/* Follow / subscribe — non-preview only */}
+      {!previewMode && (
+        <div className="mb-6 sm:mb-8">
+          <p className="text-[10px] sm:text-[11px] font-black text-gray-400 uppercase tracking-[0.25em] mb-3">
+            Follow along outside the course
+          </p>
+          <div className="grid grid-cols-2 gap-2.5 sm:gap-3 max-w-md mx-auto">
+            <a
+              href="https://youtube.com/@thecravingloop"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 px-3 sm:px-4 py-2.5 sm:py-3 bg-white border border-gray-200 hover:border-red-200 hover:bg-red-50/40 rounded-2xl text-[12.5px] sm:text-sm font-bold text-gray-700 hover:text-red-700 transition-colors group"
+            >
+              <Youtube className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-red-600 flex-shrink-0" />
+              <span>YouTube · @thecravingloop</span>
+            </a>
+            <a
+              href="https://instagram.com/thecravingloop"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 px-3 sm:px-4 py-2.5 sm:py-3 bg-white border border-gray-200 hover:border-pink-200 hover:bg-pink-50/40 rounded-2xl text-[12.5px] sm:text-sm font-bold text-gray-700 hover:text-pink-700 transition-colors group"
+            >
+              <Instagram className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-pink-600 flex-shrink-0" />
+              <span>Instagram · @thecravingloop</span>
+            </a>
+          </div>
+        </div>
+      )}
 
       {/* How this works */}
       <div className="bg-gray-50 rounded-3xl p-6 sm:p-8 mb-5 sm:mb-6 text-left border border-gray-100">
@@ -549,6 +589,42 @@ const WelcomeScreen = ({
           ))}
         </ul>
       </div>
+
+      {/* The arc of the course — red pill → solution */}
+      {!previewMode && (
+        <div className="bg-white border border-gray-100 rounded-3xl p-6 sm:p-8 mb-5 sm:mb-6 text-left shadow-sm">
+          <h3 className="font-black text-gray-900 mb-1.5 uppercase text-xs tracking-[0.2em]">The arc of the course</h3>
+          <p className="text-[13px] sm:text-[13.5px] text-gray-500 leading-relaxed mb-5">
+            Each chapter is built on the layer beneath it. The course works in two halves:
+          </p>
+
+          {/* Red pill phase */}
+          <div className="rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50/70 to-white p-4 sm:p-5 mb-4">
+            <div className="flex items-center gap-2 mb-2.5">
+              <span className="w-6 h-6 rounded-full bg-amber-600 text-white text-[10px] font-black flex items-center justify-center">1</span>
+              <p className="text-[10px] sm:text-[11px] font-black text-amber-800 uppercase tracking-[0.25em]">
+                Modules 1–3 · The Red Pill
+              </p>
+            </div>
+            <p className="text-[13.5px] sm:text-sm text-gray-700 leading-[1.65]">
+              The first three modules exist to show you the <strong>truth</strong> — why this has been so hard, who built the environment, and what's actually happening inside your brain. No solution yet. Just clarity. You can't solve a problem you can't see.
+            </p>
+          </div>
+
+          {/* Solution phase */}
+          <div className="rounded-2xl border border-amber-300 bg-gradient-to-br from-amber-100/60 to-white p-4 sm:p-5">
+            <div className="flex items-center gap-2 mb-2.5">
+              <span className="w-6 h-6 rounded-full bg-amber-700 text-white text-[10px] font-black flex items-center justify-center">2</span>
+              <p className="text-[10px] sm:text-[11px] font-black text-amber-900 uppercase tracking-[0.25em]">
+                Modules 4–9 · The Solution
+              </p>
+            </div>
+            <p className="text-[13.5px] sm:text-sm text-gray-700 leading-[1.65]">
+              From Module 4 onwards every chapter is <strong>solution-oriented</strong> — the food framework, the environment redesign, the operating system, the craving toolkit, the values reorientation, and the one commitment that holds it all together long after the course ends.
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* WhatsApp callout — large, prominent */}
       <div className="bg-gradient-to-br from-amber-600 to-amber-800 text-white rounded-3xl p-5 sm:p-7 mb-5 sm:mb-6 text-left shadow-lg shadow-amber-300/40">
