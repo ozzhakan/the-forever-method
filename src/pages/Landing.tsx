@@ -1102,7 +1102,7 @@ const About = () => (
               For years I struggled with binge eating, emotional overeating, sugar cravings, and the cycle of "starting over." What finally changed things wasn't more willpower — it was understanding the actual mechanism: the neurology, the conditioning, and the environment behind it.
             </p>
             <p>
-              After more than ten years of reading, experimenting, failing, and slowly rebuilding my own relationship with food, I designed this platform — exactly the resource I wish someone had handed me on day one. Not a textbook. Not a 30-day diet. A guided journey, with the few things that genuinely worked, in the order they actually worked.
+              After more than ten years of reading, experimenting, failing, and slowly rebuilding my own relationship with food — and then helping the people around me transform theirs too — I designed this platform. Exactly the resource I wish someone had handed me on day one. Not a textbook. Not a 30-day diet. A guided journey, with the few things that genuinely worked, in the order they actually worked.
             </p>
             <div className="mt-6 sm:mt-7 pl-4 sm:pl-5 border-l-2 border-amber-600">
               <p className="text-gray-600 italic text-[14.5px] sm:text-base leading-relaxed">

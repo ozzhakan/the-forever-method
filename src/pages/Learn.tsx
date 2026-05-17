@@ -626,8 +626,9 @@ const PreviewBanner = () => (
     <span className="hidden sm:inline uppercase tracking-[0.22em] text-amber-100">Preview Mode</span>
     <span className="sm:hidden uppercase tracking-[0.18em] text-amber-100">Preview</span>
     <span className="opacity-50 hidden sm:inline">·</span>
-    <span className="hidden sm:inline">Browse the platform. Module 0 is open as a sample. Unlock all 9 modules for $29.</span>
-    <span className="sm:hidden">Sample · Unlock for $29</span>
+    <span className="hidden md:inline">Unlock 9 video modules + 19 PDFs + an ever-growing curated video list — $29, yours forever.</span>
+    <span className="hidden sm:inline md:hidden">9 modules + 19 PDFs + growing video list — $29 forever.</span>
+    <span className="sm:hidden">9 modules · 19 PDFs · $29 forever</span>
     <a
       href={PAYPAL_CHECKOUT_URL}
       target="_blank"
@@ -679,11 +680,11 @@ const PreviewLockedResource = ({ slug, onBack }: { slug: string; onBack: () => v
           rel="noopener noreferrer"
           className="flex items-center justify-center gap-2.5 w-full max-w-sm mx-auto py-4 bg-gradient-to-br from-amber-600 to-amber-800 hover:from-amber-700 hover:to-amber-900 text-white font-black text-[14px] sm:text-base rounded-2xl shadow-lg shadow-amber-300/40 transition-all uppercase tracking-[0.08em]"
         >
-          Unlock all 20 resources — $29
+          Unlock everything — $29
           <ArrowRight className="w-5 h-5" />
         </a>
         <p className="mt-3 text-center text-[12px] sm:text-xs text-gray-500">
-          Plus 9 video modules · Watch List · WhatsApp support
+          9 video modules · 19 PDFs · growing video list · WhatsApp
         </p>
       </div>
     </div>
@@ -717,7 +718,7 @@ const PreviewLockedLesson = ({ lesson }: { lesson: LessonDef }) => {
           </div>
           <p className="text-white text-sm sm:text-base font-bold mb-1.5">This lesson is locked in preview</p>
           <p className="text-gray-400 text-[12.5px] sm:text-sm max-w-sm leading-relaxed">
-            Unlock the full 9-module course (plus all PDFs, the Watch List, and WhatsApp support) for a one-time $29.
+            One-time $29 unlocks all 9 video modules, 19 downloadable PDFs, an ever-growing curated video list, and WhatsApp support — yours forever.
           </p>
         </div>
       </div>

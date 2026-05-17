@@ -384,6 +384,28 @@ const BlankLine = ({ label }: { label?: string }) => (
   </div>
 );
 
+/* Reference catalog — small card per food item with portion + macro stat.
+   Used in Pantry Restock to show comprehensive option lists. */
+type FoodItem = { name: string; portion?: string; macro?: string };
+const FoodCardGrid = ({ items }: { items: FoodItem[] }) => (
+  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-3 mt-4">
+    {items.map((f, i) => (
+      <div
+        key={i}
+        className="bg-white border border-gray-200 rounded-xl px-3 py-3 sm:px-3.5 sm:py-3.5 hover:border-amber-300 transition-colors print:break-inside-avoid"
+      >
+        <p className="text-[12.5px] sm:text-[13.5px] font-bold text-gray-900 leading-tight">{f.name}</p>
+        {f.portion && (
+          <p className="text-[11px] sm:text-[11.5px] text-gray-500 leading-tight mt-1">{f.portion}</p>
+        )}
+        {f.macro && (
+          <p className="text-[10.5px] sm:text-[11px] font-black text-amber-700 uppercase tracking-wider mt-1.5">{f.macro}</p>
+        )}
+      </div>
+    ))}
+  </div>
+);
+
 const Table = ({ headers, rows }: { headers: string[]; rows: string[][] }) => (
   <div className="overflow-x-auto mt-4 print:overflow-visible">
     <table className="w-full border-collapse text-[13.5px] sm:text-sm">
@@ -855,7 +877,120 @@ const PantryRestockList = () => (
       </Callout>
     </Section>
 
-    <Section eyebrow="06 · Shopping route" title="How to get in and out without sliding">
+    <Section eyebrow="06 · Reference catalog" title="High-protein animal sources" intro="When you want a protein anchor for a meal — these are the foods to choose from. Numbers are typical portions and protein per serving.">
+      <FoodCardGrid items={[
+        { name: "Ribeye steak",            portion: "4 oz",     macro: "28g protein" },
+        { name: "Beef liver",              portion: "3 oz",     macro: "21g protein" },
+        { name: "Ground beef (80/20)",     portion: "4 oz",     macro: "20g protein" },
+        { name: "Bone marrow",             portion: "2 oz",     macro: "5g protein" },
+        { name: "Lamb sweetbreads",        portion: "3 oz",     macro: "20g protein" },
+        { name: "Chicken hearts & gizzards", portion: "3 oz",   macro: "24g protein" },
+        { name: "Pork belly (crispy)",     portion: "3 oz",     macro: "12g protein" },
+        { name: "Duck pâté",               portion: "2 oz",     macro: "10g protein" },
+        { name: "Sardines in oil",         portion: "3.75 oz",  macro: "22g protein" },
+        { name: "Whole fried egg",         portion: "1 large",  macro: "7g protein" },
+        { name: "Whole hard-boiled egg",   portion: "1 large",  macro: "7g protein" },
+        { name: "Aged cheddar",            portion: "1.5 oz",   macro: "11g protein" },
+        { name: "Whole-milk mozzarella",   portion: "2 oz",     macro: "13g protein" },
+        { name: "Blue cheese",             portion: "1.5 oz",   macro: "9g protein" },
+        { name: "Goat cheese",             portion: "3 oz",     macro: "18g protein" },
+        { name: "Full-fat Greek yogurt",   portion: "5.3 oz",   macro: "15g protein" },
+      ]} />
+    </Section>
+
+    <Section eyebrow="07 · Lean & general protein" title="Everyday protein sources" intro="Lighter options, fish, and the few plant-based sources worth keeping in rotation.">
+      <FoodCardGrid items={[
+        { name: "Chicken breast",   portion: "3 oz",       macro: "24g protein" },
+        { name: "Turkey breast",    portion: "3 oz",       macro: "20g protein" },
+        { name: "Lean beef",        portion: "3 oz",       macro: "22g protein" },
+        { name: "Salmon",           portion: "3 oz",       macro: "20g protein" },
+        { name: "Tuna",             portion: "2 oz tin",   macro: "22g protein" },
+        { name: "Shrimp",           portion: "3 oz",       macro: "20g protein" },
+        { name: "Eggs",             portion: "2 large",    macro: "12g protein" },
+        { name: "Cottage cheese",   portion: "1 cup",      macro: "28g protein" },
+        { name: "Greek yogurt",     portion: "5.3 oz cup", macro: "15g protein" },
+        { name: "Milk (whole)",     portion: "1 cup",      macro: "8g protein" },
+        { name: "Tofu (firm)",      portion: "3.5 oz",     macro: "10g protein" },
+        { name: "Edamame",          portion: "1 cup",      macro: "17g protein" },
+        { name: "Black beans",      portion: "1 cup",      macro: "15g protein" },
+        { name: "Chickpeas",        portion: "1 cup",      macro: "15g protein" },
+        { name: "Quinoa",           portion: "1 cup",      macro: "8g protein" },
+        { name: "Peanut butter",    portion: "2 tbsp",     macro: "8g protein" },
+      ]} />
+    </Section>
+
+    <Section eyebrow="08 · Naturally fatty foods" title="The fats your body actually uses" intro="Real fats — animal-rendered, dairy, fatty cuts, oily fish, raw nuts. Use freely; these stabilize energy and carry vitamins.">
+      <FoodCardGrid items={[
+        { name: "Beef tallow" },
+        { name: "Duck fat" },
+        { name: "Chicken fat (schmaltz)" },
+        { name: "Pork lard" },
+        { name: "Lamb fat" },
+        { name: "Egg yolks" },
+        { name: "Heavy cream" },
+        { name: "Butter (salted)" },
+        { name: "Ghee" },
+        { name: "Sardines in olive oil" },
+        { name: "Cod liver" },
+        { name: "Pork belly" },
+        { name: "Ribeye steak" },
+        { name: "Brazil nuts" },
+        { name: "Walnuts" },
+        { name: "Macadamia nuts" },
+        { name: "Pecan halves" },
+        { name: "Extra-virgin olive oil" },
+      ]} />
+      <Callout variant="amber" title="Quality matters more than quantity">
+        Choose grass-fed, pastured, or unrefined where you can — the fat is where toxins concentrate, so the source of the animal or oil matters. Don't fear the calories; do care about the source.
+      </Callout>
+    </Section>
+
+    <Section eyebrow="09 · Whole carbs" title="Grains, tubers, and legumes" intro="If you eat carbs, eat them in their whole form. Numbers are typical 1-cup cooked portions and net carbs.">
+      <FoodCardGrid items={[
+        { name: "Quinoa",         portion: "1 cup",  macro: "39g net carbs" },
+        { name: "Brown rice",     portion: "1 cup",  macro: "46g net carbs" },
+        { name: "Oats",           portion: "1 cup",  macro: "27g net carbs" },
+        { name: "Buckwheat",      portion: "1 cup",  macro: "33g net carbs" },
+        { name: "Barley",         portion: "1 cup",  macro: "39g net carbs" },
+        { name: "Millet",         portion: "1 cup",  macro: "36g net carbs" },
+        { name: "Rye berries",    portion: "1 cup",  macro: "27g net carbs" },
+        { name: "Farro",          portion: "1 cup",  macro: "33g net carbs" },
+        { name: "Sweet potato",   portion: "1 cup",  macro: "38g net carbs" },
+        { name: "Potatoes",       portion: "1 cup",  macro: "26g net carbs" },
+        { name: "Corn kernels",   portion: "1 cup",  macro: "29g net carbs" },
+        { name: "Plantain",       portion: "1 cup",  macro: "48g net carbs" },
+        { name: "Chickpeas",      portion: "1 cup",  macro: "32g net carbs" },
+        { name: "Black beans",    portion: "1 cup",  macro: "26g net carbs" },
+        { name: "Lentils",        portion: "1 cup",  macro: "20g net carbs" },
+        { name: "Edamame",        portion: "1 cup",  macro: "12g net carbs" },
+      ]} />
+    </Section>
+
+    <Section eyebrow="10 · Low-carb vegetables & berries" title="Volume foods — eat freely" intro="Fiber, water, micronutrients, almost no insulin response. These are the foods to fill your plate with.">
+      <FoodCardGrid items={[
+        { name: "Broccoli florets", portion: "1 cup · 160g" },
+        { name: "Baby carrots",     portion: "1 cup · 180g" },
+        { name: "Bell pepper strips", portion: "1 cup · 160g" },
+        { name: "Cherry tomatoes",  portion: "1 cup · 90g" },
+        { name: "Spinach leaves",   portion: "1 cup · 160g" },
+        { name: "Cauliflower florets", portion: "1 cup · 180g" },
+        { name: "Sliced cucumber",  portion: "1 cup · 180g" },
+        { name: "Asparagus spears", portion: "1 cup · 160g" },
+        { name: "Sliced zucchini",  portion: "1 cup · 160g" },
+        { name: "Kale leaves",      portion: "1 cup · 180g" },
+        { name: "Green beans",      portion: "1 cup · 160g" },
+        { name: "Red cabbage",      portion: "1 cup · 160g" },
+        { name: "Blueberries",      portion: "1 cup · 160g" },
+        { name: "Blackberries",     portion: "1 cup · 500g" },
+        { name: "Raspberries",      portion: "1 cup · 170g" },
+        { name: "Strawberries",     portion: "1 cup · 70g" },
+      ]} />
+      <Callout variant="gray">
+        Berries are the one fruit category to keep in regular rotation — high antioxidants, low glycemic impact. Other whole fruits (apples, pears, citrus) work in moderation; juices and dried fruits don't.
+      </Callout>
+    </Section>
+
+    <Section eyebrow="11 · Shopping route" title="How to get in and out without sliding">
       <ol className="space-y-3 text-[14.5px] sm:text-base text-gray-700 leading-relaxed">
         <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">1.</span><span>Never shop hungry. Eat first or carry a snack.</span></li>
         <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">2.</span><span>Always go with a list. Don't browse.</span></li>
