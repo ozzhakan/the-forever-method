@@ -1649,7 +1649,7 @@ const Footer = () => (
 /* ───────────────────────── APP ───────────────────────── */
 export default function Landing() {
   return (
-    <div className="min-h-screen bg-white font-sans selection:bg-amber-100 selection:text-amber-900 pb-16 sm:pb-0">
+    <div className="min-h-screen bg-white font-sans selection:bg-amber-100 selection:text-amber-900 pb-16 lg:pb-0">
       <Navbar />
       <main>
         <Hero />
@@ -1669,13 +1669,13 @@ export default function Landing() {
       </main>
       <Footer />
 
-      {/* Sticky Mobile CTA */}
-      <div className="sm:hidden fixed bottom-0 inset-x-0 p-3 bg-white/95 backdrop-blur-md border-t border-gray-100 z-[55]">
+      {/* Sticky CTA — phone + tablet (hidden on desktop where the navbar CTA is always visible) */}
+      <div className="lg:hidden fixed bottom-0 inset-x-0 p-3 sm:p-4 bg-white/95 backdrop-blur-md border-t border-gray-100 z-[55]">
         <a
           href={CHECKOUT_URL}
           target="_blank"
           rel="noopener noreferrer"
-          className="w-full py-3.5 bg-gradient-to-br from-amber-600 to-amber-800 text-white font-bold text-[14.5px] rounded-full flex items-center justify-center gap-2 shadow-lg shadow-amber-300/40 active:scale-95 transition-transform"
+          className="w-full max-w-md mx-auto py-3.5 sm:py-4 bg-gradient-to-br from-amber-600 to-amber-800 text-white font-bold text-[14.5px] sm:text-[15px] rounded-full flex items-center justify-center gap-2 shadow-lg shadow-amber-300/40 active:scale-95 transition-transform"
         >
           Get instant access — {PRICE}
           <ArrowRight className="w-4 h-4" />
