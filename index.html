@@ -30,14 +30,7 @@
       }
     </style>
 
-    <!-- ════════════════════════════════════════════════════════════════
-         META PIXEL — paste your Pixel ID below and remove the comment
-         tags. Once active, every PageView fires automatically, and the
-         /thank-you page additionally fires a "Purchase" event ($29).
-         To get a Pixel ID: business.facebook.com → Events Manager →
-         Data Sources → Pixels → Add new (or copy from an existing one).
-         ──────────────────────────────────────────────────────────────── -->
-    <!--
+    <!-- Meta Pixel — PageView on every load; /thank-you also fires "Purchase" ($29). Pixel ID: 828094209949462 -->
     <script>
       !function(f,b,e,v,n,t,s)
       {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -47,40 +40,27 @@
       t.src=v;s=b.getElementsByTagName(e)[0];
       s.parentNode.insertBefore(t,s)}(window, document,'script',
       'https://connect.facebook.net/en_US/fbevents.js');
-      fbq('init', 'YOUR_PIXEL_ID_HERE');
+      fbq('init', '828094209949462');
       fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" style="display:none"
-      src="https://www.facebook.com/tr?id=YOUR_PIXEL_ID_HERE&ev=PageView&noscript=1"
-    /></noscript>
-    -->
-    <!-- END META PIXEL ─────────────────────────────────────────────── -->
 
-    <!-- ════════════════════════════════════════════════════════════════
-         MICROSOFT CLARITY — heatmaps, session recordings, dead-clicks.
-         To activate:
-           1. Go to clarity.microsoft.com → sign in (Microsoft/Google/Facebook account works).
-           2. Click "New project" → name it "The Unhooked Method" →
-              site URL: https://theunhookedmethod.com → category: Health.
-           3. Copy the Project ID from Settings → Setup (10-char code).
-           4. Remove the comment tags below and replace YOUR_CLARITY_ID
-              with that 10-char code. Save, push, redeploy.
-           5. Within ~2 hours, Clarity dashboard shows live sessions,
-              heatmaps, scroll depth, rage clicks, and dead clicks.
-         Clarity is free, GDPR-compliant, and has no traffic cap.
-         ──────────────────────────────────────────────────────────────── -->
-    <!--
+    <!-- Microsoft Clarity — heatmaps + session recordings. Project ID: wsfm0n6r6e -->
     <script type="text/javascript">
       (function(c,l,a,r,i,t,y){
         c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
         t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
         y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-      })(window, document, "clarity", "script", "YOUR_CLARITY_ID");
+      })(window, document, "clarity", "script", "wsfm0n6r6e");
     </script>
-    -->
-    <!-- END MICROSOFT CLARITY ─────────────────────────────────────────── -->
   </head>
   <body>
+    <!-- Meta Pixel <noscript> fallback — for visitors with JS disabled.
+         MUST live inside <body> per HTML5 (browser HTML parsers reject
+         <noscript><img> inside <head>). -->
+    <noscript><img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=828094209949462&ev=PageView&noscript=1"
+      alt="" /></noscript>
+
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
