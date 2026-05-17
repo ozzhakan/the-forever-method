@@ -1117,7 +1117,7 @@ const paramsFromId = (id: string): URLSearchParams => {
 // video count but not the actual embeds. This keeps the preview as a
 // genuine UI-quality showcase without giving the content away.
 const PREVIEW_OPEN_LESSON_IDS = new Set(["welcome"]);
-const PAYPAL_CHECKOUT_URL = "https://www.paypal.com/ncp/payment/DQDESNZ9DVQ7G";
+const PAYPAL_CHECKOUT_URL = "https://www.paypal.com/ncp/payment/U2TRU278WRCM4";
 
 export default function Learn({ previewMode = false }: { previewMode?: boolean } = {}) {
   const [progress, setProgress] = useState<ProgressMap>(loadProgress);

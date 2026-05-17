@@ -52,7 +52,7 @@ const PDF_COUNT = RESOURCES.filter(
 ).length;
 
 /* ───────── CONSTANTS ───────── */
-const CHECKOUT_URL = "https://www.paypal.com/ncp/payment/DQDESNZ9DVQ7G";
+const CHECKOUT_URL = "https://www.paypal.com/ncp/payment/U2TRU278WRCM4";
 const PRICE = "$29";
 const CONTACT_EMAIL = "krudstina@gmail.com";
 const WHATSAPP_DISPLAY = "+31 6 18784896";
@@ -705,7 +705,7 @@ const PlatformPreview = () => (
               <div className="w-2.5 h-2.5 rounded-full bg-green-400" />
             </div>
             <div className="flex-1 bg-white rounded-md px-3 py-1 text-[10px] text-gray-400 text-center font-medium">
-              theunhookedmethod.com/learn
+              theunhookedmethod.com
             </div>
           </div>
           {/* App content */}
@@ -814,7 +814,7 @@ const PlatformPreview = () => (
               <div className="w-2.5 h-2.5 rounded-full bg-green-400" />
             </div>
             <div className="flex-1 bg-white rounded-md px-3 py-1 text-[10px] text-gray-400 text-center font-medium">
-              theunhookedmethod.com/learn/resources
+              theunhookedmethod.com
             </div>
           </div>
           {/* App content */}
