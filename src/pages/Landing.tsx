@@ -1629,7 +1629,17 @@ const Footer = () => (
           {CONTACT_EMAIL}
         </a>
       </div>
-      <div className="mt-6 pt-6 border-t border-gray-100 text-xs text-gray-400 text-center">
+
+      {/* Legal links row */}
+      <div className="mt-6 pt-6 border-t border-gray-100 flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
+        <a href="/privacy" className="text-xs sm:text-[13px] text-gray-500 hover:text-amber-700 font-semibold transition-colors">Privacy Policy</a>
+        <span className="text-gray-300 text-xs">·</span>
+        <a href="/terms" className="text-xs sm:text-[13px] text-gray-500 hover:text-amber-700 font-semibold transition-colors">Terms of Service</a>
+        <span className="text-gray-300 text-xs">·</span>
+        <a href="/refund" className="text-xs sm:text-[13px] text-gray-500 hover:text-amber-700 font-semibold transition-colors">Refund Policy</a>
+      </div>
+
+      <div className="mt-5 text-xs text-gray-400 text-center">
         Made with <span className="text-red-500">♥</span> by Hakan &amp; Kristina Oz
       </div>
     </div>
