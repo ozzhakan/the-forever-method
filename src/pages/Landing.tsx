@@ -705,7 +705,7 @@ const PlatformPreview = () => (
               <div className="w-2.5 h-2.5 rounded-full bg-green-400" />
             </div>
             <div className="flex-1 bg-white rounded-md px-3 py-1 text-[10px] text-gray-400 text-center font-medium">
-              unhookedmethod.com/learn
+              theunhookedmethod.com/learn
             </div>
           </div>
           {/* App content */}
@@ -756,12 +756,12 @@ const PlatformPreview = () => (
             <div className="flex-1 p-3 sm:p-4 overflow-hidden">
               <div className="text-[8px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">Video Lesson</div>
               <div className="font-black text-gray-900 text-[10px] sm:text-[11px] mb-2.5 leading-tight">Module 2: What's Happening In Your Brain</div>
-              {/* Video frame — Kristina thumbnail */}
+              {/* Video frame — YouTube thumbnail of Module 2 (Hi-res, public) */}
               <div
-                className="aspect-video rounded-md mb-2 relative overflow-hidden bg-cover bg-center"
-                style={{ backgroundImage: "url(/kristina.jpg)" }}
+                className="aspect-video rounded-md mb-2 relative overflow-hidden bg-cover bg-center bg-gray-900"
+                style={{ backgroundImage: "url(https://i.ytimg.com/vi/1n-tj1ooQlU/hqdefault.jpg)" }}
               >
-                <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/30" />
+                <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/10 to-black/40" />
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="w-7 h-7 sm:w-8 sm:h-8 bg-white/95 rounded-full flex items-center justify-center shadow-xl">
                     <div className="border-l-[8px] border-l-amber-700 border-y-[6px] border-y-transparent ml-0.5" />
@@ -814,7 +814,7 @@ const PlatformPreview = () => (
               <div className="w-2.5 h-2.5 rounded-full bg-green-400" />
             </div>
             <div className="flex-1 bg-white rounded-md px-3 py-1 text-[10px] text-gray-400 text-center font-medium">
-              unhookedmethod.com/learn/resources
+              theunhookedmethod.com/learn/resources
             </div>
           </div>
           {/* App content */}
@@ -952,7 +952,7 @@ const ResourceBonus = () => {
             <span className="text-amber-400">~$99 value — yours free.</span>
           </h2>
           <p className="text-gray-400 text-[15px] sm:text-lg leading-relaxed px-2 sm:px-0">
-            Cheat sheets, fillable templates, women-specific guides, and reference documents — written specifically to live alongside the course videos. Each one would sell standalone for $3–$12. All 20 are included free with the workshop.
+            Cheat sheets, fillable templates, women-specific guides, and reference documents — written specifically to live alongside the course videos.
           </p>
         </div>
 
@@ -1121,14 +1121,34 @@ const About = () => (
 );
 
 /* ─────────── CREDENTIALS — formal training proof ─────────── */
+type Cert = {
+  image?: string;          // optional — falls back to typographic card if missing
+  year: string;
+  title: string;
+  institution: string;
+  via: string;
+  accent?: "stanford" | "wageningen"; // tints the fallback card
+};
 const Credentials = () => {
-  const certs = [
+  // Stanford Nutrition Science (Maya Adam, MD) leads — it's the most
+  // domain-specific. Then the existing two cert images, then the two
+  // newer Wageningen specialisations.
+  const certs: Cert[] = [
+    {
+      image: "/cert-stanford-nutrition-science.png",
+      year: "May 2024",
+      title: "Nutrition Science",
+      institution: "Stanford University · School of Medicine",
+      via: "Maya Adam, MD · Dept. of Pediatrics · via Coursera",
+      accent: "stanford",
+    },
     {
       image: "/cert-wageningen.png",
       year: "2023",
       title: "Professional Certificate in Food, Nutrition and Health",
       institution: "Wageningen University & Research",
       via: "via WageningenX · edX",
+      accent: "wageningen",
     },
     {
       image: "/cert-stanford.png",
@@ -1136,6 +1156,23 @@ const Credentials = () => {
       title: "Stanford Introduction to Food and Health",
       institution: "Stanford University · School of Medicine",
       via: "via Stanford Online · Coursera",
+      accent: "stanford",
+    },
+    {
+      image: "/cert-wageningen-microbiome.png",
+      year: "June 2024",
+      title: "NUTR104x · Nutrition and Health: Human Microbiome",
+      institution: "Wageningen University & Research",
+      via: "Prof. Dr. Arnold Bregt · via WageningenX · edX",
+      accent: "wageningen",
+    },
+    {
+      image: "/cert-wageningen-micronutrients.png",
+      year: "Jan 2024",
+      title: "NUTR102x · Nutrition and Health: Micronutrients and Malnutrition",
+      institution: "Wageningen University & Research",
+      via: "Prof. Dr. Arnold Bregt · via WageningenX · edX",
+      accent: "wageningen",
     },
   ];
 
@@ -1162,36 +1199,57 @@ const Credentials = () => {
           </p>
         </div>
 
-        {/* Certificate cards */}
-        <div className="grid sm:grid-cols-2 gap-5 sm:gap-7 max-w-4xl mx-auto">
+        {/* Certificate cards — 1 col on mobile, 2 on tablet, 3 on desktop */}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-7 max-w-6xl mx-auto">
           {certs.map((cert, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="bg-white border border-gray-200 rounded-2xl sm:rounded-3xl p-3 sm:p-4 hover:shadow-xl hover:border-amber-200 hover:-translate-y-1 transition-all"
+              transition={{ duration: 0.5, delay: (i % 3) * 0.1 }}
+              className="bg-white border border-gray-200 rounded-2xl sm:rounded-3xl p-3 sm:p-4 hover:shadow-xl hover:border-amber-200 hover:-translate-y-1 transition-all flex flex-col"
             >
-              {/* Certificate image */}
-              <div className="rounded-xl sm:rounded-2xl overflow-hidden bg-gray-50 border border-gray-100 mb-4 sm:mb-5">
-                <img
-                  src={cert.image}
-                  alt={`${cert.institution} — ${cert.title}`}
-                  className="w-full h-auto block"
-                  loading="lazy"
-                />
+              {/* Certificate image — or typographic fallback if image not yet uploaded */}
+              <div className="rounded-xl sm:rounded-2xl overflow-hidden bg-gray-50 border border-gray-100 mb-4 sm:mb-5 aspect-[4/3] relative">
+                {cert.image ? (
+                  <img
+                    src={cert.image}
+                    alt={`${cert.institution} — ${cert.title}`}
+                    className="w-full h-full object-cover block"
+                    loading="lazy"
+                    onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
+                  />
+                ) : null}
+                {/* Always-rendered fallback layer — image (if it loads) covers this */}
+                <div className={`absolute inset-0 flex flex-col items-center justify-center text-center px-4 ${
+                  cert.image ? "-z-10" : ""
+                } ${
+                  cert.accent === "stanford"
+                    ? "bg-gradient-to-br from-red-50 via-white to-red-50/60"
+                    : "bg-gradient-to-br from-emerald-50 via-white to-emerald-50/60"
+                }`}>
+                  <GraduationCap className={`w-7 h-7 mb-2 ${cert.accent === "stanford" ? "text-red-700" : "text-emerald-700"}`} />
+                  <p className={`text-[10px] font-black uppercase tracking-[0.22em] mb-1.5 ${
+                    cert.accent === "stanford" ? "text-red-700" : "text-emerald-700"
+                  }`}>
+                    {cert.accent === "stanford" ? "Stanford Online" : "Wageningen U&R"}
+                  </p>
+                  <p className="text-[11px] font-black text-gray-900 leading-tight max-w-[80%]">
+                    Certificate of completion
+                  </p>
+                </div>
               </div>
 
               {/* Caption */}
-              <div className="px-2 sm:px-3 pb-2 sm:pb-3">
+              <div className="px-2 sm:px-3 pb-2 sm:pb-3 flex-1 flex flex-col">
                 <div className="text-[10px] font-bold text-amber-700 uppercase tracking-[0.22em] mb-2">
                   Issued {cert.year}
                 </div>
-                <h3 className="text-[15px] sm:text-lg font-bold text-gray-900 leading-snug tracking-tight mb-1.5">
+                <h3 className="text-[14.5px] sm:text-[15.5px] font-bold text-gray-900 leading-snug tracking-tight mb-1.5">
                   {cert.title}
                 </h3>
-                <p className="text-[13px] sm:text-sm text-gray-700 font-semibold leading-relaxed">
+                <p className="text-[12.5px] sm:text-[13.5px] text-gray-700 font-semibold leading-relaxed">
                   {cert.institution}
                 </p>
                 <p className="text-[11px] sm:text-xs text-gray-400 mt-0.5">
