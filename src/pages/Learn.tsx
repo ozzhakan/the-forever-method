@@ -548,24 +548,15 @@ const WelcomeScreen = ({
           <p className="text-[10px] sm:text-[11px] font-black text-gray-400 uppercase tracking-[0.25em] mb-3">
             Follow along outside the course
           </p>
-          <div className="grid grid-cols-2 gap-2.5 sm:gap-3 max-w-md mx-auto">
+          <div className="max-w-sm mx-auto">
             <a
               href="https://youtube.com/@thecravingloop"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 px-3 sm:px-4 py-2.5 sm:py-3 bg-white border border-gray-200 hover:border-red-200 hover:bg-red-50/40 rounded-2xl text-[12.5px] sm:text-sm font-bold text-gray-700 hover:text-red-700 transition-colors group"
+              className="flex items-center justify-center gap-2 px-4 sm:px-5 py-3 sm:py-3.5 bg-white border border-gray-200 hover:border-red-200 hover:bg-red-50/40 rounded-2xl text-[13px] sm:text-sm font-bold text-gray-700 hover:text-red-700 transition-colors group"
             >
-              <Youtube className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-red-600 flex-shrink-0" />
+              <Youtube className="w-4 h-4 sm:w-5 sm:h-5 text-red-600 flex-shrink-0" />
               <span>YouTube · @thecravingloop</span>
-            </a>
-            <a
-              href="https://instagram.com/thecravingloop"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 px-3 sm:px-4 py-2.5 sm:py-3 bg-white border border-gray-200 hover:border-pink-200 hover:bg-pink-50/40 rounded-2xl text-[12.5px] sm:text-sm font-bold text-gray-700 hover:text-pink-700 transition-colors group"
-            >
-              <Instagram className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-pink-600 flex-shrink-0" />
-              <span>Instagram · @thecravingloop</span>
             </a>
           </div>
         </div>
