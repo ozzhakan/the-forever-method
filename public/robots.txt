@@ -1,0 +1,29 @@
+# The Unhooked Method — public site, all bots welcome.
+# Explicit allowlist for Facebook / LinkedIn / Twitter / Slack crawlers
+# so social link previews can scrape Open Graph tags without 403 errors.
+
+User-agent: *
+Allow: /
+
+# Facebook Open Graph scraper
+User-agent: facebookexternalhit
+Allow: /
+
+# Meta-specific crawlers (newer name)
+User-agent: meta-externalagent
+Allow: /
+
+# LinkedIn link preview
+User-agent: LinkedInBot
+Allow: /
+
+# Twitter / X card scraper
+User-agent: Twitterbot
+Allow: /
+
+# WhatsApp link preview
+User-agent: WhatsApp
+Allow: /
+
+# Sitemap location
+Sitemap: https://theunhookedmethod.com/sitemap.xml
