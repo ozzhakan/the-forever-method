@@ -514,10 +514,12 @@ const WelcomeScreen = ({
   onStart,
   onReplayTour,
   previewMode = false,
+  onWatchSample,
 }: {
   onStart: () => void;
   onReplayTour: () => void;
   previewMode?: boolean;
+  onWatchSample?: () => void;
 }) => (
   <div className="max-w-2xl mx-auto py-10 sm:py-14 px-4 sm:px-6">
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center">
@@ -528,9 +530,21 @@ const WelcomeScreen = ({
         {previewMode ? <>You're previewing<br className="sm:hidden" /> The Unhooked Method<sup className="text-[14px] font-bold text-amber-700 ml-0.5 align-super">™</sup></> : <>Welcome to<br className="sm:hidden" /> The Unhooked Method<sup className="text-[14px] font-bold text-amber-700 ml-0.5 align-super">™</sup></>}
       </h1>
       {previewMode ? (
-        <p className="text-[15px] sm:text-lg text-gray-600 mb-8 sm:mb-10 max-w-xl mx-auto leading-relaxed">
-          This is the actual platform — same layout, same library, same Watch List. The 9 video lessons are locked until you join. You can open Module 0 below as a sample and browse the full Resource Library at the bottom of the sidebar.
-        </p>
+        <div className="text-[15px] sm:text-lg text-gray-600 mb-8 sm:mb-10 max-w-xl mx-auto leading-relaxed space-y-3">
+          <p>
+            This is the actual platform — same layout, same sidebar, same Resource Library. Most lessons are locked until you join, but{" "}
+            <button
+              onClick={() => onWatchSample?.()}
+              className="font-bold text-amber-700 hover:text-amber-900 underline decoration-amber-500/60 decoration-2 underline-offset-4 transition-colors"
+            >
+              Module 1: You Are Not Broken
+            </button>{" "}
+            is fully unlocked so you can watch a real lesson, end to end.
+          </p>
+          <p className="text-[13.5px] sm:text-[15px] text-gray-500">
+            Browse the sidebar to see every module title, open the Resource Library to see what's inside, and tap any lesson to feel the platform.
+          </p>
+        </div>
       ) : (
         <div className="text-[15px] sm:text-lg text-gray-600 mb-8 sm:mb-10 max-w-xl mx-auto leading-relaxed space-y-4">
           <p>
@@ -654,10 +668,10 @@ const WelcomeScreen = ({
       </div>
 
       <button
-        onClick={onStart}
+        onClick={previewMode ? (onWatchSample ?? onStart) : onStart}
         className="inline-flex items-center gap-2 sm:gap-3 px-8 sm:px-10 py-4 sm:py-5 bg-gradient-to-br from-amber-600 to-amber-800 text-white font-black text-[15px] sm:text-lg rounded-2xl shadow-xl shadow-amber-300/40 hover:from-amber-700 hover:to-amber-900 hover:-translate-y-1 transition-all w-full sm:w-auto justify-center"
       >
-        {previewMode ? <>Open Module 0 (sample)</> : <>Start Module 0</>} <ArrowRight className="w-5 h-5" />
+        {previewMode ? <>Watch Module 1 (sample)</> : <>Start Module 0</>} <ArrowRight className="w-5 h-5" />
       </button>
 
       {previewMode ? (
@@ -1178,12 +1192,13 @@ const paramsFromId = (id: string): URLSearchParams => {
 };
 
 /* ─────────── PREVIEW MODE ─────────── */
-// In /preview mode the only thing fully accessible is the Welcome
-// screen (the platform's entry view). Every numbered lesson and every
-// resource shows its title but stays locked. The Watch List shows the
-// video count but not the actual embeds. This keeps the preview as a
-// genuine UI-quality showcase without giving the content away.
-const PREVIEW_OPEN_LESSON_IDS = new Set(["welcome"]);
+// In /preview mode the Welcome screen + Module 1 ("You Are Not Broken")
+// are fully accessible. Module 1 is the sample lesson — visitors can
+// watch the real video and read the actual content, which builds trust
+// before purchase. Every other module + intermission shows its title
+// but stays locked. Resources show titles but cannot be opened. The
+// Watch List shows the video count but not the embedded players.
+const PREVIEW_OPEN_LESSON_IDS = new Set(["welcome", "module-1"]);
 const PAYPAL_CHECKOUT_URL = "https://www.paypal.com/ncp/payment/U2TRU278WRCM4";
 
 export default function Learn({ previewMode = false }: { previewMode?: boolean } = {}) {
@@ -1340,6 +1355,7 @@ export default function Learn({ previewMode = false }: { previewMode?: boolean }
             onStart={startCourse}
             onReplayTour={() => { resetTour(); setTourOpen(true); }}
             previewMode={previewMode}
+            onWatchSample={() => goTo("module-1")}
           />
         ) : isResourcesIndex ? (
           <ResourceLibrary
