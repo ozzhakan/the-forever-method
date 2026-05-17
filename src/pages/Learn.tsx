@@ -352,7 +352,7 @@ const Sidebar = ({
               <Flame className="text-white w-4 h-4" />
             </div>
             <span className="font-black text-sm tracking-tight text-gray-900">
-              The Unhooked Method
+              The Unhooked Method<sup className="text-[8px] font-bold text-amber-700 ml-0.5 align-super">™</sup>
             </span>
           </div>
           <button onClick={onClose} className="lg:hidden p-1 text-gray-400 hover:text-gray-600">
@@ -523,7 +523,7 @@ const WelcomeScreen = ({
         <Flame className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
       </div>
       <h1 className="text-[1.7rem] sm:text-4xl font-black text-gray-900 tracking-tight mb-3 sm:mb-4 leading-tight">
-        {previewMode ? <>You're previewing<br className="sm:hidden" /> The Unhooked Method</> : <>Welcome to<br className="sm:hidden" /> The Unhooked Method</>}
+        {previewMode ? <>You're previewing<br className="sm:hidden" /> The Unhooked Method<sup className="text-[14px] font-bold text-amber-700 ml-0.5 align-super">™</sup></> : <>Welcome to<br className="sm:hidden" /> The Unhooked Method<sup className="text-[14px] font-bold text-amber-700 ml-0.5 align-super">™</sup></>}
       </h1>
       <p className="text-[15px] sm:text-lg text-gray-600 mb-8 sm:mb-10 max-w-xl mx-auto leading-relaxed">
         {previewMode

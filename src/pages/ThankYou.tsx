@@ -36,7 +36,7 @@ export default function ThankYou() {
     }
     // Update page title for browser tab + history
     const prev = document.title;
-    document.title = "You're in — The Unhooked Method";
+    document.title = "You're in — The Unhooked Method™";
     return () => { document.title = prev; };
   }, []);
 
@@ -80,7 +80,7 @@ export default function ThankYou() {
             to="/learn"
             className="inline-flex items-center justify-center gap-2.5 w-full sm:w-auto px-8 sm:px-12 py-4 sm:py-5 text-[15px] sm:text-lg font-bold text-white bg-gradient-to-br from-amber-600 to-amber-800 hover:from-amber-700 hover:to-amber-900 rounded-full shadow-xl shadow-amber-300/40 hover:-translate-y-0.5 transition-all"
           >
-            Open The Unhooked Method
+            Open The Unhooked Method™
             <ArrowRight className="w-5 h-5" />
           </Link>
 
@@ -131,7 +131,7 @@ export default function ThankYou() {
           <div className="w-5 h-5 bg-gradient-to-br from-amber-500 to-amber-700 rounded-md flex items-center justify-center">
             <Flame className="w-3 h-3 text-white" />
           </div>
-          <span className="text-[11px] font-bold tracking-tight">The Unhooked Method</span>
+          <span className="text-[11px] font-bold tracking-tight">The Unhooked Method<sup className="text-[7px] font-bold text-amber-700 ml-0.5 align-super">™</sup></span>
         </div>
       </motion.div>
     </div>

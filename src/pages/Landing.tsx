@@ -107,7 +107,7 @@ const Navbar = () => {
               <Flame className="text-white w-4 h-4" />
             </div>
             <span className="font-black text-[15px] tracking-tight text-gray-900">
-              The Unhooked Method
+              The Unhooked Method<sup className="text-[8px] font-bold text-amber-700 ml-0.5 align-super">™</sup>
             </span>
           </div>
 
@@ -434,7 +434,7 @@ const Mechanism = () => {
   );
 };
 
-/* ─────────── THE JOURNEY — guided + personally reviewed + WhatsApp ─────────── */
+/* ─────────── THE JOURNEY — guided + checkpointed + WhatsApp ─────────── */
 const Journey = () => {
   const features = [
     {
@@ -446,14 +446,14 @@ const Journey = () => {
     {
       num: "02",
       icon: Eye,
-      title: "Two tasks personally reviewed by Kristina",
-      body: "At two key moments — your kitchen audit and your grocery receipt — you'll send Kristina photos directly. She reads every one personally and writes back with two or three specific things she notices in your real environment. No team, no chatbot, no template reply.",
+      title: "Two transformation checkpoints",
+      body: "Your environment and what you buy are the two highest-leverage parts of this transformation. Twice during the course you'll snapshot them — a photo of your kitchen, then a photo of a real grocery receipt — and save them for later modules. The Unhooked Method team is on WhatsApp throughout, so if you want feedback on what you sent or anything else, you ask and we respond.",
     },
     {
       num: "03",
       icon: MessageCircle,
       title: "WhatsApp support — throughout the course",
-      body: "Have a realization mid-module? Stuck on a homework task? Just need someone to read what you wrote? You can write the Unhooked Method team any time during the course. Real humans, not a chatbot — every message gets read.",
+      body: "Have a realization mid-module? Stuck on a homework task? Want a sanity check on a kitchen photo or a receipt? Write the Unhooked Method team any time. Real humans, not a chatbot — every message gets read and we write back where it's useful.",
     },
   ];
 
@@ -477,7 +477,7 @@ const Journey = () => {
             <span className="text-amber-700">It's designed to actually move you.</span>
           </h2>
           <p className="text-gray-600 text-[15px] sm:text-lg leading-relaxed max-w-2xl mx-auto px-2 sm:px-0">
-            Most courses give you information and leave you alone with it. This one is built differently — structured, task-driven, and personally supported.
+            Most courses give you information and leave you alone with it. This one is built differently — structured, task-driven, and supported on WhatsApp throughout.
           </p>
         </div>
 
@@ -545,10 +545,10 @@ const Curriculum = () => {
     { kind: "intro", num: "00", title: "Welcome + My Story", desc: "What this course is. What it isn't. And the ten-year arc that led to building it.", icon: Sparkles },
     { kind: "module", num: "01", title: "You Are Not Broken", desc: "Food addiction is a clinically defined condition affecting roughly 1 in 5 people — and it skews higher in women. The Yale Food Addiction Scale, the bliss point, and why willpower was always the wrong tool.", icon: Heart },
     { kind: "module", num: "02", title: "What's Happening In Your Brain", desc: "The three layers behind every craving — dopamine, conditioning, and the physiological amplifiers (vagus nerve, insulin crash). In plain language.", icon: Brain },
-    { kind: "intermission", num: "i1", title: "Intermission 1 — Your Kitchen", desc: "Take three photos and send them to Kristina on WhatsApp. She reads every one personally and writes back with two or three specific things she notices in your real environment.", icon: Camera },
-    { kind: "module", num: "03", title: "Who Built This Environment", desc: "The 1967 Sugar Research Foundation. The corruption of US dietary guidelines. The bliss point and the billion-dollar engineering that followed. Anger, redirected.", icon: Building2 },
+    { kind: "intermission", num: "i1", title: "Intermission 1 — Your Kitchen", desc: "Snapshot your kitchen before any changes — three photos that capture your real environment. You'll use this baseline in later modules. Send it to the Unhooked Method team on WhatsApp if you want a second pair of eyes.", icon: Camera },
+    { kind: "module", num: "03", title: "Who Built This Environment", desc: "The 1967 Sugar Research Foundation. The corruption of US dietary guidelines. The bliss point and the billion-dollar engineering that followed.", icon: Building2 },
     { kind: "module", num: "04", title: "What Ultra-Processed Food Is Doing To You", desc: "The specific cascade — visceral fat, insulin resistance, hormonal disruption, glycation, gut microbiome damage. Not theory. Your body. And what's reversible.", icon: Activity },
-    { kind: "intermission", num: "i2", title: "Intermission 2 — Your Receipt", desc: "Send Kristina a photo of your next grocery receipt. In 30 seconds she'll see what would take a week of food journaling to surface — and write back with two or three specific swaps.", icon: Receipt },
+    { kind: "intermission", num: "i2", title: "Intermission 2 — Your Receipt", desc: "Snapshot one real grocery receipt after Module 5 — your shopping baseline in 30 seconds of data. If you want tailored swap suggestions, send it to the Unhooked Method team on WhatsApp and we'll write back.", icon: Receipt },
     { kind: "module", num: "05", title: "The Food Framework", desc: "The first part of the solution. Protein as foundation, fat as fuel, whole foods, and an honest conversation about flexibility (why the 80/20 rule is dangerous for real food addiction).", icon: Apple },
     { kind: "module", num: "06", title: "Environment & Operating System", desc: "Your home isn't neutral. The buying principle. Pre-decided if-then rules. The allergy line. The crab basket effect. How to design around your neurology instead of against it.", icon: Home },
     { kind: "module", num: "07", title: "When The Craving Hits", desc: "Five tools for the moments that still come — the sparkling water protocol, naming the source, the notes dump, environment shifts, and the if-then protocol.", icon: Zap },
@@ -624,7 +624,7 @@ const Curriculum = () => {
                       {isIntermission && (
                         <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-amber-500/20 border border-amber-500/40 rounded-full">
                           <Eye className="w-2.5 h-2.5 text-amber-300" />
-                          <span className="text-[9px] font-black text-amber-300 uppercase tracking-wider">Personally reviewed</span>
+                          <span className="text-[9px] font-black text-amber-300 uppercase tracking-wider">Environment checkpoint</span>
                         </span>
                       )}
                     </div>
@@ -1095,7 +1095,7 @@ const About = () => (
             Kristina Oz
           </h2>
           <p className="text-amber-800 font-semibold text-[13.5px] sm:text-base mb-5 sm:mb-6">
-            Founder · The Unhooked Method
+            Founder · The Unhooked Method<sup className="text-[10px] font-bold ml-0.5 align-super">™</sup>
           </p>
           <div className="space-y-4 sm:space-y-5 text-gray-700 text-[14.5px] sm:text-base leading-relaxed">
             <p>
@@ -1248,7 +1248,7 @@ const OfferStack = () => (
         <div className="flex items-center justify-center gap-2 mb-6 sm:mb-7">
           <div className="h-px w-6 bg-amber-600/60" />
           <p className="text-[10px] font-bold text-amber-800 uppercase tracking-[0.3em] text-center">
-            The Unhooked Method
+            The Unhooked Method<sup className="text-[8px] font-bold ml-0.5 align-super">™</sup>
           </p>
           <div className="h-px w-6 bg-amber-600/60" />
         </div>
@@ -1394,7 +1394,7 @@ const FAQ = () => {
     },
     {
       q: "What does the 'guided journey' actually mean?",
-      a: "Every module ends with a specific task — not optional, not busywork — designed to move you toward the solution. Two of those tasks (your kitchen audit and your grocery receipt) you'll send on WhatsApp, and Kristina personally writes back with what she notices. Throughout the rest of the course, the Unhooked Method team is on WhatsApp for any question or realization that comes up. So you're never doing the work alone.",
+      a: "Every module ends with a specific task — not optional, not busywork — designed to move you toward the solution. Two of those tasks (your kitchen audit and your grocery receipt) are environment + shopping checkpoints — you snapshot where you are now, then use those baselines in later modules. The Unhooked Method team is on WhatsApp throughout, so when you want feedback on what you sent — or any other question — you ask and we respond. You're never doing the work alone.",
     },
     {
       q: "What if it doesn't help?",
@@ -1495,7 +1495,7 @@ const FinalCTA = () => (
         <span className="text-amber-700">Or you can finally understand it.</span>
       </h2>
       <p className="text-gray-600 text-[15px] sm:text-lg leading-relaxed mb-8 sm:mb-10 max-w-xl mx-auto px-2 sm:px-0">
-        Nine guided modules. Two tasks Kristina reviews personally. WhatsApp support throughout. {PRICE}. Yours forever.
+        Nine guided modules. Two environment checkpoints. WhatsApp support throughout. {PRICE}. Yours forever.
       </p>
       <a
         href={CHECKOUT_URL}
@@ -1561,7 +1561,7 @@ const Footer = () => (
             <Flame className="text-white w-3.5 h-3.5" />
           </div>
           <span className="font-bold text-sm text-gray-900">
-            The Unhooked Method
+            The Unhooked Method<sup className="text-[9px] font-bold text-amber-700 ml-0.5 align-super">™</sup>
           </span>
         </div>
         <a
