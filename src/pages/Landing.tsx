@@ -204,11 +204,16 @@ const Hero = () => (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 relative z-10">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="text-center">
 
-        {/* Headline — descriptive, concrete */}
-        <h1 className="text-[2rem] leading-[1.08] sm:text-5xl md:text-6xl font-black text-white tracking-tight mb-5 sm:mb-7 mt-4 sm:mt-2">
-          End sugar and food addiction <br className="hidden sm:block" />{" "}
-          <span className="italic text-amber-400 font-black">
-            without willpower or restriction.
+        {/* Headline — promise + benefit + brand stamp */}
+        <h1 className="text-white tracking-tight mb-5 sm:mb-7 mt-4 sm:mt-2 leading-[1.12]">
+          <span className="block text-[1.65rem] sm:text-[2.6rem] md:text-[3.1rem] font-black">
+            How to end sugar cravings in 14 days
+          </span>
+          <span className="block italic text-amber-400 font-black text-[1.65rem] sm:text-[2.6rem] md:text-[3.1rem] mt-1.5 sm:mt-2">
+            and get control of your brain and body back
+          </span>
+          <span className="block text-[11.5px] sm:text-[13px] md:text-sm text-amber-300 font-bold tracking-[0.22em] uppercase mt-4 sm:mt-5">
+            with the new Unhooked Method<sup className="text-[8px] sm:text-[10px] font-bold ml-0.5 relative -top-1">™</sup>
           </span>
         </h1>
 
@@ -317,87 +322,45 @@ const Hero = () => (
   </section>
 );
 
-/* ─────────── SYSTEM DESCRIPTION — what makes Unhooked Method different ─────────── */
-const SystemDescription = () => {
-  const pillars = [
-    {
-      icon: Apple,
-      label: "Nutrition science",
-      body: "What to eat, when, and why — built on whole-food protein, fat, and volume foods. Not a diet plan, a framework you can run anywhere.",
-    },
-    {
-      icon: Brain,
-      label: "Neurobehaviour",
-      body: "How your brain wires the wanting — and how to interrupt the dopamine, conditioning, and physiological signals that drive every craving.",
-    },
-    {
-      icon: Heart,
-      label: "Psychology",
-      body: "The identity shift and value reordering that make the change permanent. Not motivation. The thing that makes year three look like year one.",
-    },
-  ];
+/* ─────────── SYSTEM DESCRIPTION — concise "what is" intro ─────────── */
+const SystemDescription = () => (
+  <section className="relative py-20 sm:py-28 bg-white overflow-hidden">
+    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[44rem] h-48 bg-amber-100/40 blur-3xl rounded-full pointer-events-none" />
 
-  return (
-    <section className="relative py-20 sm:py-28 bg-white overflow-hidden">
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[44rem] h-48 bg-amber-100/40 blur-3xl rounded-full pointer-events-none" />
-
-      <div className="relative max-w-4xl mx-auto px-4 sm:px-6">
-        <div className="text-center mb-12 sm:mb-14 max-w-2xl mx-auto">
-          <div className="inline-flex items-center gap-3 mb-5">
-            <div className="h-px w-7 bg-amber-600" />
-            <p className="text-[10px] sm:text-[11px] font-black text-amber-800 uppercase tracking-[0.3em]">
-              The system
-            </p>
-            <div className="h-px w-7 bg-amber-600" />
-          </div>
-          <h2 className="text-[1.7rem] sm:text-5xl font-black text-gray-900 leading-[1.1] tracking-tight mb-5">
-            What is The Unhooked Method<sup className="text-[18px] sm:text-[26px] font-bold text-amber-700 ml-0.5 align-super">™</sup>?
-          </h2>
-          <div className="space-y-4 text-gray-600 text-[15px] sm:text-[17px] leading-relaxed">
-            <p>
-              The first integrated framework that fixes sugar and food dependency at <strong className="text-gray-900">all three layers</strong> — instead of one at a time.
-            </p>
-            <p className="text-[14px] sm:text-base text-gray-500">
-              Most diets only address the food. Most mindset coaches ignore the wiring. Most therapy skips the kitchen. The Unhooked Method walks you through all three — in nine modules structured so each layer reinforces the next.
-            </p>
-          </div>
+    <div className="relative max-w-3xl mx-auto px-4 sm:px-6">
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-60px" }}
+        transition={{ duration: 0.55 }}
+        className="text-center"
+      >
+        <div className="inline-flex items-center gap-3 mb-5 sm:mb-6">
+          <div className="h-px w-7 bg-amber-600" />
+          <p className="text-[10px] sm:text-[11px] font-black text-amber-800 uppercase tracking-[0.3em]">
+            The system
+          </p>
+          <div className="h-px w-7 bg-amber-600" />
         </div>
 
-        {/* 3 pillars */}
-        <div className="grid sm:grid-cols-3 gap-4 sm:gap-5 mb-10 sm:mb-12">
-          {pillars.map((p, i) => {
-            const Icon = p.icon;
-            return (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.5, delay: i * 0.08 }}
-                className="bg-white border border-gray-200 rounded-2xl p-5 sm:p-6 hover:border-amber-200 hover:shadow-md transition-all"
-              >
-                <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center shadow-sm shadow-amber-300/40 mb-4">
-                  <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
-                </div>
-                <p className="text-[10px] sm:text-[11px] font-black text-amber-700 uppercase tracking-[0.22em] mb-2">
-                  0{i + 1} · {p.label}
-                </p>
-                <p className="text-[13.5px] sm:text-[14.5px] text-gray-700 leading-[1.65]">
-                  {p.body}
-                </p>
-              </motion.div>
-            );
-          })}
-        </div>
+        <h2 className="text-[1.7rem] sm:text-4xl md:text-5xl font-black text-gray-900 leading-[1.15] tracking-tight mb-7 sm:mb-9">
+          What is The Unhooked Method
+          <span className="inline-block text-[0.5em] font-bold text-amber-700 ml-1 align-top relative top-1 sm:top-2">™</span>
+          ?
+        </h2>
 
-        {/* Closing line */}
-        <p className="text-center text-[14px] sm:text-base text-gray-700 leading-relaxed max-w-2xl mx-auto">
-          That's why most programs collapse by week three — they only fix one layer. <strong className="text-gray-900">Unhooked fixes the whole stack.</strong>
-        </p>
-      </div>
-    </section>
-  );
-};
+        <div className="space-y-5 sm:space-y-6 text-gray-700 text-[15px] sm:text-[17px] leading-[1.7] max-w-2xl mx-auto text-left sm:text-center">
+          <p>
+            The Unhooked Method is a system for overcoming sugar addiction and cravings for sugary and ultra-processed foods by changing <strong className="text-gray-900">behavior, perception, and the brain's relationship with food</strong>.
+          </p>
+          <p>
+            It is a <strong className="text-gray-900">neuroscience-informed methodology</strong> designed to help people survive and regain control in the modern food environment through <strong className="text-gray-900">behavioral, nutritional, and psychological restructuring</strong>.
+          </p>
+        </div>
+      </motion.div>
+    </div>
+  </section>
+);
 
 /* ─────────── THE 3-LAYER MECHANISM ─────────── */
 const Mechanism = () => {
