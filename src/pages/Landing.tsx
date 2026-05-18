@@ -42,7 +42,7 @@ import {
   FileText,
   PlayCircle,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { RESOURCES } from "./Resources";
 
 // Live count of "ready" library resources, minus the Watch List
@@ -54,9 +54,82 @@ const PDF_COUNT = RESOURCES.filter(
 /* ───────── CONSTANTS ───────── */
 const CHECKOUT_URL = "https://www.paypal.com/ncp/payment/U2TRU278WRCM4";
 const PRICE = "$29";
+const ORIGINAL_PRICE = "$138";
+const SAVINGS_AMOUNT = "$109";
+const DISCOUNT_PCT = 79;
+const COUNTDOWN_HOURS = 4;
 const CONTACT_EMAIL = "krudstina@gmail.com";
 const WHATSAPP_DISPLAY = "+31 6 18784896";
 const VSL_URL = "https://youtu.be/HPsy09z0Db0";
+
+/* ───────── EVERGREEN COUNTDOWN HOOK ─────────
+   Each visitor gets a 4-hour window starting on first landing. Window
+   is stored in localStorage so it persists across reloads / re-visits
+   in the same browser. When the window expires, a fresh 4-hour window
+   starts automatically (evergreen launch pattern). */
+const useCountdown = (hours: number) => {
+  const totalMs = hours * 60 * 60 * 1000;
+  const [remaining, setRemaining] = useState<number>(() => {
+    try {
+      const stored = localStorage.getItem("um-launch-end");
+      if (stored) {
+        const endTime = parseInt(stored, 10);
+        const left = endTime - Date.now();
+        if (left > 0 && left <= totalMs) return left;
+      }
+      const newEnd = Date.now() + totalMs;
+      localStorage.setItem("um-launch-end", newEnd.toString());
+      return totalMs;
+    } catch {
+      return totalMs;
+    }
+  });
+
+  useEffect(() => {
+    const tick = setInterval(() => {
+      setRemaining((prev) => {
+        const next = prev - 1000;
+        if (next <= 0) {
+          // Reset for a fresh launch window
+          const newEnd = Date.now() + totalMs;
+          try { localStorage.setItem("um-launch-end", newEnd.toString()); } catch { /* no-op */ }
+          return totalMs;
+        }
+        return next;
+      });
+    }, 1000);
+    return () => clearInterval(tick);
+  }, [totalMs]);
+
+  return remaining;
+};
+
+const formatCountdown = (ms: number): string => {
+  const h = Math.floor(ms / 3600000);
+  const m = Math.floor((ms % 3600000) / 60000);
+  const s = Math.floor((ms % 60000) / 1000);
+  return `${h.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
+};
+
+/* ───────── URGENCY BANNER ─────────
+   Pinned to the very top of the page. Shows discount + live countdown
+   so scarcity stays in view as the user scrolls. */
+const UrgencyBanner = () => {
+  const remaining = useCountdown(COUNTDOWN_HOURS);
+  return (
+    <div className="fixed top-0 inset-x-0 z-[60] bg-gradient-to-r from-red-600 via-red-700 to-amber-700 text-white">
+      <div className="max-w-6xl mx-auto px-3 sm:px-6 py-2 flex items-center justify-center gap-2 sm:gap-4 text-[11px] sm:text-[12.5px] font-black tracking-tight">
+        <span className="hidden sm:inline">🔥</span>
+        <span className="uppercase tracking-[0.2em]">Launch offer · {DISCOUNT_PCT}% off</span>
+        <span className="opacity-50">·</span>
+        <span className="hidden md:inline">Ends in</span>
+        <span className="font-black tabular-nums text-amber-200 text-[12px] sm:text-[13.5px]">
+          {formatCountdown(remaining)}
+        </span>
+      </div>
+    </div>
+  );
+};
 
 /* ───────── VIDEO HELPERS ─────────
    - If VSL_URL is a YouTube link → embed with clean params.
@@ -99,7 +172,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 inset-x-0 z-50 bg-white/90 backdrop-blur-xl border-b border-gray-100">
+    <nav className="fixed top-8 sm:top-9 inset-x-0 z-50 bg-white/90 backdrop-blur-xl border-b border-gray-100">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center gap-2.5">
@@ -169,7 +242,7 @@ const Navbar = () => {
 
 /* ───────────────────────── HERO + VSL ───────────────────────── */
 const Hero = () => (
-  <section className="pt-24 sm:pt-32 pb-16 sm:pb-24 bg-gray-950 relative overflow-hidden">
+  <section className="pt-32 sm:pt-40 pb-16 sm:pb-24 bg-gray-950 relative overflow-hidden">
     {/* Background accents — warm gold glow */}
     <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_0%,rgba(245,158,11,0.10),transparent)]" />
     <div className="absolute top-32 left-1/4 w-72 h-72 bg-amber-500/10 rounded-full blur-[120px]" />
@@ -193,7 +266,7 @@ const Hero = () => (
         </p>
 
         {/* Subheadline — the offer, concretely */}
-        <p className="text-gray-400 text-[15px] sm:text-lg leading-relaxed mb-8 sm:mb-12 max-w-3xl mx-auto">
+        <p className="text-gray-400 text-[15px] sm:text-lg leading-relaxed mb-5 sm:mb-7 max-w-3xl mx-auto">
           Get access to{" "}
           <a
             href="/preview"
@@ -201,8 +274,24 @@ const Hero = () => (
           >
             9 transformative video modules
           </a>
-          , live support, and more than <span className="text-white font-semibold">{PDF_COUNT} downloadable PDF resources</span> — protocols, templates, women-specific guides and a curated video library. Built from ten years of personal recovery and research, distilled into the system I wish someone had handed me on day one. <span className="text-white font-semibold">{PRICE} · yours forever.</span>
+          , live support, and more than <span className="text-white font-semibold">{PDF_COUNT} downloadable PDF resources</span> — protocols, templates, women-specific guides and a curated video library. Built from ten years of personal recovery and research, distilled into the system I wish someone had handed me on day one.
         </p>
+
+        {/* Launch-offer price pill — anchor + sale + savings */}
+        <div className="inline-flex items-center gap-3 sm:gap-4 px-4 sm:px-5 py-2.5 sm:py-3 bg-amber-500/10 border border-amber-500/40 rounded-full mb-8 sm:mb-12">
+          <span className="text-[11px] sm:text-[13px] font-black text-amber-300 uppercase tracking-[0.25em]">
+            Launch · {DISCOUNT_PCT}% off
+          </span>
+          <span className="text-gray-500 line-through font-semibold text-[13px] sm:text-[15px]">
+            {ORIGINAL_PRICE}
+          </span>
+          <span className="text-white font-black text-[15px] sm:text-lg">
+            {PRICE}
+          </span>
+          <span className="hidden sm:inline text-amber-300 font-bold text-[12px]">
+            save {SAVINGS_AMOUNT}
+          </span>
+        </div>
 
         {/* VSL Video Player */}
         <motion.div
@@ -1350,12 +1439,16 @@ const OfferStack = () => (
           </div>
         </div>
 
-        {/* Pricing maths */}
+        {/* Pricing maths — anchor → discount → final */}
         <div className="border-t border-gray-100 pt-6 sm:pt-7">
           <div className="space-y-2 text-[13.5px] sm:text-sm mb-5">
             <div className="flex justify-between text-gray-700">
-              <span>The 9-module workshop + WhatsApp access</span>
-              <span className="font-bold text-gray-900">$29</span>
+              <span>The 9-module course + WhatsApp access</span>
+              <span className="font-semibold text-gray-500 line-through">{ORIGINAL_PRICE}</span>
+            </div>
+            <div className="flex justify-between text-amber-800 font-bold">
+              <span>Launch discount</span>
+              <span>−{DISCOUNT_PCT}% off</span>
             </div>
             <div className="flex justify-between text-gray-700">
               <span>Resource Library (20 PDFs)</span>
@@ -1368,7 +1461,15 @@ const OfferStack = () => (
               <span>You pay today</span>
               <span>{PRICE}</span>
             </div>
+            <div className="flex justify-between text-[12px] sm:text-[13px] text-amber-700 font-bold">
+              <span>You save</span>
+              <span>{SAVINGS_AMOUNT}</span>
+            </div>
           </div>
+
+          {/* Countdown — drives action right at the offer */}
+          <OfferCountdown />
+
           <p className="text-center text-xs sm:text-sm text-gray-500 mb-6 sm:mb-7">One-time payment · No subscription</p>
 
           {/* CTA */}
@@ -1378,7 +1479,7 @@ const OfferStack = () => (
             rel="noopener noreferrer"
             className="flex items-center justify-center gap-2 w-full py-4 sm:py-5 text-[15px] sm:text-lg font-bold text-white bg-gradient-to-br from-amber-600 to-amber-800 hover:from-amber-700 hover:to-amber-900 rounded-full transition-all shadow-xl shadow-amber-300/40 hover:-translate-y-0.5 mb-5"
           >
-            Get instant access
+            Get instant access — {DISCOUNT_PCT}% off
             <ArrowRight className="w-5 h-5" />
           </a>
 
@@ -1649,7 +1750,8 @@ const Footer = () => (
 /* ───────────────────────── APP ───────────────────────── */
 export default function Landing() {
   return (
-    <div className="min-h-screen bg-white font-sans selection:bg-amber-100 selection:text-amber-900 pb-16 lg:pb-0">
+    <div className="min-h-screen bg-white font-sans selection:bg-amber-100 selection:text-amber-900 pb-24 lg:pb-0">
+      <UrgencyBanner />
       <Navbar />
       <main>
         <Hero />
@@ -1670,17 +1772,53 @@ export default function Landing() {
       <Footer />
 
       {/* Sticky CTA — phone + tablet (hidden on desktop where the navbar CTA is always visible) */}
-      <div className="lg:hidden fixed bottom-0 inset-x-0 p-3 sm:p-4 bg-white/95 backdrop-blur-md border-t border-gray-100 z-[55]">
+      <StickyCTA />
+    </div>
+  );
+}
+
+/* ───────── OFFER COUNTDOWN ─────────
+   Sits inside the OfferStack pricing card. Reinforces the urgency
+   right at the decision moment. */
+const OfferCountdown = () => {
+  const remaining = useCountdown(COUNTDOWN_HOURS);
+  return (
+    <div className="mb-5 sm:mb-6 px-4 py-3 bg-gradient-to-r from-red-50 via-amber-50 to-red-50 border border-red-200 rounded-2xl flex items-center justify-center gap-2 sm:gap-3 text-[12px] sm:text-[13px]">
+      <span className="font-black uppercase tracking-[0.18em] text-red-700">Offer ends in</span>
+      <span className="font-black tabular-nums text-red-700 text-[14px] sm:text-base">
+        {formatCountdown(remaining)}
+      </span>
+    </div>
+  );
+};
+
+/* ───────── STICKY CTA WITH COUNTDOWN ─────────
+   Phone + tablet only. Echoes the urgency banner: shows the live
+   countdown above a button that names the discount + sale price. */
+const StickyCTA = () => {
+  const remaining = useCountdown(COUNTDOWN_HOURS);
+  return (
+    <div className="lg:hidden fixed bottom-0 inset-x-0 px-3 sm:px-4 pt-2 pb-3 sm:pb-4 bg-white/95 backdrop-blur-md border-t border-gray-100 z-[55]">
+      <div className="max-w-md mx-auto">
+        <div className="flex items-center justify-center gap-2 text-[10.5px] sm:text-[11px] font-black uppercase tracking-[0.18em] mb-1.5 sm:mb-2">
+          <span className="text-red-600">{DISCOUNT_PCT}% off</span>
+          <span className="text-gray-300">·</span>
+          <span className="text-gray-500">ends in</span>
+          <span className="font-black tabular-nums text-red-600">
+            {formatCountdown(remaining)}
+          </span>
+        </div>
         <a
           href={CHECKOUT_URL}
           target="_blank"
           rel="noopener noreferrer"
-          className="w-full max-w-md mx-auto py-3.5 sm:py-4 bg-gradient-to-br from-amber-600 to-amber-800 text-white font-bold text-[14.5px] sm:text-[15px] rounded-full flex items-center justify-center gap-2 shadow-lg shadow-amber-300/40 active:scale-95 transition-transform"
+          className="w-full py-3.5 sm:py-4 bg-gradient-to-br from-amber-600 to-amber-800 text-white font-bold text-[14px] sm:text-[15px] rounded-full flex items-center justify-center gap-2 shadow-lg shadow-amber-300/40 active:scale-95 transition-transform"
         >
-          Get instant access — {PRICE}
+          <span className="text-amber-200/80 line-through font-semibold text-[12.5px] sm:text-[13px]">{ORIGINAL_PRICE}</span>
+          <span>Get instant access · {PRICE}</span>
           <ArrowRight className="w-4 h-4" />
         </a>
       </div>
     </div>
   );
-}
+};
