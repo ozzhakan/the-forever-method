@@ -217,14 +217,9 @@ const Hero = () => (
           </span>
         </h1>
 
-        {/* Eyebrow positioning line */}
-        <p className="text-amber-300 text-[12px] sm:text-sm font-bold uppercase tracking-[0.22em] mb-5 sm:mb-6">
-          Step-by-step transformation program · Made for women
-        </p>
-
         {/* Subheadline — the offer, concretely */}
         <p className="text-gray-400 text-[15px] sm:text-lg leading-relaxed mb-5 sm:mb-7 max-w-3xl mx-auto">
-          Get access to <span className="text-white font-semibold">9 transformative video modules</span>, live support, and <span className="text-white font-semibold">{PDF_COUNT} downloadable resources</span> — protocols, templates, women-specific guides and a curated video library. Built from ten years of personal recovery and research, distilled into the system I wish someone had handed me on day one.
+          Get access to a <span className="text-white font-semibold">private member platform</span> where you'll find <span className="text-white font-semibold">9 transformative video modules</span>, live support, and <span className="text-white font-semibold">{PDF_COUNT} downloadable resources</span> — protocols, templates, women-specific guides and a curated video library.
         </p>
 
         {/* Launch-offer price pill — anchor + sale + savings */}
@@ -351,10 +346,13 @@ const SystemDescription = () => (
 
         <div className="space-y-5 sm:space-y-6 text-gray-700 text-[15px] sm:text-[17px] leading-[1.7] max-w-2xl mx-auto text-left sm:text-center">
           <p>
-            The Unhooked Method is a system for overcoming sugar addiction and cravings for sugary and ultra-processed foods by changing <strong className="text-gray-900">behavior, perception, and the brain's relationship with food</strong>.
+            The Unhooked Method is a system for overcoming sugar addiction, cravings, and compulsive eating by rewiring your behavioral and psychological relationship with processed food.
           </p>
           <p>
-            It is a <strong className="text-gray-900">neuroscience-informed methodology</strong> designed to help people survive and regain control in the modern food environment through <strong className="text-gray-900">behavioral, nutritional, and psychological restructuring</strong>.
+            It is a neuroscience-based methodology designed for the modern food environment, combining nutrition, behavioral psychology, and dopamine-aware strategies to reduce cravings and restore food freedom.
+          </p>
+          <p>
+            It does not rely on calorie counting, macro tracking, or food journals. Instead, the method focuses on changing the biological, behavioral, and environmental patterns that drive compulsive eating.
           </p>
         </div>
       </motion.div>
@@ -1507,10 +1505,6 @@ const FAQ = () => {
     {
       q: "How is this different from other things I've tried?",
       a: "Most programs address one layer — the food, or the mindset, or the behavior. Sugar and food addiction sit at the intersection of all three, which is why partial approaches stop working. This program walks through every layer in sequence, with tasks and personal feedback at the key moments, so the pieces actually fit together.",
-    },
-    {
-      q: `Why only ${PRICE}?`,
-      a: "Because I want it to be accessible. This is a focused, complete roadmap on this specific topic — and I don't want price to be the reason someone stays stuck. If it's useful and you want to go deeper later, there's more. If it's all you ever need, that's great too.",
     },
     {
       q: "What's not in here?",
