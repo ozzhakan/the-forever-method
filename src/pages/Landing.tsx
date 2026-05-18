@@ -715,7 +715,7 @@ const PlatformPreview = () => (
           <span className="text-amber-700">be using.</span>
         </h2>
         <p className="text-gray-600 text-[15px] sm:text-lg leading-relaxed px-2 sm:px-0">
-          Quiet, focused, no notifications, no engagement loops. Just the lessons, the resources, and a WhatsApp line to Kristina — designed for the work, not for retention metrics.
+          Quiet, focused, no notifications, no engagement loops. Just the lessons, the resources, and a WhatsApp line to the Unhooked team.
         </p>
       </div>
 
@@ -1135,15 +1135,6 @@ const About = () => (
             <p>
               After more than ten years of reading, experimenting, failing, and slowly rebuilding my own relationship with food — and then helping the people around me transform theirs too — I designed this platform. Exactly the resource I wish someone had handed me on day one. Not a textbook. Not a 30-day diet. A guided journey, with the few things that genuinely worked, in the order they actually worked.
             </p>
-            <div className="mt-6 sm:mt-7 pl-4 sm:pl-5 border-l-2 border-amber-600">
-              <p className="text-gray-600 italic text-[14.5px] sm:text-base leading-relaxed">
-                "I priced it this way on purpose. I don't want money to be the reason someone stays stuck in a fight they never
-                needed to be in alone."
-              </p>
-              <p className="mt-3 text-[10px] font-bold text-amber-800 uppercase tracking-[0.2em]">
-                — Kristina
-              </p>
-            </div>
           </div>
         </div>
       </div>
@@ -1226,7 +1217,7 @@ const Credentials = () => {
             <span className="text-amber-700">leading institutions.</span>
           </h2>
           <p className="text-gray-600 text-[15px] sm:text-lg leading-relaxed px-2 sm:px-0">
-            Kristina's clinical understanding is grounded in formal education from Wageningen University and Stanford — not internet credentials.
+            Kristina's clinical understanding is grounded in formal education from Wageningen University and Stanford.
           </p>
         </div>
 
@@ -1699,14 +1690,14 @@ export default function Landing() {
         <Hero />
         <SystemDescription />
         <About />
-        <Mechanism />
-        <Journey />
-        <PlatformPreview />
+        <Credentials />
         <Curriculum />
         <ResourceBonus />
-        <Benefits />
-        <Credentials />
+        <PlatformPreview />
         <OfferStack />
+        <Mechanism />
+        <Journey />
+        <Benefits />
         <FAQ />
         <FinalCTA />
         <BrandCoda />
