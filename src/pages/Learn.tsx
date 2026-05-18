@@ -27,6 +27,13 @@ import {
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { ResourceLibrary, ResourceDetail, RESOURCES, RelatedResources } from "./Resources";
+import {
+  PRICE,
+  ORIGINAL_PRICE,
+  DISCOUNT_PCT,
+  useCountdown,
+  formatCountdown,
+} from "../lib/launchOffer";
 import { ProductTour, isTourComplete, resetTour } from "../components/ProductTour";
 
 /* ═══════════════════════════════════════════════════════════════
@@ -701,26 +708,39 @@ const WelcomeScreen = ({
 
 /* ═══════════════════════════════════════════════════════════════
    PREVIEW BANNER — pinned strip at the very top in /preview mode
+   Carries the same launch-offer + countdown as the Landing so the
+   discount stays in view through the entire preview experience.
    ═══════════════════════════════════════════════════════════════ */
-const PreviewBanner = () => (
-  <div className="fixed top-0 inset-x-0 z-[60] h-10 bg-gradient-to-r from-amber-600 to-amber-700 text-white text-[11.5px] sm:text-xs font-bold flex items-center justify-center gap-2 sm:gap-3 px-4 shadow-md shadow-amber-700/30">
-    <span className="hidden sm:inline uppercase tracking-[0.22em] text-amber-100">Preview Mode</span>
-    <span className="sm:hidden uppercase tracking-[0.18em] text-amber-100">Preview</span>
-    <span className="opacity-50 hidden sm:inline">·</span>
-    <span className="hidden md:inline">Unlock 9 video modules + 19 PDFs + an ever-growing curated video list — $29, yours forever.</span>
-    <span className="hidden sm:inline md:hidden">9 modules + 19 PDFs + growing video list — $29 forever.</span>
-    <span className="sm:hidden">9 modules · 19 PDFs · $29 forever</span>
-    <a
-      href={PAYPAL_CHECKOUT_URL}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="ml-1 sm:ml-2 inline-flex items-center gap-1 px-2.5 sm:px-3 py-1 bg-white text-amber-800 hover:bg-amber-50 rounded-full text-[11px] font-black uppercase tracking-wider shadow-sm transition-colors"
-    >
-      Unlock
-      <ArrowRight className="w-3 h-3" />
-    </a>
-  </div>
-);
+const PreviewBanner = () => {
+  const remaining = useCountdown();
+  return (
+    <div className="fixed top-0 inset-x-0 z-[60] h-12 bg-gradient-to-r from-red-600 via-red-700 to-amber-700 text-white flex items-center justify-center gap-2 sm:gap-3 px-3 sm:px-4 shadow-md shadow-red-700/30">
+      <span className="hidden sm:inline uppercase tracking-[0.2em] text-amber-100 font-black text-[10.5px]">
+        Preview · Launch {DISCOUNT_PCT}% off
+      </span>
+      <span className="sm:hidden uppercase tracking-[0.18em] text-amber-100 font-black text-[10px]">
+        {DISCOUNT_PCT}% off
+      </span>
+      <span className="opacity-50">·</span>
+      <span className="line-through text-amber-200/70 font-semibold text-[11px] sm:text-[12px]">{ORIGINAL_PRICE}</span>
+      <span className="font-black text-[12.5px] sm:text-sm">{PRICE}</span>
+      <span className="opacity-50 hidden sm:inline">·</span>
+      <span className="hidden sm:inline uppercase tracking-[0.18em] text-amber-100 font-bold text-[10px]">Ends in</span>
+      <span className="font-black tabular-nums text-amber-200 text-[11.5px] sm:text-[13px]">
+        {formatCountdown(remaining)}
+      </span>
+      <a
+        href={PAYPAL_CHECKOUT_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="ml-1 sm:ml-2 inline-flex items-center gap-1 px-2.5 sm:px-3 py-1 bg-white text-red-700 hover:bg-amber-50 rounded-full text-[10.5px] sm:text-[11px] font-black uppercase tracking-wider shadow-sm transition-colors"
+      >
+        Unlock
+        <ArrowRight className="w-3 h-3" />
+      </a>
+    </div>
+  );
+};
 
 /* ═══════════════════════════════════════════════════════════════
    PREVIEW LOCKED RESOURCE — gated resource detail in /preview mode
@@ -1307,7 +1327,7 @@ export default function Learn({ previewMode = false }: { previewMode?: boolean }
       {previewMode && <PreviewBanner />}
 
       {/* Desktop Sidebar */}
-      <div className={`hidden lg:block w-72 flex-shrink-0 h-screen sticky shadow-sm ${previewMode ? "top-10" : "top-0"}`}>
+      <div className={`hidden lg:block w-72 flex-shrink-0 h-screen sticky shadow-sm ${previewMode ? "top-12" : "top-0"}`}>
         <Sidebar lessons={LESSONS} progress={progress} activeId={activeId} onSelect={goTo} onClose={() => {}} previewMode={previewMode} />
       </div>
 
@@ -1340,7 +1360,7 @@ export default function Learn({ previewMode = false }: { previewMode?: boolean }
       {/* Main */}
       <div className="flex-1 min-w-0">
         {/* Top Bar */}
-        <div className={`sticky z-30 bg-white/95 backdrop-blur-md border-b border-gray-100 px-4 py-3 flex items-center gap-4 ${previewMode ? "top-10" : "top-0"}`}>
+        <div className={`sticky z-30 bg-white/95 backdrop-blur-md border-b border-gray-100 px-4 py-3 flex items-center gap-4 ${previewMode ? "top-12" : "top-0"}`}>
           <button onClick={() => setSidebarOpen(true)} className="lg:hidden p-2 text-gray-600 hover:text-gray-900">
             <Menu className="w-5 h-5" />
           </button>

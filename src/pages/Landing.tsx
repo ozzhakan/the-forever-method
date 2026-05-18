@@ -42,74 +42,26 @@ import {
   FileText,
   PlayCircle,
 } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { RESOURCES } from "./Resources";
+import {
+  PRICE,
+  ORIGINAL_PRICE,
+  SAVINGS_AMOUNT,
+  DISCOUNT_PCT,
+  COUNTDOWN_HOURS,
+  useCountdown,
+  formatCountdown,
+} from "../lib/launchOffer";
 
-// Live count of "ready" library resources, minus the Watch List
-// (it now lives in its own platform tab, not the PDF grid)
-const PDF_COUNT = RESOURCES.filter(
-  (r) => r.status === "ready" && r.slug !== "the-watch-list"
-).length;
+// Total "ready" resources — Watch List included for a clean "20" count
+const PDF_COUNT = RESOURCES.filter((r) => r.status === "ready").length;
 
 /* ───────── CONSTANTS ───────── */
 const CHECKOUT_URL = "https://www.paypal.com/ncp/payment/U2TRU278WRCM4";
-const PRICE = "$29";
-const ORIGINAL_PRICE = "$138";
-const SAVINGS_AMOUNT = "$109";
-const DISCOUNT_PCT = 79;
-const COUNTDOWN_HOURS = 4;
 const CONTACT_EMAIL = "krudstina@gmail.com";
 const WHATSAPP_DISPLAY = "+31 6 18784896";
 const VSL_URL = "https://youtu.be/HPsy09z0Db0";
-
-/* ───────── EVERGREEN COUNTDOWN HOOK ─────────
-   Each visitor gets a 4-hour window starting on first landing. Window
-   is stored in localStorage so it persists across reloads / re-visits
-   in the same browser. When the window expires, a fresh 4-hour window
-   starts automatically (evergreen launch pattern). */
-const useCountdown = (hours: number) => {
-  const totalMs = hours * 60 * 60 * 1000;
-  const [remaining, setRemaining] = useState<number>(() => {
-    try {
-      const stored = localStorage.getItem("um-launch-end");
-      if (stored) {
-        const endTime = parseInt(stored, 10);
-        const left = endTime - Date.now();
-        if (left > 0 && left <= totalMs) return left;
-      }
-      const newEnd = Date.now() + totalMs;
-      localStorage.setItem("um-launch-end", newEnd.toString());
-      return totalMs;
-    } catch {
-      return totalMs;
-    }
-  });
-
-  useEffect(() => {
-    const tick = setInterval(() => {
-      setRemaining((prev) => {
-        const next = prev - 1000;
-        if (next <= 0) {
-          // Reset for a fresh launch window
-          const newEnd = Date.now() + totalMs;
-          try { localStorage.setItem("um-launch-end", newEnd.toString()); } catch { /* no-op */ }
-          return totalMs;
-        }
-        return next;
-      });
-    }, 1000);
-    return () => clearInterval(tick);
-  }, [totalMs]);
-
-  return remaining;
-};
-
-const formatCountdown = (ms: number): string => {
-  const h = Math.floor(ms / 3600000);
-  const m = Math.floor((ms % 3600000) / 60000);
-  const s = Math.floor((ms % 60000) / 1000);
-  return `${h.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
-};
 
 /* ───────── URGENCY BANNER ─────────
    Pinned to the very top of the page. Shows discount + live countdown
@@ -267,14 +219,7 @@ const Hero = () => (
 
         {/* Subheadline — the offer, concretely */}
         <p className="text-gray-400 text-[15px] sm:text-lg leading-relaxed mb-5 sm:mb-7 max-w-3xl mx-auto">
-          Get access to{" "}
-          <a
-            href="/preview"
-            className="text-white font-semibold underline decoration-amber-500/60 decoration-2 underline-offset-4 hover:decoration-amber-400 hover:text-amber-200 transition-colors"
-          >
-            9 transformative video modules
-          </a>
-          , live support, and more than <span className="text-white font-semibold">{PDF_COUNT} downloadable PDF resources</span> — protocols, templates, women-specific guides and a curated video library. Built from ten years of personal recovery and research, distilled into the system I wish someone had handed me on day one.
+          Get access to <span className="text-white font-semibold">9 transformative video modules</span>, live support, and <span className="text-white font-semibold">{PDF_COUNT} downloadable resources</span> — protocols, templates, women-specific guides and a curated video library. Built from ten years of personal recovery and research, distilled into the system I wish someone had handed me on day one.
         </p>
 
         {/* Launch-offer price pill — anchor + sale + savings */}
