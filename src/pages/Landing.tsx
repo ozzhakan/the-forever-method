@@ -317,53 +317,87 @@ const Hero = () => (
   </section>
 );
 
-/* ─────────── PREVIEW CTA — "see inside before you buy" ─────────── */
-const PreviewCTA = () => (
-  <section className="relative py-14 sm:py-20 bg-white border-y border-amber-100/70 overflow-hidden">
-    <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_60%_at_50%_50%,rgba(245,158,11,0.08),transparent)]" />
-    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[40rem] h-40 bg-amber-100/40 blur-3xl rounded-full pointer-events-none" />
+/* ─────────── SYSTEM DESCRIPTION — what makes Unhooked Method different ─────────── */
+const SystemDescription = () => {
+  const pillars = [
+    {
+      icon: Apple,
+      label: "Nutrition science",
+      body: "What to eat, when, and why — built on whole-food protein, fat, and volume foods. Not a diet plan, a framework you can run anywhere.",
+    },
+    {
+      icon: Brain,
+      label: "Neurobehaviour",
+      body: "How your brain wires the wanting — and how to interrupt the dopamine, conditioning, and physiological signals that drive every craving.",
+    },
+    {
+      icon: Heart,
+      label: "Psychology",
+      body: "The identity shift and value reordering that make the change permanent. Not motivation. The thing that makes year three look like year one.",
+    },
+  ];
 
-    <div className="relative max-w-3xl mx-auto px-4 sm:px-6">
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-60px" }}
-        transition={{ duration: 0.55 }}
-        className="bg-white border border-gray-200 rounded-3xl p-7 sm:p-10 shadow-xl shadow-amber-200/40"
-      >
-        <div className="flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-8">
-          <div className="flex-shrink-0 w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center shadow-lg shadow-amber-300/40">
-            <Eye className="w-7 h-7 sm:w-8 sm:h-8 text-white" />
-          </div>
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 mb-2">
-              <div className="h-px w-7 bg-amber-500" />
-              <span className="text-[10px] sm:text-[11px] font-black text-amber-700 uppercase tracking-[0.3em]">
-                See inside first
-              </span>
-            </div>
-            <h3 className="text-[1.4rem] sm:text-3xl font-black text-gray-900 leading-tight tracking-tight mb-2">
-              Walk through the platform before you buy.
-            </h3>
-            <p className="text-gray-600 text-[14px] sm:text-base leading-relaxed mb-5 sm:mb-6">
-              Browse the real interface — same sidebar, same Resource Library, same Watch List. The 9 video lessons stay locked, but you'll see exactly what's waiting on the inside.
+  return (
+    <section className="relative py-20 sm:py-28 bg-white overflow-hidden">
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[44rem] h-48 bg-amber-100/40 blur-3xl rounded-full pointer-events-none" />
+
+      <div className="relative max-w-4xl mx-auto px-4 sm:px-6">
+        <div className="text-center mb-12 sm:mb-14 max-w-2xl mx-auto">
+          <div className="inline-flex items-center gap-3 mb-5">
+            <div className="h-px w-7 bg-amber-600" />
+            <p className="text-[10px] sm:text-[11px] font-black text-amber-800 uppercase tracking-[0.3em]">
+              The system
             </p>
-            <a
-              href="/preview"
-              className="inline-flex items-center justify-center gap-2.5 px-6 sm:px-8 py-3.5 sm:py-4 bg-gradient-to-br from-amber-600 to-amber-800 hover:from-amber-700 hover:to-amber-900 text-white font-black text-[13.5px] sm:text-sm rounded-full shadow-lg shadow-amber-300/40 hover:-translate-y-0.5 transition-all uppercase tracking-[0.08em]"
-            >
-              Preview the platform
-              <ArrowRight className="w-4 h-4" />
-            </a>
-            <p className="mt-3 text-[11px] sm:text-xs text-gray-400 font-semibold">
-              No signup · No card · Just a tour
+            <div className="h-px w-7 bg-amber-600" />
+          </div>
+          <h2 className="text-[1.7rem] sm:text-5xl font-black text-gray-900 leading-[1.1] tracking-tight mb-5">
+            What is The Unhooked Method<sup className="text-[18px] sm:text-[26px] font-bold text-amber-700 ml-0.5 align-super">™</sup>?
+          </h2>
+          <div className="space-y-4 text-gray-600 text-[15px] sm:text-[17px] leading-relaxed">
+            <p>
+              The first integrated framework that fixes sugar and food dependency at <strong className="text-gray-900">all three layers</strong> — instead of one at a time.
+            </p>
+            <p className="text-[14px] sm:text-base text-gray-500">
+              Most diets only address the food. Most mindset coaches ignore the wiring. Most therapy skips the kitchen. The Unhooked Method walks you through all three — in nine modules structured so each layer reinforces the next.
             </p>
           </div>
         </div>
-      </motion.div>
-    </div>
-  </section>
-);
+
+        {/* 3 pillars */}
+        <div className="grid sm:grid-cols-3 gap-4 sm:gap-5 mb-10 sm:mb-12">
+          {pillars.map((p, i) => {
+            const Icon = p.icon;
+            return (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.5, delay: i * 0.08 }}
+                className="bg-white border border-gray-200 rounded-2xl p-5 sm:p-6 hover:border-amber-200 hover:shadow-md transition-all"
+              >
+                <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center shadow-sm shadow-amber-300/40 mb-4">
+                  <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                </div>
+                <p className="text-[10px] sm:text-[11px] font-black text-amber-700 uppercase tracking-[0.22em] mb-2">
+                  0{i + 1} · {p.label}
+                </p>
+                <p className="text-[13.5px] sm:text-[14.5px] text-gray-700 leading-[1.65]">
+                  {p.body}
+                </p>
+              </motion.div>
+            );
+          })}
+        </div>
+
+        {/* Closing line */}
+        <p className="text-center text-[14px] sm:text-base text-gray-700 leading-relaxed max-w-2xl mx-auto">
+          That's why most programs collapse by week three — they only fix one layer. <strong className="text-gray-900">Unhooked fixes the whole stack.</strong>
+        </p>
+      </div>
+    </section>
+  );
+};
 
 /* ─────────── THE 3-LAYER MECHANISM ─────────── */
 const Mechanism = () => {
@@ -1104,13 +1138,13 @@ const About = () => (
   <section id="about" className="py-20 sm:py-32 bg-amber-50/30 relative overflow-hidden">
     <div className="absolute top-0 right-0 w-96 h-96 bg-amber-100/40 rounded-full blur-3xl pointer-events-none" />
 
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 relative z-10">
-      <div className="flex flex-col md:flex-row gap-8 md:gap-14 items-center md:items-start">
-        <div className="flex-shrink-0 w-40 sm:w-48 md:w-auto md:max-w-[260px] mx-auto md:mx-0 relative">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 relative z-10">
+      <div className="flex flex-col md:flex-row gap-10 md:gap-16 items-center md:items-start">
+        <div className="flex-shrink-0 w-56 sm:w-72 md:w-80 lg:w-96 md:max-w-none mx-auto md:mx-0 relative">
           <img
             src="/kristina.jpg"
             alt="Kristina Oz"
-            className="w-full aspect-[4/5] rounded-3xl object-cover shadow-xl"
+            className="w-full aspect-[4/5] rounded-3xl object-cover shadow-2xl shadow-amber-300/30"
           />
           <div className="absolute -bottom-3 -right-3 sm:-bottom-4 sm:-right-4 bg-gradient-to-br from-amber-600 to-amber-800 text-white px-3 py-2 sm:px-4 sm:py-3 rounded-2xl shadow-lg">
             <div className="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em] opacity-80">Based in</div>
@@ -1700,14 +1734,14 @@ export default function Landing() {
       <Navbar />
       <main>
         <Hero />
-        <PreviewCTA />
+        <SystemDescription />
+        <About />
         <Mechanism />
         <Journey />
         <PlatformPreview />
         <Curriculum />
         <ResourceBonus />
         <Benefits />
-        <About />
         <Credentials />
         <OfferStack />
         <FAQ />
