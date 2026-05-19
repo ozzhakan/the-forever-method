@@ -25,30 +25,59 @@ declare global {
 }
 
 export default function ThankYou() {
-  // Fire Meta Pixel Purchase event on mount.
-  // The site-wide loader in index.html defers fbevents.js until
-  // window.load/interaction/2s to keep Landing fast — but on this
-  // conversion page we want the Purchase event to fire ASAP, not
-  // queued. So we force-inject fbevents.js immediately here. If
-  // it's already loaded (e.g. visitor came from Landing) this is
-  // a no-op.
+  // Fire Meta Pixel Purchase event on mount — BOTH browser pixel AND
+  // server-side CAPI, sharing a single event_id so Meta dedupes them.
+  // The site-wide loader defers fbevents.js for Landing performance;
+  // here we force-load it immediately because this is the conversion
+  // page and pixel reliability matters more than speed.
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      try {
-        if (!document.querySelector('script[src*="connect.facebook.net/en_US/fbevents.js"]')) {
-          const s = document.createElement("script");
-          s.async = true;
-          s.src = "https://connect.facebook.net/en_US/fbevents.js";
-          document.head.appendChild(s);
-        }
-        if (typeof window.fbq === "function") {
-          window.fbq("track", "Purchase", { value: 29, currency: "USD" });
-        }
-      } catch (err) {
-        console.warn("Meta Pixel Purchase event failed:", err);
+    if (typeof window === "undefined") return;
+
+    try {
+      if (!document.querySelector('script[src*="connect.facebook.net/en_US/fbevents.js"]')) {
+        const s = document.createElement("script");
+        s.async = true;
+        s.src = "https://connect.facebook.net/en_US/fbevents.js";
+        document.head.appendChild(s);
       }
+
+      // Single event_id shared across browser + server channels so
+      // Meta's dedup merges them into one conversion (not two).
+      const event_id = (typeof crypto !== "undefined" && crypto.randomUUID)
+        ? crypto.randomUUID()
+        : `purchase-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+
+      // ── Browser pixel ── (third arg = eventID for dedup)
+      if (typeof window.fbq === "function") {
+        window.fbq(
+          "track",
+          "Purchase",
+          { value: 29, currency: "USD" },
+          { eventID: event_id },
+        );
+      }
+
+      // ── Server-side CAPI ── (covers ad-blockers, ITP, fast bouncers)
+      const cookie = document.cookie;
+      const fbp = /(?:^|; )_fbp=([^;]+)/.exec(cookie)?.[1];
+      const fbc = /(?:^|; )_fbc=([^;]+)/.exec(cookie)?.[1];
+      fetch("/api/capi-purchase", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          event_id,
+          value: 29,
+          currency: "USD",
+          source_url: window.location.href,
+          fbp,
+          fbc,
+        }),
+        keepalive: true,
+      }).catch((err) => console.warn("CAPI Purchase POST failed:", err));
+    } catch (err) {
+      console.warn("Meta Pixel Purchase event failed:", err);
     }
-    // Update page title for browser tab + history
+
     const prev = document.title;
     document.title = "You're in — The Unhooked Method™";
     return () => { document.title = prev; };
