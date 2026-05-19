@@ -147,7 +147,7 @@ const Navbar = () => {
               rel="noopener noreferrer"
               className="px-5 py-2 text-sm font-bold text-white bg-gradient-to-br from-amber-600 to-amber-700 rounded-full hover:from-amber-700 hover:to-amber-800 transition-all shadow-md shadow-amber-200/50"
             >
-              Get instant access — {PRICE}
+              Join Now! −{DISCOUNT_PCT}%
             </a>
           </div>
 
@@ -176,7 +176,7 @@ const Navbar = () => {
               onClick={() => setIsOpen(false)}
               className="block w-full text-center py-3 text-base font-bold text-white bg-gradient-to-br from-amber-600 to-amber-700 rounded-xl mt-2"
             >
-              Get instant access — {PRICE}
+              Join Now! −{DISCOUNT_PCT}%
             </a>
           </motion.div>
         )}
@@ -285,7 +285,7 @@ const Hero = () => (
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 sm:gap-2.5 px-8 sm:px-12 py-4 sm:py-5 text-[15px] sm:text-lg font-bold text-white bg-gradient-to-br from-amber-500 to-amber-700 hover:from-amber-600 hover:to-amber-800 rounded-full shadow-2xl shadow-amber-500/25 hover:-translate-y-0.5 transition-all w-full sm:w-auto justify-center max-w-sm"
           >
-            Get instant access — {PRICE}
+            Join Now! −{DISCOUNT_PCT}%
             <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
           </a>
           <div className="mt-5 flex flex-wrap items-center justify-center gap-x-4 sm:gap-x-5 gap-y-2 text-[10px] sm:text-xs text-gray-500 font-semibold">
@@ -1408,7 +1408,7 @@ const OfferStack = () => (
             rel="noopener noreferrer"
             className="flex items-center justify-center gap-2 w-full py-4 sm:py-5 text-[15px] sm:text-lg font-bold text-white bg-gradient-to-br from-amber-600 to-amber-800 hover:from-amber-700 hover:to-amber-900 rounded-full transition-all shadow-xl shadow-amber-300/40 hover:-translate-y-0.5 mb-5"
           >
-            Get instant access — {DISCOUNT_PCT}% off
+            Join Now! −{DISCOUNT_PCT}%
             <ArrowRight className="w-5 h-5" />
           </a>
 
@@ -1587,7 +1587,7 @@ const FinalCTA = () => (
         rel="noopener noreferrer"
         className="inline-flex items-center gap-2 sm:gap-3 px-8 sm:px-12 py-4 sm:py-5 text-[15px] sm:text-lg font-bold text-white bg-gradient-to-br from-amber-600 to-amber-800 hover:from-amber-700 hover:to-amber-900 rounded-full shadow-xl shadow-amber-300/40 hover:-translate-y-0.5 transition-all w-full sm:w-auto justify-center max-w-sm"
       >
-        Get instant access — {PRICE}
+        Join Now! −{DISCOUNT_PCT}%
         <ArrowRight className="w-5 h-5" />
       </a>
       <p className="mt-5 text-[11px] sm:text-xs text-gray-500">
