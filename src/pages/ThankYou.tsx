@@ -25,11 +25,25 @@ declare global {
 }
 
 export default function ThankYou() {
-  // Fire Meta Pixel Purchase event on mount
+  // Fire Meta Pixel Purchase event on mount.
+  // The site-wide loader in index.html defers fbevents.js until
+  // window.load/interaction/2s to keep Landing fast — but on this
+  // conversion page we want the Purchase event to fire ASAP, not
+  // queued. So we force-inject fbevents.js immediately here. If
+  // it's already loaded (e.g. visitor came from Landing) this is
+  // a no-op.
   useEffect(() => {
-    if (typeof window !== "undefined" && typeof window.fbq === "function") {
+    if (typeof window !== "undefined") {
       try {
-        window.fbq("track", "Purchase", { value: 29, currency: "USD" });
+        if (!document.querySelector('script[src*="connect.facebook.net/en_US/fbevents.js"]')) {
+          const s = document.createElement("script");
+          s.async = true;
+          s.src = "https://connect.facebook.net/en_US/fbevents.js";
+          document.head.appendChild(s);
+        }
+        if (typeof window.fbq === "function") {
+          window.fbq("track", "Purchase", { value: 29, currency: "USD" });
+        }
       } catch (err) {
         console.warn("Meta Pixel Purchase event failed:", err);
       }
