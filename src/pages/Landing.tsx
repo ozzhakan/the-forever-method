@@ -1706,22 +1706,14 @@ const OfferCountdown = () => {
   );
 };
 
-/* ───────── STICKY CTA WITH COUNTDOWN ─────────
-   Phone + tablet only. Echoes the urgency banner: shows the live
-   countdown above a button that names the discount + sale price. */
+/* ───────── STICKY CTA ─────────
+   Phone + tablet only. The top urgency banner already carries the
+   live countdown, so this bar is button-only to keep the bottom
+   chrome minimal and the click target dominant. */
 const StickyCTA = () => {
-  const remaining = useCountdown(COUNTDOWN_HOURS);
   return (
-    <div className="lg:hidden fixed bottom-0 inset-x-0 px-3 sm:px-4 pt-2 pb-3 sm:pb-4 bg-white/95 backdrop-blur-md border-t border-gray-100 z-[55]">
+    <div className="lg:hidden fixed bottom-0 inset-x-0 px-3 sm:px-4 pt-3 pb-3 sm:pb-4 bg-white/95 backdrop-blur-md border-t border-gray-100 z-[55]">
       <div className="max-w-md mx-auto">
-        <div className="flex items-center justify-center gap-2 text-[10.5px] sm:text-[11px] font-black uppercase tracking-[0.18em] mb-1.5 sm:mb-2">
-          <span className="text-red-600">{DISCOUNT_PCT}% off</span>
-          <span className="text-gray-300">·</span>
-          <span className="text-gray-500">ends in</span>
-          <span className="font-black tabular-nums text-red-600">
-            {formatCountdown(remaining)}
-          </span>
-        </div>
         <a
           href={CHECKOUT_URL}
           target="_blank"
