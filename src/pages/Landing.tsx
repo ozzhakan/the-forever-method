@@ -197,22 +197,22 @@ const Hero = () => (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 relative z-10">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="text-center">
 
-        {/* Headline — promise + benefit + brand stamp */}
+        {/* Headline — brand → promise → framing → offer description */}
         <h1 className="text-white tracking-tight mb-5 sm:mb-7 mt-4 sm:mt-2 leading-[1.12]">
-          <span className="block text-[1.65rem] sm:text-[2.6rem] md:text-[3.1rem] font-black">
-            How to end sugar cravings in 14 days
+          <span className="block text-[1.7rem] sm:text-[2.5rem] md:text-[3rem] font-black">
+            The Unhooked Method<sup className="text-[0.45em] font-bold text-amber-400 ml-1 relative -top-2">™</sup>
           </span>
-          <span className="block italic text-amber-400 font-black text-[1.65rem] sm:text-[2.6rem] md:text-[3.1rem] mt-1.5 sm:mt-2">
-            and get control of your brain and body back
+          <span className="block italic text-amber-400 font-black text-[1.45rem] sm:text-[2.15rem] md:text-[2.5rem] mt-2 sm:mt-3 leading-[1.18]">
+            A new system to End Sugar Cravings Once and for All.
           </span>
-          <span className="block text-[11.5px] sm:text-[13px] md:text-sm text-amber-300 font-bold tracking-[0.22em] uppercase mt-4 sm:mt-5">
-            with the new Unhooked Method<sup className="text-[8px] sm:text-[10px] font-bold ml-0.5 relative -top-1">™</sup>
+          <span className="block text-[13px] sm:text-[15px] md:text-[16px] text-gray-300 font-medium tracking-normal mt-4 sm:mt-5 max-w-2xl mx-auto leading-snug normal-case">
+            designed to help people survive and regain their control in the modern food environment
           </span>
         </h1>
 
-        {/* Subheadline — the offer, concretely */}
-        <p className="text-gray-400 text-[15px] sm:text-lg leading-relaxed mb-5 sm:mb-7 max-w-3xl mx-auto">
-          Get access to a <span className="text-white font-semibold">private member platform</span> where you'll find <span className="text-white font-semibold">9 transformative video modules</span>, live support, and <span className="text-white font-semibold">{PDF_COUNT} downloadable resources</span> — protocols, templates, women-specific guides and a curated video library.
+        {/* Subheadline — the full offer, concretely */}
+        <p className="text-gray-400 text-[14.5px] sm:text-[17px] leading-relaxed mb-5 sm:mb-7 max-w-3xl mx-auto">
+          A <span className="text-white font-semibold">private member platform</span> with <span className="text-white font-semibold">9 in-depth modules</span> giving you a step-by-step solution; live support throughout; <span className="text-white font-semibold">{PDF_COUNT}+ downloadables</span> — protocols, templates, guides; and a <span className="text-white font-semibold">curated video library of world experts</span> in the topic. Everything set in one place for you to succeed.
         </p>
 
         {/* Launch-offer price pill — anchor + sale + savings */}
@@ -304,6 +304,11 @@ const Hero = () => (
               Instant access
             </div>
           </div>
+
+          {/* Risk-reversal P.S. — drives home the 14-day guarantee right under the CTA */}
+          <p className="mt-6 sm:mt-7 text-[13px] sm:text-[14px] text-gray-400 leading-relaxed max-w-xl mx-auto">
+            <span className="font-bold text-amber-300">P.S.</span> You don't risk anything — <span className="text-white font-semibold">14-day money-back guarantee</span> if the course doesn't suit you.
+          </p>
         </div>
       </motion.div>
     </div>
@@ -1732,10 +1737,9 @@ const StickyCTA = () => {
           href={CHECKOUT_URL}
           target="_blank"
           rel="noopener noreferrer"
-          className="w-full py-3.5 sm:py-4 bg-gradient-to-br from-amber-600 to-amber-800 text-white font-bold text-[14px] sm:text-[15px] rounded-full flex items-center justify-center gap-2 shadow-lg shadow-amber-300/40 active:scale-95 transition-transform"
+          className="w-full py-3.5 sm:py-4 bg-gradient-to-br from-amber-600 to-amber-800 text-white font-bold text-[15px] sm:text-[16px] rounded-full flex items-center justify-center gap-2 shadow-lg shadow-amber-300/40 active:scale-95 transition-transform"
         >
-          <span className="text-amber-200/80 line-through font-semibold text-[12.5px] sm:text-[13px]">{ORIGINAL_PRICE}</span>
-          <span>Get instant access · {PRICE}</span>
+          <span>Join Now! −{DISCOUNT_PCT}%</span>
           <ArrowRight className="w-4 h-4" />
         </a>
       </div>
