@@ -202,10 +202,10 @@ const Hero = () => (
           <span className="block text-[1.7rem] sm:text-[2.5rem] md:text-[3rem] font-black">
             The Unhooked Method<sup className="text-[0.45em] font-bold text-amber-400 ml-1 relative -top-2">™</sup>
           </span>
-          <span className="block italic text-amber-400 font-black text-[1.45rem] sm:text-[2.15rem] md:text-[2.5rem] mt-2 sm:mt-3 leading-[1.18]">
+          <span className="block text-amber-400 font-black text-[1.45rem] sm:text-[2.15rem] md:text-[2.5rem] mt-2 sm:mt-3 leading-[1.18]">
             A new system to End Sugar Cravings Once and for All.
           </span>
-          <span className="block text-[13px] sm:text-[15px] md:text-[16px] text-gray-300 font-medium tracking-normal mt-4 sm:mt-5 max-w-2xl mx-auto leading-snug normal-case">
+          <span className="block italic text-[13px] sm:text-[15px] md:text-[16px] text-gray-300 font-medium tracking-normal mt-4 sm:mt-5 max-w-2xl mx-auto leading-snug normal-case">
             designed to help people survive and regain their control in the modern food environment
           </span>
         </h1>
@@ -215,21 +215,10 @@ const Hero = () => (
           A <span className="text-white font-semibold">private member platform</span> with <span className="text-white font-semibold">9 in-depth modules</span> giving you a step-by-step solution; live support throughout; <span className="text-white font-semibold">{PDF_COUNT}+ downloadables</span> — protocols, templates, guides; and a <span className="text-white font-semibold">curated video library of world experts</span> in the topic. Everything set in one place for you to succeed.
         </p>
 
-        {/* Launch-offer price pill — anchor + sale + savings */}
-        <div className="inline-flex items-center gap-3 sm:gap-4 px-4 sm:px-5 py-2.5 sm:py-3 bg-amber-500/10 border border-amber-500/40 rounded-full mb-8 sm:mb-12">
-          <span className="text-[11px] sm:text-[13px] font-black text-amber-300 uppercase tracking-[0.25em]">
-            Launch · {DISCOUNT_PCT}% off
-          </span>
-          <span className="text-gray-500 line-through font-semibold text-[13px] sm:text-[15px]">
-            {ORIGINAL_PRICE}
-          </span>
-          <span className="text-white font-black text-[15px] sm:text-lg">
-            {PRICE}
-          </span>
-          <span className="hidden sm:inline text-amber-300 font-bold text-[12px]">
-            save {SAVINGS_AMOUNT}
-          </span>
-        </div>
+        {/* Spacer where the launch-offer pill used to live — kept so the
+            VSL doesn't slam into the subhead. The top urgency banner +
+            sticky bottom bar already carry the price anchor. */}
+        <div className="mb-8 sm:mb-12" />
 
         {/* VSL Video Player */}
         <motion.div
@@ -285,7 +274,7 @@ const Hero = () => (
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 sm:gap-2.5 px-8 sm:px-12 py-4 sm:py-5 text-[15px] sm:text-lg font-bold text-white bg-gradient-to-br from-amber-500 to-amber-700 hover:from-amber-600 hover:to-amber-800 rounded-full shadow-2xl shadow-amber-500/25 hover:-translate-y-0.5 transition-all w-full sm:w-auto justify-center max-w-sm"
           >
-            Join Now! −{DISCOUNT_PCT}%
+            Get instant access
             <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
           </a>
           <div className="mt-5 flex flex-wrap items-center justify-center gap-x-4 sm:gap-x-5 gap-y-2 text-[10px] sm:text-xs text-gray-500 font-semibold">
