@@ -142,12 +142,6 @@ const Navbar = () => {
             <a href="#curriculum" className="text-sm font-semibold text-gray-600 hover:text-amber-700 transition-colors">Curriculum</a>
             <a href="#about" className="text-sm font-semibold text-gray-600 hover:text-amber-700 transition-colors">About</a>
             <a
-              href="/preview"
-              className="text-sm font-bold text-amber-700 hover:text-amber-900 transition-colors underline-offset-4 hover:underline"
-            >
-              Preview platform ↗
-            </a>
-            <a
               href={CHECKOUT_URL}
               target="_blank"
               rel="noopener noreferrer"
@@ -175,7 +169,6 @@ const Navbar = () => {
             <a href="#journey" onClick={() => setIsOpen(false)} className="block text-base font-semibold text-gray-900 py-1">The Journey</a>
             <a href="#curriculum" onClick={() => setIsOpen(false)} className="block text-base font-semibold text-gray-900 py-1">Curriculum</a>
             <a href="#about" onClick={() => setIsOpen(false)} className="block text-base font-semibold text-gray-900 py-1">About</a>
-            <a href="/preview" onClick={() => setIsOpen(false)} className="block text-base font-bold text-amber-700 py-1">Preview the platform ↗</a>
             <a
               href={CHECKOUT_URL}
               target="_blank"
