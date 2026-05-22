@@ -71,16 +71,17 @@
       }
     </style>
 
-    <!-- Trackers (Meta Pixel + Microsoft Clarity) are stub-initialised
-         synchronously so any early fbq()/clarity() calls in app code
-         queue safely, but the heavy fbevents.js / clarity.js loaders
-         are deferred until after `load` (or first user interaction)
-         to keep them off the critical path. Pingdom showed 588ms of
-         blocking wait on Facebook signals/config — this removes that. -->
+    <!-- Trackers (Meta Pixel + Microsoft Clarity + Google Ads gtag) are
+         stub-initialised synchronously so any early fbq()/clarity()/gtag()
+         calls queue safely, but the heavy loader scripts are deferred
+         until after `load` (or first user interaction) to keep them off
+         the critical path. Pingdom showed 588ms of blocking wait on
+         Facebook signals/config — deferral removes that. -->
     <script>
       (function () {
-        // ── Meta Pixel stub (Pixel ID: 828094209949462) ──
         var f = window, b = document;
+
+        // ── Meta Pixel stub (Pixel ID: 828094209949462) ──
         f.fbq = f.fbq || function () {
           (f.fbq.callMethod ? f.fbq.callMethod.apply(f.fbq, arguments) : f.fbq.queue.push(arguments));
         };
@@ -92,18 +93,30 @@
         // ── Microsoft Clarity stub (Project ID: wsfm0n6r6e) ──
         f.clarity = f.clarity || function () { (f.clarity.q = f.clarity.q || []).push(arguments); };
 
+        // ── Google Ads gtag stub (Tag ID: AW-18180111003) ──
+        // dataLayer + gtag() exist immediately, so config + any later
+        // conversion events queue and replay once gtag.js loads.
+        f.dataLayer = f.dataLayer || [];
+        f.gtag = f.gtag || function () { f.dataLayer.push(arguments); };
+        f.gtag('js', new Date());
+        f.gtag('config', 'AW-18180111003');
+
         var loaded = false;
         function loadTrackers() {
           if (loaded) return; loaded = true;
+          var first = b.getElementsByTagName('script')[0];
           // Meta Pixel
           var s = b.createElement('script'); s.async = true;
           s.src = 'https://connect.facebook.net/en_US/fbevents.js';
-          var first = b.getElementsByTagName('script')[0];
           first.parentNode.insertBefore(s, first);
           // Microsoft Clarity
           var c = b.createElement('script'); c.async = true;
           c.src = 'https://www.clarity.ms/tag/wsfm0n6r6e';
           first.parentNode.insertBefore(c, first);
+          // Google Ads gtag
+          var g = b.createElement('script'); g.async = true;
+          g.src = 'https://www.googletagmanager.com/gtag/js?id=AW-18180111003';
+          first.parentNode.insertBefore(g, first);
         }
 
         // Fire whichever comes first: window load, 2s safety timeout, or
