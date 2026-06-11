@@ -7,3 +7,7 @@ coverage/
 .env*
 !.env.example
 .vercel
+
+# Raw source assets — the served copies live in public/ (don't double-commit)
+/images/
+/pdf/

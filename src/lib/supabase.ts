@@ -7,6 +7,46 @@ const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_KEY as string;
 export const supabase =
   SUPABASE_URL && SUPABASE_KEY ? createClient(SUPABASE_URL, SUPABASE_KEY) : null;
 
+/* ─── Leads (free PDF email capture) ───
+   Persists every email that grabs the free 60-Day ADHD Meal Plan so we
+   can reach those people later (the YouTube → free-PDF → nurture funnel).
+   Best-effort by design: the caller NEVER blocks PDF delivery on this —
+   if the write fails (e.g. table not yet created) the visitor still gets
+   their PDF and we just log it.
+
+   One-time Supabase setup (run in the SQL editor):
+     create table if not exists leads (
+       email text primary key,
+       source text,
+       created_at timestamptz default now()
+     );
+     alter table leads enable row level security;
+     create policy "anon can insert leads" on leads
+       for insert to anon with check (true);
+*/
+export async function captureLead(
+  email: string,
+  source = "adhd-meal-plan"
+): Promise<{ ok: boolean; reason?: string }> {
+  if (!supabase) return { ok: false, reason: "supabase-not-configured" };
+  try {
+    const { error } = await supabase
+      .from("leads")
+      .upsert(
+        { email: email.trim().toLowerCase(), source, created_at: new Date().toISOString() },
+        { onConflict: "email" }
+      );
+    if (error) {
+      console.warn("captureLead failed:", error.message);
+      return { ok: false, reason: error.message };
+    }
+    return { ok: true };
+  } catch (err) {
+    console.warn("captureLead threw:", err);
+    return { ok: false, reason: String(err) };
+  }
+}
+
 /* ─── Student ─── */
 export async function upsertStudent(email: string, name: string) {
   if (!supabase) return;

@@ -1,5 +1,43 @@
 @import "tailwindcss";
 
+/* ═══════════════════════════════════════════════════════════════
+   KRISTINA OZ · "FUEL MADE SIMPLE" — brand design system
+   Extracted from the 60-Day ADHD Meal Plan PDF + marketing assets.
+   Warm cream canvas · forest green · hot pink · mustard · mint.
+   Chunky retro-serif display + rounded sans body + script signature.
+   ═══════════════════════════════════════════════════════════════ */
+@theme {
+  /* ── Brand palette ── */
+  --color-cream: #fbf0e9;        /* page canvas — warm linen */
+  --color-cream-deep: #f6e7dd;   /* slightly deeper cream for panels */
+  --color-shell: #fce7ef;        /* palest pink — page edge / wash */
+
+  --color-forest: #1a6e45;       /* primary green — headings, dark cards */
+  --color-forest-deep: #145638;  /* darker green for gradients/hover */
+
+  --color-rose: #e5448c;         /* hot pink — accents, secondary heads */
+  --color-rose-deep: #cf2f78;    /* deeper pink for hover */
+  --color-petal: #f9cfdd;        /* soft pink — boxes, borders, rings */
+  --color-petal-pale: #fde6ee;   /* palest pink box fill */
+
+  --color-gold: #d9a82e;         /* mustard accent */
+  --color-butter: #f5e9b8;       /* pale yellow — icon backgrounds */
+  --color-mint: #cdebd9;         /* light mint — icon backgrounds */
+
+  --color-cocoa: #6e4a2c;        /* warm brown accent */
+
+  --color-ink: #2d2a26;          /* primary text — warm near-black */
+  --color-ink-soft: #6f6a63;     /* muted body text */
+
+  /* ── Brand type ──
+     display = chunky warm retro serif (Fraunces heavy)
+     body    = clean rounded geometric sans (Poppins)
+     script  = formal signature (Pinyon Script) */
+  --font-display: "Fraunces", "Georgia", serif;
+  --font-body: "Poppins", system-ui, -apple-system, sans-serif;
+  --font-script: "Pinyon Script", "Brush Script MT", cursive;
+}
+
 /* Utility — hide native scrollbars on small horizontal overflow strips
    while keeping the scroll behaviour intact. */
 .no-scrollbar {
@@ -8,4 +46,27 @@
 }
 .no-scrollbar::-webkit-scrollbar {
   display: none;
+}
+
+/* Entrance reveal — runs on mount, always ends visible. Used instead of
+   scroll-gated JS reveals so content can never get stuck invisible on a
+   conversion/SEO page (crawlers + reduced-motion users see it too). */
+@keyframes brand-rise {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.rise {
+  animation: brand-rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .rise { animation: none; }
+}
+
+/* Brand display headings get the warm, slightly-wonky retro treatment.
+   Applied via the `.font-display` utility; this just tunes the optical
+   size + softness so heavy weights read chunky and friendly, not sharp. */
+.font-display {
+  font-optical-sizing: auto;
+  font-variation-settings: "opsz" 144, "SOFT" 40, "WONK" 0;
+  letter-spacing: -0.01em;
 }
