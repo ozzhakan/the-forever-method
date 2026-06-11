@@ -39,9 +39,9 @@
     <meta property="og:url" content="https://theunhookedmethod.com" />
     <meta property="og:title" content="ADHD Nutrition Made Simple — Free 60-Day Meal Plan" />
     <meta property="og:description" content="Steady fuel, calmer focus, fewer cravings. A simple, repeatable way to eat for an ADHD brain — no calorie counting, no willpower. Grab the free 60-Day ADHD Meal Plan." />
-    <meta property="og:image" content="https://theunhookedmethod.com/og-adhd-meal-plan.jpg" />
+    <meta property="og:image" content="https://theunhookedmethod.com/brand/free-cover.jpg" />
     <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
+    <meta property="og:image:height" content="1600" />
     <meta property="og:image:alt" content="Your 60-Day ADHD Meal Plan — a free guide by Kristina Oz" />
     <meta property="og:locale" content="en_US" />
 
@@ -49,7 +49,50 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="ADHD Nutrition Made Simple — Free 60-Day Meal Plan" />
     <meta name="twitter:description" content="Steady fuel, calmer focus, fewer cravings — a simple way to eat for an ADHD brain. Grab the free 60-Day ADHD Meal Plan by Kristina Oz." />
-    <meta name="twitter:image" content="https://theunhookedmethod.com/og-adhd-meal-plan.jpg" />
+    <meta name="twitter:image" content="https://theunhookedmethod.com/brand/free-cover.jpg" />
+
+    <!-- Structured data — helps Google understand the brand, the free
+         guide, and the paid course (rich results + knowledge graph). -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://theunhookedmethod.com/#website",
+            "url": "https://theunhookedmethod.com",
+            "name": "Kristina Oz · Fuel Made Simple",
+            "description": "ADHD nutrition made simple — steady fuel, calmer focus, fewer cravings."
+          },
+          {
+            "@type": "Person",
+            "@id": "https://theunhookedmethod.com/#kristina",
+            "name": "Kristina Oz",
+            "url": "https://theunhookedmethod.com",
+            "sameAs": ["https://www.youtube.com/@oz.kristina"]
+          },
+          {
+            "@type": "Course",
+            "name": "The Unhooked Method",
+            "description": "A self-paced course to break the food-addiction loop with science, not willpower — the neuroscience of cravings, an eat-to-fullness food framework, and 38 if-then protocols for the moment a craving hits.",
+            "url": "https://theunhookedmethod.com/course",
+            "provider": { "@id": "https://theunhookedmethod.com/#kristina" },
+            "offers": {
+              "@type": "Offer",
+              "price": "29",
+              "priceCurrency": "USD",
+              "url": "https://theunhookedmethod.com/course",
+              "category": "Self-paced online course"
+            },
+            "hasCourseInstance": {
+              "@type": "CourseInstance",
+              "courseMode": "online",
+              "courseWorkload": "PT4H"
+            }
+          }
+        ]
+      }
+    </script>
 
     <!-- Facebook domain verification — required for Meta ads / CAPI -->
     <meta name="facebook-domain-verification" content="16iri2j0toobnh4vi75h0776t46orz" />
