@@ -30,11 +30,14 @@ export async function captureLead(
 ): Promise<{ ok: boolean; reason?: string }> {
   if (!supabase) return { ok: false, reason: "supabase-not-configured" };
   try {
+    // insert, ignore duplicates: ON CONFLICT DO NOTHING. A repeat email
+    // no-ops instead of attempting an UPDATE (which the anon INSERT-only
+    // policy would reject). Lead capture only needs the first record.
     const { error } = await supabase
       .from("leads")
       .upsert(
         { email: email.trim().toLowerCase(), source, created_at: new Date().toISOString() },
-        { onConflict: "email" }
+        { onConflict: "email", ignoreDuplicates: true }
       );
     if (error) {
       console.warn("captureLead failed:", error.message);
