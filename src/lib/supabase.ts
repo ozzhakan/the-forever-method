@@ -30,16 +30,17 @@ export async function captureLead(
 ): Promise<{ ok: boolean; reason?: string }> {
   if (!supabase) return { ok: false, reason: "supabase-not-configured" };
   try {
-    // insert, ignore duplicates: ON CONFLICT DO NOTHING. A repeat email
-    // no-ops instead of attempting an UPDATE (which the anon INSERT-only
-    // policy would reject). Lead capture only needs the first record.
+    // Plain INSERT — NOT upsert. PostgREST upsert (ON CONFLICT) requires
+    // the anon role to also hold UPDATE permission, which our INSERT-only
+    // RLS policy doesn't grant, so every upsert was rejected with a 42501
+    // RLS violation. A plain insert only needs the INSERT policy.
     const { error } = await supabase
       .from("leads")
-      .upsert(
-        { email: email.trim().toLowerCase(), source, created_at: new Date().toISOString() },
-        { onConflict: "email", ignoreDuplicates: true }
-      );
+      .insert({ email: email.trim().toLowerCase(), source, created_at: new Date().toISOString() });
     if (error) {
+      // 23505 = unique_violation: this email is already on the list. That's
+      // a success for lead capture (we already have them), not a failure.
+      if (error.code === "23505") return { ok: true };
       console.warn("captureLead failed:", error.message);
       return { ok: false, reason: error.message };
     }
