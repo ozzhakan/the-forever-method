@@ -167,7 +167,7 @@ const ResourceShell = ({
       <div className="print:hidden flex items-center justify-between gap-3 mb-6 sm:mb-8">
         <button
           onClick={onBack}
-          className="flex items-center gap-2 px-3 sm:px-4 py-2 text-sm font-bold text-gray-600 hover:text-amber-700 hover:bg-amber-50 rounded-lg transition-colors"
+          className="flex items-center gap-2 px-3 sm:px-4 py-2 text-sm font-bold text-gray-600 hover:text-forest hover:bg-cream rounded-lg transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           <span className="hidden sm:inline">{backLabel}</span>
@@ -185,7 +185,7 @@ const ResourceShell = ({
           <button
             onClick={handleDownload}
             disabled={isGenerating}
-            className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2.5 text-xs sm:text-sm font-bold text-white bg-gradient-to-br from-amber-600 to-amber-800 hover:from-amber-700 hover:to-amber-900 disabled:opacity-70 rounded-full shadow-md shadow-amber-300/40 transition-all"
+            className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2.5 text-xs sm:text-sm font-bold text-white bg-gradient-to-br from-forest to-forest-deep hover:from-forest hover:to-forest-deep disabled:opacity-70 rounded-full shadow-md shadow-forest/20 transition-all"
           >
             {isGenerating ? (
               <>
@@ -205,7 +205,7 @@ const ResourceShell = ({
 
       {/* Print-only brand header */}
       <header className="hidden print:flex items-center gap-2 mb-6 pb-4 border-b border-gray-200">
-        <div className="w-6 h-6 bg-amber-700 rounded flex items-center justify-center">
+        <div className="w-6 h-6 bg-forest rounded flex items-center justify-center">
           <Flame className="w-3.5 h-3.5 text-white" />
         </div>
         <span className="text-xs font-black tracking-tight text-gray-900">The Unhooked Method</span>
@@ -215,11 +215,11 @@ const ResourceShell = ({
       {/* Title block */}
       <header className="mb-10 sm:mb-14 print:mb-8">
         <div className="flex items-center gap-3 mb-5 print:hidden">
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-50 to-amber-100 border border-amber-100 flex items-center justify-center">
-            <Icon className="w-6 h-6 text-amber-700" />
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-cream to-mint border border-mint flex items-center justify-center">
+            <Icon className="w-6 h-6 text-forest" />
           </div>
           <div className="flex flex-col">
-            <span className="text-[10px] sm:text-[11px] font-black text-amber-700 uppercase tracking-[0.25em]">
+            <span className="text-[10px] sm:text-[11px] font-black text-forest uppercase tracking-[0.25em]">
               {resource.eyebrow}
             </span>
             <span className="text-[10px] sm:text-xs font-semibold text-gray-400">
@@ -251,7 +251,7 @@ const ResourceShell = ({
       <div className="print:hidden mt-14 sm:mt-16 flex justify-center">
         <button
           onClick={onBack}
-          className="inline-flex items-center gap-2 px-5 sm:px-6 py-3 text-[13.5px] sm:text-sm font-bold text-amber-800 bg-amber-50 hover:bg-amber-100 border border-amber-200 hover:border-amber-300 rounded-full transition-colors shadow-sm"
+          className="inline-flex items-center gap-2 px-5 sm:px-6 py-3 text-[13.5px] sm:text-sm font-bold text-forest-deep bg-cream hover:bg-mint border border-petal hover:border-petal rounded-full transition-colors shadow-sm"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>{backLabel}</span>
@@ -297,8 +297,8 @@ const Section = ({
   <section>
     {(num || eyebrow) && (
       <div className="flex items-baseline gap-3 mb-3">
-        {num && <span className="text-amber-600 font-black text-base sm:text-lg tabular-nums">{num}</span>}
-        {eyebrow && <span className="text-[10px] sm:text-[11px] font-black text-amber-800 uppercase tracking-[0.22em]">{eyebrow}</span>}
+        {num && <span className="text-forest font-black text-base sm:text-lg tabular-nums">{num}</span>}
+        {eyebrow && <span className="text-[10px] sm:text-[11px] font-black text-forest-deep uppercase tracking-[0.22em]">{eyebrow}</span>}
       </div>
     )}
     <h2 className="text-xl sm:text-3xl font-black text-gray-900 tracking-tight leading-tight mb-4 sm:mb-5 print:text-2xl">{title}</h2>
@@ -317,7 +317,7 @@ const Callout = ({
   children: ReactNode;
 }) => {
   const styles = {
-    amber: "bg-amber-50 border-amber-300 text-amber-900",
+    amber: "bg-cream border-petal text-forest-deep",
     gray: "bg-gray-50 border-gray-300 text-gray-800",
     warning: "bg-orange-50 border-orange-300 text-orange-900",
   }[variant];
@@ -337,12 +337,12 @@ const ProtocolList = ({ items }: { items: { num: number; if_: string; then_: str
   <ol className="space-y-3.5 sm:space-y-4">
     {items.map((item) => (
       <li key={item.num} className="flex gap-3 sm:gap-4 print:break-inside-avoid">
-        <span className="text-amber-700 font-black text-[13px] sm:text-sm tabular-nums w-6 sm:w-7 flex-shrink-0 pt-0.5">
+        <span className="text-forest font-black text-[13px] sm:text-sm tabular-nums w-6 sm:w-7 flex-shrink-0 pt-0.5">
           {String(item.num).padStart(2, "0")}
         </span>
         <p className="flex-1 text-gray-800 text-[14.5px] sm:text-[15.5px] leading-[1.6]">
-          <span className="font-bold text-amber-900">If</span> {item.if_}{" "}
-          <span className="font-bold text-amber-900">→ then</span> {item.then_}
+          <span className="font-bold text-forest-deep">If</span> {item.if_}{" "}
+          <span className="font-bold text-forest-deep">→ then</span> {item.then_}
         </p>
       </li>
     ))}
@@ -350,7 +350,7 @@ const ProtocolList = ({ items }: { items: { num: number; if_: string; then_: str
 );
 
 const Pill = ({ children }: { children: ReactNode }) => (
-  <span className="inline-flex items-center px-2.5 py-1 bg-amber-50 border border-amber-200 rounded-full text-[11px] sm:text-xs font-semibold text-amber-800">
+  <span className="inline-flex items-center px-2.5 py-1 bg-cream border border-petal rounded-full text-[11px] sm:text-xs font-semibold text-forest-deep">
     {children}
   </span>
 );
@@ -359,7 +359,7 @@ const NameGrid = ({ names }: { names: string[] }) => (
   <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 mt-3">
     {names.map((n) => (
       <div key={n} className="flex items-start gap-2 text-[14px] sm:text-[15px] text-gray-800 print:break-inside-avoid">
-        <span className="text-amber-500 mt-1.5 flex-shrink-0">•</span>
+        <span className="text-forest mt-1.5 flex-shrink-0">•</span>
         <span>{n}</span>
       </div>
     ))}
@@ -370,7 +370,7 @@ const Checklist = ({ items }: { items: string[] }) => (
   <ul className="space-y-2.5 mt-3">
     {items.map((s, i) => (
       <li key={i} className="flex gap-3 items-start text-[14.5px] sm:text-[15px] text-gray-800 print:break-inside-avoid">
-        <span className="w-5 h-5 mt-0.5 border-2 border-amber-300 rounded flex-shrink-0" />
+        <span className="w-5 h-5 mt-0.5 border-2 border-petal rounded flex-shrink-0" />
         <span className="leading-snug">{s}</span>
       </li>
     ))}
@@ -379,7 +379,7 @@ const Checklist = ({ items }: { items: string[] }) => (
 
 const BlankLine = ({ label }: { label?: string }) => (
   <div className="mt-3">
-    {label && <p className="text-[10px] font-bold text-amber-700 uppercase tracking-[0.2em] mb-1.5">{label}</p>}
+    {label && <p className="text-[10px] font-bold text-forest uppercase tracking-[0.2em] mb-1.5">{label}</p>}
     <div className="border-b border-dashed border-gray-300 h-6" />
   </div>
 );
@@ -392,14 +392,14 @@ const FoodCardGrid = ({ items }: { items: FoodItem[] }) => (
     {items.map((f, i) => (
       <div
         key={i}
-        className="bg-white border border-gray-200 rounded-xl px-3 py-3 sm:px-3.5 sm:py-3.5 hover:border-amber-300 transition-colors print:break-inside-avoid"
+        className="bg-white border border-gray-200 rounded-xl px-3 py-3 sm:px-3.5 sm:py-3.5 hover:border-petal transition-colors print:break-inside-avoid"
       >
         <p className="text-[12.5px] sm:text-[13.5px] font-bold text-gray-900 leading-tight">{f.name}</p>
         {f.portion && (
           <p className="text-[11px] sm:text-[11.5px] text-gray-500 leading-tight mt-1">{f.portion}</p>
         )}
         {f.macro && (
-          <p className="text-[10.5px] sm:text-[11px] font-black text-amber-700 uppercase tracking-wider mt-1.5">{f.macro}</p>
+          <p className="text-[10.5px] sm:text-[11px] font-black text-forest uppercase tracking-wider mt-1.5">{f.macro}</p>
         )}
       </div>
     ))}
@@ -412,7 +412,7 @@ const Table = ({ headers, rows }: { headers: string[]; rows: string[][] }) => (
       <thead>
         <tr>
           {headers.map((h, i) => (
-            <th key={i} className="text-left text-[10px] font-black text-amber-800 uppercase tracking-[0.2em] px-3 py-2 bg-amber-50 border-b-2 border-amber-300">
+            <th key={i} className="text-left text-[10px] font-black text-forest-deep uppercase tracking-[0.2em] px-3 py-2 bg-cream border-b-2 border-petal">
               {h}
             </th>
           ))}
@@ -443,9 +443,9 @@ const IfThenProtocols = () => (
         <p>Willpower lives in the prefrontal cortex — and the prefrontal cortex depletes across the day. By 9pm, after work, decisions, emotion management and a slightly low blood sugar, it is running on fumes. That is exactly when the craving hits hardest.</p>
         <p>An if-then protocol moves the decision out of that moment. You decide once, in the morning, sitting calmly. When the trigger fires, there is no negotiation — only execution. The format is fixed:</p>
         <Callout variant="amber">
-          <span className="font-bold text-amber-900">If</span> [a very specific trigger]{" "}
-          <span className="text-amber-700">→</span>{" "}
-          <span className="font-bold text-amber-900">then</span> [a very specific action]
+          <span className="font-bold text-forest-deep">If</span> [a very specific trigger]{" "}
+          <span className="text-forest">→</span>{" "}
+          <span className="font-bold text-forest-deep">then</span> [a very specific action]
         </Callout>
         <p className="text-gray-600">Notice the two words doing the work: <em>specific</em>, twice. Vague triggers ("if I feel tired") and vague actions ("I'll be careful") collapse under pressure. The protocols below are all written so a depleted brain can run them without thinking.</p>
       </div>
@@ -536,7 +536,7 @@ const IfThenProtocols = () => (
       <div className="mt-6 space-y-5">
         {[1, 2, 3].map((n) => (
           <div key={n} className="border border-gray-200 rounded-2xl p-5 sm:p-6 print:break-inside-avoid">
-            <p className="text-[10px] font-black text-amber-700 uppercase tracking-[0.22em] mb-3">Protocol {n}</p>
+            <p className="text-[10px] font-black text-forest uppercase tracking-[0.22em] mb-3">Protocol {n}</p>
             <BlankLine label="If" />
             <BlankLine label="The real need underneath" />
             <BlankLine label="→ Then" />
@@ -559,7 +559,7 @@ const IfThenProtocols = () => (
             <div className="flex-1">
               <p className="text-gray-500 line-through">{m.wrong}</p>
               <p className="text-gray-900 font-semibold flex items-start gap-2 mt-0.5">
-                <span className="text-amber-700">→</span>
+                <span className="text-forest">→</span>
                 <span>{m.right}</span>
               </p>
             </div>
@@ -614,10 +614,10 @@ const HiddenNamesOfSugar = () => (
 
     <Section eyebrow="08" title="How to scan a label in 10 seconds">
       <ol className="space-y-3 text-[14.5px] sm:text-base text-gray-700 leading-relaxed">
-        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">1.</span><span>Turn the package over. Find the ingredient list — not the front-of-box marketing.</span></li>
-        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">2.</span><span>Look at the <strong>first three ingredients</strong>. Ingredients are listed by weight — the first three define the product.</span></li>
-        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">3.</span><span>Scan for any name on this list. Also scan for any word ending in <strong>-ose</strong> or <strong>-syrup</strong>.</span></li>
-        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">4.</span><span>Count the total number of sugar aliases anywhere on the list. Three or more = an engineered product. Put it back.</span></li>
+        <li className="flex gap-3"><span className="text-forest font-black tabular-nums">1.</span><span>Turn the package over. Find the ingredient list — not the front-of-box marketing.</span></li>
+        <li className="flex gap-3"><span className="text-forest font-black tabular-nums">2.</span><span>Look at the <strong>first three ingredients</strong>. Ingredients are listed by weight — the first three define the product.</span></li>
+        <li className="flex gap-3"><span className="text-forest font-black tabular-nums">3.</span><span>Scan for any name on this list. Also scan for any word ending in <strong>-ose</strong> or <strong>-syrup</strong>.</span></li>
+        <li className="flex gap-3"><span className="text-forest font-black tabular-nums">4.</span><span>Count the total number of sugar aliases anywhere on the list. Three or more = an engineered product. Put it back.</span></li>
       </ol>
     </Section>
   </>
@@ -653,7 +653,7 @@ const YFASSelfCheck = () => (
         ].map((m) => (
           <div key={m.n} className="border border-gray-200 rounded-2xl p-5 sm:p-6 print:break-inside-avoid">
             <div className="flex items-start gap-3 sm:gap-4 mb-3">
-              <span className="text-amber-700 font-black text-lg sm:text-xl tabular-nums leading-none pt-0.5 flex-shrink-0">{String(m.n).padStart(2, "0")}</span>
+              <span className="text-forest font-black text-lg sm:text-xl tabular-nums leading-none pt-0.5 flex-shrink-0">{String(m.n).padStart(2, "0")}</span>
               <div className="flex-1">
                 <h3 className="text-base sm:text-lg font-bold text-gray-900 leading-snug">{m.title}</h3>
               </div>
@@ -667,7 +667,7 @@ const YFASSelfCheck = () => (
               <span className="text-[10px] font-bold text-gray-400 ml-1">0 = never · 4 = almost always</span>
             </div>
             <div className="border-t border-gray-100 pt-3 mt-3">
-              <span className="text-[10px] font-bold text-amber-700 uppercase tracking-[0.2em]">Your example (if score ≥ 2)</span>
+              <span className="text-[10px] font-bold text-forest uppercase tracking-[0.2em]">Your example (if score ≥ 2)</span>
               <div className="mt-2 border-b border-gray-200 h-6"></div>
             </div>
           </div>
@@ -679,18 +679,18 @@ const YFASSelfCheck = () => (
       <div className="space-y-4 text-gray-700 text-[15px] sm:text-base leading-[1.65]">
         <p>Per the clinical literature, <strong className="text-gray-900">two or three of these markers persisting over time</strong> meets the threshold for food addiction. The number isn't a verdict on your character. It is a diagnostic snapshot of a system that has been running for a while.</p>
         <div className="grid sm:grid-cols-3 gap-3 sm:gap-4 mt-6">
-          <div className="bg-amber-50 border border-amber-200 rounded-2xl p-5">
-            <p className="text-[10px] font-black text-amber-800 uppercase tracking-[0.22em] mb-2">2 markers</p>
+          <div className="bg-cream border border-petal rounded-2xl p-5">
+            <p className="text-[10px] font-black text-forest-deep uppercase tracking-[0.22em] mb-2">2 markers</p>
             <p className="text-sm sm:text-base font-bold text-gray-900 mb-1">Mild</p>
             <p className="text-[13px] sm:text-sm text-gray-600 leading-relaxed">A real pattern. Module 5–7 protocols address this directly.</p>
           </div>
-          <div className="bg-amber-100/60 border border-amber-300 rounded-2xl p-5">
-            <p className="text-[10px] font-black text-amber-800 uppercase tracking-[0.22em] mb-2">4–5 markers</p>
+          <div className="bg-mint/60 border border-petal rounded-2xl p-5">
+            <p className="text-[10px] font-black text-forest-deep uppercase tracking-[0.22em] mb-2">4–5 markers</p>
             <p className="text-sm sm:text-base font-bold text-gray-900 mb-1">Moderate</p>
             <p className="text-[13px] sm:text-sm text-gray-600 leading-relaxed">Environment design (Module 6) and values work (Module 8) matter at least as much as food rules.</p>
           </div>
-          <div className="bg-amber-200/50 border border-amber-400 rounded-2xl p-5">
-            <p className="text-[10px] font-black text-amber-800 uppercase tracking-[0.22em] mb-2">6+ markers</p>
+          <div className="bg-petal/50 border border-gold rounded-2xl p-5">
+            <p className="text-[10px] font-black text-forest-deep uppercase tracking-[0.22em] mb-2">6+ markers</p>
             <p className="text-sm sm:text-base font-bold text-gray-900 mb-1">Severe</p>
             <p className="text-[13px] sm:text-sm text-gray-600 leading-relaxed">Work the course in full, and consider professional support alongside. See the note below.</p>
           </div>
@@ -719,10 +719,10 @@ const CravingLog24h = () => (
 
     <Section eyebrow="02 · How to use it" title="Four fields, every time a craving fires">
       <ol className="space-y-3 text-[14.5px] sm:text-base text-gray-700 leading-relaxed">
-        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">1.</span><span><strong>Time</strong> — to the nearest 15 minutes. You'll see clock patterns emerge.</span></li>
-        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">2.</span><span><strong>What you ate in the past 2–3 hours</strong> — including coffee, snacks, "nothing." Insulin crashes from earlier meals show up here.</span></li>
-        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">3.</span><span><strong>What was happening just before the craving</strong> — a Zoom ended, you opened Instagram, you walked past the kitchen, you finished a task.</span></li>
-        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">4.</span><span><strong>What emotional state you were in</strong> — bored, anxious, lonely, frustrated, tired, restless, fine.</span></li>
+        <li className="flex gap-3"><span className="text-forest font-black tabular-nums">1.</span><span><strong>Time</strong> — to the nearest 15 minutes. You'll see clock patterns emerge.</span></li>
+        <li className="flex gap-3"><span className="text-forest font-black tabular-nums">2.</span><span><strong>What you ate in the past 2–3 hours</strong> — including coffee, snacks, "nothing." Insulin crashes from earlier meals show up here.</span></li>
+        <li className="flex gap-3"><span className="text-forest font-black tabular-nums">3.</span><span><strong>What was happening just before the craving</strong> — a Zoom ended, you opened Instagram, you walked past the kitchen, you finished a task.</span></li>
+        <li className="flex gap-3"><span className="text-forest font-black tabular-nums">4.</span><span><strong>What emotional state you were in</strong> — bored, anxious, lonely, frustrated, tired, restless, fine.</span></li>
       </ol>
     </Section>
 
@@ -743,9 +743,9 @@ const CravingLog24h = () => (
 
     <Section eyebrow="04 · After 24 hours" title="The three questions to ask the data">
       <ol className="space-y-3 text-[14.5px] sm:text-base text-gray-700 leading-relaxed">
-        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">1.</span><span><strong>Time pattern?</strong> Did cravings cluster around specific clock times? (3pm, post-dinner, late evening.)</span></li>
-        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">2.</span><span><strong>Food pattern?</strong> Did they follow a refined-carb meal by 2–3 hours? That's the insulin crash signature.</span></li>
-        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">3.</span><span><strong>Emotional pattern?</strong> Was it the same emotion most times? Boredom and exhaustion are the top two for almost everyone.</span></li>
+        <li className="flex gap-3"><span className="text-forest font-black tabular-nums">1.</span><span><strong>Time pattern?</strong> Did cravings cluster around specific clock times? (3pm, post-dinner, late evening.)</span></li>
+        <li className="flex gap-3"><span className="text-forest font-black tabular-nums">2.</span><span><strong>Food pattern?</strong> Did they follow a refined-carb meal by 2–3 hours? That's the insulin crash signature.</span></li>
+        <li className="flex gap-3"><span className="text-forest font-black tabular-nums">3.</span><span><strong>Emotional pattern?</strong> Was it the same emotion most times? Boredom and exhaustion are the top two for almost everyone.</span></li>
       </ol>
       <Callout variant="amber" title="What you do with this">
         Take the strongest pattern you found and turn it into one if-then protocol. See <em>The If-Then Protocols Library</em> for examples — and the Personal Operating System sheet for blanks.
@@ -776,9 +776,9 @@ const KitchenAuditChecklist = () => (
         ].map((row, i) => (
           <div key={i} className="border border-gray-200 rounded-2xl p-5 print:break-inside-avoid">
             <div className="flex items-start gap-3 mb-2">
-              <div className="w-6 h-6 border-2 border-amber-300 rounded flex-shrink-0 mt-0.5" />
+              <div className="w-6 h-6 border-2 border-petal rounded flex-shrink-0 mt-0.5" />
               <div className="flex-1">
-                <p className="text-[10px] font-black text-amber-700 uppercase tracking-[0.2em] mb-1">{row.area}</p>
+                <p className="text-[10px] font-black text-forest uppercase tracking-[0.2em] mb-1">{row.area}</p>
                 <p className="text-[14px] sm:text-[15px] text-gray-700 leading-relaxed">{row.look}</p>
               </div>
             </div>
@@ -992,10 +992,10 @@ const PantryRestockList = () => (
 
     <Section eyebrow="11 · Shopping route" title="How to get in and out without sliding">
       <ol className="space-y-3 text-[14.5px] sm:text-base text-gray-700 leading-relaxed">
-        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">1.</span><span>Never shop hungry. Eat first or carry a snack.</span></li>
-        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">2.</span><span>Always go with a list. Don't browse.</span></li>
-        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">3.</span><span>Stick to the perimeter — produce, meat, fish, dairy. The center aisles are mostly ultra-processed.</span></li>
-        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">4.</span><span>Skip the candy at checkout. Same route, same exit, every time.</span></li>
+        <li className="flex gap-3"><span className="text-forest font-black tabular-nums">1.</span><span>Never shop hungry. Eat first or carry a snack.</span></li>
+        <li className="flex gap-3"><span className="text-forest font-black tabular-nums">2.</span><span>Always go with a list. Don't browse.</span></li>
+        <li className="flex gap-3"><span className="text-forest font-black tabular-nums">3.</span><span>Stick to the perimeter — produce, meat, fish, dairy. The center aisles are mostly ultra-processed.</span></li>
+        <li className="flex gap-3"><span className="text-forest font-black tabular-nums">4.</span><span>Skip the candy at checkout. Same route, same exit, every time.</span></li>
       </ol>
     </Section>
   </>
@@ -1019,7 +1019,7 @@ const PersonalOSSheet = () => (
       <div className="space-y-5">
         {[1, 2, 3, 4, 5].map((n) => (
           <div key={n} className="border border-gray-200 rounded-2xl p-5 sm:p-6 print:break-inside-avoid">
-            <p className="text-[10px] font-black text-amber-700 uppercase tracking-[0.22em] mb-4">Rule {n}</p>
+            <p className="text-[10px] font-black text-forest uppercase tracking-[0.22em] mb-4">Rule {n}</p>
             <BlankLine label="The situation (If…)" />
             <BlankLine label="My action (Then…)" />
           </div>
@@ -1058,17 +1058,17 @@ const CravingProtocolTemplate = () => (
 
     <Section eyebrow="02" title="For each trigger, three things">
       <ol className="space-y-3 text-[14.5px] sm:text-base text-gray-700 leading-relaxed">
-        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">1.</span><span><strong>The trigger itself</strong> — the specific time, place, or emotional state.</span></li>
-        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">2.</span><span><strong>What's usually underneath</strong> — the real need the craving is pointing at (boredom, exhaustion, loneliness, overwhelm).</span></li>
-        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">3.</span><span><strong>Your if-then response</strong> — pre-decided, specific, one-step.</span></li>
+        <li className="flex gap-3"><span className="text-forest font-black tabular-nums">1.</span><span><strong>The trigger itself</strong> — the specific time, place, or emotional state.</span></li>
+        <li className="flex gap-3"><span className="text-forest font-black tabular-nums">2.</span><span><strong>What's usually underneath</strong> — the real need the craving is pointing at (boredom, exhaustion, loneliness, overwhelm).</span></li>
+        <li className="flex gap-3"><span className="text-forest font-black tabular-nums">3.</span><span><strong>Your if-then response</strong> — pre-decided, specific, one-step.</span></li>
       </ol>
     </Section>
 
     <Section eyebrow="03 · Your protocols" title="Fill these in tonight, before you close the video">
       <div className="space-y-5">
         {["Most reliable trigger", "Second most common trigger", "Third trigger to address"].map((label, i) => (
-          <div key={i} className="border-2 border-amber-200 rounded-2xl p-5 sm:p-6 print:break-inside-avoid">
-            <p className="text-[10px] font-black text-amber-700 uppercase tracking-[0.22em] mb-1">Protocol {i + 1}</p>
+          <div key={i} className="border-2 border-petal rounded-2xl p-5 sm:p-6 print:break-inside-avoid">
+            <p className="text-[10px] font-black text-forest uppercase tracking-[0.22em] mb-1">Protocol {i + 1}</p>
             <p className="text-sm font-semibold text-gray-900 mb-4">{label}</p>
             <BlankLine label="Trigger (If…)" />
             <BlankLine label="Real need underneath" />
@@ -1118,10 +1118,10 @@ const TheWatchList = () => (
         {WATCH_LIST_VIDEOS.map((v) => (
           <div key={v.id} className="print:break-inside-avoid">
             <div className="flex items-center gap-3 mb-2.5">
-              <span className="text-[11px] sm:text-xs font-black text-amber-700 uppercase tracking-[0.22em] tabular-nums">
+              <span className="text-[11px] sm:text-xs font-black text-forest uppercase tracking-[0.22em] tabular-nums">
                 Video {String(v.n).padStart(2, "0")}
               </span>
-              <div className="h-px flex-1 bg-amber-100" />
+              <div className="h-px flex-1 bg-mint" />
             </div>
             <div className="aspect-video rounded-2xl overflow-hidden bg-gray-900 shadow-md print:hidden">
               <iframe
@@ -1136,7 +1136,7 @@ const TheWatchList = () => (
             {/* Print-only fallback: show direct link */}
             <p className="hidden print:block text-[13px] text-gray-700 leading-relaxed">
               Watch on YouTube:{" "}
-              <span className="font-mono text-amber-800">youtu.be/{v.id}</span>
+              <span className="font-mono text-forest-deep">youtu.be/{v.id}</span>
             </p>
           </div>
         ))}
@@ -1173,7 +1173,7 @@ const CycleTracker = () => (
           { phase: "Ovulatory (days 14–17)", body: "Estrogen and testosterone peak. Most social, most confident. Cravings usually quiet." },
           { phase: "Luteal (days 18–28)", body: "Progesterone rises then drops. Sensitivity to insulin drops too. Cravings — especially for sugar and salt — spike. This is the danger window." },
         ].map((p, i) => (
-          <div key={i} className="border-l-2 border-amber-300 pl-5 py-1">
+          <div key={i} className="border-l-2 border-petal pl-5 py-1">
             <p className="font-bold text-gray-900 text-[15px] sm:text-base mb-1">{p.phase}</p>
             <p className="text-[13.5px] sm:text-sm text-gray-600 leading-relaxed">{p.body}</p>
           </div>
@@ -1219,10 +1219,10 @@ const PMSDecoded = () => (
 
     <Section eyebrow="02 · The cascade" title="Insulin → SHBG → sex hormones → symptoms">
       <ol className="space-y-3.5 text-[14.5px] sm:text-base text-gray-700 leading-relaxed">
-        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">1.</span><span>Chronic refined-carb intake keeps insulin elevated.</span></li>
-        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">2.</span><span>Elevated insulin lowers SHBG (sex hormone binding globulin) — the protein that keeps your sex hormones in balance.</span></li>
-        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">3.</span><span>SHBG drops → active estrogen rises, testosterone becomes less regulated, progesterone recedes.</span></li>
-        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">4.</span><span>The symptoms below appear — predictably, in the same window each month.</span></li>
+        <li className="flex gap-3"><span className="text-forest font-black tabular-nums">1.</span><span>Chronic refined-carb intake keeps insulin elevated.</span></li>
+        <li className="flex gap-3"><span className="text-forest font-black tabular-nums">2.</span><span>Elevated insulin lowers SHBG (sex hormone binding globulin) — the protein that keeps your sex hormones in balance.</span></li>
+        <li className="flex gap-3"><span className="text-forest font-black tabular-nums">3.</span><span>SHBG drops → active estrogen rises, testosterone becomes less regulated, progesterone recedes.</span></li>
+        <li className="flex gap-3"><span className="text-forest font-black tabular-nums">4.</span><span>The symptoms below appear — predictably, in the same window each month.</span></li>
       </ol>
     </Section>
 
@@ -1263,7 +1263,7 @@ const PMSDecoded = () => (
           { n: "Vitamin B6 (50mg, with food)", w: "Cofactor in serotonin synthesis. Reduces mood symptoms in luteal phase." },
           { n: "Omega-3 (2–3g EPA+DHA daily)", w: "Anti-inflammatory; reduces cramps and breast tenderness." },
         ].map((x, i) => (
-          <div key={i} className="border-l-2 border-amber-300 pl-5 py-1">
+          <div key={i} className="border-l-2 border-petal pl-5 py-1">
             <p className="font-bold text-gray-900 text-[15px] sm:text-base mb-0.5">{x.n}</p>
             <p className="text-[13.5px] sm:text-sm text-gray-600 leading-relaxed">{x.w}</p>
           </div>
@@ -1292,10 +1292,10 @@ const PCOSSugarConnection = () => (
 
     <Section eyebrow="02 · How it cascades" title="From insulin to ovary">
       <ol className="space-y-3.5 text-[14.5px] sm:text-base text-gray-700 leading-relaxed">
-        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">1.</span><span>Years of refined-carb intake → chronically elevated insulin.</span></li>
-        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">2.</span><span>Elevated insulin pushes ovaries to produce more androgens (testosterone).</span></li>
-        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">3.</span><span>Elevated insulin also lowers SHBG, so the testosterone that exists is more biologically active.</span></li>
-        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">4.</span><span>High active testosterone → cystic ovaries, irregular cycles, hirsutism, acne, scalp hair loss, weight resistant to typical interventions.</span></li>
+        <li className="flex gap-3"><span className="text-forest font-black tabular-nums">1.</span><span>Years of refined-carb intake → chronically elevated insulin.</span></li>
+        <li className="flex gap-3"><span className="text-forest font-black tabular-nums">2.</span><span>Elevated insulin pushes ovaries to produce more androgens (testosterone).</span></li>
+        <li className="flex gap-3"><span className="text-forest font-black tabular-nums">3.</span><span>Elevated insulin also lowers SHBG, so the testosterone that exists is more biologically active.</span></li>
+        <li className="flex gap-3"><span className="text-forest font-black tabular-nums">4.</span><span>High active testosterone → cystic ovaries, irregular cycles, hirsutism, acne, scalp hair loss, weight resistant to typical interventions.</span></li>
       </ol>
     </Section>
 
@@ -1426,7 +1426,7 @@ const IronForWomen = () => (
     <Section eyebrow="03 · Food sources" title="Heme (animal) vs non-heme (plant)" intro="Heme iron is roughly 3–4x more bioavailable than non-heme. If you eat meat, this is the most reliable source. If you don't, you need more food + better pairing.">
       <div className="grid sm:grid-cols-2 gap-4 sm:gap-5 mt-3">
         <div>
-          <p className="text-[10px] font-black text-amber-700 uppercase tracking-[0.22em] mb-3">Heme iron (animal)</p>
+          <p className="text-[10px] font-black text-forest uppercase tracking-[0.22em] mb-3">Heme iron (animal)</p>
           <NameGrid names={[
             "Liver (the highest iron food)",
             "Red meat (beef, lamb)",
@@ -1437,7 +1437,7 @@ const IronForWomen = () => (
           ]} />
         </div>
         <div>
-          <p className="text-[10px] font-black text-amber-700 uppercase tracking-[0.22em] mb-3">Non-heme iron (plant)</p>
+          <p className="text-[10px] font-black text-forest uppercase tracking-[0.22em] mb-3">Non-heme iron (plant)</p>
           <NameGrid names={[
             "Cooked spinach",
             "Lentils",
@@ -1512,8 +1512,8 @@ const ForWomenWithDietHistory = () => (
           { num: "04", t: "Watch for refeeding spikes.", b: "When you start eating enough after years of under-eating, hunger may spike temporarily — sometimes dramatically. This is normal and good. Eat. Don't restrict it. It settles in 2–4 weeks." },
           { num: "05", t: "If a slip happens, don't 'compensate.'", b: "Compensation (skipping the next meal, working out 'to make up for it') restarts the cycle that broke you in the first place. Eat the next meal as planned. The protocol holds." },
         ].map((x) => (
-          <div key={x.num} className="border-l-2 border-amber-300 pl-5 py-1 print:break-inside-avoid">
-            <p className="text-[10px] font-black text-amber-700 uppercase tracking-[0.22em] mb-1.5">{x.num}</p>
+          <div key={x.num} className="border-l-2 border-petal pl-5 py-1 print:break-inside-avoid">
+            <p className="text-[10px] font-black text-forest uppercase tracking-[0.22em] mb-1.5">{x.num}</p>
             <p className="font-bold text-gray-900 text-[15px] sm:text-base mb-1">{x.t}</p>
             <p className="text-[13.5px] sm:text-sm text-gray-600 leading-relaxed">{x.b}</p>
           </div>
@@ -1627,10 +1627,10 @@ const FemaleLabPanel = () => (
 
     <Section eyebrow="07 · How to use this" title="The conversation">
       <ol className="space-y-3 text-[14.5px] sm:text-base text-gray-700 leading-relaxed">
-        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">1.</span><span>Print this page and bring it to your appointment.</span></li>
-        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">2.</span><span>Ask: "I'd like the labs on this list with my next blood draw, please." Most are inexpensive and standard.</span></li>
-        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">3.</span><span>If your doctor refuses some labs, you can usually order them privately. Costs vary by country.</span></li>
-        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">4.</span><span>Get a copy of the actual numbers — not just "normal." Track them over time. Patterns matter more than single readings.</span></li>
+        <li className="flex gap-3"><span className="text-forest font-black tabular-nums">1.</span><span>Print this page and bring it to your appointment.</span></li>
+        <li className="flex gap-3"><span className="text-forest font-black tabular-nums">2.</span><span>Ask: "I'd like the labs on this list with my next blood draw, please." Most are inexpensive and standard.</span></li>
+        <li className="flex gap-3"><span className="text-forest font-black tabular-nums">3.</span><span>If your doctor refuses some labs, you can usually order them privately. Costs vary by country.</span></li>
+        <li className="flex gap-3"><span className="text-forest font-black tabular-nums">4.</span><span>Get a copy of the actual numbers — not just "normal." Track them over time. Patterns matter more than single readings.</span></li>
       </ol>
       <Callout variant="warning" title="Final note">
         This is not a substitute for medical advice. Bring the numbers to a clinician you trust. The point of running them is informed conversation about your own body, not self-diagnosis.
@@ -1695,8 +1695,8 @@ const HabitTracker = () => (
 
     <Section eyebrow="03 · Habit ideas, by category" title="What's worth tracking">
       <div className="grid sm:grid-cols-3 gap-4 sm:gap-5">
-        <div className="border-l-2 border-amber-300 pl-5 py-1">
-          <p className="text-[10px] font-black text-amber-700 uppercase tracking-[0.22em] mb-2">Foundation</p>
+        <div className="border-l-2 border-petal pl-5 py-1">
+          <p className="text-[10px] font-black text-forest uppercase tracking-[0.22em] mb-2">Foundation</p>
           <p className="text-[13.5px] sm:text-sm text-gray-600 leading-relaxed mb-3">Every-day basics that compound.</p>
           <Checklist items={[
             "Protein + fat breakfast",
@@ -1706,8 +1706,8 @@ const HabitTracker = () => (
             "Walk 20+ minutes",
           ]} />
         </div>
-        <div className="border-l-2 border-amber-300 pl-5 py-1">
-          <p className="text-[10px] font-black text-amber-700 uppercase tracking-[0.22em] mb-2">Replacement</p>
+        <div className="border-l-2 border-petal pl-5 py-1">
+          <p className="text-[10px] font-black text-forest uppercase tracking-[0.22em] mb-2">Replacement</p>
           <p className="text-[13.5px] sm:text-sm text-gray-600 leading-relaxed mb-3">Substitutes for old patterns.</p>
           <Checklist items={[
             "Sparkling water at 9pm",
@@ -1717,8 +1717,8 @@ const HabitTracker = () => (
             "Call instead of snack",
           ]} />
         </div>
-        <div className="border-l-2 border-amber-300 pl-5 py-1">
-          <p className="text-[10px] font-black text-amber-700 uppercase tracking-[0.22em] mb-2">Avoidance</p>
+        <div className="border-l-2 border-petal pl-5 py-1">
+          <p className="text-[10px] font-black text-forest uppercase tracking-[0.22em] mb-2">Avoidance</p>
           <p className="text-[13.5px] sm:text-sm text-gray-600 leading-relaxed mb-3">Triggers you keep out.</p>
           <Checklist items={[
             "No UPF in house today",
@@ -1733,11 +1733,11 @@ const HabitTracker = () => (
 
     <Section eyebrow="04 · After day 30" title="The review — five honest questions">
       <ol className="space-y-3 text-[14.5px] sm:text-base text-gray-700 leading-relaxed">
-        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">1.</span><span><strong>Which habit hit 25+ days?</strong> That one is already in your operating system — keep going.</span></li>
-        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">2.</span><span><strong>Which one fell apart by week two?</strong> Either it wasn't realistic, or the environment doesn't support it. Don't blame yourself — redesign it.</span></li>
-        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">3.</span><span><strong>What got measurably better?</strong> Energy, skin, sleep, mood, cravings — be specific.</span></li>
-        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">4.</span><span><strong>What's harder than you thought?</strong> Surface the friction — that's what the next operating system rule addresses.</span></li>
-        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">5.</span><span><strong>What's your next 30-day primary?</strong> Keep the one that's stuck. Pick a new primary to add.</span></li>
+        <li className="flex gap-3"><span className="text-forest font-black tabular-nums">1.</span><span><strong>Which habit hit 25+ days?</strong> That one is already in your operating system — keep going.</span></li>
+        <li className="flex gap-3"><span className="text-forest font-black tabular-nums">2.</span><span><strong>Which one fell apart by week two?</strong> Either it wasn't realistic, or the environment doesn't support it. Don't blame yourself — redesign it.</span></li>
+        <li className="flex gap-3"><span className="text-forest font-black tabular-nums">3.</span><span><strong>What got measurably better?</strong> Energy, skin, sleep, mood, cravings — be specific.</span></li>
+        <li className="flex gap-3"><span className="text-forest font-black tabular-nums">4.</span><span><strong>What's harder than you thought?</strong> Surface the friction — that's what the next operating system rule addresses.</span></li>
+        <li className="flex gap-3"><span className="text-forest font-black tabular-nums">5.</span><span><strong>What's your next 30-day primary?</strong> Keep the one that's stuck. Pick a new primary to add.</span></li>
       </ol>
       <Callout variant="amber">
         Three rounds of 30 days each — and most of these become automatic. That's 90 days. Nothing pharmaceutical works that fast. Behavior change at this layer is what makes the reframe permanent.
@@ -1763,7 +1763,7 @@ const ShoppingList30Day = () => (
     <Section eyebrow="02 · Weekly buys (every shop)" title="Fresh perishables — never run out of these">
       <div className="grid sm:grid-cols-2 gap-x-6 gap-y-6">
         <div>
-          <p className="text-[10px] font-black text-amber-700 uppercase tracking-[0.22em] mb-2">Protein</p>
+          <p className="text-[10px] font-black text-forest uppercase tracking-[0.22em] mb-2">Protein</p>
           <Checklist items={[
             "Eggs (1 dozen minimum)",
             "Chicken thighs (1–1.5 kg)",
@@ -1778,7 +1778,7 @@ const ShoppingList30Day = () => (
           ]} />
         </div>
         <div>
-          <p className="text-[10px] font-black text-amber-700 uppercase tracking-[0.22em] mb-2">Vegetables</p>
+          <p className="text-[10px] font-black text-forest uppercase tracking-[0.22em] mb-2">Vegetables</p>
           <Checklist items={[
             "Leafy greens (spinach + 1 other)",
             "Cruciferous (broccoli, cauliflower OR brussels)",
@@ -1789,7 +1789,7 @@ const ShoppingList30Day = () => (
           ]} />
         </div>
         <div>
-          <p className="text-[10px] font-black text-amber-700 uppercase tracking-[0.22em] mb-2">Fat & dairy</p>
+          <p className="text-[10px] font-black text-forest uppercase tracking-[0.22em] mb-2">Fat & dairy</p>
           <Checklist items={[
             "Avocados (2–3, different ripeness)",
             "Butter (real, salted)",
@@ -1798,7 +1798,7 @@ const ShoppingList30Day = () => (
           ]} />
         </div>
         <div>
-          <p className="text-[10px] font-black text-amber-700 uppercase tracking-[0.22em] mb-2">Fruit (small)</p>
+          <p className="text-[10px] font-black text-forest uppercase tracking-[0.22em] mb-2">Fruit (small)</p>
           <Checklist items={[
             "Berries (fresh or frozen — primary fruit)",
             "Apples or pears (1–2)",
@@ -1823,7 +1823,7 @@ const ShoppingList30Day = () => (
     <Section eyebrow="04 · Monthly pantry restock" title="Stock once, use for weeks">
       <div className="grid sm:grid-cols-2 gap-x-6 gap-y-6">
         <div>
-          <p className="text-[10px] font-black text-amber-700 uppercase tracking-[0.22em] mb-2">Cooking fats</p>
+          <p className="text-[10px] font-black text-forest uppercase tracking-[0.22em] mb-2">Cooking fats</p>
           <Checklist items={[
             "Extra virgin olive oil (large bottle)",
             "Ghee or coconut oil",
@@ -1832,7 +1832,7 @@ const ShoppingList30Day = () => (
           ]} />
         </div>
         <div>
-          <p className="text-[10px] font-black text-amber-700 uppercase tracking-[0.22em] mb-2">Nuts & seeds</p>
+          <p className="text-[10px] font-black text-forest uppercase tracking-[0.22em] mb-2">Nuts & seeds</p>
           <Checklist items={[
             "Almonds, walnuts, brazil nuts (raw, unsalted)",
             "Pumpkin seeds, sunflower seeds",
@@ -1841,7 +1841,7 @@ const ShoppingList30Day = () => (
           ]} />
         </div>
         <div>
-          <p className="text-[10px] font-black text-amber-700 uppercase tracking-[0.22em] mb-2">Tinned & jarred</p>
+          <p className="text-[10px] font-black text-forest uppercase tracking-[0.22em] mb-2">Tinned & jarred</p>
           <Checklist items={[
             "Sardines, mackerel, tuna in olive oil",
             "Whole tomatoes (no sugar added)",
@@ -1851,7 +1851,7 @@ const ShoppingList30Day = () => (
           ]} />
         </div>
         <div>
-          <p className="text-[10px] font-black text-amber-700 uppercase tracking-[0.22em] mb-2">Dry goods</p>
+          <p className="text-[10px] font-black text-forest uppercase tracking-[0.22em] mb-2">Dry goods</p>
           <Checklist items={[
             "Lentils, chickpeas, white beans",
             "Quinoa or buckwheat (if you tolerate)",
@@ -1907,11 +1907,11 @@ const TruthAboutFructose = () => (
 
     <Section eyebrow="02 · What happens in the liver" title="The cascade that nobody told you about">
       <ol className="space-y-3.5 text-[14.5px] sm:text-base text-gray-700 leading-relaxed">
-        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">1.</span><span>Fructose arrives at the liver. The liver can't store much of it.</span></li>
-        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">2.</span><span>What it can't store, it converts to fat — through a process called <em>de novo lipogenesis</em>.</span></li>
-        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">3.</span><span>That fat accumulates in and around the liver. NAFLD (non-alcoholic fatty liver disease) is now the most common liver condition in adults, including children.</span></li>
-        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">4.</span><span>The fatty liver becomes insulin-resistant. Whole-body insulin resistance follows. Then the cascade we covered in Module 4.</span></li>
-        <li className="flex gap-3"><span className="text-amber-700 font-black tabular-nums">5.</span><span>Inflammation, oxidative stress, and uric acid go up — increasing risk for gout, kidney issues, cardiovascular disease.</span></li>
+        <li className="flex gap-3"><span className="text-forest font-black tabular-nums">1.</span><span>Fructose arrives at the liver. The liver can't store much of it.</span></li>
+        <li className="flex gap-3"><span className="text-forest font-black tabular-nums">2.</span><span>What it can't store, it converts to fat — through a process called <em>de novo lipogenesis</em>.</span></li>
+        <li className="flex gap-3"><span className="text-forest font-black tabular-nums">3.</span><span>That fat accumulates in and around the liver. NAFLD (non-alcoholic fatty liver disease) is now the most common liver condition in adults, including children.</span></li>
+        <li className="flex gap-3"><span className="text-forest font-black tabular-nums">4.</span><span>The fatty liver becomes insulin-resistant. Whole-body insulin resistance follows. Then the cascade we covered in Module 4.</span></li>
+        <li className="flex gap-3"><span className="text-forest font-black tabular-nums">5.</span><span>Inflammation, oxidative stress, and uric acid go up — increasing risk for gout, kidney issues, cardiovascular disease.</span></li>
       </ol>
     </Section>
 
@@ -1925,7 +1925,7 @@ const TruthAboutFructose = () => (
           { name: "Dried fruit", note: "Concentrated sugar with most of the water removed. A handful of raisins has more fructose than three fresh grapes." },
           { name: "Smoothies", note: "Especially shop-bought. Blending breaks the fiber matrix. Half the fructose is absorbed like juice." },
         ].map((x, i) => (
-          <div key={i} className="border-l-2 border-amber-300 pl-5 py-1 print:break-inside-avoid">
+          <div key={i} className="border-l-2 border-petal pl-5 py-1 print:break-inside-avoid">
             <p className="font-bold text-gray-900 text-[15px] sm:text-base mb-0.5">{x.name}</p>
             <p className="text-[13.5px] sm:text-sm text-gray-600 leading-relaxed">{x.note}</p>
           </div>
@@ -1958,8 +1958,8 @@ const TruthAboutFructose = () => (
           { name: "Highest antioxidant density", note: "Anthocyanins (the pigment) genuinely fight inflammation. Not all 'antioxidants' are equal — these ones are." },
           { name: "Polyphenols with real evidence", note: "Cardiovascular, cognitive, and metabolic benefits documented across studies." },
         ].map((x, i) => (
-          <div key={i} className="bg-amber-50/40 border border-amber-100 rounded-2xl p-4 sm:p-5 print:break-inside-avoid">
-            <p className="font-bold text-amber-900 text-[14.5px] sm:text-base mb-1">{x.name}</p>
+          <div key={i} className="bg-cream/40 border border-mint rounded-2xl p-4 sm:p-5 print:break-inside-avoid">
+            <p className="font-bold text-forest-deep text-[14.5px] sm:text-base mb-1">{x.name}</p>
             <p className="text-[13.5px] sm:text-sm text-gray-700 leading-relaxed">{x.note}</p>
           </div>
         ))}
@@ -2014,30 +2014,30 @@ const CycleNutrition = () => {
     foods: string[];
     activity: string;
   }) => (
-    <div className="rounded-3xl border border-amber-100 bg-amber-50/30 p-6 sm:p-8 print:break-inside-avoid">
+    <div className="rounded-3xl border border-mint bg-cream/30 p-6 sm:p-8 print:break-inside-avoid">
       <div className="flex items-baseline gap-3 mb-2">
         <span className="text-2xl sm:text-3xl">{emoji}</span>
         <h3 className="text-lg sm:text-2xl font-black text-gray-900 tracking-tight">{title}</h3>
-        <span className="ml-auto text-[10px] sm:text-[11px] font-black text-amber-700 uppercase tracking-[0.2em]">{days}</span>
+        <span className="ml-auto text-[10px] sm:text-[11px] font-black text-forest uppercase tracking-[0.2em]">{days}</span>
       </div>
       <p className="text-[13.5px] sm:text-sm text-gray-600 italic leading-relaxed mb-5">
         {physiology}
       </p>
 
-      <p className="text-[10px] font-black text-amber-700 uppercase tracking-[0.22em] mb-2">Key nutrients</p>
+      <p className="text-[10px] font-black text-forest uppercase tracking-[0.22em] mb-2">Key nutrients</p>
       <ul className="space-y-1.5 mb-5">
         {nutrients.map((n, i) => (
           <li key={i} className="flex gap-2 text-[14px] sm:text-[15px] text-gray-800">
-            <span className="text-amber-600 font-black flex-shrink-0">·</span>
+            <span className="text-forest font-black flex-shrink-0">·</span>
             <span><span className="font-bold text-gray-900">{n.name}</span> — {n.why}</span>
           </li>
         ))}
       </ul>
 
-      <p className="text-[10px] font-black text-amber-700 uppercase tracking-[0.22em] mb-2">Foods</p>
+      <p className="text-[10px] font-black text-forest uppercase tracking-[0.22em] mb-2">Foods</p>
       <NameGrid names={foods} />
 
-      <p className="text-[10px] font-black text-amber-700 uppercase tracking-[0.22em] mt-5 mb-2">Movement</p>
+      <p className="text-[10px] font-black text-forest uppercase tracking-[0.22em] mt-5 mb-2">Movement</p>
       <p className="text-[14px] sm:text-[15px] text-gray-700 leading-relaxed">{activity}</p>
     </div>
   );
@@ -2166,7 +2166,7 @@ const CycleNutrition = () => {
               "Add magnesium + slow carbs every evening in luteal — fight the craving curve.",
             ].map((s, i) => (
               <li key={i} className="flex gap-3 text-[14.5px] sm:text-[15px]">
-                <span className="text-amber-600 font-black flex-shrink-0">·</span>
+                <span className="text-forest font-black flex-shrink-0">·</span>
                 <span>{s}</span>
               </li>
             ))}
@@ -2220,7 +2220,7 @@ export const ResourceDetail = ({
 
   const body = contentMap[resource.slug] ?? (
     <div className="py-16 text-center">
-      <div className="inline-flex items-center gap-2 px-4 py-2 bg-amber-50 border border-amber-200 rounded-full text-amber-800 text-sm font-bold mb-5">
+      <div className="inline-flex items-center gap-2 px-4 py-2 bg-cream border border-petal rounded-full text-forest-deep text-sm font-bold mb-5">
         <Sparkles className="w-4 h-4" />
         Coming soon
       </div>
@@ -2299,11 +2299,11 @@ export const ResourceLibrary = ({
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
       <header className="mb-8 sm:mb-10">
         <div className="flex items-center gap-3 mb-5">
-          <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center shadow-md shadow-amber-300/40">
+          <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br from-forest to-forest flex items-center justify-center shadow-md shadow-forest/20">
             <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
           </div>
           <div>
-            <p className="text-[10px] sm:text-[11px] font-black text-amber-800 uppercase tracking-[0.3em]">
+            <p className="text-[10px] sm:text-[11px] font-black text-forest-deep uppercase tracking-[0.3em]">
               The Unhooked Method
             </p>
             <p className="text-xs sm:text-sm text-gray-500 font-semibold">
@@ -2335,14 +2335,14 @@ export const ResourceLibrary = ({
               onClick={() => setTab(key)}
               className={`relative flex items-center gap-2 px-4 sm:px-5 py-3 text-[13px] sm:text-sm font-bold transition-colors ${
                 isActive
-                  ? "text-amber-700"
+                  ? "text-forest"
                   : "text-gray-500 hover:text-gray-800"
               }`}
             >
               <TabIcon className="w-4 h-4" />
               {label}
               {isActive && (
-                <span className="absolute left-0 right-0 -bottom-px h-0.5 bg-amber-600" />
+                <span className="absolute left-0 right-0 -bottom-px h-0.5 bg-forest" />
               )}
             </button>
           );
@@ -2362,7 +2362,7 @@ export const ResourceLibrary = ({
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search resources by title, topic or module…"
-            className="w-full pl-11 pr-10 py-3 bg-white border border-gray-200 rounded-2xl text-sm sm:text-[15px] text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-amber-300 focus:ring-2 focus:ring-amber-100 transition-all"
+            className="w-full pl-11 pr-10 py-3 bg-white border border-gray-200 rounded-2xl text-sm sm:text-[15px] text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-petal focus:ring-2 focus:ring-mint transition-all"
           />
           {query && (
             <button
@@ -2384,8 +2384,8 @@ export const ResourceLibrary = ({
                 onClick={() => setActiveCategory(c.key)}
                 className={`px-3.5 py-1.5 text-xs sm:text-[13px] font-bold rounded-full border transition-all ${
                   isActive
-                    ? "bg-amber-600 text-white border-amber-600 shadow-sm shadow-amber-300/50"
-                    : "bg-white text-gray-600 border-gray-200 hover:border-amber-300 hover:text-amber-700"
+                    ? "bg-forest text-white border-forest shadow-sm shadow-forest/20"
+                    : "bg-white text-gray-600 border-gray-200 hover:border-petal hover:text-forest"
                 }`}
               >
                 {c.label}
@@ -2416,16 +2416,16 @@ export const ResourceLibrary = ({
               onClick={() => onOpen(r.slug)}
               className={`relative text-left bg-white border rounded-2xl p-5 sm:p-6 transition-all group ${
                 previewMode
-                  ? "border-gray-200 hover:border-amber-300 hover:shadow-md cursor-pointer"
-                  : "border-gray-200 hover:border-amber-300 hover:shadow-xl hover:-translate-y-1"
+                  ? "border-gray-200 hover:border-petal hover:shadow-md cursor-pointer"
+                  : "border-gray-200 hover:border-petal hover:shadow-xl hover:-translate-y-1"
               }`}
             >
               <div className="flex items-start gap-4 mb-4">
-                <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 bg-gradient-to-br from-amber-50 to-amber-100 border border-amber-100">
-                  <Icon className="w-5 h-5 text-amber-700" />
+                <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 bg-gradient-to-br from-cream to-mint border border-mint">
+                  <Icon className="w-5 h-5 text-forest" />
                 </div>
                 <div className="flex flex-col gap-1 flex-1 min-w-0">
-                  <span className="text-[9.5px] sm:text-[10px] font-black text-amber-700 uppercase tracking-[0.22em]">
+                  <span className="text-[9.5px] sm:text-[10px] font-black text-forest uppercase tracking-[0.22em]">
                     {r.eyebrow}
                   </span>
                   <span className="text-[10px] sm:text-[11px] text-gray-400 font-semibold">
@@ -2433,12 +2433,12 @@ export const ResourceLibrary = ({
                   </span>
                 </div>
                 {previewMode ? (
-                  <span className="inline-flex items-center gap-1 text-[9px] font-black text-amber-800 bg-amber-100 border border-amber-300 px-2 py-0.5 rounded-full uppercase tracking-wider">
+                  <span className="inline-flex items-center gap-1 text-[9px] font-black text-forest-deep bg-mint border border-petal px-2 py-0.5 rounded-full uppercase tracking-wider">
                     <Lock className="w-2.5 h-2.5" />
                     Locked
                   </span>
                 ) : r.women ? (
-                  <span className="text-[9px] font-black text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full uppercase tracking-wider">
+                  <span className="text-[9px] font-black text-forest bg-cream border border-petal px-2 py-0.5 rounded-full uppercase tracking-wider">
                     Women
                   </span>
                 ) : null}
@@ -2456,7 +2456,7 @@ export const ResourceLibrary = ({
                   <Clock className="w-3 h-3" />
                   {r.readTime}
                 </span>
-                <span className="flex items-center gap-1 text-amber-700 font-bold group-hover:gap-2 transition-all">
+                <span className="flex items-center gap-1 text-forest font-bold group-hover:gap-2 transition-all">
                   {previewMode ? "Preview" : "Open"}
                   <ChevronRight className="w-3.5 h-3.5" />
                 </span>
@@ -2469,8 +2469,8 @@ export const ResourceLibrary = ({
         )}
       </div>
 
-      <div className="mt-12 sm:mt-16 p-5 sm:p-6 bg-amber-50/50 border border-amber-100 rounded-2xl text-center">
-        <p className="text-[13px] sm:text-sm text-amber-900 leading-relaxed">
+      <div className="mt-12 sm:mt-16 p-5 sm:p-6 bg-cream/50 border border-mint rounded-2xl text-center">
+        <p className="text-[13px] sm:text-sm text-forest-deep leading-relaxed">
           <strong>Want a resource that's not here?</strong> Write us on WhatsApp and tell us what would help.
         </p>
       </div>
@@ -2499,15 +2499,15 @@ const LibraryWatchList = ({ previewMode = false }: { previewMode?: boolean }) =>
       {WATCH_LIST_VIDEOS.map((v) => (
         <div key={v.id}>
           <div className="flex items-center gap-3 mb-2.5">
-            <span className="text-[11px] sm:text-xs font-black text-amber-700 uppercase tracking-[0.22em] tabular-nums">
+            <span className="text-[11px] sm:text-xs font-black text-forest uppercase tracking-[0.22em] tabular-nums">
               Video {String(v.n).padStart(2, "0")}
             </span>
-            <div className="h-px flex-1 bg-amber-100" />
+            <div className="h-px flex-1 bg-mint" />
           </div>
           {previewMode ? (
             <div className="aspect-video rounded-2xl overflow-hidden bg-gray-900 shadow-md relative flex flex-col items-center justify-center text-center px-4">
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_50%_at_50%_50%,rgba(245,158,11,0.18),transparent)]" />
-              <div className="relative w-11 h-11 rounded-xl bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center shadow-lg shadow-amber-500/30 mb-2.5">
+              <div className="relative w-11 h-11 rounded-xl bg-gradient-to-br from-forest to-forest flex items-center justify-center shadow-lg shadow-forest/20 mb-2.5">
                 <Lock className="w-5 h-5 text-white" />
               </div>
               <p className="relative text-[12px] sm:text-[13px] font-bold text-white">Locked in preview</p>
@@ -2552,13 +2552,13 @@ const ResourceCardLink = ({
   return (
     <button
       onClick={() => onOpen(resource.slug)}
-      className="relative flex items-start gap-3 sm:gap-4 text-left p-4 sm:p-5 bg-white border border-gray-200 rounded-2xl hover:border-amber-300 hover:shadow-md transition-all group"
+      className="relative flex items-start gap-3 sm:gap-4 text-left p-4 sm:p-5 bg-white border border-gray-200 rounded-2xl hover:border-petal hover:shadow-md transition-all group"
     >
-      <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 bg-gradient-to-br from-amber-50 to-amber-100 border border-amber-100">
-        <Icon className="w-5 h-5 text-amber-700" />
+      <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 bg-gradient-to-br from-cream to-mint border border-mint">
+        <Icon className="w-5 h-5 text-forest" />
       </div>
       <div className="flex-1 min-w-0">
-        <p className="text-[9.5px] sm:text-[10px] font-black text-amber-700 uppercase tracking-[0.22em] mb-1">
+        <p className="text-[9.5px] sm:text-[10px] font-black text-forest uppercase tracking-[0.22em] mb-1">
           {resource.eyebrow}
         </p>
         <p className="font-bold text-gray-900 text-[14px] sm:text-[15px] leading-snug mb-1.5">
@@ -2567,13 +2567,13 @@ const ResourceCardLink = ({
         <p className="text-[12px] sm:text-[13px] text-gray-500 leading-relaxed line-clamp-2">
           {resource.description}
         </p>
-        <div className="mt-2 flex items-center gap-1 text-amber-700 font-bold text-[12px] sm:text-xs group-hover:gap-2 transition-all">
+        <div className="mt-2 flex items-center gap-1 text-forest font-bold text-[12px] sm:text-xs group-hover:gap-2 transition-all">
           {previewMode ? "Preview" : "Open"}
           <ChevronRight className="w-3 h-3" />
         </div>
       </div>
       {previewMode && (
-        <span className="absolute top-3 right-3 inline-flex items-center gap-1 text-[9px] font-black text-amber-800 bg-amber-100 border border-amber-300 px-2 py-0.5 rounded-full uppercase tracking-wider">
+        <span className="absolute top-3 right-3 inline-flex items-center gap-1 text-[9px] font-black text-forest-deep bg-mint border border-petal px-2 py-0.5 rounded-full uppercase tracking-wider">
           <Lock className="w-2.5 h-2.5" />
           Locked
         </span>
@@ -2603,14 +2603,14 @@ const WomenFolderCard = ({
     <div className="sm:col-span-2">
       <button
         onClick={() => setOpen((o) => !o)}
-        className="w-full flex items-start gap-3 sm:gap-4 text-left p-4 sm:p-5 bg-gradient-to-br from-amber-50/70 to-white border border-amber-200 rounded-2xl hover:border-amber-400 hover:shadow-md transition-all group"
+        className="w-full flex items-start gap-3 sm:gap-4 text-left p-4 sm:p-5 bg-gradient-to-br from-cream/70 to-white border border-petal rounded-2xl hover:border-gold hover:shadow-md transition-all group"
         aria-expanded={open}
       >
-        <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 bg-gradient-to-br from-amber-500 to-amber-700 shadow-sm shadow-amber-300/40">
+        <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 bg-gradient-to-br from-forest to-forest shadow-sm shadow-forest/20">
           <Folder className="w-5 h-5 text-white" />
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-[9.5px] sm:text-[10px] font-black text-amber-700 uppercase tracking-[0.22em] mb-1">
+          <p className="text-[9.5px] sm:text-[10px] font-black text-forest uppercase tracking-[0.22em] mb-1">
             Women · Folder
           </p>
           <p className="font-bold text-gray-900 text-[14px] sm:text-[15px] leading-snug mb-1.5">
@@ -2619,7 +2619,7 @@ const WomenFolderCard = ({
           <p className="text-[12px] sm:text-[13px] text-gray-500 leading-relaxed">
             {resources.length} guides on cycle, PMS, PCOS, skin, iron, labs &amp; nutrition by phase — grouped together so they don't clutter the list.
           </p>
-          <div className="mt-2 flex items-center gap-1 text-amber-700 font-bold text-[12px] sm:text-xs">
+          <div className="mt-2 flex items-center gap-1 text-forest font-bold text-[12px] sm:text-xs">
             {open ? "Hide" : `Open folder · ${resources.length} inside`}
             <ChevronDown className={`w-3.5 h-3.5 transition-transform ${open ? "rotate-180" : ""}`} />
           </div>
@@ -2631,7 +2631,7 @@ const WomenFolderCard = ({
           initial={{ opacity: 0, y: -6 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.2 }}
-          className="mt-3 sm:mt-4 ml-2 sm:ml-6 pl-3 sm:pl-5 border-l-2 border-amber-200"
+          className="mt-3 sm:mt-4 ml-2 sm:ml-6 pl-3 sm:pl-5 border-l-2 border-petal"
         >
           <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
             {resources.map((r) => (
@@ -2667,14 +2667,14 @@ export const RelatedResources = ({
   return (
     <section className="mt-8 sm:mt-10 mb-6 sm:mb-8">
       <div className="flex items-center gap-3 mb-4 sm:mb-5">
-        <div className="h-px flex-1 bg-amber-100" />
-        <div className="flex items-center gap-2 px-3 py-1 bg-amber-50 border border-amber-200 rounded-full">
-          <BookOpen className="w-3.5 h-3.5 text-amber-700" />
-          <span className="text-[10px] sm:text-[11px] font-black text-amber-800 uppercase tracking-[0.22em]">
+        <div className="h-px flex-1 bg-mint" />
+        <div className="flex items-center gap-2 px-3 py-1 bg-cream border border-petal rounded-full">
+          <BookOpen className="w-3.5 h-3.5 text-forest" />
+          <span className="text-[10px] sm:text-[11px] font-black text-forest-deep uppercase tracking-[0.22em]">
             Related Resources
           </span>
         </div>
-        <div className="h-px flex-1 bg-amber-100" />
+        <div className="h-px flex-1 bg-mint" />
       </div>
       <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
         {otherRelated.map((r) => (

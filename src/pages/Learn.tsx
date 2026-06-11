@@ -357,11 +357,11 @@ const Sidebar = ({
       <div className="p-5 border-b border-gray-100">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 bg-gradient-to-br from-amber-500 to-amber-700 rounded-lg flex items-center justify-center shadow-sm shadow-amber-200/60">
+            <div className="w-7 h-7 bg-gradient-to-br from-forest to-forest rounded-lg flex items-center justify-center shadow-sm shadow-forest/20">
               <Flame className="text-white w-4 h-4" />
             </div>
             <span className="font-black text-sm tracking-tight text-gray-900">
-              The Unhooked Method<sup className="text-[8px] font-bold text-amber-700 ml-0.5 align-super">™</sup>
+              The Unhooked Method<sup className="text-[8px] font-bold text-forest ml-0.5 align-super">™</sup>
             </span>
           </div>
           <button onClick={onClose} className="lg:hidden p-1 text-gray-400 hover:text-gray-600">
@@ -370,11 +370,11 @@ const Sidebar = ({
         </div>
         <div className="mb-2 flex items-center justify-between text-[10px] font-bold text-gray-400 uppercase tracking-widest">
           <span>{completedCount}/{availableCount} completed</span>
-          <span className="text-amber-600">{pct}%</span>
+          <span className="text-forest">{pct}%</span>
         </div>
         <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
           <motion.div
-            className="h-full bg-gradient-to-r from-amber-500 to-amber-400 rounded-full"
+            className="h-full bg-gradient-to-r from-forest to-gold rounded-full"
             animate={{ width: `${pct}%` }}
             transition={{ duration: 0.5 }}
           />
@@ -395,8 +395,8 @@ const Sidebar = ({
           let StatusIcon = Circle;
           let iconColor = "text-gray-300";
           if (locked) { StatusIcon = Lock; iconColor = "text-gray-200"; }
-          else if (prog.completed) { StatusIcon = CheckCircle2; iconColor = "text-amber-500"; }
-          else if (isActive) { iconColor = "text-amber-600"; }
+          else if (prog.completed) { StatusIcon = CheckCircle2; iconColor = "text-forest"; }
+          else if (isActive) { iconColor = "text-forest"; }
 
           return (
             <div key={lesson.id} className="relative group">
@@ -404,14 +404,14 @@ const Sidebar = ({
                 onClick={() => accessible && onSelect(lesson.id)}
                 disabled={!accessible}
                 className={`w-full text-left px-5 py-3 flex items-start gap-3 transition-colors ${
-                  isActive ? "bg-amber-50 border-r-2 border-amber-600"
+                  isActive ? "bg-cream border-r-2 border-forest"
                   : locked ? "opacity-50 cursor-not-allowed"
                   : "hover:bg-gray-50 cursor-pointer"
                 }`}
               >
                 <StatusIcon className={`w-5 h-5 flex-shrink-0 mt-0.5 ${iconColor}`} />
                 <div className="min-w-0 flex-1">
-                  <div className={`text-sm font-bold truncate ${isActive ? "text-amber-700" : locked ? "text-gray-400" : "text-gray-800"}`}>
+                  <div className={`text-sm font-bold truncate ${isActive ? "text-forest" : locked ? "text-gray-400" : "text-gray-800"}`}>
                     {lesson.title}
                   </div>
                   {lesson.duration && (
@@ -426,8 +426,8 @@ const Sidebar = ({
                   <div className="bg-gray-900 text-white p-3 rounded-xl shadow-xl text-xs relative">
                     <div className="absolute right-full top-1/2 -translate-y-1/2 border-8 border-transparent border-r-gray-900" />
                     <div className="flex items-center gap-2 mb-1.5">
-                      <Lock className="w-3.5 h-3.5 text-amber-400" />
-                      <span className="font-black text-amber-400 uppercase tracking-wider text-[10px]">Locked</span>
+                      <Lock className="w-3.5 h-3.5 text-gold" />
+                      <span className="font-black text-gold uppercase tracking-wider text-[10px]">Locked</span>
                     </div>
                     <p className="text-gray-300 leading-relaxed">
                       {lesson.comingSoon
@@ -450,16 +450,16 @@ const Sidebar = ({
           onClick={() => onSelect("resources")}
           className={`w-full text-left px-5 py-3 flex items-center gap-3 transition-colors ${
             activeId === "resources" || activeId.startsWith("resource:")
-              ? "bg-amber-50 border-r-2 border-amber-600"
+              ? "bg-cream border-r-2 border-forest"
               : "hover:bg-gray-50 cursor-pointer"
           }`}
         >
           <BookOpen className={`w-5 h-5 flex-shrink-0 ${
-            activeId === "resources" || activeId.startsWith("resource:") ? "text-amber-600" : "text-gray-400"
+            activeId === "resources" || activeId.startsWith("resource:") ? "text-forest" : "text-gray-400"
           }`} />
           <div className="min-w-0 flex-1">
             <div className={`text-sm font-bold ${
-              activeId === "resources" || activeId.startsWith("resource:") ? "text-amber-700" : "text-gray-800"
+              activeId === "resources" || activeId.startsWith("resource:") ? "text-forest" : "text-gray-800"
             }`}>
               Resource Library
             </div>
@@ -472,16 +472,16 @@ const Sidebar = ({
           onClick={() => onSelect("watch-list")}
           className={`w-full text-left px-5 py-3 flex items-center gap-3 transition-colors ${
             activeId === "watch-list"
-              ? "bg-amber-50 border-r-2 border-amber-600"
+              ? "bg-cream border-r-2 border-forest"
               : "hover:bg-gray-50 cursor-pointer"
           }`}
         >
           <PlayCircle className={`w-5 h-5 flex-shrink-0 ${
-            activeId === "watch-list" ? "text-amber-600" : "text-gray-400"
+            activeId === "watch-list" ? "text-forest" : "text-gray-400"
           }`} />
           <div className="min-w-0 flex-1">
             <div className={`text-sm font-bold ${
-              activeId === "watch-list" ? "text-amber-700" : "text-gray-800"
+              activeId === "watch-list" ? "text-forest" : "text-gray-800"
             }`}>
               Watch List
             </div>
@@ -498,16 +498,16 @@ const Sidebar = ({
           href={WHATSAPP_URL}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-3 p-3 bg-white border border-gray-200 rounded-xl hover:border-amber-300 hover:bg-amber-50/40 transition-colors group"
+          className="flex items-center gap-3 p-3 bg-white border border-gray-200 rounded-xl hover:border-petal hover:bg-cream/40 transition-colors group"
         >
-          <div className="w-9 h-9 bg-gradient-to-br from-amber-500 to-amber-700 rounded-lg flex items-center justify-center flex-shrink-0 shadow-sm shadow-amber-200/60">
+          <div className="w-9 h-9 bg-gradient-to-br from-forest to-forest rounded-lg flex items-center justify-center flex-shrink-0 shadow-sm shadow-forest/20">
             <MessageCircle className="w-4 h-4 text-white" />
           </div>
           <div className="flex-1 min-w-0">
             <div className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Need help? Message us</div>
             <div className="text-xs font-bold text-gray-900 truncate">{WHATSAPP_DISPLAY}</div>
           </div>
-          <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-amber-600 transition-colors flex-shrink-0" />
+          <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-forest transition-colors flex-shrink-0" />
         </a>
       </div>
     </div>
@@ -530,11 +530,11 @@ const WelcomeScreen = ({
 }) => (
   <div className="max-w-2xl mx-auto py-10 sm:py-14 px-4 sm:px-6">
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center">
-      <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-amber-500 to-amber-700 rounded-3xl flex items-center justify-center mx-auto mb-6 sm:mb-8 shadow-xl shadow-amber-200/50">
+      <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-forest to-forest rounded-3xl flex items-center justify-center mx-auto mb-6 sm:mb-8 shadow-xl shadow-forest/20">
         <Flame className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
       </div>
       <h1 className="text-[1.7rem] sm:text-4xl font-black text-gray-900 tracking-tight mb-3 sm:mb-4 leading-tight">
-        {previewMode ? <>You're previewing<br className="sm:hidden" /> The Unhooked Method<sup className="text-[14px] font-bold text-amber-700 ml-0.5 align-super">™</sup></> : <>Welcome to<br className="sm:hidden" /> The Unhooked Method<sup className="text-[14px] font-bold text-amber-700 ml-0.5 align-super">™</sup></>}
+        {previewMode ? <>You're previewing<br className="sm:hidden" /> The Unhooked Method<sup className="text-[14px] font-bold text-forest ml-0.5 align-super">™</sup></> : <>Welcome to<br className="sm:hidden" /> The Unhooked Method<sup className="text-[14px] font-bold text-forest ml-0.5 align-super">™</sup></>}
       </h1>
       {previewMode ? (
         <div className="text-[15px] sm:text-lg text-gray-600 mb-8 sm:mb-10 max-w-xl mx-auto leading-relaxed space-y-3">
@@ -542,7 +542,7 @@ const WelcomeScreen = ({
             This is the actual platform — same layout, same sidebar, same Resource Library. Most lessons are locked until you join, but{" "}
             <button
               onClick={() => onWatchSample?.()}
-              className="font-bold text-amber-700 hover:text-amber-900 underline decoration-amber-500/60 decoration-2 underline-offset-4 transition-colors"
+              className="font-bold text-forest hover:text-forest-deep underline decoration-forest/60 decoration-2 underline-offset-4 transition-colors"
             >
               Module 1: You Are Not Broken
             </button>{" "}
@@ -595,7 +595,7 @@ const WelcomeScreen = ({
             "If you need help or have questions, you can write any time during the course.",
           ].map((item, i) => (
             <li key={i} className="flex items-start gap-3 text-gray-700">
-              <CheckCircle2 className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+              <CheckCircle2 className="w-5 h-5 text-forest flex-shrink-0 mt-0.5" />
               <span className="text-[13.5px] sm:text-sm leading-relaxed">{item}</span>
             </li>
           ))}
@@ -611,10 +611,10 @@ const WelcomeScreen = ({
           </p>
 
           {/* Red pill phase */}
-          <div className="rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50/70 to-white p-4 sm:p-5 mb-4">
+          <div className="rounded-2xl border border-petal bg-gradient-to-br from-cream/70 to-white p-4 sm:p-5 mb-4">
             <div className="flex items-center gap-2 mb-2.5">
-              <span className="w-6 h-6 rounded-full bg-amber-600 text-white text-[10px] font-black flex items-center justify-center">1</span>
-              <p className="text-[10px] sm:text-[11px] font-black text-amber-800 uppercase tracking-[0.25em]">
+              <span className="w-6 h-6 rounded-full bg-forest text-white text-[10px] font-black flex items-center justify-center">1</span>
+              <p className="text-[10px] sm:text-[11px] font-black text-forest-deep uppercase tracking-[0.25em]">
                 Modules 1–3 · The Red Pill
               </p>
             </div>
@@ -624,10 +624,10 @@ const WelcomeScreen = ({
           </div>
 
           {/* Solution phase */}
-          <div className="rounded-2xl border border-amber-300 bg-gradient-to-br from-amber-100/60 to-white p-4 sm:p-5">
+          <div className="rounded-2xl border border-petal bg-gradient-to-br from-mint/60 to-white p-4 sm:p-5">
             <div className="flex items-center gap-2 mb-2.5">
-              <span className="w-6 h-6 rounded-full bg-amber-700 text-white text-[10px] font-black flex items-center justify-center">2</span>
-              <p className="text-[10px] sm:text-[11px] font-black text-amber-900 uppercase tracking-[0.25em]">
+              <span className="w-6 h-6 rounded-full bg-forest text-white text-[10px] font-black flex items-center justify-center">2</span>
+              <p className="text-[10px] sm:text-[11px] font-black text-forest-deep uppercase tracking-[0.25em]">
                 Modules 4–9 · The Solution
               </p>
             </div>
@@ -639,21 +639,21 @@ const WelcomeScreen = ({
       )}
 
       {/* WhatsApp callout — large, prominent */}
-      <div className="bg-gradient-to-br from-amber-600 to-amber-800 text-white rounded-3xl p-5 sm:p-7 mb-5 sm:mb-6 text-left shadow-lg shadow-amber-300/40">
+      <div className="bg-gradient-to-br from-forest to-forest-deep text-white rounded-3xl p-5 sm:p-7 mb-5 sm:mb-6 text-left shadow-lg shadow-forest/20">
         <div className="flex items-start gap-3 sm:gap-4">
           <div className="w-10 h-10 sm:w-11 sm:h-11 bg-white/20 rounded-2xl flex items-center justify-center flex-shrink-0">
             <MessageCircle className="w-5 h-5 text-white" />
           </div>
           <div className="flex-1 min-w-0">
             <h3 className="font-black text-[15px] sm:text-lg mb-1 sm:mb-1.5 leading-snug">If you need help or have questions, you can write any time.</h3>
-            <p className="text-amber-50 text-[13px] sm:text-sm leading-relaxed mb-4">
+            <p className="text-cream text-[13px] sm:text-sm leading-relaxed mb-4">
               Got a question, a realization, or something you want to share — message us on WhatsApp. The team reads every chat.
             </p>
             <a
               href={WHATSAPP_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 bg-white text-amber-800 hover:bg-amber-50 rounded-full text-[13px] sm:text-sm font-bold transition-colors break-all"
+              className="inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 bg-white text-forest-deep hover:bg-cream rounded-full text-[13px] sm:text-sm font-bold transition-colors break-all"
             >
               <MessageCircle className="w-4 h-4 flex-shrink-0" />
               <span className="truncate">{WHATSAPP_DISPLAY}</span>
@@ -664,19 +664,19 @@ const WelcomeScreen = ({
       </div>
 
       {/* Order note */}
-      <div className="bg-amber-50 rounded-2xl p-4 sm:p-5 mb-8 sm:mb-10 border border-amber-100 text-left">
+      <div className="bg-cream rounded-2xl p-4 sm:p-5 mb-8 sm:mb-10 border border-mint text-left">
         <div className="flex items-start gap-3">
-          <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+          <AlertCircle className="w-5 h-5 text-forest flex-shrink-0 mt-0.5" />
           <div>
-            <p className="text-[13.5px] sm:text-sm font-bold text-amber-900 mb-1">Start with Module 0 and move in order</p>
-            <p className="text-[12px] sm:text-xs text-amber-800 leading-relaxed">Each module builds on the one before it.</p>
+            <p className="text-[13.5px] sm:text-sm font-bold text-forest-deep mb-1">Start with Module 0 and move in order</p>
+            <p className="text-[12px] sm:text-xs text-forest-deep leading-relaxed">Each module builds on the one before it.</p>
           </div>
         </div>
       </div>
 
       <button
         onClick={previewMode ? (onWatchSample ?? onStart) : onStart}
-        className="inline-flex items-center gap-2 sm:gap-3 px-8 sm:px-10 py-4 sm:py-5 bg-gradient-to-br from-amber-600 to-amber-800 text-white font-black text-[15px] sm:text-lg rounded-2xl shadow-xl shadow-amber-300/40 hover:from-amber-700 hover:to-amber-900 hover:-translate-y-1 transition-all w-full sm:w-auto justify-center"
+        className="inline-flex items-center gap-2 sm:gap-3 px-8 sm:px-10 py-4 sm:py-5 bg-gradient-to-br from-forest to-forest-deep text-white font-black text-[15px] sm:text-lg rounded-2xl shadow-xl shadow-forest/20 hover:from-forest hover:to-forest-deep hover:-translate-y-1 transition-all w-full sm:w-auto justify-center"
       >
         {previewMode ? <>Watch Module 1 (sample)</> : <>Start Module 0</>} <ArrowRight className="w-5 h-5" />
       </button>
@@ -687,7 +687,7 @@ const WelcomeScreen = ({
             href={PAYPAL_CHECKOUT_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs sm:text-sm font-bold text-amber-700 hover:text-amber-900 transition-colors underline-offset-4 underline"
+            className="text-xs sm:text-sm font-bold text-forest hover:text-forest-deep transition-colors underline-offset-4 underline"
           >
             Unlock all 9 modules — $29
           </a>
@@ -696,7 +696,7 @@ const WelcomeScreen = ({
         <div className="mt-5">
           <button
             onClick={onReplayTour}
-            className="text-xs sm:text-sm font-semibold text-gray-500 hover:text-amber-700 transition-colors underline-offset-4 hover:underline"
+            className="text-xs sm:text-sm font-semibold text-gray-500 hover:text-forest transition-colors underline-offset-4 hover:underline"
           >
             Replay the platform tour
           </button>
@@ -714,26 +714,26 @@ const WelcomeScreen = ({
 const PreviewBanner = () => {
   const remaining = useCountdown();
   return (
-    <div className="fixed top-0 inset-x-0 z-[60] h-12 bg-gradient-to-r from-red-600 via-red-700 to-amber-700 text-white flex items-center justify-center gap-2 sm:gap-3 px-3 sm:px-4 shadow-md shadow-red-700/30">
-      <span className="hidden sm:inline uppercase tracking-[0.2em] text-amber-100 font-black text-[10.5px]">
+    <div className="fixed top-0 inset-x-0 z-[60] h-12 bg-gradient-to-r from-red-600 via-red-700 to-forest text-white flex items-center justify-center gap-2 sm:gap-3 px-3 sm:px-4 shadow-md shadow-red-700/30">
+      <span className="hidden sm:inline uppercase tracking-[0.2em] text-cream font-black text-[10.5px]">
         Preview · Launch {DISCOUNT_PCT}% off
       </span>
-      <span className="sm:hidden uppercase tracking-[0.18em] text-amber-100 font-black text-[10px]">
+      <span className="sm:hidden uppercase tracking-[0.18em] text-cream font-black text-[10px]">
         {DISCOUNT_PCT}% off
       </span>
       <span className="opacity-50">·</span>
-      <span className="line-through text-amber-200/70 font-semibold text-[11px] sm:text-[12px]">{ORIGINAL_PRICE}</span>
+      <span className="line-through text-petal/70 font-semibold text-[11px] sm:text-[12px]">{ORIGINAL_PRICE}</span>
       <span className="font-black text-[12.5px] sm:text-sm">{PRICE}</span>
       <span className="opacity-50 hidden sm:inline">·</span>
-      <span className="hidden sm:inline uppercase tracking-[0.18em] text-amber-100 font-bold text-[10px]">Ends in</span>
-      <span className="font-black tabular-nums text-amber-200 text-[11.5px] sm:text-[13px]">
+      <span className="hidden sm:inline uppercase tracking-[0.18em] text-cream font-bold text-[10px]">Ends in</span>
+      <span className="font-black tabular-nums text-petal text-[11.5px] sm:text-[13px]">
         {formatCountdown(remaining)}
       </span>
       <a
         href={PAYPAL_CHECKOUT_URL}
         target="_blank"
         rel="noopener noreferrer"
-        className="ml-1 sm:ml-2 inline-flex items-center gap-1 px-2.5 sm:px-3 py-1 bg-white text-red-700 hover:bg-amber-50 rounded-full text-[10.5px] sm:text-[11px] font-black uppercase tracking-wider shadow-sm transition-colors"
+        className="ml-1 sm:ml-2 inline-flex items-center gap-1 px-2.5 sm:px-3 py-1 bg-white text-red-700 hover:bg-cream rounded-full text-[10.5px] sm:text-[11px] font-black uppercase tracking-wider shadow-sm transition-colors"
       >
         Unlock
         <ArrowRight className="w-3 h-3" />
@@ -753,16 +753,16 @@ const PreviewLockedResource = ({ slug, onBack }: { slug: string; onBack: () => v
     <div className="max-w-3xl mx-auto py-8 px-4 sm:px-6">
       <button
         onClick={onBack}
-        className="flex items-center gap-2 px-3 py-2 text-sm font-bold text-gray-600 hover:text-amber-700 hover:bg-amber-50 rounded-lg transition-colors mb-6"
+        className="flex items-center gap-2 px-3 py-2 text-sm font-bold text-gray-600 hover:text-forest hover:bg-cream rounded-lg transition-colors mb-6"
       >
         <ArrowLeft className="w-4 h-4" />
         <span>Back to Resource Library</span>
       </button>
       <div className="bg-white border border-gray-100 rounded-3xl p-6 sm:p-10 shadow-sm text-center">
-        <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center shadow-lg shadow-amber-300/40 mx-auto mb-5">
+        <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-forest to-forest flex items-center justify-center shadow-lg shadow-forest/20 mx-auto mb-5">
           <Lock className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
         </div>
-        <p className="text-[10px] sm:text-[11px] font-black text-amber-800 uppercase tracking-[0.3em] mb-2">
+        <p className="text-[10px] sm:text-[11px] font-black text-forest-deep uppercase tracking-[0.3em] mb-2">
           {resource.eyebrow} · Locked in preview
         </p>
         <h1 className="text-2xl sm:text-3xl font-black text-gray-900 leading-tight tracking-tight mb-3">
@@ -779,7 +779,7 @@ const PreviewLockedResource = ({ slug, onBack }: { slug: string; onBack: () => v
           href={PAYPAL_CHECKOUT_URL}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center justify-center gap-2.5 w-full max-w-sm mx-auto py-4 bg-gradient-to-br from-amber-600 to-amber-800 hover:from-amber-700 hover:to-amber-900 text-white font-black text-[14px] sm:text-base rounded-2xl shadow-lg shadow-amber-300/40 transition-all uppercase tracking-[0.08em]"
+          className="flex items-center justify-center gap-2.5 w-full max-w-sm mx-auto py-4 bg-gradient-to-br from-forest to-forest-deep hover:from-forest hover:to-forest-deep text-white font-black text-[14px] sm:text-base rounded-2xl shadow-lg shadow-forest/20 transition-all uppercase tracking-[0.08em]"
         >
           Unlock everything — $29
           <ArrowRight className="w-5 h-5" />
@@ -814,7 +814,7 @@ const PreviewLockedLesson = ({ lesson }: { lesson: LessonDef }) => {
       <div className="aspect-video bg-gray-900 rounded-2xl overflow-hidden relative shadow-lg mb-6 flex items-center justify-center">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_50%_at_50%_50%,rgba(245,158,11,0.18),transparent)]" />
         <div className="relative flex flex-col items-center text-center px-6">
-          <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-amber-500 to-amber-700 rounded-2xl flex items-center justify-center mb-4 shadow-lg shadow-amber-500/30">
+          <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-forest to-forest rounded-2xl flex items-center justify-center mb-4 shadow-lg shadow-forest/20">
             <Lock className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
           </div>
           <p className="text-white text-sm sm:text-base font-bold mb-1.5">This lesson is locked in preview</p>
@@ -827,7 +827,7 @@ const PreviewLockedLesson = ({ lesson }: { lesson: LessonDef }) => {
         href={PAYPAL_CHECKOUT_URL}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex items-center justify-center gap-2.5 w-full py-4 sm:py-5 bg-gradient-to-br from-amber-600 to-amber-800 hover:from-amber-700 hover:to-amber-900 text-white font-black text-[14px] sm:text-base rounded-2xl shadow-lg shadow-amber-300/40 transition-all uppercase tracking-[0.08em]"
+        className="flex items-center justify-center gap-2.5 w-full py-4 sm:py-5 bg-gradient-to-br from-forest to-forest-deep hover:from-forest hover:to-forest-deep text-white font-black text-[14px] sm:text-base rounded-2xl shadow-lg shadow-forest/20 transition-all uppercase tracking-[0.08em]"
       >
         Unlock the full course — $29
         <ArrowRight className="w-5 h-5" />
@@ -851,9 +851,9 @@ const ContentBlock = ({ resource }: { resource: LessonResource }) => {
   return (
     <article className="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm">
       <header className="px-6 sm:px-8 pt-7 pb-5 border-b border-gray-50">
-        <div className="inline-flex items-center gap-2 px-2.5 py-1 bg-amber-50 rounded-full mb-3">
-          <Icon className="w-3 h-3 text-amber-700" />
-          <span className="text-[10px] font-bold text-amber-700 uppercase tracking-[0.22em]">
+        <div className="inline-flex items-center gap-2 px-2.5 py-1 bg-cream rounded-full mb-3">
+          <Icon className="w-3 h-3 text-forest" />
+          <span className="text-[10px] font-bold text-forest uppercase tracking-[0.22em]">
             {eyebrow}
           </span>
         </div>
@@ -870,7 +870,7 @@ const ContentBlock = ({ resource }: { resource: LessonResource }) => {
           if (trimmed.startsWith("•")) {
             return (
               <div key={i} className="flex gap-3.5 items-start">
-                <span className="w-1.5 h-1.5 rounded-full bg-amber-500 mt-[10px] flex-shrink-0" />
+                <span className="w-1.5 h-1.5 rounded-full bg-forest mt-[10px] flex-shrink-0" />
                 <p className="text-gray-700 text-[15px] sm:text-[15.5px] leading-[1.65] flex-1">
                   {trimmed.replace(/^•\s*/, "")}
                 </p>
@@ -883,7 +883,7 @@ const ContentBlock = ({ resource }: { resource: LessonResource }) => {
           if (numMatch) {
             return (
               <div key={i} className="flex gap-3.5 items-start">
-                <span className="text-amber-700 font-black text-sm tabular-nums w-5 flex-shrink-0 mt-0.5">
+                <span className="text-forest font-black text-sm tabular-nums w-5 flex-shrink-0 mt-0.5">
                   {numMatch[1]}.
                 </span>
                 <p className="text-gray-700 text-[15px] sm:text-[15.5px] leading-[1.65] flex-1">
@@ -909,11 +909,11 @@ const ContentBlock = ({ resource }: { resource: LessonResource }) => {
    TASK DISPLAY — read-only, no submission
    ═══════════════════════════════════════════════════════════════ */
 const TaskDisplay = ({ resource, isIntermission }: { resource: LessonResource; isIntermission: boolean }) => (
-  <article className="bg-gradient-to-br from-amber-50 to-amber-50/40 rounded-2xl border border-amber-100 overflow-hidden">
-    <header className="px-6 sm:px-8 pt-7 pb-5 border-b border-amber-100/70">
-      <div className="inline-flex items-center gap-2 px-2.5 py-1 bg-amber-100 rounded-full mb-3">
-        <PenLine className="w-3 h-3 text-amber-700" />
-        <span className="text-[10px] font-bold text-amber-700 uppercase tracking-[0.22em]">
+  <article className="bg-gradient-to-br from-cream to-cream/40 rounded-2xl border border-mint overflow-hidden">
+    <header className="px-6 sm:px-8 pt-7 pb-5 border-b border-mint/70">
+      <div className="inline-flex items-center gap-2 px-2.5 py-1 bg-mint rounded-full mb-3">
+        <PenLine className="w-3 h-3 text-forest" />
+        <span className="text-[10px] font-bold text-forest uppercase tracking-[0.22em]">
           Homework
         </span>
       </div>
@@ -933,13 +933,13 @@ const TaskDisplay = ({ resource, isIntermission }: { resource: LessonResource; i
             href={WHATSAPP_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex sm:inline-flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3.5 bg-gradient-to-br from-amber-600 to-amber-800 text-white font-bold text-sm rounded-full hover:from-amber-700 hover:to-amber-900 transition-all shadow-md shadow-amber-300/40"
+            className="flex sm:inline-flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3.5 bg-gradient-to-br from-forest to-forest-deep text-white font-bold text-sm rounded-full hover:from-forest hover:to-forest-deep transition-all shadow-md shadow-forest/20"
           >
             <MessageCircle className="w-4 h-4 flex-shrink-0" />
             <span>Send on WhatsApp</span>
             <ArrowRight className="w-4 h-4 flex-shrink-0" />
           </a>
-          <p className="mt-3 text-[11px] sm:text-xs text-amber-800/70 text-center sm:text-left">
+          <p className="mt-3 text-[11px] sm:text-xs text-forest-deep/70 text-center sm:text-left">
             Opens WhatsApp · {WHATSAPP_DISPLAY}
           </p>
         </div>
@@ -954,9 +954,9 @@ const TaskDisplay = ({ resource, isIntermission }: { resource: LessonResource; i
 const LinkCard = ({ resource }: { resource: LessonResource }) => (
   <article className="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm">
     <div className="px-6 sm:px-8 py-6 sm:py-7">
-      <div className="inline-flex items-center gap-2 px-2.5 py-1 bg-amber-50 rounded-full mb-3">
-        <Sparkles className="w-3 h-3 text-amber-700" />
-        <span className="text-[10px] font-bold text-amber-700 uppercase tracking-[0.22em]">
+      <div className="inline-flex items-center gap-2 px-2.5 py-1 bg-cream rounded-full mb-3">
+        <Sparkles className="w-3 h-3 text-forest" />
+        <span className="text-[10px] font-bold text-forest uppercase tracking-[0.22em]">
           Go Deeper · Optional
         </span>
       </div>
@@ -971,7 +971,7 @@ const LinkCard = ({ resource }: { resource: LessonResource }) => (
           href={resource.href}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-5 py-3 text-sm font-bold text-white bg-gradient-to-br from-amber-600 to-amber-800 hover:from-amber-700 hover:to-amber-900 rounded-full shadow-md shadow-amber-300/40 transition-all"
+          className="inline-flex items-center gap-2 px-5 py-3 text-sm font-bold text-white bg-gradient-to-br from-forest to-forest-deep hover:from-forest hover:to-forest-deep rounded-full shadow-md shadow-forest/20 transition-all"
         >
           <ExternalLink className="w-4 h-4" />
           {resource.linkLabel ?? "Watch on YouTube"}
@@ -1065,21 +1065,21 @@ const LessonView = ({
               <button
                 data-mark-watched
                 onClick={() => onUpdate({ videoWatched: true })}
-                className={`w-full py-4 sm:py-5 bg-gradient-to-br from-amber-500 to-amber-700 hover:from-amber-600 hover:to-amber-800 text-white font-black text-[14px] sm:text-base rounded-2xl transition-all shadow-lg shadow-amber-300/40 hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2.5 uppercase tracking-[0.08em] ${lesson.videoUrl ? "mb-8" : ""}`}
+                className={`w-full py-4 sm:py-5 bg-gradient-to-br from-forest to-forest hover:from-forest hover:to-forest-deep text-white font-black text-[14px] sm:text-base rounded-2xl transition-all shadow-lg shadow-forest/20 hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2.5 uppercase tracking-[0.08em] ${lesson.videoUrl ? "mb-8" : ""}`}
               >
                 <Eye className="w-5 h-5" />
                 {isIntermission ? "I've done this — mark complete" : "I've watched this — mark complete"}
               </button>
             ) : (
               <div className={`space-y-3 ${lesson.videoUrl ? "mb-8" : ""}`}>
-                <div className="flex items-center justify-center gap-2.5 text-amber-800 font-bold py-3.5 px-4 bg-amber-50 border border-amber-200 rounded-2xl text-[14px] sm:text-[15px]">
-                  <CheckCircle2 className="w-5 h-5 text-amber-700 flex-shrink-0" />
+                <div className="flex items-center justify-center gap-2.5 text-forest-deep font-bold py-3.5 px-4 bg-cream border border-petal rounded-2xl text-[14px] sm:text-[15px]">
+                  <CheckCircle2 className="w-5 h-5 text-forest flex-shrink-0" />
                   {isIntermission ? "Marked complete — next module unlocked" : "Marked as watched — next module unlocked"}
                 </div>
                 {hasNext && nextAccessible && (
                   <button
                     onClick={onNext}
-                    className="w-full flex items-center justify-center gap-2.5 py-3.5 sm:py-4 bg-gradient-to-br from-amber-600 to-amber-800 hover:from-amber-700 hover:to-amber-900 text-white font-black text-[13px] sm:text-sm rounded-2xl shadow-md shadow-amber-300/30 hover:-translate-y-0.5 transition-all uppercase tracking-[0.08em]"
+                    className="w-full flex items-center justify-center gap-2.5 py-3.5 sm:py-4 bg-gradient-to-br from-forest to-forest-deep hover:from-forest hover:to-forest-deep text-white font-black text-[13px] sm:text-sm rounded-2xl shadow-md shadow-forest/20 hover:-translate-y-0.5 transition-all uppercase tracking-[0.08em]"
                   >
                     Skip to Next Lesson
                     <ArrowRight className="w-4 h-4" />
@@ -1123,7 +1123,7 @@ const LessonView = ({
             nextAccessible ? (
               <button
                 onClick={onNext}
-                className="flex items-center justify-center gap-2 px-6 sm:px-7 py-4 bg-gradient-to-br from-amber-600 to-amber-800 text-white font-black text-[13px] sm:text-sm rounded-xl shadow-lg shadow-amber-300/40 hover:from-amber-700 hover:to-amber-900 transition-all uppercase tracking-wider"
+                className="flex items-center justify-center gap-2 px-6 sm:px-7 py-4 bg-gradient-to-br from-forest to-forest-deep text-white font-black text-[13px] sm:text-sm rounded-xl shadow-lg shadow-forest/20 hover:from-forest hover:to-forest-deep transition-all uppercase tracking-wider"
               >
                 Next Lesson <ArrowRight className="w-5 h-5" />
               </button>
@@ -1147,7 +1147,7 @@ const LessonView = ({
                     );
                   }
                 }}
-                className="flex items-center justify-center gap-2 px-4 sm:px-5 py-3 bg-amber-50 hover:bg-amber-100 border-2 border-amber-300 text-amber-900 font-bold text-[13px] sm:text-sm rounded-xl transition-all group"
+                className="flex items-center justify-center gap-2 px-4 sm:px-5 py-3 bg-cream hover:bg-mint border-2 border-petal text-forest-deep font-bold text-[13px] sm:text-sm rounded-xl transition-all group"
               >
                 <ArrowUp className="w-4 h-4 flex-shrink-0 group-hover:-translate-y-0.5 transition-transform" />
                 Mark as watched to unlock
@@ -1168,12 +1168,12 @@ const CelebrationPopup = ({ onClose }: { onClose: () => void }) => (
     <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
     <motion.div initial={{ scale: 0.8 }} animate={{ scale: 1 }} className="relative bg-white rounded-3xl p-8 max-w-sm w-full shadow-2xl text-center z-10">
       <motion.div initial={{ rotate: -10, scale: 0 }} animate={{ rotate: 0, scale: 1 }} transition={{ type: "spring", delay: 0.15 }}
-        className="w-20 h-20 bg-gradient-to-br from-amber-500 to-amber-700 rounded-full flex items-center justify-center mx-auto mb-5 shadow-lg shadow-amber-300/40">
+        className="w-20 h-20 bg-gradient-to-br from-forest to-forest rounded-full flex items-center justify-center mx-auto mb-5 shadow-lg shadow-forest/20">
         <Sparkles className="w-10 h-10 text-white" />
       </motion.div>
       <h3 className="text-2xl font-black text-gray-900 mb-2 tracking-tight">Lesson Complete</h3>
       <p className="text-gray-500 text-sm mb-6 leading-relaxed">Nice work. The next module is unlocked.</p>
-      <button onClick={onClose} className="w-full py-3.5 bg-gradient-to-br from-amber-600 to-amber-800 text-white font-bold rounded-xl hover:from-amber-700 hover:to-amber-900 transition-all">
+      <button onClick={onClose} className="w-full py-3.5 bg-gradient-to-br from-forest to-forest-deep text-white font-bold rounded-xl hover:from-forest hover:to-forest-deep transition-all">
         Continue
       </button>
     </motion.div>
@@ -1322,7 +1322,7 @@ export default function Learn({ previewMode = false }: { previewMode?: boolean }
     !PREVIEW_OPEN_LESSON_IDS.has(activeId);
 
   return (
-    <div className="min-h-screen bg-gray-50 flex font-sans">
+    <div className="learn-root min-h-screen bg-cream flex font-body text-ink">
       {/* Preview banner — pinned across the top, full width */}
       {previewMode && <PreviewBanner />}
 

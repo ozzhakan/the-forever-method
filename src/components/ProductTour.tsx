@@ -65,7 +65,7 @@ const WelcomeJourneyVisual = () => {
     <div className="w-full max-w-xs mx-auto">
       <div className="grid grid-cols-3 relative">
         {/* connecting line — sits behind icons, only between first and last */}
-        <div className="absolute left-[16.66%] right-[16.66%] top-5 sm:top-6 h-[2px] bg-gradient-to-r from-amber-200 via-amber-400 to-amber-200" />
+        <div className="absolute left-[16.66%] right-[16.66%] top-5 sm:top-6 h-[2px] bg-gradient-to-r from-petal via-gold to-petal" />
         {dots.map((d, i) => {
           const I = d.icon;
           return (
@@ -76,10 +76,10 @@ const WelcomeJourneyVisual = () => {
               transition={{ delay: 0.15 + i * 0.12 }}
               className="relative flex flex-col items-center gap-2 min-w-0"
             >
-              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-amber-500 to-amber-700 shadow-lg shadow-amber-300/50 flex items-center justify-center ring-4 ring-white">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-forest to-forest shadow-lg shadow-forest/20 flex items-center justify-center ring-4 ring-white">
                 <I className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
               </div>
-              <span className="text-[10px] sm:text-[11px] font-black text-amber-800 leading-tight text-center whitespace-nowrap">
+              <span className="text-[10px] sm:text-[11px] font-black text-forest-deep leading-tight text-center whitespace-nowrap">
                 {d.label}
               </span>
             </motion.div>
@@ -98,12 +98,12 @@ const SidebarVisual = () => {
     { label: "Module 2", state: "locked" as const },
   ];
   return (
-    <div className="w-full max-w-xs mx-auto rounded-xl bg-white shadow-lg border border-amber-100 overflow-hidden">
-      <div className="px-3 py-2.5 border-b border-amber-100 bg-amber-50/60 flex items-center gap-2">
-        <div className="w-5 h-5 bg-gradient-to-br from-amber-500 to-amber-700 rounded flex items-center justify-center">
+    <div className="w-full max-w-xs mx-auto rounded-xl bg-white shadow-lg border border-mint overflow-hidden">
+      <div className="px-3 py-2.5 border-b border-mint bg-cream/60 flex items-center gap-2">
+        <div className="w-5 h-5 bg-gradient-to-br from-forest to-forest rounded flex items-center justify-center">
           <Flame className="w-2.5 h-2.5 text-white" />
         </div>
-        <span className="text-[10px] font-black text-amber-900 tracking-tight">The Unhooked Method</span>
+        <span className="text-[10px] font-black text-forest-deep tracking-tight">The Unhooked Method</span>
       </div>
       <div className="p-1.5 space-y-1">
         {items.map((it, i) => (
@@ -114,14 +114,14 @@ const SidebarVisual = () => {
             transition={{ delay: 0.1 + i * 0.08 }}
             className={`flex items-center gap-2 px-2.5 py-2 rounded-lg text-[11px] font-bold ${
               it.state === "active"
-                ? "bg-amber-100 text-amber-900"
+                ? "bg-mint text-forest-deep"
                 : it.state === "locked"
                 ? "text-gray-300"
                 : "text-gray-700"
             }`}
           >
             {it.state === "active" ? (
-              <CheckCircle2 className="w-3.5 h-3.5 text-amber-600 flex-shrink-0" />
+              <CheckCircle2 className="w-3.5 h-3.5 text-forest flex-shrink-0" />
             ) : it.state === "locked" ? (
               <Lock className="w-3 h-3 flex-shrink-0" />
             ) : (
@@ -140,15 +140,15 @@ const MarkWatchedVisual = () => (
     {/* Mini video frame */}
     <div className="aspect-video w-full rounded-xl bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center shadow-lg">
       <div className="w-9 h-9 bg-white/90 rounded-full flex items-center justify-center">
-        <PlayCircle className="w-5 h-5 text-amber-700" />
+        <PlayCircle className="w-5 h-5 text-forest" />
       </div>
     </div>
-    {/* The actual amber CTA */}
+    {/* The actual brand CTA */}
     <motion.button
       initial={{ scale: 0.96, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       transition={{ delay: 0.25, type: "spring", stiffness: 220, damping: 18 }}
-      className="w-full py-2.5 rounded-full bg-gradient-to-br from-amber-600 to-amber-800 text-white font-black text-[12px] flex items-center justify-center gap-2 shadow-lg shadow-amber-300/40 ring-4 ring-amber-200/60"
+      className="w-full py-2.5 rounded-full bg-gradient-to-br from-forest to-forest-deep text-white font-black text-[12px] flex items-center justify-center gap-2 shadow-lg shadow-forest/20 ring-4 ring-petal/60"
       type="button"
     >
       <CheckCircle2 className="w-4 h-4" />
@@ -160,8 +160,8 @@ const MarkWatchedVisual = () => (
 const IntermissionVisual = () => (
   <div className="w-full max-w-sm mx-auto space-y-2.5">
     <div className="flex items-center gap-2 mb-1">
-      <Camera className="w-3.5 h-3.5 text-amber-700" />
-      <span className="text-[10px] font-black text-amber-800 uppercase tracking-widest">
+      <Camera className="w-3.5 h-3.5 text-forest" />
+      <span className="text-[10px] font-black text-forest-deep uppercase tracking-widest">
         WhatsApp · Intermission
       </span>
     </div>
@@ -169,7 +169,7 @@ const IntermissionVisual = () => (
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.1 }}
-      className="ml-auto max-w-[78%] bg-amber-100 px-3 py-2 rounded-2xl rounded-br-md text-[11.5px] text-amber-900 font-medium flex items-center gap-2"
+      className="ml-auto max-w-[78%] bg-mint px-3 py-2 rounded-2xl rounded-br-md text-[11.5px] text-forest-deep font-medium flex items-center gap-2"
     >
       <Camera className="w-3 h-3 flex-shrink-0" />
       <span>Sent — kitchen + pantry + stash</span>
@@ -178,7 +178,7 @@ const IntermissionVisual = () => (
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.35 }}
-      className="ml-auto max-w-[78%] bg-amber-100 px-3 py-2 rounded-2xl rounded-br-md text-[11.5px] text-amber-900 font-medium flex items-center gap-2"
+      className="ml-auto max-w-[78%] bg-mint px-3 py-2 rounded-2xl rounded-br-md text-[11.5px] text-forest-deep font-medium flex items-center gap-2"
     >
       <Receipt className="w-3 h-3 flex-shrink-0" />
       <span>Sent — weekly grocery receipt</span>
@@ -187,9 +187,9 @@ const IntermissionVisual = () => (
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.6 }}
-      className="max-w-[82%] bg-white border border-amber-100 px-3 py-2 rounded-2xl rounded-bl-md text-[11.5px] text-gray-800 leading-snug shadow-sm"
+      className="max-w-[82%] bg-white border border-mint px-3 py-2 rounded-2xl rounded-bl-md text-[11.5px] text-gray-800 leading-snug shadow-sm"
     >
-      <span className="font-bold text-amber-700">Kristina:</span> Got them. Two specific swaps coming in the morning — quick wins for your pantry shelf.
+      <span className="font-bold text-forest">Kristina:</span> Got them. Two specific swaps coming in the morning — quick wins for your pantry shelf.
     </motion.div>
   </div>
 );
@@ -210,14 +210,14 @@ const ResourceLibraryVisual = () => {
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 + i * 0.08 }}
-            className="bg-white border border-amber-100 rounded-xl px-2.5 py-3 shadow-sm flex items-center gap-1.5 min-w-0"
+            className="bg-white border border-mint rounded-xl px-2.5 py-3 shadow-sm flex items-center gap-1.5 min-w-0"
           >
-            <FileText className="w-3 h-3 text-amber-700 flex-shrink-0" />
+            <FileText className="w-3 h-3 text-forest flex-shrink-0" />
             <span className="text-[10.5px] font-bold text-gray-800 leading-tight min-w-0">{label}</span>
           </motion.div>
         ))}
       </div>
-      <p className="mt-3 text-center text-[10px] font-black text-amber-800 uppercase tracking-wider">
+      <p className="mt-3 text-center text-[10px] font-black text-forest-deep uppercase tracking-wider">
         20 PDFs · search + filter
       </p>
     </div>
@@ -230,7 +230,7 @@ const WhatsAppVisual = () => (
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.1 }}
-      className="ml-auto max-w-[80%] bg-amber-100 px-3 py-2 rounded-2xl rounded-br-md text-[11.5px] text-amber-900 font-medium"
+      className="ml-auto max-w-[80%] bg-mint px-3 py-2 rounded-2xl rounded-br-md text-[11.5px] text-forest-deep font-medium"
     >
       Module 3 just clicked. The Pringles thing — that's me.
     </motion.div>
@@ -238,9 +238,9 @@ const WhatsAppVisual = () => (
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.4 }}
-      className="max-w-[82%] bg-white border border-amber-100 px-3 py-2 rounded-2xl rounded-bl-md text-[11.5px] text-gray-800 leading-snug shadow-sm"
+      className="max-w-[82%] bg-white border border-mint px-3 py-2 rounded-2xl rounded-bl-md text-[11.5px] text-gray-800 leading-snug shadow-sm"
     >
-      <span className="font-bold text-amber-700">Kristina:</span> Yes — that's the bliss point doing its job. Try the if-then from the library for your 4 PM window this week and tell me what shifts.
+      <span className="font-bold text-forest">Kristina:</span> Yes — that's the bliss point doing its job. Try the if-then from the library for your 4 PM window this week and tell me what shifts.
     </motion.div>
     <motion.a
       initial={{ opacity: 0 }}
@@ -248,7 +248,7 @@ const WhatsAppVisual = () => (
       transition={{ delay: 0.7 }}
       href="#"
       onClick={(e) => e.preventDefault()}
-      className="mt-2 mx-auto flex items-center justify-center gap-1.5 w-fit px-3 py-1.5 bg-gradient-to-br from-amber-600 to-amber-800 text-white rounded-full text-[10.5px] font-bold shadow-sm"
+      className="mt-2 mx-auto flex items-center justify-center gap-1.5 w-fit px-3 py-1.5 bg-gradient-to-br from-forest to-forest-deep text-white rounded-full text-[10.5px] font-bold shadow-sm"
     >
       <MessageCircle className="w-3 h-3" />
       Open WhatsApp
@@ -289,7 +289,7 @@ const STEPS: Step[] = [
     icon: CheckCircle2,
     eyebrow: "Step 2 of 5",
     title: "After each video — Mark as watched.",
-    body: "A big amber 'I've watched this' button sits right under the video. Hit it to mark the lesson complete and unlock the next module. If you scroll past it, the locked Next button at the bottom will scroll you back up.",
+    body: "A big green 'I've watched this' button sits right under the video. Hit it to mark the lesson complete and unlock the next module. If you scroll past it, the locked Next button at the bottom will scroll you back up.",
     visual: <MarkWatchedVisual />,
   },
   {
@@ -402,9 +402,9 @@ export const ProductTour = ({
             </button>
 
             {/* Visual header */}
-            <div className="relative bg-gradient-to-br from-amber-50 via-amber-100/60 to-amber-50 px-5 sm:px-7 pt-9 sm:pt-10 pb-6 sm:pb-7">
-              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-amber-300/60 to-transparent" />
-              <div className="absolute -bottom-px left-0 right-0 h-px bg-gradient-to-r from-transparent via-amber-300/60 to-transparent" />
+            <div className="relative bg-gradient-to-br from-cream via-mint/60 to-cream px-5 sm:px-7 pt-9 sm:pt-10 pb-6 sm:pb-7">
+              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-petal/60 to-transparent" />
+              <div className="absolute -bottom-px left-0 right-0 h-px bg-gradient-to-r from-transparent via-petal/60 to-transparent" />
 
               {/* Progress dots */}
               <div className="absolute top-4 left-4 sm:top-5 sm:left-5 flex items-center gap-1.5">
@@ -412,17 +412,17 @@ export const ProductTour = ({
                   <span
                     key={i}
                     className={`h-1.5 rounded-full transition-all ${
-                      i === step ? "w-6 bg-amber-700" : i < step ? "w-3 bg-amber-400" : "w-3 bg-amber-200"
+                      i === step ? "w-6 bg-forest" : i < step ? "w-3 bg-gold" : "w-3 bg-petal"
                     }`}
                   />
                 ))}
               </div>
 
               <div className="flex flex-col items-center text-center mt-2">
-                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center shadow-md shadow-amber-300/40 mb-3">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br from-forest to-forest flex items-center justify-center shadow-md shadow-forest/20 mb-3">
                   <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
                 </div>
-                <p className="text-[10px] sm:text-[11px] font-black text-amber-800 uppercase tracking-[0.28em] mb-2">
+                <p className="text-[10px] sm:text-[11px] font-black text-forest-deep uppercase tracking-[0.28em] mb-2">
                   {current.eyebrow}
                 </p>
                 <h2 className="text-[1.15rem] sm:text-[1.35rem] font-black text-gray-900 leading-[1.2] tracking-tight">
@@ -438,7 +438,7 @@ export const ProductTour = ({
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: 0.05 }}
-                className="rounded-2xl bg-gradient-to-br from-amber-50/70 via-white to-amber-50/40 border border-amber-100 px-4 sm:px-5 py-5 sm:py-6"
+                className="rounded-2xl bg-gradient-to-br from-cream/70 via-white to-cream/40 border border-mint px-4 sm:px-5 py-5 sm:py-6"
               >
                 {current.visual}
               </motion.div>
@@ -453,7 +453,7 @@ export const ProductTour = ({
                 <ul className="mt-4 space-y-2.5">
                   {current.bullets.map((b, i) => (
                     <li key={i} className="flex gap-3 text-[13px] sm:text-[13.5px] text-gray-700">
-                      <span className="text-amber-600 font-black mt-0.5">·</span>
+                      <span className="text-forest font-black mt-0.5">·</span>
                       <span className="leading-relaxed">{b}</span>
                     </li>
                   ))}
@@ -473,7 +473,7 @@ export const ProductTour = ({
                 {step > 0 && (
                   <button
                     onClick={handlePrev}
-                    className="flex items-center gap-1.5 px-3 sm:px-4 py-2.5 text-xs sm:text-sm font-bold text-gray-600 hover:text-amber-700 hover:bg-amber-50 rounded-full transition-colors"
+                    className="flex items-center gap-1.5 px-3 sm:px-4 py-2.5 text-xs sm:text-sm font-bold text-gray-600 hover:text-forest hover:bg-cream rounded-full transition-colors"
                   >
                     <ArrowLeft className="w-3.5 h-3.5" />
                     Back
@@ -481,7 +481,7 @@ export const ProductTour = ({
                 )}
                 <button
                   onClick={handleNext}
-                  className="flex items-center gap-2 px-5 sm:px-6 py-2.5 text-xs sm:text-sm font-bold text-white bg-gradient-to-br from-amber-600 to-amber-800 hover:from-amber-700 hover:to-amber-900 rounded-full shadow-md shadow-amber-300/40 transition-all"
+                  className="flex items-center gap-2 px-5 sm:px-6 py-2.5 text-xs sm:text-sm font-bold text-white bg-gradient-to-br from-forest to-forest-deep hover:from-forest hover:to-forest-deep rounded-full shadow-md shadow-forest/20 transition-all"
                 >
                   {isLast ? "Start the course" : "Next"}
                   <ArrowRight className="w-3.5 h-3.5" />
