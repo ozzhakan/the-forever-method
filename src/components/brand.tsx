@@ -229,12 +229,19 @@ export function BrandNav() {
           </span>
         </Link>
         <div className="flex items-center gap-1.5 sm:gap-2">
-          <Link
-            to="/course"
-            className="hidden sm:inline-flex font-body text-[14px] font-medium text-ink/80 hover:text-forest px-3 py-2 transition-colors"
-          >
-            The course
-          </Link>
+          {[
+            { to: "/watch", label: "Watch" },
+            { to: "/blog", label: "Blog" },
+            { to: "/course", label: "The course" },
+          ].map((l) => (
+            <Link
+              key={l.to}
+              to={l.to}
+              className="hidden md:inline-flex font-body text-[14px] font-medium text-ink/80 hover:text-forest px-3 py-2 transition-colors"
+            >
+              {l.label}
+            </Link>
+          ))}
           <BrandButton to="/adhd-meal-plan" variant="primary" size="md">
             Free meal plan
           </BrandButton>
@@ -247,7 +254,8 @@ export function BrandNav() {
 /* ─────────── BRAND FOOTER ───────────
    The recurring kristinaoz.com · @oz.kristina credit line, expanded
    into a real footer with nav + legal + YouTube. */
-export const YOUTUBE_URL = "https://www.youtube.com/@oz.kristina";
+export const YOUTUBE_URL = "https://www.youtube.com/@kristioz";
+export const YOUTUBE_HANDLE = "@kristioz";
 export const INSTAGRAM_HANDLE = "@oz.kristina";
 
 export function BrandFooter() {
@@ -270,9 +278,11 @@ export function BrandFooter() {
               Explore
             </span>
             <Link to="/adhd-meal-plan" className="hover:text-white transition-colors">Free 60-Day Meal Plan</Link>
+            <Link to="/watch" className="hover:text-white transition-colors">Watch the videos</Link>
+            <Link to="/blog" className="hover:text-white transition-colors">Blog</Link>
             <Link to="/course" className="hover:text-white transition-colors">The Unhooked Method course</Link>
             <a href={YOUTUBE_URL} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
-              YouTube · {INSTAGRAM_HANDLE}
+              YouTube · {YOUTUBE_HANDLE}
             </a>
           </div>
           <div className="flex flex-col gap-2.5 font-body text-[14px]">

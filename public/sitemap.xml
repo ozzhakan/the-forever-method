@@ -16,6 +16,36 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://theunhookedmethod.com/watch</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://theunhookedmethod.com/blog</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://theunhookedmethod.com/blog/why-adhd-brains-crave-sugar</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://theunhookedmethod.com/blog/what-is-food-noise</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://theunhookedmethod.com/blog/how-to-quit-sugar-with-adhd</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://theunhookedmethod.com/blog/the-unhooked-method-course</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://theunhookedmethod.com/privacy</loc>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>

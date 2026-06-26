@@ -4,6 +4,10 @@
 
 User-agent: *
 Allow: /
+# Keep app + post-purchase pages out of search (not useful as results)
+Disallow: /learn
+Disallow: /preview
+Disallow: /thank-you
 
 # Facebook Open Graph scraper
 User-agent: facebookexternalhit

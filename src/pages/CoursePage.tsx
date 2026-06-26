@@ -28,6 +28,7 @@ import {
   useCountdown,
   formatCountdown,
 } from "../lib/launchOffer";
+import Seo from "../components/Seo";
 
 const CHECKOUT_URL = "https://www.paypal.com/ncp/payment/U2TRU278WRCM4";
 
@@ -149,15 +150,27 @@ function OfferBox() {
 
 export default function CoursePage() {
   const [, force] = useState(0);
-  useEffect(() => {
-    const prev = document.title;
-    document.title = "The Unhooked Method — Break the Food-Addiction Loop With Science | Kristina Oz";
-    force((n) => n + 1);
-    return () => { document.title = prev; };
-  }, []);
+  // kick one re-render on mount so the countdown reflects client time
+  useEffect(() => { force((n) => n + 1); }, []);
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    name: "The Unhooked Method",
+    description:
+      "A self-paced course to break the sugar and food loop with science, not willpower — the neuroscience of cravings, an eat-to-fullness food framework, and 38 if-then craving protocols.",
+    provider: { "@id": "https://theunhookedmethod.com/#org" },
+    offers: { "@type": "Offer", price: "29", priceCurrency: "USD", url: "https://theunhookedmethod.com/course" },
+  };
 
   return (
     <BrandPage>
+      <Seo
+        title="The Unhooked Method — Break the Food-Addiction Loop With Science | Kristina Oz"
+        description="A self-paced course to end sugar and food cravings with science, not willpower. Nine modules, the food framework, and 38 craving protocols. $29, 14-day money-back guarantee."
+        path="/course"
+        jsonLd={jsonLd}
+      />
       {/* ═══════════ HERO ═══════════ */}
       <section className="relative overflow-hidden">
         <DotField />

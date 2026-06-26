@@ -1,4 +1,4 @@
-import { useEffect, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import {
   Zap,
@@ -20,9 +20,11 @@ import {
   BrandButton,
   Card,
   YOUTUBE_URL,
+  YOUTUBE_HANDLE,
   INSTAGRAM_HANDLE,
 } from "../components/brand";
 import EmailCaptureForm from "../components/EmailCaptureForm";
+import Seo from "../components/Seo";
 
 const KRISTINA = "/kristina.jpg";
 const FREE_COVER = "/brand/free-cover.jpg";
@@ -44,14 +46,13 @@ const BENEFITS = [
 ];
 
 export default function Home() {
-  useEffect(() => {
-    const prev = document.title;
-    document.title = "Kristina Oz — ADHD Nutrition Made Simple | Free 60-Day Meal Plan";
-    return () => { document.title = prev; };
-  }, []);
-
   return (
     <BrandPage>
+      <Seo
+        title="Kristina Oz — ADHD Nutrition Made Simple | Free 60-Day Meal Plan"
+        description="Steady fuel, calmer focus, fewer cravings. A simple, repeatable way to eat for an ADHD brain — no calorie counting, no willpower. Grab the free 60-Day ADHD Meal Plan."
+        path="/"
+      />
       {/* ═══════════ HERO ═══════════ */}
       <section className="relative overflow-hidden">
         <DotField />
@@ -197,7 +198,7 @@ export default function Home() {
               rel="noopener noreferrer"
               className="mt-5 inline-flex items-center gap-2 font-body text-[14px] font-medium text-ink-soft hover:text-rose transition-colors"
             >
-              <Youtube className="w-5 h-5 text-rose" /> {INSTAGRAM_HANDLE} on YouTube
+              <Youtube className="w-5 h-5 text-rose" /> {YOUTUBE_HANDLE} on YouTube
             </a>
           </Rise>
         </div>

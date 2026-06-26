@@ -51,25 +51,48 @@
     <meta name="twitter:description" content="Steady fuel, calmer focus, fewer cravings — a simple way to eat for an ADHD brain. Grab the free 60-Day ADHD Meal Plan by Kristina Oz." />
     <meta name="twitter:image" content="https://theunhookedmethod.com/brand/free-cover.jpg" />
 
+    <!-- Google Search Console verification.
+         TWO ways to verify (pick one):
+         1) Paste your token below (Search Console > URL-prefix property >
+            HTML tag method), replacing CONTENT_FROM_SEARCH_CONSOLE.
+         2) Or use a Domain property + DNS TXT record (no code needed) —
+            recommended, covers all subdomains. -->
+    <meta name="google-site-verification" content="CONTENT_FROM_SEARCH_CONSOLE" />
+
     <!-- Structured data — helps Google understand the brand, the free
-         guide, and the paid course (rich results + knowledge graph). -->
+         guide, the course, and the channel (rich results + knowledge graph). -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@graph": [
           {
+            "@type": "Organization",
+            "@id": "https://theunhookedmethod.com/#org",
+            "name": "Kristina Oz · Fuel Made Simple",
+            "url": "https://theunhookedmethod.com",
+            "logo": "https://theunhookedmethod.com/brand/free-cover.jpg",
+            "sameAs": [
+              "https://www.youtube.com/@kristioz",
+              "https://www.instagram.com/oz.kristina"
+            ]
+          },
+          {
             "@type": "WebSite",
             "@id": "https://theunhookedmethod.com/#website",
             "url": "https://theunhookedmethod.com",
             "name": "Kristina Oz · Fuel Made Simple",
-            "description": "ADHD nutrition made simple — steady fuel, calmer focus, fewer cravings."
+            "description": "ADHD nutrition made simple — steady fuel, calmer focus, fewer cravings.",
+            "publisher": { "@id": "https://theunhookedmethod.com/#org" }
           },
           {
             "@type": "Person",
             "@id": "https://theunhookedmethod.com/#kristina",
             "name": "Kristina Oz",
             "url": "https://theunhookedmethod.com",
-            "sameAs": ["https://www.youtube.com/@oz.kristina"]
+            "sameAs": [
+              "https://www.youtube.com/@kristioz",
+              "https://www.instagram.com/oz.kristina"
+            ]
           },
           {
             "@type": "Course",

@@ -7,6 +7,9 @@ import Home from "./pages/Home";
    Each route splits into its own chunk Vite fetches on navigation. */
 const FreePdf = lazy(() => import("./pages/FreePdf"));
 const CoursePage = lazy(() => import("./pages/CoursePage"));
+const Watch = lazy(() => import("./pages/Watch"));
+const Blog = lazy(() => import("./pages/Blog"));
+const BlogPost = lazy(() => import("./pages/BlogPost"));
 const Learn = lazy(() => import("./pages/Learn"));
 const ThankYou = lazy(() => import("./pages/ThankYou"));
 const Privacy = lazy(() => import("./pages/Privacy"));
@@ -25,6 +28,9 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/adhd-meal-plan" element={<FreePdf />} />
           <Route path="/course" element={<CoursePage />} />
+          <Route path="/watch" element={<Watch />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/learn" element={<Learn />} />
           <Route path="/preview" element={<Learn previewMode />} />
           <Route path="/thank-you" element={<ThankYou />} />

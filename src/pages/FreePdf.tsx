@@ -1,4 +1,4 @@
-import { useEffect, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import { motion } from "motion/react";
 import {
   Zap,
@@ -20,8 +20,10 @@ import {
   Rule,
   Card,
   YOUTUBE_URL,
+  YOUTUBE_HANDLE,
 } from "../components/brand";
 import EmailCaptureForm from "../components/EmailCaptureForm";
+import Seo from "../components/Seo";
 
 /* Product-page images (finished marketing art, used as product photography) */
 const IMG = {
@@ -89,14 +91,13 @@ function PeekPage({
 }
 
 export default function FreePdf() {
-  useEffect(() => {
-    const prev = document.title;
-    document.title = "Free 60-Day ADHD Meal Plan — Steady Fuel, Calm Cravings | Kristina Oz";
-    return () => { document.title = prev; };
-  }, []);
-
   return (
     <BrandPage>
+      <Seo
+        title="Free 60-Day ADHD Meal Plan — Steady Fuel, Calm Cravings | Kristina Oz"
+        description="Grab the free 60-Day ADHD Meal Plan: two simple plates a day, 14 meal ideas, and craving hacks made for the ADHD brain. No calorie counting, no willpower. Instant download."
+        path="/adhd-meal-plan"
+      />
       {/* ═══════════ HERO ═══════════ */}
       <section className="relative overflow-hidden">
         <DotField />
@@ -277,7 +278,7 @@ export default function FreePdf() {
                   className="mt-7 inline-flex items-center gap-2 font-body text-[13.5px] text-cream/70 hover:text-white transition-colors"
                 >
                   <Sparkles className="w-4 h-4" />
-                  Watch the videos on YouTube · @oz.kristina
+                  Watch the videos on YouTube · {YOUTUBE_HANDLE}
                 </a>
               </div>
             </div>
