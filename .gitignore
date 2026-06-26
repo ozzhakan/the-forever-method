@@ -11,3 +11,6 @@ coverage/
 # Raw source assets — the served copies live in public/ (don't double-commit)
 /images/
 /pdf/
+
+# Prerender SSR build (build-time only)
+.prerender-ssr/

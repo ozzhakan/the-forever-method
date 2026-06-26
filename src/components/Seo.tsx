@@ -1,11 +1,11 @@
 import { useEffect } from "react";
+import { headStore, IS_SERVER } from "../lib/head";
 
 /* ═══════════════════════════════════════════════════════════════
-   SEO head manager — dependency-free.
-   Sets per-route <title>, meta description, canonical, Open Graph /
-   Twitter tags, robots, and an optional per-page JSON-LD block, then
-   restores/cleans up on unmount. Keeps every page machine-readable for
-   Google + social scrapers without SSR.
+   SEO head manager.
+   - Server (prerender): writes the page's head into headStore during
+     render, which scripts/prerender.mjs injects into the static HTML.
+   - Client: upserts the same tags via useEffect (handles SPA navigation).
    ═══════════════════════════════════════════════════════════════ */
 
 export const SITE = "https://theunhookedmethod.com";
@@ -34,14 +34,10 @@ function upsertLink(rel: string, href: string) {
 export interface SeoProps {
   title: string;
   description: string;
-  /** path beginning with "/" — becomes the canonical + og:url */
   path: string;
   image?: string;
-  /** "website" | "article" */
   type?: string;
-  /** set true on app/utility pages that shouldn't be indexed */
   noindex?: boolean;
-  /** schema.org object(s) injected as JSON-LD for this page */
   jsonLd?: object | object[];
 }
 
@@ -54,14 +50,36 @@ export default function Seo({
   noindex = false,
   jsonLd,
 }: SeoProps) {
+  const url = SITE + (path === "/" ? "" : path);
+  const robots = noindex ? "noindex, nofollow" : "index, follow";
+
+  // server render (prerender): record into the collector
+  if (IS_SERVER) {
+    headStore.title = title;
+    headStore.description = description;
+    headStore.canonical = url;
+    headStore.robots = robots;
+    headStore.og = {
+      "og:title": title,
+      "og:description": description,
+      "og:url": url,
+      "og:type": type,
+      "og:image": image,
+    };
+    headStore.twitter = {
+      "twitter:title": title,
+      "twitter:description": description,
+      "twitter:image": image,
+    };
+    headStore.jsonLd = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
+  }
+
+  // client: keep the live DOM head in sync (also covers SPA navigation)
   useEffect(() => {
-    const url = SITE + (path === "/" ? "" : path);
     document.title = title;
-
     upsertMeta("name", "description", description);
-    upsertMeta("name", "robots", noindex ? "noindex, nofollow" : "index, follow");
+    upsertMeta("name", "robots", robots);
     upsertLink("canonical", url);
-
     upsertMeta("property", "og:title", title);
     upsertMeta("property", "og:description", description);
     upsertMeta("property", "og:url", url);
@@ -79,13 +97,11 @@ export default function Seo({
       script.textContent = JSON.stringify(jsonLd);
       document.head.appendChild(script);
     }
-
     return () => {
-      // restore indexability default; page-specific JSON-LD is removed
       upsertMeta("name", "robots", "index, follow");
       if (script) script.remove();
     };
-  }, [title, description, path, image, type, noindex, jsonLd]);
+  }, [title, description, url, image, type, robots, jsonLd]);
 
   return null;
 }
