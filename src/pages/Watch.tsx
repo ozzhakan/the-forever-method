@@ -14,8 +14,17 @@ import Seo, { SITE } from "../components/Seo";
    ─────────────────────────────────────────────────────────────── */
 type Vid = { id: string; title: string; playlist: "roadmap" | "sugarless" };
 const VIDEOS: Vid[] = [
-  // { id: "XXXXXXXXXXX", title: "Why I Quit Low-Carb for NO-Carb (ADHD Changed Everything)", playlist: "roadmap" },
-  // { id: "XXXXXXXXXXX", title: "Sugarless · Day 1: What a Full Day Without Sugar Looks Like", playlist: "sugarless" },
+  // The Roadmap — the how & why
+  { id: "xlyY7kXkJpc", title: "The ADHD Blueprint for Overcoming Food and Sugar Addiction", playlist: "roadmap" },
+  { id: "Nous3LPl4Jw", title: "Your Cravings Were Engineered. Here's Why", playlist: "roadmap" },
+  { id: "lRnZLaY9cwA", title: "Why You Can't Stop Eating (It's Not Willpower)", playlist: "roadmap" },
+  { id: "-x2k_F4TR3Y", title: "Break the Cycle of Food Addiction (A Simple Explainer)", playlist: "roadmap" },
+  // Sugarless — real life
+  { id: "PquT1KdzDvc", title: "My Journey to Finally Killing Sugar Cravings (as ADHD)", playlist: "sugarless" },
+  { id: "Mc9f_fYAaxQ", title: "235 Days After Quitting Sugar — How I Eat Now", playlist: "sugarless" },
+  { id: "QkwGd_AsxaE", title: "My Strategy to Stop Buying Sugar Forever (as ADHD)", playlist: "sugarless" },
+  { id: "_FvVd9kBuVs", title: "My Strategy to Stop Emotional Overeating Forever", playlist: "sugarless" },
+  { id: "pPJp4GXUMs4", title: "The Best Sugar-Free Oatmeal Dessert (Super Easy)", playlist: "sugarless" },
 ];
 
 const SERIES = {
